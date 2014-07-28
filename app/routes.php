@@ -13,12 +13,7 @@
 
 Route::get ( '/test' , function()
 {
-	$a = User::find ( 1 ) -> abilities ;
-
-	foreach ( $a as $b )
-	{
-		var_dump ( $b -> name ) ;
-	}
+	
 } ) ;
 
 Route::group ( [
@@ -31,7 +26,7 @@ Route::group ( [
 	} ) ;
 } ) ;
 
-foreach ( glob ( app_path () . '/routes/*.php' ) as $routeFile )
+foreach ( glob ( app_path () . '/routes/*.php' ) as $filterFile )
 {
-	include $routeFile ;
+	include $filterFile ;
 }

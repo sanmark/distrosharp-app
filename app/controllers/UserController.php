@@ -12,7 +12,8 @@ class UserController extends Controller
 	{
 		$organization = Input::get ( 'organization' ) ;
 
-		Config::set ( 'database.connections.mysql.database' , $organization ) ;
+		Session::set ( 'tenant_db' , $organization ) ;
+		Config::set ( 'database.connections.tenant_db.database' , Config::get ( 'config.tenant_db_prefix' ) . $organization ) ;
 
 		$credentials[ 'username' ]	 = Input::get ( 'username' ) ;
 		$credentials[ 'password' ]	 = Input::get ( 'password' ) ;
