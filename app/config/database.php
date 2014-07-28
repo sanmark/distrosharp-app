@@ -23,7 +23,7 @@ return array (
 	  | you may use many connections at once using the Database library.
 	  |
 	 */
-	'default'		 => 'mysql' ,
+	'default'		 => 'tenant_db' ,
 	/*
 	  |--------------------------------------------------------------------------
 	  | Database Connections
@@ -39,41 +39,28 @@ return array (
 	  | choice installed on your machine before you begin development.
 	  |
 	 */
-	'connections'	 => array (
-		'sqlite' => array (
-			'driver'	 => 'sqlite' ,
-			'database'	 => __DIR__ . '/../database/production.sqlite' ,
-			'prefix'	 => '' ,
-		) ,
-		'mysql'	 => array (
+	'connections'	 => [
+		'central_db' => [
 			'driver'	 => 'mysql' ,
-			'host'		 => 'localhost' ,
-			'database'	 => 'd-071-1-v2_ptg_001' ,
-			'username'	 => 'user' ,
-			'password'	 => 'user' ,
+			'host'		 => Config::get ( 'config.db_host' ) ,
+			'database'	 => Config::get ( 'config.central_db' ) ,
+			'username'	 => Config::get ( 'config.db_user' ) ,
+			'password'	 => Config::get ( 'config.db_password' ) ,
 			'charset'	 => 'utf8' ,
 			'collation'	 => 'utf8_unicode_ci' ,
 			'prefix'	 => '' ,
-		) ,
-		'pgsql'	 => array (
-			'driver'	 => 'pgsql' ,
-			'host'		 => 'localhost' ,
-			'database'	 => 'forge' ,
-			'username'	 => 'forge' ,
-			'password'	 => '' ,
+		] ,
+		'tenant_db'	 => [
+			'driver'	 => 'mysql' ,
+			'host'		 => Config::get ( 'config.db_host' ) ,
+			'database'	 => Config::get ( 'config.tenant_db' ) ,
+			'username'	 => Config::get ( 'config.db_user' ) ,
+			'password'	 => Config::get ( 'config.db_password' ) ,
 			'charset'	 => 'utf8' ,
+			'collation'	 => 'utf8_unicode_ci' ,
 			'prefix'	 => '' ,
-			'schema'	 => 'public' ,
-		) ,
-		'sqlsrv' => array (
-			'driver'	 => 'sqlsrv' ,
-			'host'		 => 'localhost' ,
-			'database'	 => 'database' ,
-			'username'	 => 'root' ,
-			'password'	 => '' ,
-			'prefix'	 => '' ,
-		) ,
-	) ,
+		] ,
+	] ,
 	/*
 	  |--------------------------------------------------------------------------
 	  | Migration Repository Table

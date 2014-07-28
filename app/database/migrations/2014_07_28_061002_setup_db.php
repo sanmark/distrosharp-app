@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint ;
 use Illuminate\Database\Migrations\Migration ;
+use Illuminate\Database\Query\Expression ;
 
 class SetupDb extends Migration
 {
@@ -18,10 +19,17 @@ class SetupDb extends Migration
 			$t -> string ( 'last_name' , 50 ) ;
 			$t -> timestamps () ;
 		} ) ;
+
+		Schema::create ( 'ability_user' , function($t)
+		{
+			$t -> integer ( 'ability_id' ) -> unsigned () ;
+			$t -> integer ( 'user_id' ) -> unsiged () ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::drop ( 'ability_user' ) ;
 		Schema::drop ( 'users' ) ;
 	}
 

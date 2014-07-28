@@ -11,6 +11,16 @@
   |
  */
 
+Route::get ( '/test' , function()
+{
+	$a = User::find ( 1 ) -> abilities ;
+
+	foreach ( $a as $b )
+	{
+		var_dump ( $b -> name ) ;
+	}
+} ) ;
+
 Route::group ( [
 	'before' => 'auth'
 ] , function()
