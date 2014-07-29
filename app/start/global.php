@@ -68,6 +68,17 @@ App::down ( function()
 
 /*
   |--------------------------------------------------------------------------
+  | Require Dictionary File
+  |--------------------------------------------------------------------------
+  |
+  | Next we will load the dictionary file for the application. This gives us
+  | a nice separate location to store our system-wide constant definitions.
+ */
+
+require app_path () . '/dictionary.php' ;
+
+/*
+  |--------------------------------------------------------------------------
   | Require The Filters File
   |--------------------------------------------------------------------------
   |

@@ -16,7 +16,7 @@ class User extends Eloquent implements UserInterface , RemindableInterface
 
 	public function abilities ()
 	{
-		return $this -> belongsToMany ( 'Ability' , Config::get ( 'database.connections.tenant_db.database' ) . '.ability_user' ) ;
+		return $this -> belongsToMany ( 'Ability' , Config::get ( CONFIG_DATABASE_CONNECTIONS_TENANTDB_DATABASE ) . '.ability_user' ) ;
 	}
 
 }
