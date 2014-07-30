@@ -1,3 +1,6 @@
+@extends('web._templates.template')
+
+@section('body')
 @if(MessageButler::hasError())
 <p>{{MessageButler::getError()}}</p>
 @endif
@@ -14,3 +17,4 @@
 <br>
 {{Form::submit('Login')}}
 {{Form::close()}}
+@stop
