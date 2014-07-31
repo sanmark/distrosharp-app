@@ -22,7 +22,7 @@ Route::group ( [
 {
 	Route::get ( '' , function()
 	{
-		echo ':)' ;
+		return View::make ( 'web.test' ) ;
 	} ) ;
 } ) ;
 

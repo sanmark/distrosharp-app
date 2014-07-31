@@ -3,7 +3,8 @@
 /**
  * Session
  */
-define ( 'SESSION_TENANTDB' , 'tenant_db' ) ;
+define ( 'SESSION_ORGANIZATION' , 'organization' ) ;
+define ( 'SESSION_MENU' , 'menu' ) ;
 
 /**
  * Config

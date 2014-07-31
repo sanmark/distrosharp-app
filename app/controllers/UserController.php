@@ -11,9 +11,8 @@ class UserController extends Controller
 	public function pLogin ()
 	{
 		$organization = Input::get ( 'organization' ) ;
-
-		Session::set ( SESSION_TENANTDB , $organization ) ;
-		Config::set ( CONFIG_DATABASE_CONNECTIONS_TENANTDB_DATABASE , Config::get ( CONFIG_CONFIG_TENANTDB_PREFIX ) . $organization ) ;
+		SessionButler::setOrganization ( $organization ) ;
+		ConfigButler::setTenantDb ( $organization ) ;
 
 		$credentials[ 'username' ]	 = Input::get ( 'username' ) ;
 		$credentials[ 'password' ]	 = Input::get ( 'password' ) ;
@@ -32,6 +31,9 @@ class UserController extends Controller
 			return Redirect::back ()
 			-> withInput () ;
 		}
+
+		$menu = MenuButler::getMenu ( Auth::user () ) ;
+		SessionButler::setMenu ( $menu ) ;
 
 		return Redirect::to ( '/' ) ;
 	}
