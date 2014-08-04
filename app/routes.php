@@ -13,7 +13,7 @@
 
 Route::get ( '/test' , function()
 {
-	
+	var_dump ( Auth::user () ) ;
 } ) ;
 
 Route::group ( [

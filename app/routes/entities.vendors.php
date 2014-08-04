@@ -1,7 +1,8 @@
 <?php
 
 Route::group ( [
-	'prefix' => 'entities/vendors'
+	'prefix' => 'entities/vendors',
+	'before' => 'auth'
 ] , function()
 {
 	Route::get ( 'add' , [

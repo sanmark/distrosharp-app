@@ -1,7 +1,8 @@
 <?php
 
 Route::group ( [
-	'prefix' => 'entities/items'
+	'prefix' => 'entities/items' ,
+	'before' => 'auth'
 ] , function()
 {
 	Route::get ( 'add' , [
