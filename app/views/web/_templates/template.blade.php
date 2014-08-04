@@ -5,7 +5,7 @@
 	</head>
 	<body style="margin: 0px;">
 		<div style="width: 1200px; margin: 0 auto;">
-			<div style="width: 100%; height: 100px; background-color: #D2D2D2;">
+			<div style="width: 100%; background-color: #D2D2D2;">
 				@include('web._inc.menu')
 			</div>
 			<div style="width: 1000px; float: left;">
