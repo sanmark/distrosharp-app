@@ -25,10 +25,19 @@ class SetupDb extends Migration
 			$t -> integer ( 'ability_id' ) -> unsigned () ;
 			$t -> integer ( 'user_id' ) -> unsiged () ;
 		} ) ;
+
+		Schema::create ( 'vendors' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> longtext ( 'details' ) ;
+			$t -> boolean ( 'is_active' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::drop ( 'vendors' ) ;
 		Schema::drop ( 'ability_user' ) ;
 		Schema::drop ( 'users' ) ;
 	}

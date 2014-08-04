@@ -53,7 +53,7 @@ return array (
 		'tenant_db'	 => [
 			'driver'	 => 'mysql' ,
 			'host'		 => Config::get ( 'config.db_host' ) ,
-			'database'	 => NULL ,
+			'database'	 => 'd-071-1-v2_ptg_001' ,
 			'username'	 => Config::get ( 'config.db_user' ) ,
 			'password'	 => Config::get ( 'config.db_password' ) ,
 			'charset'	 => 'utf8' ,

@@ -18,6 +18,7 @@ ClassLoader::addDirectories ( array (
 	app_path () . '/database/seeds' ,
 	app_path () . '/butlers' ,
 	app_path () . '/helpers' ,
+	app_path () . '/exceptions' ,
 ) ) ;
 
 /*

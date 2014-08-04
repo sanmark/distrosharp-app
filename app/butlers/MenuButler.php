@@ -4,6 +4,13 @@ class MenuButler
 {
 
 	private static $menuTemplate = [
+		['Entities' , [
+				['Vendors' , [
+						['Add Vendor' , 'add-vendor' , ['add_vendor' ] ]
+					]
+				]
+			]
+		]
 	] ;
 
 	public static function getMenu ( User $user )
