@@ -57,7 +57,7 @@ class MenuButler
 			} elseif ( $elementCount == 3 )
 			{
 				//End Point
-				$hasPermission = [ ] ;
+				$hasPermissions = [ ] ;
 
 				if ( is_array ( $userPermissions ) && is_array ( $menuItem[ 2 ] ) )
 				{
