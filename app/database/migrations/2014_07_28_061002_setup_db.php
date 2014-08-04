@@ -25,6 +25,19 @@ class SetupDb extends Migration
 			$t -> integer ( 'ability_id' ) -> unsigned () ;
 			$t -> integer ( 'user_id' ) -> unsiged () ;
 		} ) ;
+		
+		Schema::create ( 'items' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'code' , 20 ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> integer ( 'reorder_level' ) ;
+			$t -> float ( 'current_buying_price' ) ;
+			$t -> float ( 'current_selling_price' ) ;
+			$t -> integer ( 'buying_invoice_order' ) ;
+			$t -> integer ( 'selling_invoice_order' ) ;
+			$t -> boolean ( 'is_active' ) ;
+		} ) ;
 
 		Schema::create ( 'vendors' , function ($t)
 		{
@@ -32,12 +45,13 @@ class SetupDb extends Migration
 			$t -> string ( 'name' , 50 ) ;
 			$t -> longtext ( 'details' ) ;
 			$t -> boolean ( 'is_active' ) ;
-		} ) ;
+		} ) ;		
 	}
 
 	public function down ()
 	{
 		Schema::drop ( 'vendors' ) ;
+		Schema::drop ( 'items' ) ;
 		Schema::drop ( 'ability_user' ) ;
 		Schema::drop ( 'users' ) ;
 	}
