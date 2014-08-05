@@ -21,6 +21,10 @@ class MenuButler
 				['Customers' , [
 						['Add Customer' , 'add-customer' , ['add_customer' ] ]
 					]
+				] ,
+				['Banks' , [
+						['Add Bank' , 'entities.banks.add' , ['add_bank' ] ]
+					]
 				]
 			]
 		]

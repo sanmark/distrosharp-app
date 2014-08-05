@@ -54,6 +54,12 @@ class SetupDb extends Migration
 			$t -> boolean ( 'is_active' ) ;
 			$t -> integer ( 'rep' ) ;
 		} ) ;
+		Schema::create ( 'banks' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> boolean ( 'is_active' ) ;
+		} ) ;
 
 		Schema::create ( 'customers' , function ($t)
 		{
@@ -68,6 +74,7 @@ class SetupDb extends Migration
 	public function down ()
 	{
 		Schema::drop ( 'customers' ) ;
+		Schema::drop ( 'banks' ) ;
 		Schema::drop ( 'routes' ) ;
 		Schema::drop ( 'vendors' ) ;
 		Schema::drop ( 'items' ) ;
