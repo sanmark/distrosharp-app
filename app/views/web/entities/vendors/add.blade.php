@@ -12,19 +12,19 @@
 {{Form::open()}}
 <table>
 	<tr>
-		<td>{{Form::label('Name')}}</td>
+		<td>{{Form::label('name')}}</td>
 		<td>{{Form::text('name')}}</td>
 	</tr>
 	<tr>
-		<td>{{Form::label('Details')}}</td>
+		<td>{{Form::label('details')}}</td>
 		<td>{{Form::textarea('details')}}</td>
 	</tr>
 	<tr>
-		<td>{{Form::label('Status')}}</td>
+		<td>{{Form::label('is active')}}</td>
 		<td>{{Form::checkbox('is_active')}}</td>
 	</tr>
 	<tr>
-		<td>{{Form::submit('Submit')}}</td>
+		<td>{{Form::submit('submit')}}</td>
 		<td></td>
 	</tr>
 </table>
