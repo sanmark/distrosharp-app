@@ -9,9 +9,13 @@ class MenuButler
 				['Items' , [
 						['Add Item' , 'add-item' , ['add_item' ] ]
 					]
-				],
+				] ,
 				['Vendors' , [
 						['Add Vendor' , 'add-vendor' , ['add_vendor' ] ]
+					]
+				] ,
+				['Routes' , [
+						['Add Route' , 'add-route' , ['add_route' ] ]
 					]
 				]
 			]

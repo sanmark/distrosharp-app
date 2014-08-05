@@ -25,7 +25,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'ability_id' ) -> unsigned () ;
 			$t -> integer ( 'user_id' ) -> unsiged () ;
 		} ) ;
-		
+
 		Schema::create ( 'items' , function($t)
 		{
 			$t -> increments ( 'id' ) ;
@@ -45,11 +45,20 @@ class SetupDb extends Migration
 			$t -> string ( 'name' , 50 ) ;
 			$t -> longtext ( 'details' ) ;
 			$t -> boolean ( 'is_active' ) ;
-		} ) ;		
+		} ) ;
+
+		Schema::create ( 'routes' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> boolean ( 'is_active' ) ;
+			$t -> integer ( 'rep' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::drop ( 'routes' ) ;
 		Schema::drop ( 'vendors' ) ;
 		Schema::drop ( 'items' ) ;
 		Schema::drop ( 'ability_user' ) ;
