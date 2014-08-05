@@ -17,6 +17,10 @@ class MenuButler
 				['Routes' , [
 						['Add Route' , 'add-route' , ['add_route' ] ]
 					]
+				] ,
+				['Customers' , [
+						['Add Customer' , 'add-customer' , ['add_customer' ] ]
+					]
 				]
 			]
 		]

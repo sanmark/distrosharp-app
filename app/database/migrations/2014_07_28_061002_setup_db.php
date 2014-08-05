@@ -54,10 +54,20 @@ class SetupDb extends Migration
 			$t -> boolean ( 'is_active' ) ;
 			$t -> integer ( 'rep' ) ;
 		} ) ;
+
+		Schema::create ( 'customers' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> integer ( 'route_id' ) ;
+			$t -> boolean ( 'is_active' ) ;
+			$t -> longtext ( 'details' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::drop ( 'customers' ) ;
 		Schema::drop ( 'routes' ) ;
 		Schema::drop ( 'vendors' ) ;
 		Schema::drop ( 'items' ) ;
