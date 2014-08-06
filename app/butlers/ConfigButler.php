@@ -3,9 +3,9 @@
 class ConfigButler
 {
 
-	public static function setTenantDb ($organization)
+	public static function setTenantDb ( $organization )
 	{
-		$tenantDbPrefix	 = self::getTenantDbPrefix () ;
+		$tenantDbPrefix = self::getTenantDbPrefix () ;
 
 		Config::set ( CONFIG_DATABASE_CONNECTIONS_TENANTDB_DATABASE , $tenantDbPrefix . $organization ) ;
 	}

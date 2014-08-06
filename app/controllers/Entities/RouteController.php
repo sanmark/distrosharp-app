@@ -14,7 +14,7 @@ class RouteController extends \Controller
 	{
 		try
 		{
-			$route				 = new \Models\Route();
+			$route				 = new \Models\Route() ;
 			$route -> name		 = \Input::get ( 'name' ) ;
 			$route -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$route -> rep		 = \Input::get ( 'rep' ) ;
