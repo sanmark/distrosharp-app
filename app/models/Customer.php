@@ -1,6 +1,8 @@
 <?php
 
-class Customer extends Eloquent
+namespace Models ;
+
+class Customer extends \Eloquent
 {
 
 	public $timestamps = FALSE ;

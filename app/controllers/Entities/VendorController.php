@@ -14,7 +14,7 @@ class VendorController extends \Controller
 	{
 		try
 		{
-			$vendor = new \Vendor() ;
+			$vendor = new \Models\Vendor() ;
 
 			$vendor -> name		 = \Input::get ( 'name' ) ;
 			$vendor -> details	 = \Input::get ( 'details' ) ;

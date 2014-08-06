@@ -14,9 +14,9 @@ class BankController extends \Controller
 	{
 		try
 		{
-			$bank			 = new \Bank() ;
+			$bank				 = new \Models\Bank() ;
 			$bank -> name		 = \Input::get ( 'name' ) ;
-			$bank -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$bank -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$bank -> save () ;
 		} catch ( \InvalidInputException $ex )

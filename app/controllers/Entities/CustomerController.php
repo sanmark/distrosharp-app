@@ -14,7 +14,7 @@ class CustomerController extends \Controller
 	{
 		try
 		{
-			$customer				 = new \Customer() ;
+			$customer				 = new \Models\Customer() ;
 			$customer -> name		 = \Input::get ( 'name' ) ;
 			$customer -> route_id	 = \Input::get ( 'route_id' ) ;
 			$customer -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;

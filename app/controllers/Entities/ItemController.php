@@ -9,7 +9,7 @@ class ItemController extends \Controller
 	{
 		$data = [ ] ;
 
-		$items = \Item::all () ;
+		$items = \Models\Item::all () ;
 
 		$data[ 'items' ] = $items ;
 
@@ -25,7 +25,7 @@ class ItemController extends \Controller
 	{
 		try
 		{
-			$item = new \Item() ;
+			$item = new \Models\Item() ;
 
 			$item -> code					 = \Input::get ( 'code' ) ;
 			$item -> name					 = \Input::get ( 'name' ) ;
@@ -37,8 +37,8 @@ class ItemController extends \Controller
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$item -> save () ;
-			
-			return \Redirect::action ( 'entities.items.view');
+
+			return \Redirect::action ( 'entities.items.view' ) ;
 		} catch ( \InvalidInputException $ex )
 		{
 			return \Redirect::back ()

@@ -1,6 +1,8 @@
 <?php
 
-class Vendor extends Eloquent
+namespace Models ;
+
+class Vendor extends \Eloquent
 {
 
 	public $timestamps = FALSE ;

@@ -1,6 +1,8 @@
 <?php
 
-class Bank extends Eloquent
+namespace Models ;
+
+class Bank extends \Eloquent
 {
 
 	public $timestamps = FALSE ;
@@ -15,13 +17,13 @@ class Bank extends Eloquent
 	{
 		$data		 = $this -> toArray () ;
 		$rules		 = [
-			'name'		 => ['required' ]
+			'name' => ['required' ]
 		] ;
 		$validator	 = Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new InvalidInputException();
+			$iie				 = new InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 			throw $iie ;
 		}

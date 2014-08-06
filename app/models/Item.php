@@ -1,8 +1,8 @@
 <?php
 
-//use Exceptions\InvalidInputException ;
+namespace Models ;
 
-class Item extends Eloquent
+class Item extends \Eloquent
 {
 
 	public $timestamps = FALSE ;
