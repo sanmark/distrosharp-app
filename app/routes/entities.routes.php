@@ -6,11 +6,11 @@ Route::group ( [
 ] , function()
 {
 	Route::get ( 'add' , [
-		'as'	 => 'add-route' ,
+		'as'	 => 'entities.routes.add' ,
 		'uses'	 => 'Controllers\Entities\RouteController@add'
 	] ) ;
 	Route::post ( 'add' , [
-		'as'	 => 'save-route' ,
+		'as'	 => 'entities.routes.save' ,
 		'uses'	 => 'Controllers\Entities\RouteController@save'
 	] ) ;
 } ) ;

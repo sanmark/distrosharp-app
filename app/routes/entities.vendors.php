@@ -1,16 +1,16 @@
 <?php
 
 Route::group ( [
-	'prefix' => 'entities/vendors',
+	'prefix' => 'entities/vendors' ,
 	'before' => 'auth'
 ] , function()
 {
 	Route::get ( 'add' , [
-		'as'	 => 'add-vendor' ,
+		'as'	 => 'entities.vendors.add' ,
 		'uses'	 => 'Controllers\Entities\VendorController@add'
 	] ) ;
 	Route::post ( 'add' , [
-		'as'	 => 'save-vendor' ,
+		'as'	 => 'entities.vendors.save' ,
 		'uses'	 => 'Controllers\Entities\VendorController@save'
 	] ) ;
 } ) ;

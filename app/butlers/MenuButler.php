@@ -12,15 +12,15 @@ class MenuButler
 					]
 				] ,
 				['Vendors' , [
-						['Add Vendor' , 'add-vendor' , ['add_vendor' ] ]
+						['Add Vendor' , 'entities.vendors.add' , ['add_vendor' ] ]
 					]
 				] ,
 				['Routes' , [
-						['Add Route' , 'add-route' , ['add_route' ] ]
+						['Add Route' , 'entities.routes.add' , ['add_route' ] ]
 					]
 				] ,
 				['Customers' , [
-						['Add Customer' , 'add-customer' , ['add_customer' ] ]
+						['Add Customer' , 'entities.customers.add' , ['add_customer' ] ]
 					]
 				] ,
 				['Banks' , [
