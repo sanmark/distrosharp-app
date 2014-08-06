@@ -12,6 +12,7 @@ class MenuButler
 					]
 				] ,
 				['Vendors' , [
+						['View Vendors' , 'entities.vendors.view' , ['view_vendors' ] ] ,
 						['Add Vendor' , 'entities.vendors.add' , ['add_vendor' ] ]
 					]
 				] ,

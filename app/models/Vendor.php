@@ -23,7 +23,7 @@ class Vendor extends \Eloquent
 			'details'	 => ['required' ]
 		] ;
 
-		$validator = Validator::make ( $data , $rules ) ;
+		$validator = \Validator::make ( $data , $rules ) ;
 		if ( $validator -> fails () )
 		{
 			$iie				 = new InvalidInputException() ;
