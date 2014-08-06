@@ -22,6 +22,7 @@ class MenuButler
 					]
 				] ,
 				['Customers' , [
+						['View Customers' , 'entities.customers.view' , ['view_customers' ] ] ,
 						['Add Customer' , 'entities.customers.add' , ['add_customer' ] ]
 					]
 				] ,

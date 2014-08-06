@@ -21,7 +21,7 @@ class Customer extends \Eloquent
 			'route_id'	 => ['required' ] ,
 			'is_active'	 => ['required' ] ,
 		] ;
-		$validator	 = Validator::make ( $data , $rules ) ;
+		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
 		{

@@ -5,6 +5,17 @@ namespace Controllers\Entities ;
 class CustomerController extends \Controller
 {
 
+	public function home ()
+	{
+		$data = [ ] ;
+
+		$customers = \Models\Customer::all () ;
+
+		$data[ 'customers' ] = $customers ;
+
+		return \View::make ( 'web.entities.customers.home' , $data ) ;
+	}
+
 	public function add ()
 	{
 		return \View::make ( 'web.entities.customers.add' ) ;
