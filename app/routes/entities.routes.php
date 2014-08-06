@@ -5,6 +5,11 @@ Route::group ( [
 	'before' => 'auth'
 ] , function()
 {
+	Route::get('',[
+		'as'=>'entities.routes.view',
+		'before'=>['hasAbilities:view_route'],
+		'uses'=>'Controllers\Entities\RouteController@home'
+	]);
 	Route::get ( 'add' , [
 		'as'	 => 'entities.routes.add' ,
 		'before' => ['hasAbilities:add_route' ] ,

@@ -16,6 +16,7 @@ class MenuButler
 					]
 				] ,
 				['Routes' , [
+						['View Routes' , 'entities.routes.view' , ['view_route' ]] ,
 						['Add Route' , 'entities.routes.add' , ['add_route' ] ]
 					]
 				] ,

@@ -5,6 +5,17 @@ namespace Controllers\Entities ;
 class RouteController extends \Controller
 {
 
+	public function home ()
+	{
+		$data				 = [ ] ;
+		
+		$routes				 = \Models\Route::all () ;
+		
+		$data[ 'routes' ]	 = $routes ;
+		
+		return \View::make ( 'web.entities.routes.home' , $data ) ;
+	}
+
 	public function add ()
 	{
 		return \View::make ( 'web.entities.routes.add' ) ;
