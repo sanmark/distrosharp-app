@@ -19,7 +19,7 @@ class Bank extends \Eloquent
 		$rules		 = [
 			'name' => ['required' ]
 		] ;
-		$validator	 = Validator::make ( $data , $rules ) ;
+		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
 		{

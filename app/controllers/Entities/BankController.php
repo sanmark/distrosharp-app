@@ -5,6 +5,17 @@ namespace Controllers\Entities ;
 class BankController extends \Controller
 {
 
+	public function home ()
+	{
+		$data = [ ] ;
+
+		$banks = \Models\Bank::all () ;
+
+		$data[ 'banks' ] = $banks ;
+
+		return \View::make ( 'web.entities.banks.home' , $data ) ;
+	}
+
 	public function add ()
 	{
 		return \View::make ( 'web.entities.banks.add' ) ;

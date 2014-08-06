@@ -5,6 +5,11 @@ Route::group ( [
 	'before' => 'auth'
 ] , function ()
 {
+	Route::get ( '' , [
+		'as'	 => 'entities.banks.view' ,
+		'before' => ['hasAbilities:view_banks' ] ,
+		'uses'	 => 'Controllers\Entities\BankController@home'
+	] ) ;
 	Route::get ( 'add' , [
 		'as'	 => 'entities.banks.add' ,
 		'before' => ['hasAbilities:add_bank' ] ,

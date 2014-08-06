@@ -27,6 +27,7 @@ class MenuButler
 					]
 				] ,
 				['Banks' , [
+					['View Banks','entities.banks.view',['view_banks']],
 						['Add Bank' , 'entities.banks.add' , ['add_bank' ] ]
 					]
 				]
