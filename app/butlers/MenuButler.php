@@ -7,7 +7,8 @@ class MenuButler
 		['Home' , 'home' ] ,
 		['Entities' , [
 				['Items' , [
-						['Add Item' , 'add-item' , ['add_item' ] ]
+						[ 'View Items' , 'entities.items.view' , ['view_items' ] ] ,
+						['Add Item' , 'entities.items.add' , ['add_item' ] ]
 					]
 				] ,
 				['Vendors' , [

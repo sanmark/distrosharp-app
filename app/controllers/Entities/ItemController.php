@@ -5,6 +5,17 @@ namespace Controllers\Entities ;
 class ItemController extends \Controller
 {
 
+	public function home ()
+	{
+		$data = [ ] ;
+
+		$items = \Item::all () ;
+
+		$data[ 'items' ] = $items ;
+
+		return \View::make ( 'web.entities.items.home' , $data ) ;
+	}
+
 	public function add ()
 	{
 		return \View::make ( 'web.entities.items.add' ) ;
@@ -26,6 +37,8 @@ class ItemController extends \Controller
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$item -> save () ;
+			
+			return \Redirect::action ( 'entities.items.view');
 		} catch ( \InvalidInputException $ex )
 		{
 			return \Redirect::back ()
