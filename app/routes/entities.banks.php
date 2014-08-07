@@ -21,5 +21,15 @@ Route::group ( [
 		'before' => ['hasAbilities:add_bank' ] ,
 		'uses'	 => 'Controllers\Entities\BankController@save'
 	] ) ;
+	Route::get('{id}/edit',[
+		'as'=>'entities.banks.edit',
+		'before'=>['hasAbilities:edit_bank'],
+		'uses'=>'Controllers\Entities\BankController@edit'
+	]);
+	Route::post('{id}/edit',[
+		'as'=>'entities.banks.update',
+		'before'=>['hasAbilities:edit_bank'],
+		'uses'=>'Controllers\Entities\BankController@update'
+	]);
 } ) ;
 

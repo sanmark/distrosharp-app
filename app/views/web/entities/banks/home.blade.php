@@ -12,7 +12,7 @@
 	<tbody>
 		@foreach($banks as $bank)
 		<tr>
-			<td>{{$bank->name}}</td>
+			<td>{{HTML::link ( URL::action ('entities.banks.edit',[$bank->id] ),$bank->name )}}</td>
 			<td>{{$bank->is_active}}</td>
 		</tr>
 		@endforeach
