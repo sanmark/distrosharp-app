@@ -28,7 +28,7 @@ class Item extends \Eloquent
 			'selling_invoice_order'	 => ['required' ]
 		] ;
 
-		$validator = Validator::make ( $data , $rules ) ;
+		$validator = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
 		{

@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
 
 		$this -> call ( 'UserSeeder' ) ;
 		$this -> call ( 'AbilityUserSeeder' ) ;
+		$this -> call ( 'ItemsSeeder' ) ;
 	}
 
 }
