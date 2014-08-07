@@ -32,7 +32,7 @@ class Item extends \Eloquent
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new InvalidInputException() ;
+			$iie				 = new \InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
