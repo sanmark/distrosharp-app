@@ -13,7 +13,7 @@
 	<tbody>
 		@foreach($vendors as $vendor)
 		<tr>
-			<td>{{$vendor->name}}</td>
+			<td>{{HTML::link (URL::action ( 'entities.vendors.edit',[$vendor->id] ), $vendor->name )}}</td>
 			<td>{{$vendor->details}}</td>
 			<td>{{$vendor->is_active}}</td>
 		</tr>

@@ -20,4 +20,14 @@ Route::group ( [
 		'before' => ['hasAbilities:add_vendor' ] ,
 		'uses'	 => 'Controllers\Entities\VendorController@save'
 	] ) ;
+	Route::get('{id}/edit',[
+		'as'=>'entities.vendors.edit',
+		'before'=>['hasAbilities:edit_vendor'],
+		'uses'=>'Controllers\Entities\VendorController@edit'
+	]);
+	Route::post('{id}/edit',[
+		'as'=>'entities.vendors.update',
+		'before'=>['hasAbilities:edit_vendor'],
+		'uses'=>'Controllers\Entities\VendorController@update'
+	]);
 } ) ;
