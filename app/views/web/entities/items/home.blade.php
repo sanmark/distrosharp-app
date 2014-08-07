@@ -19,7 +19,7 @@
 		@foreach($items as $item)
 		<tr>
 			<td>{{$item->code}}</td>
-			<td>{{$item->name}}</td>
+			<td>{{HTML::link ( URL::action ( 'entities.items.edit' , [$item -> id ] ) , $item -> name )}}</td>
 			<td>{{$item->reorder_level}}</td>
 			<td>{{$item->current_buying_price}}</td>
 			<td>{{$item->current_selling_price}}</td>

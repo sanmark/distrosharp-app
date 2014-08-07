@@ -22,4 +22,16 @@ Route::group ( [
 		'before' => ['hasAbilities:add_item' ] ,
 		'uses'	 => 'Controllers\Entities\ItemController@save'
 	] ) ;
+
+	Route::get ( '{id}/edit' , [
+		'as'	 => 'entities.items.edit' ,
+		'before' => ['hasAbilities:edit_item' ] ,
+		'uses'	 => 'Controllers\Entities\ItemController@edit'
+	] ) ;
+
+	Route::post ( '{id}/edit' , [
+		'as'	 => 'entities.items.update' ,
+		'before' => ['hasAbilities:edit_item' ] ,
+		'uses'	 => 'Controllers\Entities\ItemController@update'
+	] ) ;
 } ) ;
