@@ -31,8 +31,9 @@ class VendorController extends \Controller
 			$vendor -> details	 = \Input::get ( 'details' ) ;
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
-
 			$vendor -> save () ;
+
+			return \Redirect::action( 'entities.vendors.view' ) ;
 		} catch ( \InvalidInputException $exc )
 		{
 

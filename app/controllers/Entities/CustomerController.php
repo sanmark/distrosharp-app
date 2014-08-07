@@ -32,6 +32,8 @@ class CustomerController extends \Controller
 			$customer -> details	 = \Input::get ( 'details' ) ;
 
 			$customer -> save () ;
+			
+			return \Redirect::action( 'entities.customers.view' ) ;
 		} catch ( \InvalidInputException $ex )
 		{
 			return \Redirect::back ()

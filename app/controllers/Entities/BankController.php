@@ -30,6 +30,8 @@ class BankController extends \Controller
 			$bank -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$bank -> save () ;
+			
+			return \Redirect::action( 'entities.banks.view' ) ;			
 		} catch ( \InvalidInputException $ex )
 		{
 			return \Redirect::back ()

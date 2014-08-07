@@ -31,6 +31,8 @@ class RouteController extends \Controller
 			$route -> rep		 = \Input::get ( 'rep' ) ;
 
 			$route -> save () ;
+			
+			return \Redirect::action( 'entities.routes.view' ) ;
 		} catch ( \InvalidInputException $ex )
 		{
 			return \Redirect::back ()
