@@ -13,7 +13,7 @@
 	<tbody>
 		@foreach($routes as $route)
 		<tr>
-			<td>{{$route->name}}</td>
+			<td>{{HTML::link(URL::action('entities.routes.edit', [$route->id]), $route->name)}}</td>
 			<td>{{$route->is_active}}</td>
 			<td>{{$route->rep}}</td>
 		</tr>

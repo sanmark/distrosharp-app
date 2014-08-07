@@ -1,6 +1,7 @@
 @extends('web._templates.template')
+
 @section('body')
-<h2>Add Route</h2>
+<h2>Edit Route "{{$route->name}}"</h2>
 @if($errors->count()>0)
 <ul>
 	@foreach($errors->all() as $error)
@@ -9,7 +10,7 @@
 </ul>
 @endif
 
-{{Form::open()}}
+{{Form::model($route)}}
 <table>
 	<tr>
 		<td>{{Form::label('name')}}</td>
