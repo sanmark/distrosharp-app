@@ -14,7 +14,7 @@
 	<tbody>
 		@foreach($customers as $customer)
 		<tr>
-			<td>{{$customer->name}}</td>
+			<td> {{HTML::link ( URL::action ( 'entities.customers.edit', [$customer->id] ), $customer->name ) }}</td>
 			<td>{{$customer->route_id}}</td>
 			<td>{{$customer->is_active}}</td>
 			<td>{{$customer->details}}</td>

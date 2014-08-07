@@ -20,4 +20,14 @@ Route::group ( [
 		'before' => ['hasAbilities:add_customer' ] ,
 		'uses'	 => 'Controllers\Entities\CustomerController@save'
 	] ) ;
+	Route::get ( '{id}/edit' , [
+		'as'	 => 'entities.customers.edit' ,
+		'before' => ['hasAbilities:edit_customer' ] ,
+		'uses'	 => 'Controllers\Entities\CustomerController@edit'
+	] ) ;
+	Route::post ( '{id}/edit' , [
+		'as'	 => 'entities.customers.update' ,
+		'before' => ['hasAbilities:edit_customer' ] ,
+		'uses'	 => 'Controllers\Entities\CustomerController@update'
+	] ) ;
 } ) ;

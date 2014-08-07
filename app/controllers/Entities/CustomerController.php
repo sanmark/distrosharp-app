@@ -40,4 +40,39 @@ class CustomerController extends \Controller
 		}
 	}
 
+	public function edit ( $id )
+	{
+
+		$customer = \Models\Customer::findOrFail ( $id ) ;
+
+		$data = [ ] ;
+
+		$data[ 'customer' ] = $customer ;
+
+		return \View::make ( 'web.entities.customers.edit' , $data ) ;
+	}
+
+	public function update ( $id )
+	{
+
+		try
+		{
+			$customer = \Models\Customer::findOrFail ( $id ) ;
+
+			$customer -> name		 = \Input::get ( 'name' ) ;
+			$customer -> route_id	 = \Input::get ( 'route_id' ) ;
+			$customer -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$customer -> details	 = \Input::get ( 'details' ) ;
+
+			$customer -> update () ;
+
+			return \Redirect::action ( 'entities.customers.view' ) ;
+		} catch ( \InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
 }
