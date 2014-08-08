@@ -17,9 +17,7 @@ class ViewButler
 			{
 				//Mid Point
 				$html .= '<li>' . $menuItem[ 0 ] ;
-				$html .= '<ul>' ;
 				$html .= self::makeMenuHtmlFromArray ( $menuItem[ 1 ] ) ;
-				$html .= '</ul>' ;
 				$html .= '</li>' ;
 			}
 		}
