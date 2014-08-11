@@ -16,14 +16,14 @@ class CustomersSeeder extends Seeder
 			[
 				'id'		 => 2 ,
 				'name'		 => 'Mahesh' ,
-				'route_id'	 => 2 ,
+				'route_id'	 => 1 ,
 				'is_active'	 => 1 ,
 				'details'	 => 'Customer since 1790',
 			] ,
 			[
 				'id'		 => 3 ,
 				'name'		 => 'Randika' ,
-				'route_id'	 => 2 ,
+				'route_id'	 => 1 ,
 				'is_active'	 => 1 ,
 				'details'	 => 'Customer since 1690',
 			],
