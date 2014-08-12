@@ -18,6 +18,7 @@ class ViewButler
 				//Mid Point
 				$html .= '<li>' . $menuItem[ 0 ] ;
 				$html .= self::makeMenuHtmlFromArray ( $menuItem[ 1 ] ) ;
+				$html .= '<span class="glyphicon glyphicon-chevron-right"></span>' ;
 				$html .= '</li>' ;
 			}
 		}
