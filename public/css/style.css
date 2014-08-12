@@ -3,6 +3,8 @@ body{
 	padding: 0;
 }
 
+/* ================ Navigation ================ */
+
 .main-menu ul{
 	position: relative;
 	padding: 0 0;
@@ -11,7 +13,7 @@ body{
 	list-style: none;
 }
 .main-menu ul li:hover{
-	background-color: #C5C5C5;
+	background-color: #e7e7e7;
 }
 .main-menu ul li a{
 	display: block;
@@ -19,7 +21,6 @@ body{
 .main-menu>ul>li{
 	float: left;
 	position: relative;
-	background-color: #e7e7e7;
 	line-height: 20px;
 	padding: 15px 20px;
 	margin: 0 2px;
@@ -31,8 +32,9 @@ body{
 .main-menu>ul>li>span{
 	font-size: 10px;
 	-webkit-transform: rotate(90deg); 
-   -moz-transform: rotate(90deg);
-   margin-left: 3px;
+	-moz-transform: rotate(90deg);
+	margin-left: 3px;
+	color: #777;
 }
 .main-menu>ul>li>ul{
 	left: 0 !important;
@@ -44,10 +46,13 @@ body{
 	width: 200px;
 	top: 0;
     left: 100%;
-	background-color: #e7e7e7;
+	background-color: #f8f8f8;
     -webkit-border-radius: 5px 5px;
     -moz-border-radius: 5px 5px;
     border-radius: 5px 5px;
+	border: 1px solid;
+	border-color: #e7e7e7;
+	z-index: 50;
 }
 .main-menu>ul>li ul li{
 	position: relative;
@@ -61,4 +66,17 @@ body{
 	float: right;
 	margin-top: 4px;
 	color: #777;
+}
+
+/* ================ Navigation End ================ */
+
+.main-content{
+	min-height: 500px;
+}
+.footer{
+	width: 100%;
+	min-height: 150px;
+	background-color: #d2d2d2;
+	border-radius: 4px;
+	padding: 15px;
 }

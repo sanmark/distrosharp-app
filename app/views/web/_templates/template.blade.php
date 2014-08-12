@@ -11,18 +11,22 @@
 	</head>
 	<body>
 		<div class="container-fluid">
-			<div style="width: 100%; background-color: #D2D2D2;">
-				@include('web._inc.menu')
+			
+			@include('web._inc.menu')
+			
+			<div class="row main-content">
+				<div class="col-lg-9 col-md-9">
+					@yield('body')
+				</div>
+				<div class="col-lg-3 col-md-3">
+					aaa
+				</div>
 			</div>
-			<div style="width: 1000px; float: left;">
-				@yield('body')
-			</div>
-			<div style="width: 200px; float: left; background-color: #D2D2D2;">
-				aaa
-			</div>
-			<div style="width: 100%; height: 100px; float: left; background-color: #D2D2D2;">
+
+			<div class="footer">
 				footer
 			</div>
+			
 		</div>
 	</body>
 </html>
