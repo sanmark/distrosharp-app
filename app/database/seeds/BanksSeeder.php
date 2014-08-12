@@ -29,7 +29,7 @@ class BanksSeeder extends Seeder
 		] ;
 		foreach ( $banks as $bank )
 		{
-			$bankO = new Models\Bank() ;
+			$bankO = new \Models\Bank() ;
 
 			$bankO -> id		 = $bank[ 'id' ] ;
 			$bankO -> name		 = $bank[ 'name' ] ;

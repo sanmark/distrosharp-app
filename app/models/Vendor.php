@@ -13,7 +13,18 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 		parent::save ( $options ) ;
 	}
-
+	
+	public static function getVendorsForHtmlSelect()
+	{
+		
+		
+		$vendors= Vendor::lists('name','id');
+		$vendors=[0=>'Select Vendor']+$vendors;
+		return $vendors;
+		
+	}
+	
+	
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;

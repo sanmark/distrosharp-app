@@ -56,7 +56,6 @@ class SetupDb extends Migration
 		Schema::create ( 'routes' , function($t)
 		{
 			$t -> increments ( 'id' ) ;
-
 			$t -> string ( 'name' , 50 ) ;
 			$t -> boolean ( 'is_active' ) ;
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
@@ -75,6 +74,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'route_id' ) -> unsigned () ;
 			$t -> boolean ( 'is_active' ) ;
 			$t -> longtext ( 'details' ) ;
+
 			$t -> foreign ( 'route_id' )
 			-> references ( 'id' )
 			-> on ( 'routes' )
@@ -89,18 +89,98 @@ class SetupDb extends Migration
 			$t -> string ( 'name' , 50 ) ;
 			$t -> boolean ( 'is_active' ) ;
 		} ) ;
+
+		Schema::create ( 'stocks' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' ) ;
+			$t -> integer ( 'incharge' ) -> unsigned () ;
+			$t -> string ( 'stock_type_id' ) ;
+
+			$t -> foreign ( 'incharge' )
+			-> references ( 'id' )
+			-> on ( 'users' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'stock_details' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'stock_id' ) -> unsigned () ;
+			$t -> integer ( 'item_id' ) -> unsigned () ;
+			$t -> float ( 'good_quantity' ) ;
+			$t -> float ( 'return_quantity' ) ;
+
+			$t -> foreign ( 'stock_id' )
+			-> references ( 'id' )
+			-> on ( 'stocks' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'item_id' )
+			-> references ( 'id' )
+			-> on ( 'items' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'buying_invoices' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> date ( 'date' ) ;
+			$t -> integer ( 'vendor_id' ) -> unsigned () ;
+			$t -> string ( 'printed_invoice_num' ) ;
+			$t -> boolean ( 'completely_paid' ) ;
+			$t -> float ( 'other_expenses_amount' ) ;
+			$t -> string ( 'other_expenses_total' ) ;
+
+
+			$t -> foreign ( 'vendor_id' )
+			-> references ( 'id' )
+			-> on ( 'vendors' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'buying_items' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'invoice_id' ) -> unsigned () ;
+			$t -> integer ( 'item_id' ) -> unsigned () ;
+			$t -> float ( 'price' ) ;
+			$t -> float ( 'quantity' );
+			$t -> float ( 'free_quantity' );
+			$t -> date ( 'exp_date' );
+			$t -> string ( 'batch_number' ) ;
+
+			$t -> foreign ( 'invoice_id' )
+			-> references ( 'id' )
+			-> on ( 'buying_invoices' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'item_id' )
+			-> references ( 'id' )
+			-> on ( 'items' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
-
-		Schema::drop ( 'banks' ) ;
-		Schema::drop ( 'customers' ) ;
-		Schema::drop ( 'routes' ) ;
-		Schema::drop ( 'vendors' ) ;
-		Schema::drop ( 'items' ) ;
-		Schema::drop ( 'ability_user' ) ;
-		Schema::drop ( 'users' ) ;
+		Schema::dropIfExists ( 'buying_items' ) ;
+		Schema::dropIfExists ( 'buying_invoices' ) ;
+		Schema::dropIfExists ( 'stock_details' ) ;
+		Schema::dropIfExists ( 'stocks' ) ;
+		Schema::dropIfExists ( 'banks' ) ;
+		Schema::dropIfExists ( 'customers' ) ;
+		Schema::dropIfExists ( 'routes' ) ;
+		Schema::dropIfExists ( 'vendors' ) ;
+		Schema::dropIfExists ( 'items' ) ;
+		Schema::dropIfExists ( 'ability_user' ) ;
+		Schema::dropIfExists ( 'users' ) ;
 	}
 
 }

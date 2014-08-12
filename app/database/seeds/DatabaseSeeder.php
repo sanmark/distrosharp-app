@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
 		$this -> call ( 'RoutesSeeder' ) ;
 		$this -> call ( 'CustomersSeeder' ) ;
 		$this -> call ( 'BanksSeeder' ) ;
+		$this -> call ( 'StocksSeeder' ) ;
+		$this -> call ( 'StockDetailsSeeder' ) ;
+		
 	}
 
 }

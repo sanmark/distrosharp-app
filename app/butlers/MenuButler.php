@@ -4,37 +4,44 @@ class MenuButler
 {
 
 	private static $menuTemplate = [
-		['Home' , 'home' ] ,
-		['Entities' , [
-				['Items' , [
-						[ 'View Items' , 'entities.items.view' , ['view_items' ] ] ,
-						['Add Item' , 'entities.items.add' , ['add_item' ] ]
+		[ 'Home' , 'home' ] ,
+		[ 'Entities' , [
+				[ 'Items' , [
+						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
+						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ]
 					]
 				] ,
-				['Vendors' , [
-						['View Vendors' , 'entities.vendors.view' , ['view_vendors' ] ] ,
-						['Add Vendor' , 'entities.vendors.add' , ['add_vendor' ] ]
+				[ 'Vendors' , [
+						[ 'View Vendors' , 'entities.vendors.view' , [ 'view_vendors' ] ] ,
+						[ 'Add Vendor' , 'entities.vendors.add' , [ 'add_vendor' ] ]
 					]
 				] ,
-				['Routes' , [
-						['View Routes' , 'entities.routes.view' , ['view_routes' ] ] ,
-						['Add Route' , 'entities.routes.add' , ['add_route' ] ]
+				[ 'Routes' , [
+						[ 'View Routes' , 'entities.routes.view' , [ 'view_routes' ] ] ,
+						[ 'Add Route' , 'entities.routes.add' , [ 'add_route' ] ]
 					]
 				] ,
-				['Customers' , [
-						['View Customers' , 'entities.customers.view' , ['view_customers' ] ] ,
-						['Add Customer' , 'entities.customers.add' , ['add_customer' ] ]
+				[ 'Customers' , [
+						[ 'View Customers' , 'entities.customers.view' , [ 'view_customers' ] ] ,
+						[ 'Add Customer' , 'entities.customers.add' , [ 'add_customer' ] ]
 					]
 				] ,
-				['Banks' , [
-						['View Banks' , 'entities.banks.view' , ['view_banks' ] ] ,
-						['Add Bank' , 'entities.banks.add' , ['add_bank' ] ]
+				[ 'Banks' , [
+						[ 'View Banks' , 'entities.banks.view' , [ 'view_banks' ] ] ,
+						[ 'Add Bank' , 'entities.banks.add' , [ 'add_bank' ] ]
 					]
 				]
 			]
 		] ,
-		['Account' , [
-				['Logout' , 'logout' , NULL ]
+		[ 'Processes' , [
+				[ 'Purchases' , [
+						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ]
+					]
+				] ,
+			]
+		] ,
+		[ 'Account' , [
+				[ 'Logout' , 'logout' , NULL ]
 			]
 		]
 	] ;
@@ -58,7 +65,7 @@ class MenuButler
 
 			if ( $elementCount == 2 && is_array ( $menuItem[ 1 ] ) )
 			{
-				//Mid Point
+//Mid Point
 				$subArray = self::makeUserMenu ( $userPermissions , $menuItem[ 1 ] ) ;
 
 				if ( is_array ( $subArray ) )
@@ -77,10 +84,10 @@ class MenuButler
 				$new[] = $newItem ;
 			} elseif ( $elementCount == 3 )
 			{
-				//End Point
+//End Point
 				if ( is_null ( $menuItem[ 2 ] ) )
 				{
-					//No permission required for this menu option.
+//No permission required for this menu option.
 
 					$newItem		 = [ ] ;
 					$newItem[ 0 ]	 = $menuItem[ 0 ] ;
