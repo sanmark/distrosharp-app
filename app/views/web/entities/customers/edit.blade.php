@@ -1,40 +1,55 @@
 @extends('web._templates.template')
 
-@section('body') 
- <h2>Edit Customer "{{$customer->name}}"</h2>
- 
- @if($errors->count() > 0)
-<ul>
-	@foreach($errors->all() as $error)
-	<li>{{$error}}</li>
-	@endforeach
-</ul>
-@endif
- 
- {{Form::model($customer)}}
- 
-	<table>
-		<tr>
-			<td>{{Form::label('name')}}</td>
-			<td>{{Form::text('name')}}</td>
-		</tr>
-		<tr>
-			<td>{{Form::label('route_id')}}</td>
-			<td>{{Form::text('route_id')}}</td>
-		</tr>
-		<tr>
-			<td>{{Form::label('is_active')}}</td>
-			<td>{{Form::text('is_active')}}</td>
-		</tr>
-		<tr>
-			<td>{{Form::label('details')}}</td>
-			<td>{{Form::textarea('details')}}</td>
-		</tr>
-		<tr>
-			<td>{{Form::submit('Submit')}}</td>
-			<td> </td> 
-	</tr>
-	</table>
- {{Form::close()}}
+@section('body')
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Edit Customer &nbsp;<b>{{$customer->name}}</b></h3>
+	</div>
+	<div class="panel-body">
+
+		@if($errors->count() > 0)
+		<ul class="errorstring">
+			@foreach($errors->all() as $error)
+			<li>{{$error}}</li>
+			@endforeach
+		</ul>
+		@endif
+
+		{{Form::model($customer, ['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('name', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::text('name', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('route_id', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::text('route_id', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::text('is_active', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('details', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::textarea('details', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+		{{Form::close()}}
+
+	</div>
+</div>
 
 @stop

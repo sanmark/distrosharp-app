@@ -1,33 +1,49 @@
 @extends('web._templates.template')
 
 @section('body')
-<h2>Edit Route "{{$route->name}}"</h2>
-@if($errors->count()>0)
-<ul>
-	@foreach($errors->all() as $error)
-	<li>{{$error}}</li>
-	@endforeach
-</ul>
-@endif
 
-{{Form::model($route)}}
-<table>
-	<tr>
-		<td>{{Form::label('name')}}</td>
-		<td>{{Form::text('name')}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('is_active')}}</td>
-		<td>{{Form::checkbox('is_active')}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('rep')}}</td>
-		<td>{{Form::text('rep')}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::submit('submit')}}</td>
-		<td></td>
-	</tr>
-</table>
-{{Form::close()}}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Edit Route &nbsp;<b>{{$route->name}}</b></h3>
+	</div>
+	<div class="panel-body">
+
+		@if($errors->count()>0)
+		<ul class="errorstring">
+			@foreach($errors->all() as $error)
+			<li>{{$error}}</li>
+			@endforeach
+		</ul>
+		@endif
+
+		{{Form::model($route, ['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('name', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::text('name', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('rep', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-6">
+				{{Form::text('rep', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			<div class="col-sm-6">
+				{{Form::checkbox('is_active')}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-6">
+				{{Form::submit('submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+		{{Form::close()}}
+
+	</div>
+</div>
+
 @stop

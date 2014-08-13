@@ -1,6 +1,6 @@
-body{
-	margin: 0;
-	padding: 0;
+body,h1,h2,h3,h4,h5,h6{
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 /* ================ Navigation ================ */
@@ -73,6 +73,12 @@ body{
 .main-content{
 	min-height: 500px;
 }
+.errorstring li{
+	color: #f00;
+}
+
+
+
 .footer{
 	width: 100%;
 	min-height: 150px;
