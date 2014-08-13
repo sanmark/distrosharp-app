@@ -11,22 +11,19 @@
 	</head>
 	<body>
 		<div class="container-fluid">
-			
-			@include('web._inc.menu')
-			
-			<div class="row main-content">
-				<div class="col-lg-9 col-md-9">
-					@yield('body')
-				</div>
-				<div class="col-lg-3 col-md-3">
-					aaa
-				</div>
+
+			<div class="main-nav">
+				@include('web._inc.menu')
+			</div>
+
+			<div class="main-content">
+				@yield('body')
 			</div>
 
 			<div class="footer">
 				footer
 			</div>
-			
+
 		</div>
 	</body>
 </html>

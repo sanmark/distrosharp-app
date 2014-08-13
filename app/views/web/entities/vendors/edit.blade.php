@@ -19,25 +19,25 @@
 		{{Form::model($vendor, ['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
-			{{Form::label('name', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('name', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('details', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('details', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::textarea('details', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
-			<div class="col-sm-6">
+			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label', 'style'=>'padding-top: 0;'))}}
+			<div class="col-sm-4">
 				{{Form::checkbox('is_active')}}
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-6">
+			<div class="col-sm-offset-1 col-sm-4">
 				{{Form::submit('submit', array('class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>

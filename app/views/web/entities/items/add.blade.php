@@ -19,55 +19,55 @@
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
-			{{Form::label('code', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('code', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('code', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('name', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('name', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('name', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('reorder_level', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('reorder_level', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('reorder_level', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('current_buying_price', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('current_buying_price', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('current_buying_price', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('current_selling_price', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('current_selling_price', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('current_selling_price', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('buying_invoice_order', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('buying_invoice_order', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('buying_invoice_order', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('selling_invoice_order', null, array('class' => 'col-sm-3 control-label'))}}
-			<div class="col-sm-6">
+			{{Form::label('selling_invoice_order', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
 				{{Form::text('selling_invoice_order', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-3 control-label', 'style'=>'padding-top: 0;'))}}
-			<div class="col-sm-6">
+			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			<div class="col-sm-4">
 				{{Form::checkbox('is_active')}}
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-6">
+			<div class="col-sm-offset-2 col-sm-4">
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>

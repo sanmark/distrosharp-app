@@ -8,7 +8,7 @@
 	</div>
 	<div class="panel-body">
 
-		<table class="table table-striped">
+		<table class="table table-striped" style="width: 30%;">
 			<thead>
 				<tr>
 					<td>Name</td>
