@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Route extends \Eloquent
+class Route extends \Eloquent implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -36,7 +36,7 @@ class Route extends \Eloquent
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new \InvalidInputException() ;
+			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
@@ -59,11 +59,37 @@ class Route extends \Eloquent
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new \InvalidInputException() ;
+			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
 		}
+	}
+
+	public static function filter ( $filterValues )
+	{
+		throw new \Exceptions\NotImplementedException() ;
+	}
+
+	public static function getArray ( $key , $value )
+	{
+		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) )
+		-> lists ( 'value' , $key ) ;
+
+		return $array ;
+	}
+
+	public static function getArrayForHtmlSelect ( $key , $value )
+	{
+		$array = self::getArray ( $key , $value ) ;
+
+		$anyElemet = [
+			'0' => 'Any'
+		] ;
+
+		$array = $anyElemet + $array ;
+
+		return $array ;
 	}
 
 }

@@ -39,7 +39,7 @@ class ItemController extends \Controller
 			$item -> save () ;
 
 			return \Redirect::action ( 'entities.items.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
@@ -75,7 +75,7 @@ class ItemController extends \Controller
 			$item -> update () ;
 			
 			return \Redirect::action ( 'entities.items.view');
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )

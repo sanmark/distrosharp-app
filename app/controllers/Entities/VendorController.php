@@ -34,7 +34,7 @@ class VendorController extends \Controller
 			$vendor -> save () ;
 
 			return \Redirect::action( 'entities.vendors.view' ) ;
-		} catch ( \InvalidInputException $exc )
+		} catch ( \Exceptions\InvalidInputException $exc )
 		{
 
 			return \Redirect::back ()
@@ -66,7 +66,7 @@ class VendorController extends \Controller
 
 			$vendor -> update () ;
 			return \Redirect::action ( 'entities.vendors.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )

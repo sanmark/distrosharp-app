@@ -1,13 +1,8 @@
 <?php
 
-class InvalidInputException extends Exception
+namespace Exceptions ;
+
+class InvalidInputException extends \Abstracts\aException
 {
-
-	public $validator ;
-
-	public function __construct ( $message = NULL , $code = NULL , $previous = NULL )
-	{
-		parent::__construct ( $message , $code , $previous ) ;
-	}
-
+	
 }

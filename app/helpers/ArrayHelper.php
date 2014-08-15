@@ -13,4 +13,34 @@ class ArrayHelper
 		return NULL ;
 	}
 
+	public static function getValuesIfKeysExist ( $values , $keys )
+	{
+		$filteredValues = NULL ;
+
+		foreach ( $keys as $key )
+		{
+			if ( array_key_exists ( $key , $values ) )
+			{
+				$filteredValues[ $key ] = $values[ $key ] ;
+			}
+		}
+
+		return $filteredValues ;
+	}
+
+	public static function pruneEmptyElements ( $array )
+	{
+		$prunedArray = NULL ;
+
+		foreach ( $array as $key => $value )
+		{
+			if ( ! is_null ( $value ) && strlen ( $value ) > 0 )
+			{
+				$prunedArray[ $key ] = $value ;
+			}
+		}
+
+		return $prunedArray ;
+	}
+
 }

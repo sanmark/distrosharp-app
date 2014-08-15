@@ -33,7 +33,7 @@ class RouteController extends \Controller
 			$route -> save () ;
 			
 			return \Redirect::action( 'entities.routes.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
@@ -64,7 +64,7 @@ class RouteController extends \Controller
 			$route -> update () ;
 
 			return \Redirect::action ( 'entities.routes.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )

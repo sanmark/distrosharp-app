@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Item extends \Eloquent
+class Item extends \Eloquent implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -45,7 +45,7 @@ class Item extends \Eloquent
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new \InvalidInputException() ;
+			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
@@ -76,11 +76,26 @@ class Item extends \Eloquent
 
 		if ( $validator -> fails () )
 		{
-			$iie				 = new \InvalidInputException() ;
+			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
 		}
+	}
+
+	public static function filter ( $filterValues )
+	{
+		throw new \Exceptions\NotImplementedException() ;
+	}
+	
+	public static function getArray ( $key , $value )
+	{
+		return new \Exceptions\NotImplementedException() ;
+	}
+	
+	public static function getArrayForHtmlSelect ( $key , $value )
+	{
+		return new \Exceptions\NotImplementedException();
 	}
 
 }

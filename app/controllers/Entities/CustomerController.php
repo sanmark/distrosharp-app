@@ -9,9 +9,19 @@ class CustomerController extends \Controller
 	{
 		$data = [ ] ;
 
-		$customers = \Models\Customer::all () ;
+		$filterValues = \Input::all () ;
 
-		$data[ 'customers' ] = $customers ;
+		$customers				 = \Models\Customer::filter ( $filterValues ) ;
+		$routeSelectBoxContent	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' ) ;
+		$name					 = \Input::get ( 'name' ) ;
+		$routeId				 = \Input::get ( 'route' ) ;
+		$isActive				 = \Input::get ( 'is_active' ) ;
+
+		$data[ 'customers' ]			 = $customers ;
+		$data[ 'routeSelectBoxContent' ] = $routeSelectBoxContent ;
+		$data[ 'name' ]					 = $name ;
+		$data[ 'routeId' ]				 = $routeId ;
+		$data[ 'isActive' ]				 = $isActive ;
 
 		return \View::make ( 'web.entities.customers.home' , $data ) ;
 	}
@@ -32,9 +42,9 @@ class CustomerController extends \Controller
 			$customer -> details	 = \Input::get ( 'details' ) ;
 
 			$customer -> save () ;
-			
-			return \Redirect::action( 'entities.customers.view' ) ;
-		} catch ( \InvalidInputException $ex )
+
+			return \Redirect::action ( 'entities.customers.view' ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
@@ -69,12 +79,33 @@ class CustomerController extends \Controller
 			$customer -> update () ;
 
 			return \Redirect::action ( 'entities.customers.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
 			-> withInput () ;
 		}
+	}
+
+	private function getFilterValues ()
+	{
+		$fieldsToRequest = [
+			'name'
+		] ;
+
+		$filterValues = \Input::all () ;
+
+		if ( count ( $filterValues ) )
+		{
+
+			$filterValuesForRequestedFields = \ArrayHelper::getValuesIfKeysExist ( $filterValues , $fieldsToRequest ) ;
+
+			$filterValuesForRequestedFields = \ArrayHelper::pruneEmptyElements ( $filterValuesForRequestedFields ) ;
+
+			return $filterValuesForRequestedFields ;
+		}
+
+		return NULL ;
 	}
 
 }

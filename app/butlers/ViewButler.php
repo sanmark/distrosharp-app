@@ -28,4 +28,27 @@ class ViewButler
 		return $html ;
 	}
 
+	public static function getYesNoFromBoolean ( $value )
+	{
+		$value = boolval ( $value ) ;
+
+		if ( $value )
+		{
+			return 'Yes' ;
+		}
+
+		return 'No' ;
+	}
+
+	public static function htmlSelectAnyYesNo ()
+	{
+		$values = [
+			NULL => 'Any' ,
+			'1'	 => 'Yes' ,
+			'0'	 => 'No'
+		] ;
+
+		return $values ;
+	}
+
 }

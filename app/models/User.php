@@ -5,7 +5,7 @@ use Illuminate\Auth\UserInterface ;
 use Illuminate\Auth\Reminders\RemindableTrait ;
 use Illuminate\Auth\Reminders\RemindableInterface ;
 
-class User extends Eloquent implements UserInterface , RemindableInterface
+class User extends Eloquent implements UserInterface , RemindableInterface , Interfaces\iEntity
 {
 
 	use UserTrait ,
@@ -31,6 +31,21 @@ class User extends Eloquent implements UserInterface , RemindableInterface
 		}
 
 		return $abilityCodes ;
+	}
+
+	public static function filter ( $filterValues )
+	{
+		throw new Exceptions\NotImplementedException() ;
+	}
+	
+	public static function getArray ( $key , $value )
+	{
+		return new \Exceptions\NotImplementedException() ;
+	}
+	
+	public static function getArrayForHtmlSelect ( $key , $value )
+	{
+		return new \Exceptions\NotImplementedException();
 	}
 
 }

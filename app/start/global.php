@@ -19,6 +19,8 @@ ClassLoader::addDirectories ( array (
 	app_path () . '/butlers' ,
 	app_path () . '/helpers' ,
 	app_path () . '/exceptions' ,
+	app_path () . '/interfaces' ,
+	app_path () . '/abstracts' ,
 ) ) ;
 
 /*

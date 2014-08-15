@@ -32,7 +32,7 @@ class BankController extends \Controller
 			$bank -> save () ;
 			
 			return \Redirect::action( 'entities.banks.view' ) ;			
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
@@ -64,7 +64,7 @@ class BankController extends \Controller
 			$bank -> update () ;
 
 			return \Redirect::action( 'entities.banks.view' ) ;
-		} catch ( \InvalidInputException $ex )
+		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
