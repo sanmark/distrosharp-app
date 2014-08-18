@@ -9,9 +9,17 @@ class BankController extends \Controller
 	{
 		$data = [ ] ;
 
-		$banks = \Models\Bank::all () ;
+		$filterValues=  \Input::all();
+		
+		$banks = \Models\Bank::filter($filterValues);
+		$name					 = \Input::get ( 'name' ) ;
+		$isActive				 = \Input::get ( 'is_active' ) ;
+		
+		
 
 		$data[ 'banks' ] = $banks ;
+		$data['name']=$name;
+		$data['isActive']=$isActive;
 
 		return \View::make ( 'web.entities.banks.home' , $data ) ;
 	}

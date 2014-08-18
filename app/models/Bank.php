@@ -60,7 +60,22 @@ class Bank extends \Eloquent implements \Interfaces\iEntity
 
 	public static function filter ( $filterValues )
 	{
-		throw new \Exceptions\NotImplementedException() ;
+		$requestObject = new Bank() ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$name		 = $filterValues[ 'name' ] ;
+			$isActive	 = $filterValues[ 'is_active' ] ;
+
+			$requestObject = $requestObject -> where ( 'name' , 'LIKE' , '%' . $name . '%' ) ;
+
+			if ( $isActive != '' )
+			{
+				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
+			}
+		}
+
+		return $requestObject -> get () ;
 	}
 
 	public static function getArray ( $key , $value )
