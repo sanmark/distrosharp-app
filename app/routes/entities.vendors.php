@@ -10,6 +10,11 @@ Route::group ( [
 		'before' => ['hasAbilities:view_vendors' ] ,
 		'uses'	 => 'Controllers\Entities\VendorController@home'
 	] ) ;
+	Route::post ( '' , [
+		'as'	 => 'entities.vendors.view' ,
+		'before' => ['hasAbilities:view_vendors' ] ,
+		'uses'	 => 'Controllers\Entities\VendorController@home'
+	] ) ;
 	Route::get ( 'add' , [
 		'as'	 => 'entities.vendors.add' ,
 		'before' => ['hasAbilities:add_vendor' ] ,

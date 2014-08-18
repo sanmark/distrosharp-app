@@ -20,7 +20,28 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 		parent::save ( $attributes ) ;
 	}
+	
+		public static function filter ( $filterValues )
+	{
+		$requestObject = new Vendor() ;
 
+		if ( count ( $filterValues ) > 0 )
+		{
+			$name		 = $filterValues[ 'name' ] ;
+			$isActive	 = $filterValues[ 'is_active' ] ;
+
+			$requestObject = $requestObject -> where ( 'name' , 'LIKE' , '%' . $name . '%' ) ;
+
+
+			if ( $isActive != '' )
+			{
+				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
+			}
+		}
+
+		return $requestObject -> get () ;
+	}
+	
 	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
@@ -60,12 +81,6 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 			throw $iie ;
 		}
 	}
-
-	public static function filter ( $filterValues )
-	{
-		throw new \Exceptions\NotImplementedException() ;
-	}
-
 	public static function getArray ( $key , $value )
 	{
 		return new \Exceptions\NotImplementedException() ;

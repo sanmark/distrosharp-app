@@ -9,9 +9,15 @@ class VendorController extends \Controller
 	{
 		$data = [ ] ;
 
-		$vendors = \Models\Vendor::all () ;
+		$filterValues = \Input::all () ;
 
-		$data[ 'vendors' ] = $vendors ;
+		$vendors	 = \Models\Vendor::filter ( $filterValues ) ;
+		$name		 = \Input::get ( 'name' ) ;
+		$isActive	 = \Input::get ( 'is_active' ) ;
+
+		$data[ 'vendors' ]	 = $vendors ;
+		$data[ 'name' ]		 = $name ;
+		$data[ 'isActive' ]	 = $isActive ;
 
 		return \View::make ( 'web.entities.vendors.home' , $data ) ;
 	}
@@ -33,7 +39,7 @@ class VendorController extends \Controller
 
 			$vendor -> save () ;
 
-			return \Redirect::action( 'entities.vendors.view' ) ;
+			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $exc )
 		{
 
@@ -58,7 +64,7 @@ class VendorController extends \Controller
 	{
 		try
 		{
-			
+
 			$vendor				 = \Models\Vendor::findOrFail ( $id ) ;
 			$vendor -> name		 = \Input::get ( 'name' ) ;
 			$vendor -> details	 = \Input::get ( 'details' ) ;
