@@ -9,9 +9,21 @@ class ItemController extends \Controller
 	{
 		$data = [ ] ;
 
-		$items = \Models\Item::all () ;
+		$filterValues	 = \Input::all () ;
+		$items			 = \Models\Item::filter ( $filterValues ) ;
+		$code			 = \Input::get ( 'code' ) ;
+		$name			 = \Input::get ( 'name' ) ;
+		$isActive		 = \Input::get ( 'is_active' ) ;
+		$sortBy			 = \Input::get ( 'sort_by' ) ;
+		$sortOrder		 = \Input::get ( 'sort_order' ) ;
 
-		$data[ 'items' ] = $items ;
+		$data[ 'items' ]	 = $items ;
+		$data[ 'code' ]		 = $code ;
+		$data[ 'name' ]		 = $name ;
+		$data[ 'isActive' ]	 = $isActive ;
+		$data[ 'sortBy' ]	 = $sortBy ;
+		$data[ 'sortOrder' ] = $sortOrder ;
+
 
 		return \View::make ( 'web.entities.items.home' , $data ) ;
 	}
@@ -73,8 +85,8 @@ class ItemController extends \Controller
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$item -> update () ;
-			
-			return \Redirect::action ( 'entities.items.view');
+
+			return \Redirect::action ( 'entities.items.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
