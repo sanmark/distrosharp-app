@@ -37,15 +37,47 @@ class User extends Eloquent implements UserInterface , RemindableInterface , Int
 	{
 		throw new Exceptions\NotImplementedException() ;
 	}
-	
+
 	public static function getArray ( $key , $value )
 	{
-		return new \Exceptions\NotImplementedException() ;
+		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) )
+		-> lists ( 'value' , $key ) ;
+
+		return $array ;
 	}
-	
+
+	public static function getArrayByIds ( $key , $value , $by )
+	{
+		$array = self::whereIn ( 'id' , $by )
+		-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
+		-> lists ( 'value' , $key ) ;
+
+		return $array ;
+	}
+
 	public static function getArrayForHtmlSelect ( $key , $value )
 	{
-		return new \Exceptions\NotImplementedException();
+		$array		 = self::getArray ( $key , $value ) ;
+		$anyElemet	 = [
+			'0' => 'Any'
+		] ;
+
+		$array = $anyElemet + $array ;
+
+		return $array ;
+	}
+
+	public static function getArrayForHtmlSelectByIds ( $key , $value , $by )
+	{
+		$array = self::getArrayByIds ( $key , $value , $by ) ;
+
+		$anyElemet = [
+			'0' => 'Any'
+		] ;
+
+		$array = $anyElemet + $array ;
+
+		return $array ;
 	}
 
 }

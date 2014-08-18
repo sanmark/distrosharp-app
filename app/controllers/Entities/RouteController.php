@@ -9,10 +9,19 @@ class RouteController extends \Controller
 	{
 		$data = [ ] ;
 
-		$routes = \Models\Route::all () ;
+		$filterValues = \Input::all () ;
 
-		$data[ 'routes' ] = $routes ;
-
+		$routes							 = \Models\Route::filter ( $filterValues ) ;
+		$name							 = \Input::get ( 'name' ) ;
+		$isActive						 = \Input::get ( 'is_active' ) ;
+		$repId							 = \Input::get ( 'rep' ) ;
+		$reps							 = \Models\Route::distinct () -> lists ( 'rep' ) ;
+		$repSelectBoxContent			 = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $reps ) ;
+		$data[ 'repSelectBoxContent' ]	 = $repSelectBoxContent ;
+		$data[ 'routes' ]				 = $routes ;
+		$data[ 'name' ]					 = $name ;
+		$data[ 'isActive' ]				 = $isActive ;
+		$data[ 'repId' ]				 = $repId ;
 		return \View::make ( 'web.entities.routes.home' , $data ) ;
 	}
 
@@ -31,8 +40,8 @@ class RouteController extends \Controller
 			$route -> rep		 = \Input::get ( 'rep' ) ;
 
 			$route -> save () ;
-			
-			return \Redirect::action( 'entities.routes.view' ) ;
+
+			return \Redirect::action ( 'entities.routes.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -70,6 +79,27 @@ class RouteController extends \Controller
 			-> withErrors ( $ex -> validator )
 			-> withInput () ;
 		}
+	}
+
+	private function getFilterValues ()
+	{
+		$fieldsToRequest = [
+			'name'
+		] ;
+
+		$filterValues = \Input::all () ;
+
+		if ( count ( $filterValues ) )
+		{
+
+			$filterValuesForRequestedFields = \ArrayHelper::getValuesIfKeysExist ( $filterValues , $fieldsToRequest ) ;
+
+			$filterValuesForRequestedFields = \ArrayHelper::pruneEmptyElements ( $filterValuesForRequestedFields ) ;
+
+			return $filterValuesForRequestedFields ;
+		}
+
+		return NULL ;
 	}
 
 }

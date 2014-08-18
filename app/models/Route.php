@@ -20,6 +20,30 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 		parent::save ( $attributes ) ;
 	}
 
+	public static function filter ( $filterValues )
+	{
+		$requestObject = new Route() ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$name		 = $filterValues[ 'name' ] ;
+			$isActive	 = $filterValues[ 'is_active' ] ;
+			$repId		 = $filterValues[ 'rep' ] ;
+
+			$requestObject = $requestObject -> where ( 'name' , 'LIKE' , '%' . $name . '%' ) ;
+			if ( $repId != 0 )
+			{
+				$requestObject = $requestObject -> where ( 'rep' , '=' , $repId ) ;
+			}
+
+			if ( $isActive != '' )
+			{
+				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
+			}
+		}
+		return $requestObject -> get () ;
+	}
+
 	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
@@ -64,11 +88,6 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
-	}
-
-	public static function filter ( $filterValues )
-	{
-		throw new \Exceptions\NotImplementedException() ;
 	}
 
 	public static function getArray ( $key , $value )

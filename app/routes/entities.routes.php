@@ -10,6 +10,11 @@ Route::group ( [
 		'before' => ['hasAbilities:view_routes' ] ,
 		'uses'	 => 'Controllers\Entities\RouteController@home'
 	] ) ;
+	Route::post ( '' , [
+		'as'	 => 'entities.routes.view' ,
+		'before' => ['hasAbilities:view_routes' ] ,
+		'uses'	 => 'Controllers\Entities\RouteController@home'
+	] ) ;
 
 	Route::get ( 'add' , [
 		'as'	 => 'entities.routes.add' ,
