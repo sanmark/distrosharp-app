@@ -1,4 +1,4 @@
-body,h1,h2,h3,h4,h5,h6{
+body{
 	margin: 0 !important;
 	padding: 0 !important;
 }
@@ -84,7 +84,12 @@ body,h1,h2,h3,h4,h5,h6{
 .errorstring li{
 	color: #f00;
 }
-
+.inline-form{
+	margin-right: 15px;
+}
+.inline-form input[type=text]{
+	min-width: 250px;
+}
 
 
 .footer{
