@@ -61,7 +61,7 @@
 					<td>{{$item->current_selling_price}}</td>
 					<td>{{$item->buying_invoice_order}}</td>
 					<td>{{$item->selling_invoice_order}}</td>
-					<td>{{$item->is_active}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $item->is_active)}}</td>
 				</tr>
 				@endforeach
 			</tbody>

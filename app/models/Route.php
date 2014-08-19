@@ -7,6 +7,11 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 
 	public $timestamps = FALSE ;
 
+	public function rep ()
+	{
+		return $this -> belongsTo ( '\User' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
@@ -28,12 +33,12 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 		{
 			$name		 = $filterValues[ 'name' ] ;
 			$isActive	 = $filterValues[ 'is_active' ] ;
-			$repId		 = $filterValues[ 'rep' ] ;
+			$repId		 = $filterValues[ 'rep_id' ] ;
 
 			$requestObject = $requestObject -> where ( 'name' , 'LIKE' , '%' . $name . '%' ) ;
 			if ( $repId != 0 )
 			{
-				$requestObject = $requestObject -> where ( 'rep' , '=' , $repId ) ;
+				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $repId ) ;
 			}
 
 			if ( $isActive != '' )
@@ -53,7 +58,7 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 				'required' ,
 				'unique:routes'
 			] ,
-			'rep'	 => [ 'required' ]
+			'rep_id'	 => [ 'required' ]
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
@@ -76,7 +81,7 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 				'required' ,
 				'unique:routes,name,' . $this -> id
 			] ,
-			'rep'	 => ['required' ]
+			'rep_id'	 => ['required' ]
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;

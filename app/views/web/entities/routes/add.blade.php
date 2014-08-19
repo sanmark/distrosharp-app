@@ -24,9 +24,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('rep', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('rep_id', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('rep', null, array('class' => 'form-control'))}}
+				{{Form::text('rep_id', null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">

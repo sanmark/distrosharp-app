@@ -14,8 +14,8 @@ class RouteController extends \Controller
 		$routes							 = \Models\Route::filter ( $filterValues ) ;
 		$name							 = \Input::get ( 'name' ) ;
 		$isActive						 = \Input::get ( 'is_active' ) ;
-		$repId							 = \Input::get ( 'rep' ) ;
-		$reps							 = \Models\Route::distinct () -> lists ( 'rep' ) ;
+		$repId							 = \Input::get ( 'rep_id' ) ;
+		$reps							 = \Models\Route::distinct () -> lists ( 'rep_id' ) ;
 		$repSelectBoxContent			 = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $reps ) ;
 		$data[ 'repSelectBoxContent' ]	 = $repSelectBoxContent ;
 		$data[ 'routes' ]				 = $routes ;
@@ -37,7 +37,7 @@ class RouteController extends \Controller
 			$route				 = new \Models\Route() ;
 			$route -> name		 = \Input::get ( 'name' ) ;
 			$route -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$route -> rep		 = \Input::get ( 'rep' ) ;
+			$route -> rep_id	 = \Input::get ( 'rep_id' ) ;
 
 			$route -> save () ;
 
@@ -68,7 +68,7 @@ class RouteController extends \Controller
 
 			$route -> name		 = \Input::get ( 'name' ) ;
 			$route -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$route -> rep		 = \Input::get ( 'rep' ) ;
+			$route -> rep_id	 = \Input::get ( 'rep_id' ) ;
 
 			$route -> update () ;
 

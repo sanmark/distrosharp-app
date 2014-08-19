@@ -17,8 +17,8 @@
 				<td>{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (), $isActive )}}</td>
 			</tr>	
 			<tr>
-				<td>{{Form::label('rep')}}</td>
-				<td>{{Form::select('rep',$repSelectBoxContent, $repId,['autocomplete'=>'off'])}}</td>
+				<td>{{Form::label('rep_id')}}</td>
+				<td>{{Form::select('rep_id',$repSelectBoxContent, $repId,['autocomplete'=>'off'])}}</td>
 			</tr>	
 			<tr>
 				<td colspan="2">
@@ -39,8 +39,8 @@
 				@foreach($routes as $route)
 				<tr>
 					<td>{{HTML::link(URL::action('entities.routes.edit', [$route->id]), $route->name)}}</td>
-					<td>{{$route->is_active}}</td>
-					<td>{{$route->rep}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $route->is_active)}}</td>
+					<td>{{$route->rep->username}}</td>
 				</tr>
 				@endforeach
 			</tbody>

@@ -33,7 +33,7 @@
 				@foreach($banks as $bank)
 				<tr>
 					<td>{{HTML::link ( URL::action ('entities.banks.edit',[$bank->id] ),$bank->name )}}</td>
-					<td>{{$bank->is_active}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $bank->is_active)}}</td>
 				</tr>
 				@endforeach
 			</tbody>

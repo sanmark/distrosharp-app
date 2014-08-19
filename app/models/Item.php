@@ -88,21 +88,33 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 		$requestObject = new Item() ;
 		if ( count ( $filterValues ) > 0 )
 		{
-			$code			 = $filterValues[ 'code' ] ;
-			$name			 = $filterValues[ 'name' ] ;
-			$isActive		 = $filterValues[ 'is_active' ] ;
-			$sortBy			 = $filterValues[ 'sort_by' ] ;
-			$sortOrder		 = $filterValues[ 'sort_order' ] ;
-			$requestObject	 = $requestObject -> where ( 'code' , 'LIKE' , '%' . $code . '%' )
-			-> where ( 'name' , 'LIKE' , '%' . $name . '%' )
-			-> orderBy ( $sortBy , $sortOrder ) ;
+			$code		 = $filterValues[ 'code' ] ;
+			$name		 = $filterValues[ 'name' ] ;
+			$isActive	 = $filterValues[ 'is_active' ] ;
+			$sortBy		 = $filterValues[ 'sort_by' ] ;
+			$sortOrder	 = $filterValues[ 'sort_order' ] ;
 
-			if ( $isActive != '' )
+			if ( strlen ( $code ) > 0 )
 			{
-				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive )
-				-> orderBy ( $sortBy , $sortOrder ) ;
+				$requestObject = $requestObject -> where ( 'code' , 'LIKE' , '%' . $code . '%' ) ;
+			}
+
+			if ( strlen ( $name ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'name' , 'LIKE' , '%' . $name . '%' ) ;
+			}
+
+			if ( strlen ( $isActive ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
+			}
+
+			if ( strlen ( $sortBy ) > 0 && strlen ( $sortOrder ) )
+			{
+				$requestObject = $requestObject -> orderBy ( $sortBy , $sortOrder ) ;
 			}
 		}
+
 		return $requestObject -> get () ;
 	}
 

@@ -58,8 +58,9 @@ class SetupDb extends Migration
 
 			$t -> string ( 'name' , 50 ) ;
 			$t -> boolean ( 'is_active' ) ;
-			$t -> integer ( 'rep' ) -> unsigned () ;
-			$t -> foreign ( 'rep' )
+			$t -> integer ( 'rep_id' ) -> unsigned () ;
+			
+			$t -> foreign ( 'rep_id' )
 			-> references ( 'id' )
 			-> on ( 'users' )
 			-> onUpdate ( 'cascade' )
