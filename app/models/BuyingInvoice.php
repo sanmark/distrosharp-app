@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Buying_invoice extends \Eloquent
+class BuyingInvoice extends \Eloquent
 {
 
 	public $timestamps = FALSE ;

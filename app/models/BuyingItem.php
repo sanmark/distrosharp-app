@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Buying_item extends \Eloquent
+class BuyingItem extends \Eloquent
 {
 
 	public $timestamps = FALSE ;
@@ -15,8 +15,8 @@ class Buying_item extends \Eloquent
 
 	private function validateForSave ()
 	{
-		$count_rows = \Models\Item::all () ;
-		foreach ( $count_rows as $rows )
+		$countRows = \Models\Item::all () ;
+		foreach ( $countRows as $rows )
 		{
 
 			if ( \Input::get ( 'quantity_' . $rows -> id ) != '' )

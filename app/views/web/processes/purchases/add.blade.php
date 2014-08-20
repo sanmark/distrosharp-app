@@ -43,23 +43,23 @@
 		<td colspan="4"></td>
 	</tr>
 	<tbody id="add_purchase_items">
-		<?php $row_counter = 0 ; ?>
-		@foreach($item_rows as $item_row)
+		<?php $rowCounter = 0 ; ?>
+		@foreach($itemRows as $itemRow)
 
 		<tr>
-			<td>{{Form::hidden('item_id_'.$item_row->id,$item_row->id)}}{{$item_row->name}}</td>
-			<td>{{Form::input('number','buying_price_'.$item_row->id,$item_row->current_buying_price,['step'=>'any'])}}</td>
-			<td>{{Form::input('number','quantity_'.$item_row->id,null,['placeholder'=>'Quantity','step'=>'any'])}}</td>
-			<td>{{Form::input('number','free_quantity_'.$item_row->id,null,['placeholder'=>'Free Quantity','step'=>'any'])}}</td>
-			<td>{{Form::input('date','exp_date_'.$item_row->id,null)}}</td>
-			<td>{{Form::text('batch_number_'.$item_row->id,null,['placeholder'=>'Batch Number'])}}</td>
+			<td>{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}{{$itemRow->name}}</td>
+			<td>{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price,['step'=>'any'])}}</td>
+			<td>{{Form::input('number','quantity_'.$itemRow->id,null,['placeholder'=>'Quantity','step'=>'any'])}}</td>
+			<td>{{Form::input('number','free_quantity_'.$itemRow->id,null,['placeholder'=>'Free Quantity','step'=>'any'])}}</td>
+			<td>{{Form::input('date','exp_date_'.$itemRow->id,null)}}</td>
+			<td>{{Form::text('batch_number_'.$itemRow->id,null,['placeholder'=>'Batch Number'])}}</td>
 		</tr>
-		<?php //$row_counter++; ?>
+		<?php //$rowCounter++; ?>
 		@endforeach
 
 	</tbody>
 	<tr>
-		<td colspan="6" style="text-align:right">{{Form::hidden('row_counter',$row_counter)}}{{Form::submit('Submit')}}</td>
+		<td colspan="6" style="text-align:right">{{Form::hidden('row_counter',$rowCounter)}}{{Form::submit('Submit')}}</td>
 	</tr>
 </table>
 {{Form::close()}}

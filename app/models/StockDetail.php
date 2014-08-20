@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Stock_detail extends \Eloquent
+class StockDetail extends \Eloquent
 {
 
 	public $timestamps = FALSE ;

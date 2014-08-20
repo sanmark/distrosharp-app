@@ -38,7 +38,7 @@ class StockDetailsSeeder extends Seeder
 
 		foreach ( $stockDetails as $stockDetail )
 		{
-			$stockDetailsO = new \Models\Stock_detail() ;
+			$stockDetailsO = new \Models\StockDetail() ;
 
 			$stockDetailsO -> id				 = $stockDetail[ 'id' ] ;
 			$stockDetailsO -> stock_id			 = $stockDetail[ 'stock_id' ] ;

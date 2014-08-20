@@ -102,7 +102,7 @@ class ItemController extends \Controller
 		$stocks = \Models\Stock::lists ( 'id' ) ;
 		foreach ( $stocks as $stockId )
 		{
-			$stockDetails					 = new \Models\Stock_detail() ;
+			$stockDetails					 = new \Models\StockDetail() ;
 			$stockDetails -> stock_id		 = $stockId ;
 			$stockDetails -> item_id		 = $id ;
 			$stockDetails -> good_quantity	 = 0 ;
