@@ -14,7 +14,6 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 		parent::save ( $options ) ;
 	}
 
-
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
@@ -58,13 +57,15 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 		$data = $this -> toArray () ;
 
 		$rules = [
-			'vendor_id'	 => [
-				'required'
-			] ,
-			'id'		 => [
+
+			'code'					 => [
 				'required' ,
-				'unique:buying_invoices,id,' . $this -> id
-			]
+				'unique:items,code,'.$this->id
+			] ,
+			'name'					 => [
+				'required' ,
+				'unique:items,name,'.$this->id
+			] ,
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
