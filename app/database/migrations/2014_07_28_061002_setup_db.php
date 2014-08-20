@@ -17,6 +17,7 @@ class SetupDb extends Migration
 			$t -> string ( 'password' , 100 ) ;
 			$t -> string ( 'first_name' , 50 ) ;
 			$t -> string ( 'last_name' , 50 ) ;
+			$t -> string ( 'remember_token' , 100 ) ;
 			$t -> timestamps () ;
 		} ) ;
 
@@ -59,7 +60,7 @@ class SetupDb extends Migration
 			$t -> string ( 'name' , 50 ) ;
 			$t -> boolean ( 'is_active' ) ;
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
-			
+
 			$t -> foreign ( 'rep_id' )
 			-> references ( 'id' )
 			-> on ( 'users' )

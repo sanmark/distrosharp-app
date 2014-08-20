@@ -38,4 +38,11 @@ class UserController extends Controller
 		return Redirect::to ( '/' ) ;
 	}
 
+	public function logout ()
+	{
+		Auth::logout () ;
+		Session::clear () ;
+		return Redirect::to ( '/' ) ;
+	}
+
 }

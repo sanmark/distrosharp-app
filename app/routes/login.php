@@ -14,3 +14,13 @@ Route::group ( [
 		'uses'	 => 'UserController@pLogin'
 	] ) ;
 } ) ;
+
+Route::group ( [
+	'before' => 'auth'
+] , function()
+{
+	Route::get ( 'logout' , [
+		'as'	 => 'logout' ,
+		'uses'	 => 'UserController@logout'
+	] ) ;
+} ) ;

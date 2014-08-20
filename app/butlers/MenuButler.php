@@ -17,7 +17,7 @@ class MenuButler
 					]
 				] ,
 				['Routes' , [
-						['View Routes' , 'entities.routes.view' , ['view_routes' ]] ,
+						['View Routes' , 'entities.routes.view' , ['view_routes' ] ] ,
 						['Add Route' , 'entities.routes.add' , ['add_route' ] ]
 					]
 				] ,
@@ -27,10 +27,14 @@ class MenuButler
 					]
 				] ,
 				['Banks' , [
-					['View Banks','entities.banks.view',['view_banks']],
+						['View Banks' , 'entities.banks.view' , ['view_banks' ] ] ,
 						['Add Bank' , 'entities.banks.add' , ['add_bank' ] ]
 					]
 				]
+			]
+		] ,
+		['Account' , [
+				['Logout' , 'logout' , NULL ]
 			]
 		]
 	] ;
@@ -74,20 +78,32 @@ class MenuButler
 			} elseif ( $elementCount == 3 )
 			{
 				//End Point
-				$hasPermissions = [ ] ;
-
-				if ( is_array ( $userPermissions ) && is_array ( $menuItem[ 2 ] ) )
+				if ( is_null ( $menuItem[ 2 ] ) )
 				{
-					$hasPermissions = array_intersect ( $userPermissions , $menuItem[ 2 ] ) ;
-				}
+					//No permission required for this menu option.
 
-				if ( count ( $hasPermissions ) > 0 )
-				{
 					$newItem		 = [ ] ;
 					$newItem[ 0 ]	 = $menuItem[ 0 ] ;
 					$newItem[ 1 ]	 = $menuItem[ 1 ] ;
 
 					$new[] = $newItem ;
+				} else
+				{
+					$hasPermissions = [ ] ;
+
+					if ( is_array ( $userPermissions ) && is_array ( $menuItem[ 2 ] ) )
+					{
+						$hasPermissions = array_intersect ( $userPermissions , $menuItem[ 2 ] ) ;
+					}
+
+					if ( count ( $hasPermissions ) > 0 )
+					{
+						$newItem		 = [ ] ;
+						$newItem[ 0 ]	 = $menuItem[ 0 ] ;
+						$newItem[ 1 ]	 = $menuItem[ 1 ] ;
+
+						$new[] = $newItem ;
+					}
 				}
 			}
 		}
