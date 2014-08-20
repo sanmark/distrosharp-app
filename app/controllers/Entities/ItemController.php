@@ -47,8 +47,9 @@ class ItemController extends \Controller
 			$item -> buying_invoice_order	 = \Input::get ( 'buying_invoice_order' ) ;
 			$item -> selling_invoice_order	 = \Input::get ( 'selling_invoice_order' ) ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-
 			$item -> save () ;
+
+			$this -> createStockDetailsByItem ( $item -> id ) ;
 
 			return \Redirect::action ( 'entities.items.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -92,6 +93,21 @@ class ItemController extends \Controller
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
 			-> withInput () ;
+		}
+	}
+
+	public function createStockDetailsByItem ( $id )
+	{
+
+		$stocks = \Models\Stock::lists ( 'id' ) ;
+		foreach ( $stocks as $stockId )
+		{
+			$stockDetails					 = new \Models\Stock_detail() ;
+			$stockDetails -> stock_id		 = $stockId ;
+			$stockDetails -> item_id		 = $id ;
+			$stockDetails -> good_quantity	 = 0 ;
+			$stockDetails -> return_quantity = 0 ;
+			$stockDetails -> save () ;
 		}
 	}
 

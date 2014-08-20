@@ -17,7 +17,7 @@ class SetupDb extends Migration
 			$t -> string ( 'password' , 100 ) ;
 			$t -> string ( 'first_name' , 50 ) ;
 			$t -> string ( 'last_name' , 50 ) ;
-			$t -> string ( 'remember_token' , 100 ) ;
+			$t -> string ( 'remember_token' , 100 ) ->nullable();
 			$t -> timestamps () ;
 		} ) ;
 
