@@ -21,6 +21,7 @@ ClassLoader::addDirectories ( array (
 	app_path () . '/exceptions' ,
 	app_path () . '/interfaces' ,
 	app_path () . '/abstracts' ,
+	app_path () . '/validationRules' ,
 ) ) ;
 
 /*

@@ -40,8 +40,9 @@ class MenuButler
 				] ,
 			]
 		] ,
-		[ 'Account' , [
-				[ 'Logout' , 'logout' , NULL ]
+		['Account' , [
+				['Logout' , 'account.logout' , NULL ] ,
+				['Settings' , 'account.settings' , NULL ]
 			]
 		]
 	] ;

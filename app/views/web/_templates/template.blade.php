@@ -16,6 +16,16 @@
 				@include('web._inc.menu')
 			</div>
 
+			@if(MessageButler::hasError())
+			<div class="alert alert-danger alert-dismissible" role="alert">{{ViewButler::bootstrapDismissibleAlertCloseButton()}}{{MessageButler::getError()}}</div>
+			@endif
+			@if(MessageButler::hasInfo())
+			<div class="alert alert-info">{{ViewButler::bootstrapDismissibleAlertCloseButton()}}{{MessageButler::getInfo()}}</div>
+			@endif
+			@if(MessageButler::hasSuccess())
+			<div class="alert alert-success">{{ViewButler::bootstrapDismissibleAlertCloseButton()}}{{MessageButler::getSuccess()}}</div>
+			@endif
+
 			<div class="main-content">
 				@yield('body')
 			</div>

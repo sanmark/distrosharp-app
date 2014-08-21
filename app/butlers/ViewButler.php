@@ -50,28 +50,33 @@ class ViewButler
 
 		return $values ;
 	}
+
 	public static function htmlSelectSortItems ()
 	{
-		$values=[
-		NULL=>'By',
-			'reorder_level'=>'Reorder Level',
-			'current_buying_price'=>'Buying Price',
-			'current_selling_price'=>'Selling Price',
-			'buying_invoice_order'=>'Buying Invoice Order',
-			'selling_invoice_order'=>'Selling Invoice Order',
-			
-		];
-		return $values;
+		$values = [
+			NULL					 => 'By' ,
+			'reorder_level'			 => 'Reorder Level' ,
+			'current_buying_price'	 => 'Buying Price' ,
+			'current_selling_price'	 => 'Selling Price' ,
+			'buying_invoice_order'	 => 'Buying Invoice Order' ,
+			'selling_invoice_order'	 => 'Selling Invoice Order' ,
+		] ;
+		return $values ;
 	}
+
 	public static function htmlSelectSortOrder ()
 	{
-		$values=[
-		NULL=>'Order',
-			'ASC'=>'Ascending',
-			'DESC'=>'Descending',
-			
-		];
-		return $values;
+		$values = [
+			NULL	 => 'Order' ,
+			'ASC'	 => 'Ascending' ,
+			'DESC'	 => 'Descending' ,
+		] ;
+		return $values ;
+	}
+
+	public static function bootstrapDismissibleAlertCloseButton ()
+	{
+		return '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>';
 	}
 
 }

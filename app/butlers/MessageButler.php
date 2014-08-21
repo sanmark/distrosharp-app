@@ -37,4 +37,22 @@ class MessageButler
 		return $message ;
 	}
 
+	public static function setSuccess ( $successMessage )
+	{
+		return Session::set ( MESSAGE_SUCCESS , $successMessage ) ;
+	}
+
+	public static function hasSuccess ()
+	{
+		return Session::has ( MESSAGE_SUCCESS ) ;
+	}
+
+	public static function getSuccess ()
+	{
+		$success = Session::get ( MESSAGE_SUCCESS ) ;
+		Session::forget ( MESSAGE_SUCCESS ) ;
+
+		return $success ;
+	}
+
 }

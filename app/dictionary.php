@@ -17,3 +17,4 @@ define ( 'CONFIG_CONFIG_TENANTDB_PREFIX' , 'config.tenant_db_prefix' ) ;
  */
 define ( 'MESSAGE_ERROR' , 'message_error' ) ;
 define ( 'MESSAGE_INFO' , 'message_message' ) ;
+define ( 'MESSAGE_SUCCESS' , 'message_success' ) ;

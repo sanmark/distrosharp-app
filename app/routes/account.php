@@ -5,12 +5,12 @@ Route::group ( [
 ] , function()
 {
 	Route::get ( 'login' , [
-		'as'	 => 'login' ,
+		'as'	 => 'account.login' ,
 		'uses'	 => 'UserController@login'
 	] ) ;
 
 	Route::post ( 'login' , [
-		'as'	 => 'pLogin' ,
+		'as'	 => 'account.login' ,
 		'uses'	 => 'UserController@pLogin'
 	] ) ;
 } ) ;
@@ -20,7 +20,7 @@ Route::group ( [
 ] , function()
 {
 	Route::get ( 'logout' , [
-		'as'	 => 'logout' ,
+		'as'	 => 'account.logout' ,
 		'uses'	 => 'UserController@logout'
 	] ) ;
 } ) ;

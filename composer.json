@@ -18,7 +18,8 @@
 			"app/helpers",
 			"app/exceptions",
 			"app/interfaces",
-			"app/abstracts"
+			"app/abstracts",
+			"app/validationRules"
 		]
 	},
 	"scripts": {
