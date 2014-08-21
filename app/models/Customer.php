@@ -106,7 +106,7 @@ class Customer extends \Eloquent implements \Interfaces\iEntity
 		return new \Exceptions\NotImplementedException() ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value )
+	public static function getArrayForHtmlSelect ( $key , $value, array $firstElement = NULL )
 	{
 		return new \Exceptions\NotImplementedException() ;
 	}

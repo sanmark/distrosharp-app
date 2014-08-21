@@ -71,14 +71,14 @@ class User extends Eloquent implements UserInterface , RemindableInterface , Int
 		return $array ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value )
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
-		$array		 = self::getArray ( $key , $value ) ;
-		$anyElemet	 = [
-			'0' => 'Any'
-		] ;
+		$array = self::getArray ( $key , $value ) ;
 
-		$array = $anyElemet + $array ;
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
 
 		return $array ;
 	}

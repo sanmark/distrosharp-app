@@ -12,7 +12,7 @@ class CustomerController extends \Controller
 		$filterValues = \Input::all () ;
 
 		$customers				 = \Models\Customer::filter ( $filterValues ) ;
-		$routeSelectBoxContent	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' ) ;
+		$routeSelectBoxContent	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'Any' ] ) ;
 		$name					 = \Input::get ( 'name' ) ;
 		$routeId				 = \Input::get ( 'route' ) ;
 		$isActive				 = \Input::get ( 'is_active' ) ;

@@ -58,7 +58,7 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 				'required' ,
 				'unique:routes'
 			] ,
-			'rep_id'	 => [ 'required' ]
+			'rep_id' => [ 'required' ]
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
@@ -81,7 +81,7 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 				'required' ,
 				'unique:routes,name,' . $this -> id
 			] ,
-			'rep_id'	 => ['required' ]
+			'rep_id' => ['required' ]
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
@@ -103,15 +103,14 @@ class Route extends \Eloquent implements \Interfaces\iEntity
 		return $array ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value )
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
 		$array = self::getArray ( $key , $value ) ;
 
-		$anyElemet = [
-			'0' => 'Any'
-		] ;
-
-		$array = $anyElemet + $array ;
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
 
 		return $array ;
 	}
