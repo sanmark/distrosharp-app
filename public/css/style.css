@@ -87,9 +87,6 @@ body{
 .inline-form{
 	margin-right: 15px;
 }
-.inline-form input[type=text]{
-	min-width: 250px;
-}
 
 
 .footer{
