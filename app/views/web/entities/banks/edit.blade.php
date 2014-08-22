@@ -7,15 +7,6 @@
 		<h3 class="panel-title">Edit Bank &nbsp;<b>{{$bank->name}}</b></h3>
 	</div>
 	<div class="panel-body">
-
-		@if($errors->count()>0)
-		<ul class="errorstring">
-			@foreach($errors->all() as $error)
-			<li>{{$error}}</li>
-			@endforeach
-		</ul>
-		@endif
-
 		{{Form::model($bank, ['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">

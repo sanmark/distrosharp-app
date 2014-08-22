@@ -6,15 +6,6 @@
 		<h3 class="panel-title">Add Route</h3>
 	</div>
 	<div class="panel-body">
-
-		@if($errors->count()>0)
-		<ul class="errorstring">
-			@foreach($errors->all() as $error)
-			<li>{{$error}}</li>
-			@endforeach
-		</ul>
-		@endif
-
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">

@@ -2,14 +2,6 @@
 
 @section('body')
 <div>
-	@if($errors->count()>0)
-	<ul class="errorstring">
-		@foreach($errors->all() as $error)
-		<li>{{$error}}</li>
-		@endforeach
-	</ul>
-	@endif
-
 	<h2>Basic Details</h2>
 	{{Form::model($user, [
 		'action'=>'account.settings.basic'

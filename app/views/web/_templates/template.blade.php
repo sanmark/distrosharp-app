@@ -26,6 +26,16 @@
 			<div class="alert alert-success">{{ViewButler::bootstrapDismissibleAlertCloseButton()}}{{MessageButler::getSuccess()}}</div>
 			@endif
 
+			@if($errors->count()>0)
+			<div class="alert alert-danger alert-dismissible" role="alert">
+				<ul>
+					@foreach($errors->all() as $error)
+					<li>{{$error}}</li>
+					@endforeach
+				</ul>
+			</div>
+			@endif
+
 			<div class="main-content">
 				@yield('body')
 			</div>
