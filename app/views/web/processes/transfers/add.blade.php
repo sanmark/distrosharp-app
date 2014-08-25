@@ -1,31 +1,61 @@
 @extends('web._templates.template')
 
 @section('body')
-<h2>Add Transfer</h2>
-<p>Transfer Items from stock "{{$fromStock->name}}" to stock "{{$toStock->name}}".</p>
-{{Form::open()}}
-<table>
-	<tr>
-		<td>{{Form::label('date_time', 'Date and Time')}}</td>
-		<td>{{Form::input ( 'datetime-local', 'date_time')}}</td>
-	</tr>
-</table>
-<table border="1">
-	<tr>
-		<th>Item</th>
-		<th>Available Amount in Stock "{{$fromStock->name}}"</th>
-		<th>Transferring Amount</th>
-		<th>Current Amount in Stock "{{$toStock->name}}"</th>
-	</tr>
-	@foreach($items as $item)
-	<tr>
-		<td>{{$item->name}}</td>
-		<td>{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}</td>
-		<td>{{Form::text('transfer_amounts['.$item->id.']')}}</td>
-		<td>{{$toStockDetails[$item->id]}}</td>
-	</tr>
-	@endforeach
-</table>
-{{Form::submit('Submit')}}
-{{Form::close()}}
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Add Transfer</h3>
+	</div>
+	<div class="panel-body">
+
+		<p>Transfer Items from stock <b>{{$fromStock->name}}</b> to stock <b>{{$toStock->name}}</b>.</p>
+
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('date_time', 'Date and Time', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input ( 'datetime-local', 'date_time',null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<br/>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-1 text-right"><b>{{$fromStock->name}}</b></div>
+					<div class="col-sm-1 text-right"><b>Amount</b></div>
+					<div class="col-sm-1 text-right"><b>{{$toStock->name}}</b></div>
+				</div>			
+			</div>			
+		</div>
+
+		@foreach($items as $item)
+		<div class="form-group">
+			{{Form::label(null, $item->name, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			<div class="col-sm-10">
+				<div class="row">
+					<div class="col-sm-1 text-right">
+						{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}
+					</div>
+					<div class="col-sm-1 text-right">
+						{{Form::text('transfer_amounts['.$item->id.']', null, array('class' => 'form-control text-right'))}}
+					</div>
+					<div class="col-sm-1 text-right">
+						{{$toStockDetails[$item->id]}}
+					</div>
+				</div>
+			</div>
+		</div>
+		@endforeach
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+		{{Form::close()}}
+
+	</div>
+</div>
+
 @stop
