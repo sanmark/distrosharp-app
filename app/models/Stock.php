@@ -12,6 +12,16 @@ class Stock extends \Eloquent implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\StockDetail' ) ;
 	}
 
+	public function incharge ()
+	{
+		return $this -> belongsTo ( 'User' , 'incharge_id' ) ;
+	}
+
+	public function stockType ()
+	{
+		return $this -> belongsTo ( 'Models\StockType' ) ;
+	}
+
 	public function totalItemQuantities ()
 	{
 		$goodQuantity	 = $this -> goodQuantities () ;
@@ -42,6 +52,13 @@ class Stock extends \Eloquent implements \Interfaces\iEntity
 		return $returnQuantity ;
 	}
 
+	public function update ( array $attributes = array () )
+	{
+		$this -> validateForUpdate () ;
+
+		parent::update ( $attributes ) ;
+	}
+
 	public static function filter ( $filterValues )
 	{
 		throw new \Exceptions\NotImplementedException() ;
@@ -65,6 +82,43 @@ class Stock extends \Eloquent implements \Interfaces\iEntity
 		}
 
 		return $array ;
+	}
+
+	private function validateForUpdate ()
+	{
+		$data = $this -> toArray () ;
+
+		$rules = [
+			'id'			 => [
+				'required' ,
+				'unique:stocks,id,' . $this -> id
+			] ,
+			'name'			 => [
+				'required' ,
+				'unique:stocks,name,' . $this -> id
+			] ,
+			'incharge_id'	 => [
+				'required' ,
+				'unique:stocks,incharge_id,' . $this -> id
+			] ,
+			'stock_type_id'	 => [
+				'required'
+			]
+		] ;
+
+		$messages = [
+			'incharge_id.unique' => 'This user has already been assigned to another stock.'
+		] ;
+
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
 	}
 
 }

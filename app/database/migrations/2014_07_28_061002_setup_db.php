@@ -94,10 +94,10 @@ class SetupDb extends Migration
 		{
 			$t -> increments ( 'id' ) ;
 			$t -> string ( 'name' ) ;
-			$t -> integer ( 'incharge' ) -> unsigned () ;
+			$t -> integer ( 'incharge_id' ) -> unsigned () ;
 			$t -> string ( 'stock_type_id' ) ;
 
-			$t -> foreign ( 'incharge' )
+			$t -> foreign ( 'incharge_id' )
 			-> references ( 'id' )
 			-> on ( 'users' )
 			-> onUpdate ( 'cascade' )

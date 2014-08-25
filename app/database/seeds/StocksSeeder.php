@@ -9,19 +9,19 @@ class StocksSeeder extends Seeder
 			[
 				'id'			 => 1 ,
 				'name'			 => 'Main' ,
-				'incharge'		 => 1 ,
+				'incharge_id'	 => 1 ,
 				'stock_type_id'	 => 2 ,
 			] ,
 			[
 				'id'			 => 2 ,
 				'name'			 => 'Backup' ,
-				'incharge'		 => 2 ,
+				'incharge_id'	 => 2 ,
 				'stock_type_id'	 => 2 ,
 			] ,
 //			[
 //				'id'			 =>  ,
 //				'name'			 => '' ,
-//				'incharge'		 =>  ,
+//				'incharge_id'	 =>  ,
 //				'stock_type_id'	 =>  ,
 //			] ,
 		] ;
@@ -30,7 +30,7 @@ class StocksSeeder extends Seeder
 			$stockO					 = new \Models\Stock() ;
 			$stockO -> id			 = $stock[ 'id' ] ;
 			$stockO -> name			 = $stock[ 'name' ] ;
-			$stockO -> incharge		 = $stock[ 'incharge' ] ;
+			$stockO -> incharge_id	 = $stock[ 'incharge_id' ] ;
 			$stockO -> stock_type_id = $stock[ 'stock_type_id' ] ;
 
 			$stockO -> save () ;

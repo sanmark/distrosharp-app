@@ -44,6 +44,9 @@ class MenuButler
 				]
 			]
 		] ,
+		['Stocks' , [
+				['View Stocks' , 'stocks.all' , ['view_stocks' ] ]
+			] ] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]
