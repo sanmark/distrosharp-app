@@ -12,4 +12,17 @@ class CustomValidationRules
 		return \Hash::check ( $value , $originalPassword ) ;
 	}
 
+	public function atLeastOneArrayElementHasValue ( $field , $value , $parameters )
+	{
+		foreach ( $value as $element )
+		{
+			if ( ! \NullHelper::isNullEmptyOrWhitespace ( $element ) )
+			{
+				return TRUE ;
+			}
+		}
+
+		return FALSE ;
+	}
+
 }

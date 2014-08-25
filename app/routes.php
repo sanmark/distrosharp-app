@@ -13,7 +13,7 @@
 
 Route::get ( '/test' , function()
 {
-	var_dump ( Auth::user () ) ;
+	
 } ) ;
 
 Route::group ( [
@@ -31,4 +31,4 @@ foreach ( glob ( app_path () . '/routes/*.php' ) as $filterFile )
 	include $filterFile ;
 }
 
-include 'customValidationRules.php';
+include 'customValidationRules.php' ;

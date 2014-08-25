@@ -28,6 +28,7 @@
 
 			@if($errors->count()>0)
 			<div class="alert alert-danger alert-dismissible" role="alert">
+				{{ViewButler::bootstrapDismissibleAlertCloseButton()}}
 				<ul>
 					@foreach($errors->all() as $error)
 					<li>{{$error}}</li>

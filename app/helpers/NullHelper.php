@@ -13,4 +13,24 @@ class NullHelper
 		return $value ;
 	}
 
+	public static function isNullEmptyOrWhitespace ( $value )
+	{
+		if ( is_null ( $value ) )
+		{
+			return TRUE ;
+		}
+
+		if ( empty ( $value ) )
+		{
+			return TRUE ;
+		}
+
+		if ( strlen ( trim ( $value ) ) == 0 )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
+	}
+
 }

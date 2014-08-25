@@ -38,6 +38,10 @@ class MenuButler
 						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ]
 					]
 				] ,
+				['Transfers' , [
+						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ]
+					]
+				]
 			]
 		] ,
 		['Account' , [

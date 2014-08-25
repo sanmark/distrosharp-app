@@ -17,7 +17,7 @@ class SetupDb extends Migration
 			$t -> string ( 'password' , 100 ) ;
 			$t -> string ( 'first_name' , 50 ) ;
 			$t -> string ( 'last_name' , 50 ) ;
-			$t -> string ( 'remember_token' , 100 ) ->nullable();
+			$t -> string ( 'remember_token' , 100 ) -> nullable () ;
 			$t -> timestamps () ;
 		} ) ;
 
@@ -149,9 +149,9 @@ class SetupDb extends Migration
 			$t -> integer ( 'invoice_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
 			$t -> float ( 'price' ) ;
-			$t -> float ( 'quantity' );
-			$t -> float ( 'free_quantity' );
-			$t -> date ( 'exp_date' );
+			$t -> float ( 'quantity' ) ;
+			$t -> float ( 'free_quantity' ) ;
+			$t -> date ( 'exp_date' ) ;
 			$t -> string ( 'batch_number' ) ;
 
 			$t -> foreign ( 'invoice_id' )
@@ -166,10 +166,52 @@ class SetupDb extends Migration
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'transfers' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'from_stock_id' ) -> unsigned () ;
+			$t -> integer ( 'to_stock_id' ) -> unsigned () ;
+			$t -> dateTime ( 'date_time' ) ;
+
+			$t -> foreign ( 'from_stock_id' )
+			-> references ( 'id' )
+			-> on ( 'stocks' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'to_stock_id' )
+			-> references ( 'id' )
+			-> on ( 'stocks' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'transfer_details' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'transfer_id' ) -> unsigned () ;
+			$t -> integer ( 'item_id' ) -> unsigned () ;
+			$t -> float ( 'quantity' ) ;
+
+			$t -> foreign ( 'transfer_id' )
+			-> references ( 'id' )
+			-> on ( 'transfers' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'item_id' )
+			-> references ( 'id' )
+			-> on ( 'items' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'transfer_details' ) ;
+		Schema::dropIfExists ( 'transfers' ) ;
 		Schema::dropIfExists ( 'buying_items' ) ;
 		Schema::dropIfExists ( 'buying_invoices' ) ;
 		Schema::dropIfExists ( 'stock_details' ) ;

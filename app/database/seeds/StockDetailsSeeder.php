@@ -5,36 +5,34 @@ class StockDetailsSeeder extends Seeder
 
 	public function run ()
 	{
-		$stockDetails = [
-			[
-				'id'				 => 1 ,
-				'stock_id'			 => 1 ,
-				'item_id'			 => 1 ,
-				'good_quantity'		 => 0 ,
-				'return_quantity'	 => 0 ,
-			] ,
-			[
-				'id'				 => 2 ,
-				'stock_id'			 => 1 ,
-				'item_id'			 => 2 ,
-				'good_quantity'		 => 0 ,
-				'return_quantity'	 => 0 ,
-			] ,
-			[
-				'id'				 => 3 ,
-				'stock_id'			 => 1 ,
-				'item_id'			 => 3 ,
-				'good_quantity'		 => 0 ,
-				'return_quantity'	 => 0 ,
-			]
-//			[
-//				'id'				 =>  ,
-//				'stock_id'			 =>  ,
-//				'item_id'			 =>  ,
-//				'good_quantity'		 =>  ,
-//				'return_quantity'	 =>  ,
-//			] ,
-		] ;
+		$stockDetails = [ ] ;
+
+		$stocks	 = Models\Stock::all () ;
+		$items	 = Models\Item::all () ;
+
+		$stockItemId = 0 ;
+		$quantity	 = 0 ;
+
+		foreach ( $stocks as $stock )
+		{
+			foreach ( $items as $item )
+			{
+				$stockItemId ++ ;
+
+				$newStockItem = [
+					'id'		 => $stockItemId ,
+					'stock_id'	 => $stock -> id ,
+					'item_id'	 => $item -> id
+				] ;
+
+				$quantity ++ ;
+				$newStockItem[ 'good_quantity' ]	 = $quantity ;
+				$quantity ++ ;
+				$newStockItem[ 'return_quantity' ]	 = $quantity ;
+
+				$stockDetails[] = $newStockItem ;
+			}
+		}
 
 		foreach ( $stockDetails as $stockDetail )
 		{
@@ -45,8 +43,8 @@ class StockDetailsSeeder extends Seeder
 			$stockDetailsO -> item_id			 = $stockDetail[ 'item_id' ] ;
 			$stockDetailsO -> good_quantity		 = $stockDetail[ 'good_quantity' ] ;
 			$stockDetailsO -> return_quantity	 = $stockDetail[ 'return_quantity' ] ;
-			
-			$stockDetailsO->save();
+
+			$stockDetailsO -> save () ;
 		}
 	}
 

@@ -11,13 +11,19 @@ class StocksSeeder extends Seeder
 				'name'			 => 'Main' ,
 				'incharge'		 => 1 ,
 				'stock_type_id'	 => 2 ,
-			]
+			] ,
+			[
+				'id'			 => 2 ,
+				'name'			 => 'Backup' ,
+				'incharge'		 => 2 ,
+				'stock_type_id'	 => 2 ,
+			] ,
 //			[
 //				'id'			 =>  ,
 //				'name'			 => '' ,
 //				'incharge'		 =>  ,
 //				'stock_type_id'	 =>  ,
-//			]
+//			] ,
 		] ;
 		foreach ( $stocks as $stock )
 		{
@@ -26,8 +32,8 @@ class StocksSeeder extends Seeder
 			$stockO -> name			 = $stock[ 'name' ] ;
 			$stockO -> incharge		 = $stock[ 'incharge' ] ;
 			$stockO -> stock_type_id = $stock[ 'stock_type_id' ] ;
-			
-			$stockO->save();
+
+			$stockO -> save () ;
 		}
 	}
 

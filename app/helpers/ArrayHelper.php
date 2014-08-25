@@ -43,4 +43,43 @@ class ArrayHelper
 		return $prunedArray ;
 	}
 
+	public static function AddSameKeyElements ( $firstArray , $secondArray )
+	{
+		$output = [ ] ;
+
+		foreach ( $firstArray as $firstArrayKey => $firstArrayValue )
+		{
+			$value = $firstArrayValue ;
+			unset ( $firstArray[ $firstArrayKey ] ) ;
+
+			if ( array_key_exists ( $firstArrayKey , $secondArray ) )
+			{
+				$value += $secondArray[ $firstArrayKey ] ;
+				unset ( $secondArray[ $firstArrayKey ] ) ;
+			}
+
+			$output[ $firstArrayKey ] = $value ;
+		}
+
+		foreach ( $secondArray as $secondArrayKey => $secondArrayValue )
+		{
+			$output[ $secondArrayKey ] = $secondArrayValue ;
+		}
+
+		return $output ;
+	}
+
+	public static function areAllElementsEmpty ( $array )
+	{
+		foreach ( $array as $element )
+		{
+			if ( ! NullHelper::isNullEmptyOrWhitespace ( $element ) )
+			{
+				return FALSE ;
+			}
+		}
+
+		return TRUE ;
+	}
+
 }
