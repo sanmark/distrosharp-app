@@ -12,6 +12,7 @@ body{
 .main-menu ul{
 	position: relative;
 	padding: 0 0;
+	margin: 0;
 }
 .main-menu ul li{
 	list-style: none;
@@ -21,6 +22,10 @@ body{
 }
 .main-menu ul li a{
 	display: block;
+	color: #333;
+}
+.main-menu ul li a:hover{
+	text-decoration: none;
 }
 .main-menu>ul>li{
 	float: left;
@@ -99,6 +104,9 @@ body{
 
 
 /* =================== Others ===================== */
+
+.no-bg:hover{background-color: transparent !important;}
+
 .navbar{
 	margin-top: 10px;
 }
