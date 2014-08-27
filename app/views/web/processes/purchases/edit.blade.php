@@ -1,102 +1,136 @@
 @extends('web._templates.template')
 
 @section('body')
-<h2>Edit Purchase</h2>
 
-<ul>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Edit Purchase</h3>
+	</div>
+	<div class="panel-body">
 
-	@foreach($errors->all() as $error)
-	<li>{{$error}}</li>
-	@endforeach
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('date', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('date','date', $purchaseInvoice->date, array('class' => 'form-control'),['required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('vendor', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('vendor_id',$vendorSelectBox, $purchaseInvoice->vendor_id, array('class' => 'form-control'),['required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Print Invoice Number', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('printed_invoice_num',$purchaseInvoice->printed_invoice_num, array('class' => 'form-control'),['required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('other_expenses_amount',$purchaseInvoice->other_expenses_amount, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Other Expense Total', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('other_expenses_total',$purchaseInvoice->other_expenses_total, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			<div class="col-sm-3">
+				@if($purchaseInvoice->completely_paid=='0')
+				{{Form::checkbox('completely_paid')}}
+				@elseif($purchaseInvoice->completely_paid=='1')
+				{{Form::checkbox('completely_paid','1',true)}}
+				@endif
+			</div>
+		</div>
 
-</ul>
-<table>
-	{{Form::open()}}
-	<tr>
-		<td>Date</td>
-		<td>{{Form::input('date','date',$purchaseInvoice->date,['required'=>'required'])}}</td>
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Vendor</td>
-		<td>{{Form::select('vendor_id',$vendorSelectBox,$purchaseInvoice->vendor_id,['required'=>'required'])}}</td>
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Printed Invoice Number</td>
-		<td>{{Form::text('printed_invoice_num',$purchaseInvoice->printed_invoice_num,['required'=>'required'])}}</td>
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Completely Paid</td>
-		@if($purchaseInvoice->completely_paid=='0')
-		<td>{{Form::checkbox('completely_paid')}}</td>
-		@elseif($purchaseInvoice->completely_paid=='1')
-		<td>{{Form::checkbox('completely_paid','1',true)}}</td>
-		@endif
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Other Expenses Amount</td>
-		<td>{{Form::text('other_expenses_amount',$purchaseInvoice->other_expenses_amount)}}</td>
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Other Expenses Details</td>
-		<td>{{Form::textarea('other_expenses_details',$purchaseInvoice->other_expenses_details)}}</td>
-		<td colspan="4"></td>
-	</tr>
-	<tr>
-		<td>Stock</td>
-		<td>{{$purchaseInvoice->stock->name}}</td>
-		<td colspan="4"></td>
-	</tr>
-</table>
-<?php
-//foreach ( $purchaseInvoiceItemRows as $key )
-//{
-//	print_r($key->item_id);
-//	echo '<br/>' ;
-//}
-//die();
-//
-//
-?>
-<table border="1">
-	<tr>
-		<th>Item Name</th>
-		<th>Price</th>
-		<th>Quantity</th>
-		<th>Free Quantity</th>
-		<th>Date</th>
-		<th>Batch Number</th>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-2"><b>Price</b></div>
+					<div class="col-sm-2"><b>Quantity</b></div>
+					<div class="col-sm-2"><b>Free Quantity</b></div>
+					<div class="col-sm-3"><b>Date</b></div>
+					<div class="col-sm-3"><b>Batch Number</b></div>
+				</div>			
+			</div>			
+		</div>
 
-	</tr>
-	@foreach($ItemRows as $ItemRowName=>$ItemRowValue )
-	@if(in_array($ItemRowValue,$purchaseRows))
 
-	<tr>
-		<th>{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}{{$ItemRowName}}</th>
-		<th>{{Form::input('number','buying_price_'.$ItemRowValue,$price[$ItemRowValue],['step'=>'any','required'=>'required'])}}</th>
-		<th>{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','required'=>'required'])}}</th>
-		<th>{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any'])}}</th>
-		<th>{{Form::input('date','exp_date_'.$ItemRowValue,$expDate[$ItemRowValue],['step'=>'any'])}}</th>
-		<th>{{Form::text('batch_number_'.$ItemRowValue,$batchNumber[$ItemRowValue])}}</th>
-	</tr>
-	@else
-	<tr>
-		<th>{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}{{$ItemRowName}}</th>
-		<th>{{Form::input('number','buying_price_'.$ItemRowValue,null,['step'=>'any'])}}</th>
-		<th>{{Form::input('number','quantity_'.$ItemRowValue,null,['step'=>'any'])}}</th>
-		<th>{{Form::input('number','free_quantity_'.$ItemRowValue,null,['step'=>'any'])}}</th>
-		<th>{{Form::input('date','exp_date_'.$ItemRowValue,null,['step'=>'any'])}}</th>
-		<th>{{Form::text('batch_number_'.$ItemRowValue,null)}}</th>
-	</tr>
-	@endif
-	@endforeach
-	<tr>
-		<td colspan="6">{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+		@foreach($ItemRows as $ItemRowName=>$ItemRowValue )
+		<div class="form-group">
+
+			@if(in_array($ItemRowValue,$purchaseRows))
+
+			{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}
+			{{Form::label($ItemRowName, null, array('class' => 'col-sm-2 control-label'))}}
+
+			<div class="col-sm-10">
+				<div class="row">
+					<div class="col-sm-2">
+						{{Form::input('number','buying_price_'.$ItemRowValue,$price[$ItemRowValue], array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue], array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue], array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::input('date','exp_date_'.$ItemRowValue,$expDate[$ItemRowValue], array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::text('batch_number_'.$ItemRowValue,$batchNumber[$ItemRowValue], array('class' => 'form-control'))}}
+					</div>
+				</div>
+			</div>
+
+			@else
+
+			{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}
+			{{Form::label($ItemRowName, null, array('class' => 'col-sm-2 control-label'))}}
+
+			<div class="col-sm-10">
+				<div class="row">
+					<div class="col-sm-2">
+						{{Form::input('number','buying_price_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('number','quantity_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('number','free_quantity_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::input('date','exp_date_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::text('batch_number_'.$ItemRowValue,null, array('class' => 'form-control'))}}
+					</div>
+				</div>
+			</div>
+
+			@endif
+
+		</div>
+		@endforeach
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>
+			</div>
+		</div>
+		
+		{{Form::close()}}
+
+	</div>
+</div>
+
 @stop

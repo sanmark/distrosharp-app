@@ -83,12 +83,6 @@ body{
 	width: 100%;
 	min-height: 450px;
 }
-.errorstring{
-	color: #f00;
-}
-.errorstring li{
-	color: #f00;
-}
 .inline-form{
 	margin-right: 15px;
 }
