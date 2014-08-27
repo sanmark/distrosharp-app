@@ -9,17 +9,17 @@ class BankController extends \Controller
 	{
 		$data = [ ] ;
 
-		$filterValues=  \Input::all();
-		
-		$banks = \Models\Bank::filter($filterValues);
-		$name					 = \Input::get ( 'name' ) ;
-		$isActive				 = \Input::get ( 'is_active' ) ;
-		
-		
+		$filterValues = \Input::all () ;
 
-		$data[ 'banks' ] = $banks ;
-		$data['name']=$name;
-		$data['isActive']=$isActive;
+		$banks		 = \Models\Bank::filter ( $filterValues ) ;
+		$name		 = \Input::get ( 'name' ) ;
+		$isActive	 = \Input::get ( 'is_active' ) ;
+
+
+
+		$data[ 'banks' ]	 = $banks ;
+		$data[ 'name' ]		 = $name ;
+		$data[ 'isActive' ]	 = $isActive ;
 
 		return \View::make ( 'web.entities.banks.home' , $data ) ;
 	}
@@ -38,8 +38,8 @@ class BankController extends \Controller
 			$bank -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$bank -> save () ;
-			
-			return \Redirect::action( 'entities.banks.view' ) ;			
+
+			return \Redirect::action ( 'entities.banks.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -63,15 +63,15 @@ class BankController extends \Controller
 	{
 		try
 		{
-			$bank				 = \Models\Bank::findOrFail ( $id ) ;
-			
-			$bank -> name		 = \Input::get('name' ) ;
-			
-			$bank -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$bank = \Models\Bank::findOrFail ( $id ) ;
+
+			$bank -> name = \Input::get ( 'name' ) ;
+
+			$bank -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$bank -> update () ;
 
-			return \Redirect::action( 'entities.banks.view' ) ;
+			return \Redirect::action ( 'entities.banks.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

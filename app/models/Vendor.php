@@ -14,15 +14,6 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 		parent::save ( $options ) ;
 	}
 
-	public static function getVendorsForHtmlSelect ()
-	{
-
-
-		$vendors = Vendor::lists ( 'name' , 'id' ) ;
-		$vendors = [0 => 'Select Vendor' ] + $vendors ;
-		return $vendors ;
-	}
-
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
@@ -99,7 +90,7 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 	public static function getArrayByIds ( $key , $value , $by )
 	{
 
-		
+
 		if ( $by[ 0 ] > 0 || $by[ 0 ] != null )
 		{
 			$array = self::whereIn ( 'id' , $by )
@@ -108,7 +99,7 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 			return $array ;
 		}
-		return NULL;
+		return NULL ;
 	}
 
 	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )

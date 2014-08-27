@@ -10,9 +10,11 @@ class PurchaseController extends \Controller
 
 		$data = [ ] ;
 
-		$itemRows = \Models\Item::all () ;
+		$itemRows	 = \Models\Item::all () ;
+		$stocks		 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 
-		$data[ 'itemRows' ] = $itemRows ;
+		$data[ 'itemRows' ]	 = $itemRows ;
+		$data[ 'stocks' ]	 = $stocks ;
 
 		return \View::make ( 'web.processes.purchases.add' , $data ) ;
 	}
@@ -23,17 +25,17 @@ class PurchaseController extends \Controller
 
 		$filterValues		 = \Input::all () ;
 		$buyingInvoiceRows	 = \Models\BuyingInvoice::filter ( $filterValues ) ;
-		$id					 = \Input::get ( 'id' ) ;
-		$vendorId			 = \Input::get ( 'vendor_id' ) ;
-		$date				 = \Input::get ( 'date' ) ;
-		$isPaid				 = \Input::get ( 'is_paid' ) ;
-		$sortBy				 = \Input::get ( 'sort_by' ) ;
-		$sortOrder			 = \Input::get ( 'sort_order' ) ;
-		$vendors			 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
 
-
-
+		$id				 = \Input::get ( 'id' ) ;
+		$vendorId		 = \Input::get ( 'vendor_id' ) ;
+		$date			 = \Input::get ( 'date' ) ;
+		$isPaid			 = \Input::get ( 'is_paid' ) ;
+		$sortBy			 = \Input::get ( 'sort_by' ) ;
+		$sortOrder		 = \Input::get ( 'sort_order' ) ;
+		$stockId		 = \Input::get ( 'stock_id' ) ;
+		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
+		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
 
 		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
 		$data[ 'id' ]				 = $id ;
@@ -42,7 +44,9 @@ class PurchaseController extends \Controller
 		$data[ 'isPaid' ]			 = \NullHelper::zeroIfNull ( $isPaid ) ;
 		$data[ 'sortBy' ]			 = $sortBy ;
 		$data[ 'sortOrder' ]		 = $sortOrder ;
+		$data[ 'stockId' ]			 = $stockId ;
 		$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
+		$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
 		return \View::make ( 'web.processes.purchases.home' , $data ) ;
 	}
 
@@ -51,17 +55,23 @@ class PurchaseController extends \Controller
 		$data					 = [ ] ;
 		$purchaseInvoice		 = \Models\BuyingInvoice::findOrFail ( $id ) ;
 		$ItemRows				 = \Models\Item::lists ( 'id' , 'name' ) ;
-		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> get () ;
-		$price					 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'price' , 'item_id' ) ;
-		$quantity				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'quantity' , 'item_id' ) ;
-		$freeQuantity			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'free_quantity' , 'item_id' ) ;
-		$expDate				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'exp_date' , 'item_id' ) ;
-		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'batch_number' , 'item_id' ) ;
+		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> get () ;
+		$price					 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'price' , 'item_id' ) ;
+		$quantity				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'quantity' , 'item_id' ) ;
+		$freeQuantity			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'free_quantity' , 'item_id' ) ;
+		$expDate				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'exp_date' , 'item_id' ) ;
+		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'batch_number' , 'item_id' ) ;
 
 		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
-		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'item_id' ) ;
-
+		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		-> lists ( 'item_id' ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;
@@ -93,7 +103,6 @@ class PurchaseController extends \Controller
 
 			$purchaseItem -> update () ;
 
-
 			$countRows = \Models\Item::all () ;
 
 			foreach ( $countRows as $rows )
@@ -119,30 +128,33 @@ class PurchaseController extends \Controller
 					}
 					$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
 
-					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> lists ( 'item_id' ) ) )
+					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+					-> lists ( 'item_id' ) ) )
 					{
-						
-						
+
 						$stockDetails = new \Models\StockDetail() ;
 
-
-
-						$stockRow = \Models\StockDetail::where ( 'item_id' , '=' , $itemId )
+						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+						-> where ( 'item_id' , '=' , $itemId )
 						-> lists ( 'good_quantity' ) ;
 
-						$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
-						$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+						$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+						-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+						$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+						-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
 
-						$newQuantity1	 = $quantity + $freeQuantity ;
-						
+						$newQuantity1 = $quantity + $freeQuantity ;
+
 						$preQuantity1	 = $previousPurchaseFreeQuantity[ 0 ] + $previousPurchaseQuantity[ 0 ] ;
-						$newQuantity	 = $stockRow[0]-$preQuantity1+$newQuantity1 ;
+						$newQuantity	 = ($stockRow[ 0 ] - $preQuantity1) + $newQuantity1 ;
 
-						$stockDetails -> where ( 'item_id' , '=' , $itemId )
+						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+						-> where ( 'item_id' , '=' , $itemId )
 						-> update ( ['good_quantity' => $newQuantity ] ) ;
-						
 
-						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
+
+						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+						-> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
 
 						$buyingItems -> item_id = $itemId ;
 
@@ -152,8 +164,6 @@ class PurchaseController extends \Controller
 						$buyingItems -> exp_date		 = $expDate ;
 						$buyingItems -> batch_number	 = $batchNumber ;
 						$buyingItems -> update () ;
-						
-						
 					} else
 					{
 						$buyingItems				 = new \Models\BuyingItem() ;
@@ -169,20 +179,18 @@ class PurchaseController extends \Controller
 
 						$stockDetails = new \Models\StockDetail() ;
 
-
-
-						$stockRow = \Models\StockDetail::where ( 'item_id' , '=' , $itemId )
+						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+						-> where ( 'item_id' , '=' , $itemId )
 						-> lists ( 'good_quantity' ) ;
-
 
 						$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
 
-
-						$stockDetails -> where ( 'item_id' , '=' , $itemId )
+						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+						-> where ( 'item_id' , '=' , $itemId )
 						-> update ( ['good_quantity' => $newQuantity ] ) ;
-						
-						
-						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id ) -> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
+
+						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+						-> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
 
 						$buyingItems -> item_id = $itemId ;
 
@@ -192,8 +200,6 @@ class PurchaseController extends \Controller
 						$buyingItems -> exp_date		 = $expDate ;
 						$buyingItems -> batch_number	 = $batchNumber ;
 						$buyingItems -> update () ;
-
-						
 					}
 				}
 			}
@@ -211,6 +217,7 @@ class PurchaseController extends \Controller
 		try
 		{
 
+			$toStockId			 = \Input::get ( 'stock_id' ) ;
 			$purchaseDate		 = \Input::get ( 'purchase_date' ) ;
 			$vendorId			 = \Input::get ( 'vendor_id' ) ;
 			$printedInvoiceNum	 = \Input::get ( 'printed_invoice_num' ) ;
@@ -236,6 +243,7 @@ class PurchaseController extends \Controller
 			$buyingInvoices -> completely_paid		 = $isPaid ;
 			$buyingInvoices -> other_expenses_amount = $otherExpenseAmount ;
 			$buyingInvoices -> other_expenses_total	 = $otherExpenseTotal ;
+			$buyingInvoices -> stock_id				 = $toStockId ;
 			$buyingInvoices -> save () ;
 
 			$countRows = \Models\Item::all () ;
@@ -280,14 +288,14 @@ class PurchaseController extends \Controller
 
 
 
-					$stockRow = \Models\StockDetail::where ( 'item_id' , '=' , $itemId )
+					$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $toStockId )
+					-> where ( 'item_id' , '=' , $itemId )
 					-> lists ( 'good_quantity' ) ;
-
 
 					$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
 
-
-					$stockDetails -> where ( 'item_id' , '=' , $itemId )
+					$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
+					-> where ( 'item_id' , '=' , $itemId )
 					-> update ( ['good_quantity' => $newQuantity ] ) ;
 				}
 			}

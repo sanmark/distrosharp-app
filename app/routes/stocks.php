@@ -11,10 +11,10 @@ Route::group ( [
 		'uses'	 => 'Controllers\StockController@all'
 	] ) ;
 
-	Route::get ( '{stockId}' , [ 
-		'as'=>'stocks.view',
-		'before'=>['hasAbilities:view_stocks'],
-		'uses'=>'Controllers\StockController@view'
+	Route::get ( '{stockId}' , [
+		'as'	 => 'stocks.view' ,
+		'before' => ['hasAbilities:view_stocks' ] ,
+		'uses'	 => 'Controllers\StockController@view'
 	] ) ;
 
 	Route::get ( '{stockId}/edit' , [

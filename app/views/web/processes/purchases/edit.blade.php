@@ -46,6 +46,11 @@
 		<td>{{Form::text('other_expenses_total',$purchaseInvoice->other_expenses_total)}}</td>
 		<td colspan="4"></td>
 	</tr>
+	<tr>
+		<td>Stock</td>
+		<td>{{$purchaseInvoice->stock->name}}</td>
+		<td colspan="4"></td>
+	</tr>
 </table>
 <?php
 //foreach ( $purchaseInvoiceItemRows as $key )

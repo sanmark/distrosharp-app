@@ -20,11 +20,10 @@ class BuyingItem extends \Eloquent implements \Interfaces\iEntity
 
 	public function update ( array $attributes = array () )
 	{
-		$this ->  validateForUpdate();
+		$this -> validateForUpdate () ;
 		parent::update ( $attributes ) ;
 	}
-	
-	
+
 	private function validateForSave ()
 	{
 		$countRows = \Models\Item::all () ;
@@ -58,6 +57,7 @@ class BuyingItem extends \Eloquent implements \Interfaces\iEntity
 			throw $iie ;
 		}
 	}
+
 	private function validateForUpdate ()
 	{
 		$countRows = \Models\Item::all () ;
@@ -102,7 +102,7 @@ class BuyingItem extends \Eloquent implements \Interfaces\iEntity
 		throw new \Exceptions\NotImplementedException() ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value,array $firstElement = NULL )
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
 		throw new \Exceptions\NotImplementedException() ;
 	}

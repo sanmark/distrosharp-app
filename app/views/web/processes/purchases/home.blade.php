@@ -23,6 +23,10 @@
 		<td>{{Form::select('is_paid',ViewButler::htmlSelectAnyYesNo (),$isPaid)}}</td>
 	</tr>
 	<tr>
+		<td>{{Form::label('stock_id')}}</td>
+		<td>{{Form::select('stock_id',$stockSelectBox,$stockId)}}</td>
+	</tr>
+	<tr>
 		<td>Sort</td>
 		<td>{{Form::select('sort_by',[
 			NULL=>'By',
@@ -45,6 +49,7 @@
 		<th>Completely Paid</th>
 		<th>Other Expense Amount</th>
 		<th>Other Expense Total</th>
+		<th>Stock</th>
 	</tr>
 	@foreach($buyingInvoiceRows as $buyingInvoiceRow)
 	<tr>
@@ -55,6 +60,7 @@
 		<td>{{$buyingInvoiceRow->completely_paid}}</td>
 		<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
 		<td>{{$buyingInvoiceRow->other_expenses_total}}</td>
+		<th>{{$buyingInvoiceRow->stock->name}}</th>
 	</tr>
 	@endforeach
 </table>

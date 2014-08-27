@@ -11,7 +11,7 @@
 			<div class="panel-body">
 
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
-				
+
 				<div class="form-group inline-form">
 					{{Form::label('name', null, array('class' => 'control-label'))}}
 					{{Form::text('name',$name, array('class' => 'form-control'))}}
@@ -27,7 +27,7 @@
 				<div class="form-group inline-form">
 					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
 				</div>
-				
+
 				{{Form::close()}}
 
 			</div>

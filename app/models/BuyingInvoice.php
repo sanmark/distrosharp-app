@@ -7,6 +7,11 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 
 	public $timestamps = FALSE ;
 
+	public function stock ()
+	{
+		return $this -> belongsTo ( 'Models\Stock' ) ;
+	}
+
 	public function vendor ()
 	{
 		return $this -> belongsTo ( 'Models\Vendor' ) ;
@@ -32,6 +37,9 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 			'printed_invoice_num'	 => [
 				'required' ,
 			] ,
+			'stock_id'				 => [
+				'required' ,
+			] ,
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
@@ -54,10 +62,10 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 	public function validateForUpdate ()
 	{
 		$data = $this -> toArray () ;
-		
+
 		$rules = [
 			'date'					 => [
-				'required',
+				'required' ,
 			] ,
 			'vendor_id'				 => [
 				'required' ,
@@ -76,11 +84,8 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
-		
-		
 	}
-	
-	
+
 	public static function filter ( $filterValues )
 	{
 		$requestObject = new BuyingInvoice() ;
@@ -93,6 +98,7 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 			$isPaid		 = $filterValues[ 'is_paid' ] ;
 			$sortBy		 = $filterValues[ 'sort_by' ] ;
 			$sortOrder	 = $filterValues[ 'sort_order' ] ;
+			$stockId	 = $filterValues[ 'stock_id' ] ;
 
 			if ( strlen ( $id ) > 0 )
 			{
@@ -105,6 +111,10 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 			if ( ! empty ( $date ) )
 			{
 				$requestObject = $requestObject -> where ( 'date' , '=' , $date ) ;
+			}
+			if ( $stockId != '' )
+			{
+				$requestObject = $requestObject -> where ( 'stock_id' , '=' , $stockId ) ;
 			}
 			if ( $isPaid == TRUE )
 			{
@@ -123,7 +133,7 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 		throw new \Exceptions\NotImplementedException () ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value,array $firstElement = NULL )
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
 		throw new \Exceptions\NotImplementedException () ;
 	}

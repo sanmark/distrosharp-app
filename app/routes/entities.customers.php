@@ -10,7 +10,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_customers' ] ,
 		'uses'	 => 'Controllers\Entities\CustomerController@home'
 	] ) ;
-	
+
 	Route::post ( '' , [
 		'as'	 => 'entities.customers.view' ,
 		'before' => ['hasAbilities:view_customers' ] ,

@@ -34,8 +34,8 @@ class BanksSeeder extends Seeder
 			$bankO -> id		 = $bank[ 'id' ] ;
 			$bankO -> name		 = $bank[ 'name' ] ;
 			$bankO -> is_active	 = $bank[ 'is_active' ] ;
-		
-			$bankO->  save();
+
+			$bankO -> save () ;
 		}
 	}
 

@@ -9,7 +9,7 @@
 	<div class="panel-body">
 
 		<p>In-charge: <b>{{$stock->incharge->username}}.</b> &nbsp; Stock Type: <b>{{$stock->stockType->label}}.</b> &nbsp;{{HTML::link(URL::action('stocks.edit', [$stock->id]), 'Edit...')}}</p><br/>
-		
+
 		<table class="table table-striped" style="width: 50%;">
 			<tr>
 				<th>Item</th>

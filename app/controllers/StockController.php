@@ -21,7 +21,7 @@ class StockController extends \Controller
 	{
 		$data = [ ] ;
 
-		$stock = \Models\Stock::with ( 'stockDetails.item', 'incharge', 'stockType' )
+		$stock = \Models\Stock::with ( 'stockDetails.item' , 'incharge' , 'stockType' )
 		-> findOrFail ( $stockId ) ;
 
 		$data[ 'stock' ] = $stock ;

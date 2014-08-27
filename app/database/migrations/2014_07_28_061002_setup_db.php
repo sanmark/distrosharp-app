@@ -134,6 +134,7 @@ class SetupDb extends Migration
 			$t -> boolean ( 'completely_paid' ) ;
 			$t -> float ( 'other_expenses_amount' ) ;
 			$t -> string ( 'other_expenses_total' ) ;
+			$t -> string ( 'stock_id' ) ;
 
 
 			$t -> foreign ( 'vendor_id' )

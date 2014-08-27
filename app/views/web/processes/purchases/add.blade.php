@@ -40,6 +40,12 @@
 			</div>
 		</div>
 		<div class="form-group">
+			{{Form::label('Stock', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
 			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
 			<div class="col-sm-3">
 				{{Form::checkbox('is_paid')}}

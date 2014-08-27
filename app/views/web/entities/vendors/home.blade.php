@@ -24,7 +24,7 @@
 				<div class="form-group inline-form">
 					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
 				</div>
-				
+
 				{{Form::close()}}
 
 			</div>		
