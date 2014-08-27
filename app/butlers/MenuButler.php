@@ -35,7 +35,8 @@ class MenuButler
 		] ,
 		[ 'Processes' , [
 				[ 'Purchases' , [
-						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ]
+						[ 'View Purchases' , 'processes.purchases.view' , [ 'view_purchases' ] ],
+						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ] 
 					]
 				] ,
 				['Transfers' , [

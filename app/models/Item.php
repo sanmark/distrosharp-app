@@ -58,13 +58,13 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 
 		$rules = [
 
-			'code'					 => [
+			'code'	 => [
 				'required' ,
-				'unique:items,code,'.$this->id
+				'unique:items,code,' . $this -> id
 			] ,
-			'name'					 => [
+			'name'	 => [
 				'required' ,
-				'unique:items,name,'.$this->id
+				'unique:items,name,' . $this -> id
 			] ,
 		] ;
 
@@ -105,7 +105,7 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
 			}
 
-			if ( strlen ( $sortBy ) > 0 && strlen ( $sortOrder ) )
+			if ( strlen ( $sortBy ) > 0 && strlen ( $sortOrder ) > 0 )
 			{
 				$requestObject = $requestObject -> orderBy ( $sortBy , $sortOrder ) ;
 			}

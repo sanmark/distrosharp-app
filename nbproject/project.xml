@@ -5,5 +5,12 @@
         <data xmlns="http://www.netbeans.org/ns/php-project/1">
             <name>d-071-1-v2-app</name>
         </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>buyingItemRow</word>
+            <word>dd</word>
+            <word>elseif</word>
+            <word>endforeach</word>
+            <word>endif</word>
+        </spellchecker-wordlist>
     </configuration>
 </project>

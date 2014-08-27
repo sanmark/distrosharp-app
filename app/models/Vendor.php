@@ -13,26 +13,24 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 		parent::save ( $options ) ;
 	}
-	
-	public static function getVendorsForHtmlSelect()
+
+	public static function getVendorsForHtmlSelect ()
 	{
-		
-		
-		$vendors= Vendor::lists('name','id');
-		$vendors=[0=>'Select Vendor']+$vendors;
-		return $vendors;
-		
+
+
+		$vendors = Vendor::lists ( 'name' , 'id' ) ;
+		$vendors = [0 => 'Select Vendor' ] + $vendors ;
+		return $vendors ;
 	}
-	
-	
+
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
 
 		parent::save ( $attributes ) ;
 	}
-	
-		public static function filter ( $filterValues )
+
+	public static function filter ( $filterValues )
 	{
 		$requestObject = new Vendor() ;
 
@@ -52,7 +50,7 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 		return $requestObject -> get () ;
 	}
-	
+
 	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
@@ -92,14 +90,43 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 			throw $iie ;
 		}
 	}
+
 	public static function getArray ( $key , $value )
 	{
 		return new \Exceptions\NotImplementedException() ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value, array $firstElement = NULL )
+	public static function getArrayByIds ( $key , $value , $by )
+	{
+
+		
+		if ( $by[ 0 ] > 0 || $by[ 0 ] != null )
+		{
+			$array = self::whereIn ( 'id' , $by )
+			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
+			-> lists ( 'value' , $key ) ;
+
+			return $array ;
+		}
+		return NULL;
+	}
+
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
 		return new \Exceptions\NotImplementedException() ;
+	}
+
+	public static function getArrayForHtmlSelectByIds ( $key , $value , $by )
+	{
+		$array = self::getArrayByIds ( $key , $value , $by ) ;
+
+		$anyElemet = [
+			NULL => 'Any'
+		] ;
+
+		$array = $anyElemet + $array ;
+
+		return $array ;
 	}
 
 }
