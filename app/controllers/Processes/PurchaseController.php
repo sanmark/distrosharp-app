@@ -21,33 +21,39 @@ class PurchaseController extends \Controller
 
 	public function home ()
 	{
-		$data = [ ] ;
-
 		$filterValues		 = \Input::all () ;
 		$buyingInvoiceRows	 = \Models\BuyingInvoice::filter ( $filterValues ) ;
 
-		$id				 = \Input::get ( 'id' ) ;
-		$vendorId		 = \Input::get ( 'vendor_id' ) ;
-		$date			 = \Input::get ( 'date' ) ;
-		$isPaid			 = \Input::get ( 'is_paid' ) ;
-		$sortBy			 = \Input::get ( 'sort_by' ) ;
-		$sortOrder		 = \Input::get ( 'sort_order' ) ;
-		$stockId		 = \Input::get ( 'stock_id' ) ;
-		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
-		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
+		if ( $buyingInvoiceRows -> count () == 0 )
+		{
+			return \Redirect::action ( 'processes.purchases.add' ) ;
+		} else
+		{
+			$data = [ ] ;
 
-		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
-		$data[ 'id' ]				 = $id ;
-		$data[ 'vendorId' ]			 = $vendorId ;
-		$data[ 'date' ]				 = $date ;
-		$data[ 'isPaid' ]			 = \NullHelper::zeroIfNull ( $isPaid ) ;
-		$data[ 'sortBy' ]			 = $sortBy ;
-		$data[ 'sortOrder' ]		 = $sortOrder ;
-		$data[ 'stockId' ]			 = $stockId ;
-		$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
-		$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
-		return \View::make ( 'web.processes.purchases.home' , $data ) ;
+			$id				 = \Input::get ( 'id' ) ;
+			$vendorId		 = \Input::get ( 'vendor_id' ) ;
+			$date			 = \Input::get ( 'date' ) ;
+			$isPaid			 = \Input::get ( 'is_paid' ) ;
+			$sortBy			 = \Input::get ( 'sort_by' ) ;
+			$sortOrder		 = \Input::get ( 'sort_order' ) ;
+			$stockId		 = \Input::get ( 'stock_id' ) ;
+			$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+			$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
+			$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
+
+			$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
+			$data[ 'id' ]				 = $id ;
+			$data[ 'vendorId' ]			 = $vendorId ;
+			$data[ 'date' ]				 = $date ;
+			$data[ 'isPaid' ]			 = \NullHelper::zeroIfNull ( $isPaid ) ;
+			$data[ 'sortBy' ]			 = $sortBy ;
+			$data[ 'sortOrder' ]		 = $sortOrder ;
+			$data[ 'stockId' ]			 = $stockId ;
+			$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
+			$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
+			return \View::make ( 'web.processes.purchases.home' , $data ) ;
+		}
 	}
 
 	public function edit ( $id )
@@ -152,9 +158,9 @@ class PurchaseController extends \Controller
 						-> where ( 'item_id' , '=' , $itemId )
 						-> update ( ['good_quantity' => $newQuantity ] ) ;
 
-
 						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
+						-> where ( 'item_id' , '=' , $rows -> id )
+						-> first () ;
 
 						$buyingItems -> item_id = $itemId ;
 
@@ -190,7 +196,8 @@ class PurchaseController extends \Controller
 						-> update ( ['good_quantity' => $newQuantity ] ) ;
 
 						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $rows -> id ) -> first () ;
+						-> where ( 'item_id' , '=' , $rows -> id )
+						-> first () ;
 
 						$buyingItems -> item_id = $itemId ;
 
@@ -274,9 +281,8 @@ class PurchaseController extends \Controller
 
 					$buyingItems = new \Models\BuyingItem() ;
 
-					$buyingItems -> invoice_id	 = $buyingInvoices -> id ;
-					$buyingItems -> item_id		 = $itemId ;
-
+					$buyingItems -> invoice_id		 = $buyingInvoices -> id ;
+					$buyingItems -> item_id			 = $itemId ;
 					$buyingItems -> price			 = $price ;
 					$buyingItems -> quantity		 = $quantity ;
 					$buyingItems -> free_quantity	 = $freeQuantity ;
@@ -285,8 +291,6 @@ class PurchaseController extends \Controller
 					$buyingItems -> save () ;
 
 					$stockDetails = new \Models\StockDetail() ;
-
-
 
 					$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $toStockId )
 					-> where ( 'item_id' , '=' , $itemId )
