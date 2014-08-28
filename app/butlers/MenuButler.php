@@ -54,6 +54,13 @@ class MenuButler
 				['View Stocks' , 'stocks.all' , ['view_stocks' ] ]
 			]
 		] ,
+		['Finance' , [
+				['Account' , [
+						['Add Account' , 'finances.accounts.add' , ['add_finance_account' ] ] ,
+					]
+				] ,
+			] ,
+		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]

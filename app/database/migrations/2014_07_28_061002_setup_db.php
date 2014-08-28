@@ -248,10 +248,26 @@ class SetupDb extends Migration
 			-> on ( 'selling_invoices' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
-			
+
 			$t -> foreign ( 'item_id' )
 			-> references ( 'id' )
 			-> on ( 'items' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'finance_accounts' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' ) ;
+			$t -> integer ( 'bank_id' ) -> unsigned () -> nullable () ;
+			$t -> boolean ( 'is_active' ) ;
+			$t -> float ( 'account_balance' ) ;
+			$t -> boolean ( 'is_in_house' ) ;
+
+			$t -> foreign ( 'bank_id' )
+			-> references ( 'id' )
+			-> on ( 'banks' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
@@ -259,6 +275,7 @@ class SetupDb extends Migration
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'finance_accounts' ) ;
 		Schema::dropIfExists ( 'selling_items' ) ;
 		Schema::dropIfExists ( 'selling_invoices' ) ;
 		Schema::dropIfExists ( 'transfer_details' ) ;

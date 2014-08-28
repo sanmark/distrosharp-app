@@ -33,4 +33,14 @@ class NullHelper
 		return FALSE ;
 	}
 
+	public static function nullIfEmpty ( $value )
+	{
+		if ( empty ( $value ) )
+		{
+			return NULL ;
+		}
+
+		return $value ;
+	}
+
 }
