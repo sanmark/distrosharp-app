@@ -84,7 +84,10 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 	public static function getArray ( $key , $value )
 	{
-		return new \Exceptions\NotImplementedException() ;
+		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') AS `value`' ) )
+		-> lists ( 'value' , $key ) ;
+
+		return $array ;
 	}
 
 	public static function getArrayByIds ( $key , $value , $by )
@@ -104,7 +107,14 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 
 	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
-		return new \Exceptions\NotImplementedException() ;
+		$array = self::getArray ( $key , $value ) ;
+
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
+
+		return $array ;
 	}
 
 	public static function getArrayForHtmlSelectByIds ( $key , $value , $by )

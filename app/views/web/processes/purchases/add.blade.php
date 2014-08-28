@@ -18,7 +18,7 @@
 		<div class="form-group">
 			{{Form::label('vendor', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('vendor_id',\Models\Vendor::getVendorsForHtmlSelect(), null, array('class' => 'form-control'))}}
+				{{Form::select('vendor_id',\Models\Vendor::getArrayForHtmlSelect('id','name',[''=>'Select Vendor']), null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
