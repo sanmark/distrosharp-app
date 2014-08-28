@@ -11,17 +11,17 @@ class CustomerController extends \Controller
 
 		$filterValues = \Input::all () ;
 
-		$customers				 = \Models\Customer::filter ( $filterValues ) ;
-		$routeSelectBoxContent	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'Any' ] ) ;
-		$name					 = \Input::get ( 'name' ) ;
-		$routeId				 = \Input::get ( 'route' ) ;
-		$isActive				 = \Input::get ( 'is_active' ) ;
+		$customers		 = \Models\Customer::filter ( $filterValues ) ;
+		$routeSelectBox	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
+		$name			 = \Input::get ( 'name' ) ;
+		$routeId		 = \Input::get ( 'route' ) ;
+		$isActive		 = \Input::get ( 'is_active' ) ;
 
-		$data[ 'customers' ]			 = $customers ;
-		$data[ 'routeSelectBoxContent' ] = $routeSelectBoxContent ;
-		$data[ 'name' ]					 = $name ;
-		$data[ 'routeId' ]				 = $routeId ;
-		$data[ 'isActive' ]				 = $isActive ;
+		$data[ 'customers' ]		 = $customers ;
+		$data[ 'routeSelectBox' ]	 = $routeSelectBox ;
+		$data[ 'name' ]				 = $name ;
+		$data[ 'routeId' ]			 = $routeId ;
+		$data[ 'isActive' ]			 = $isActive ;
 
 		return \View::make ( 'web.entities.customers.home' , $data ) ;
 	}
@@ -55,11 +55,13 @@ class CustomerController extends \Controller
 	public function edit ( $id )
 	{
 
-		$customer = \Models\Customer::findOrFail ( $id ) ;
+		$customer		 = \Models\Customer::findOrFail ( $id ) ;
+		$routeSelectBox	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
 
 		$data = [ ] ;
 
-		$data[ 'customer' ] = $customer ;
+		$data[ 'customer' ]			 = $customer ;
+		$data[ 'routeSelectBox' ]	 = $routeSelectBox ;
 
 		return \View::make ( 'web.entities.customers.edit' , $data ) ;
 	}

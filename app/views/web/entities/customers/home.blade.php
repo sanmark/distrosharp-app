@@ -18,7 +18,7 @@
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('route', null, array('class' => 'control-label'))}}
-					{{Form::select ( 'route' , $routeSelectBoxContent, $routeId, array('class' => 'form-control'))}}
+					{{Form::select ( 'route' , $routeSelectBox, $routeId, array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}

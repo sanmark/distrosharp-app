@@ -41,7 +41,7 @@ class PurchaseController extends \Controller
 			$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
 			$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
 			$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
-
+			
 			$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
 			$data[ 'id' ]				 = $id ;
 			$data[ 'vendorId' ]			 = $vendorId ;
@@ -89,7 +89,7 @@ class PurchaseController extends \Controller
 		$data[ 'freeQuantity' ]				 = $freeQuantity ;
 		$data[ 'expDate' ]					 = $expDate ;
 		$data[ 'batchNumber' ]				 = $batchNumber ;
-
+		
 		return \View::make ( 'web.processes.purchases.edit' , $data ) ;
 	}
 

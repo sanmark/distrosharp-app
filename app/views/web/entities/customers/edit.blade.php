@@ -18,13 +18,13 @@
 		<div class="form-group">
 			{{Form::label('route_id', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('route_id', null, array('class' => 'form-control'))}}
+				{{Form::select('route_id',$routeSelectBox,null,array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label', 'style'=>'padding-top: 0;'))}}
 			<div class="col-sm-4">
-				{{Form::text('is_active', null, array('class' => 'form-control'))}}
+				{{Form::checkbox('is_active')}}
 			</div>
 		</div>
 		<div class="form-group">
