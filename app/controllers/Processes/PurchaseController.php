@@ -46,7 +46,7 @@ class PurchaseController extends \Controller
 			$data[ 'id' ]				 = $id ;
 			$data[ 'vendorId' ]			 = $vendorId ;
 			$data[ 'date' ]				 = $date ;
-			$data[ 'isPaid' ]			 = \NullHelper::zeroIfNull ( $isPaid ) ;
+			$data[ 'isPaid' ]			 = $isPaid;
 			$data[ 'sortBy' ]			 = $sortBy ;
 			$data[ 'sortOrder' ]		 = $sortOrder ;
 			$data[ 'stockId' ]			 = $stockId ;
