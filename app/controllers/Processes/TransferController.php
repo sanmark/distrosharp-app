@@ -94,8 +94,8 @@ class TransferController extends \Controller
 
 					$transferDetail -> save () ;
 
-					\StockDetailButler::decreaseItemAmount ( $fromStockId , $itemId , $transferAmount ) ;
-					\StockDetailButler::increaseItemAmount ( $toStockId , $itemId , $transferAmount ) ;
+					\StockDetailButler::decreaseGoodQuantity ( $fromStockId , $itemId , $transferAmount ) ;
+					\StockDetailButler::increaseGoodQuantity ( $toStockId , $itemId , $transferAmount ) ;
 				}
 			}
 

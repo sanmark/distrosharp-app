@@ -2,7 +2,7 @@
 
 namespace ValidationRules ;
 
-class CustomValidationRules
+class CustomValidationRules extends \Validator
 {
 
 	public function hashMatch ( $field , $value , $parameters )
@@ -23,6 +23,17 @@ class CustomValidationRules
 		}
 
 		return FALSE ;
+	}
+
+	public function atLeastOneElementOfOneArrayHasValue ( $field , $value , $parameters )
+	{
+		return \ArrayHelper::hasAtLeastOneElementWithValueInAtLeastOneChildArrayRecursive ( $value ) ;
+	}
+
+	public function greaterThanOrEqualTo ( $field , $value , $parameters )
+	{
+		$againstValue = ( float ) $parameters[ 0 ] ;
+		return $value >= $againstValue ;
 	}
 
 }

@@ -11,7 +11,6 @@ class StockDetailsSeeder extends Seeder
 		$items	 = Models\Item::all () ;
 
 		$stockItemId = 0 ;
-		$quantity	 = 0 ;
 
 		foreach ( $stocks as $stock )
 		{
@@ -25,10 +24,8 @@ class StockDetailsSeeder extends Seeder
 					'item_id'	 => $item -> id
 				] ;
 
-				$quantity ++ ;
-				$newStockItem[ 'good_quantity' ]	 = $quantity ;
-				$quantity ++ ;
-				$newStockItem[ 'return_quantity' ]	 = $quantity ;
+				$newStockItem[ 'good_quantity' ]	 = 100 ;
+				$newStockItem[ 'return_quantity' ]	 = 0 ;
 
 				$stockDetails[] = $newStockItem ;
 			}

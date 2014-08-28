@@ -42,12 +42,18 @@ class MenuButler
 				['Transfers' , [
 						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ]
 					]
+				] ,
+				['Sales' , [
+						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
+						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ]
+					]
 				]
 			]
 		] ,
 		['Stocks' , [
 				['View Stocks' , 'stocks.all' , ['view_stocks' ] ]
-			] ] ,
+			]
+		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]

@@ -206,10 +206,61 @@ class SetupDb extends Migration
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'selling_invoices' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> dateTime ( 'date_time' ) ;
+			$t -> integer ( 'customer_id' ) -> unsigned () ;
+			$t -> integer ( 'rep_id' ) -> unsigned () ;
+			$t -> string ( 'printed_invoice_number' , 100 ) ;
+			$t -> float ( 'discount' ) ;
+			$t -> boolean ( 'is_completely_paid' ) ;
+
+			$t -> foreign ( 'customer_id' )
+			-> references ( 'id' )
+			-> on ( 'customers' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'rep_id' )
+			-> references ( 'id' )
+			-> on ( 'users' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
+		Schema::create ( 'selling_items' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'selling_invoice_id' ) -> unsigned () ;
+			$t -> integer ( 'item_id' ) -> unsigned () ;
+			$t -> float ( 'price' ) ;
+			$t -> float ( 'paid_quantity' ) ;
+			$t -> float ( 'free_quantity' ) ;
+			$t -> float ( 'good_return_price' ) ;
+			$t -> float ( 'good_return_quantity' ) ;
+			$t -> float ( 'company_return_price' ) ;
+			$t -> float ( 'company_return_quantity' ) ;
+
+			$t -> foreign ( 'selling_invoice_id' )
+			-> references ( 'id' )
+			-> on ( 'selling_invoices' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+			
+			$t -> foreign ( 'item_id' )
+			-> references ( 'id' )
+			-> on ( 'items' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'selling_items' ) ;
+		Schema::dropIfExists ( 'selling_invoices' ) ;
 		Schema::dropIfExists ( 'transfer_details' ) ;
 		Schema::dropIfExists ( 'transfers' ) ;
 		Schema::dropIfExists ( 'buying_items' ) ;

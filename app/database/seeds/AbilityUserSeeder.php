@@ -113,7 +113,23 @@ class AbilityUserSeeder extends Seeder
 			[
 				'ability_id' => 30 ,
 				'user_id'	 => 1
-			]
+			] ,
+			[
+				'ability_id' => 31 ,
+				'user_id'	 => 1
+			] ,
+			[
+				'ability_id' => 32 ,
+				'user_id'	 => 1
+			] ,
+			[
+				'ability_id' => 32 ,
+				'user_id'	 => 2
+			] ,
+			[
+				'ability_id' => 33 ,
+				'user_id'	 => 1
+			] ,
 		] ;
 
 //			[

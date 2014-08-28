@@ -14,7 +14,7 @@ class StocksSeeder extends Seeder
 			] ,
 			[
 				'id'			 => 2 ,
-				'name'			 => 'Backup' ,
+				'name'			 => 'SP AB-1234' ,
 				'incharge_id'	 => 2 ,
 				'stock_type_id'	 => 2 ,
 			] ,
