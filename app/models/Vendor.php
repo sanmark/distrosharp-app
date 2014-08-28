@@ -90,19 +90,19 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 		return $array ;
 	}
 
-	public static function getArrayByIds ( $key , $value , $by )
+	public static function getArrayByIds ( $key , $value , $ids )
 	{
 
 
-		if ( $by[ 0 ] > 0 || $by[ 0 ] != null )
+		if ( count ( $ids ) > 0 && ( $ids[ 0 ] > 0 || $ids[ 0 ] != null) )
 		{
-			$array = self::whereIn ( 'id' , $by )
+			$array = self::whereIn ( 'id' , $ids )
 			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
 			-> lists ( 'value' , $key ) ;
 
 			return $array ;
 		}
-		return NULL ;
+		return [ ] ;
 	}
 
 	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )

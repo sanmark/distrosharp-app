@@ -24,36 +24,30 @@ class PurchaseController extends \Controller
 		$filterValues		 = \Input::all () ;
 		$buyingInvoiceRows	 = \Models\BuyingInvoice::filter ( $filterValues ) ;
 
-		if ( $buyingInvoiceRows -> count () == 0 )
-		{
-			return \Redirect::action ( 'processes.purchases.add' ) ;
-		} else
-		{
-			$data = [ ] ;
+		$data = [ ] ;
 
-			$id				 = \Input::get ( 'id' ) ;
-			$vendorId		 = \Input::get ( 'vendor_id' ) ;
-			$date			 = \Input::get ( 'date' ) ;
-			$isPaid			 = \Input::get ( 'is_paid' ) ;
-			$sortBy			 = \Input::get ( 'sort_by' ) ;
-			$sortOrder		 = \Input::get ( 'sort_order' ) ;
-			$stockId		 = \Input::get ( 'stock_id' ) ;
-			$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-			$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
-			$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
-			
-			$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
-			$data[ 'id' ]				 = $id ;
-			$data[ 'vendorId' ]			 = $vendorId ;
-			$data[ 'date' ]				 = $date ;
-			$data[ 'isPaid' ]			 = $isPaid;
-			$data[ 'sortBy' ]			 = $sortBy ;
-			$data[ 'sortOrder' ]		 = $sortOrder ;
-			$data[ 'stockId' ]			 = $stockId ;
-			$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
-			$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
-			return \View::make ( 'web.processes.purchases.home' , $data ) ;
-		}
+		$id				 = \Input::get ( 'id' ) ;
+		$vendorId		 = \Input::get ( 'vendor_id' ) ;
+		$date			 = \Input::get ( 'date' ) ;
+		$isPaid			 = \Input::get ( 'is_paid' ) ;
+		$sortBy			 = \Input::get ( 'sort_by' ) ;
+		$sortOrder		 = \Input::get ( 'sort_order' ) ;
+		$stockId		 = \Input::get ( 'stock_id' ) ;
+		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
+		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
+
+		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
+		$data[ 'id' ]				 = $id ;
+		$data[ 'vendorId' ]			 = $vendorId ;
+		$data[ 'date' ]				 = $date ;
+		$data[ 'isPaid' ]			 = $isPaid ;
+		$data[ 'sortBy' ]			 = $sortBy ;
+		$data[ 'sortOrder' ]		 = $sortOrder ;
+		$data[ 'stockId' ]			 = $stockId ;
+		$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
+		$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
+		return \View::make ( 'web.processes.purchases.home' , $data ) ;
 	}
 
 	public function edit ( $id )
@@ -89,7 +83,7 @@ class PurchaseController extends \Controller
 		$data[ 'freeQuantity' ]				 = $freeQuantity ;
 		$data[ 'expDate' ]					 = $expDate ;
 		$data[ 'batchNumber' ]				 = $batchNumber ;
-		
+
 		return \View::make ( 'web.processes.purchases.edit' , $data ) ;
 	}
 
