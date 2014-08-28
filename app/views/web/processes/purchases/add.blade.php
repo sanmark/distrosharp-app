@@ -34,9 +34,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Total', array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('other_expense_total',null, array('class' => 'form-control'))}}
+				{{Form::textarea('other_expenses_details',null, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">

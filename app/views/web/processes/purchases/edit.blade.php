@@ -42,8 +42,8 @@
 		<td colspan="4"></td>
 	</tr>
 	<tr>
-		<td>Other Expenses Total</td>
-		<td>{{Form::text('other_expenses_total',$purchaseInvoice->other_expenses_total)}}</td>
+		<td>Other Expenses Details</td>
+		<td>{{Form::textarea('other_expenses_details',$purchaseInvoice->other_expenses_details)}}</td>
 		<td colspan="4"></td>
 	</tr>
 	<tr>

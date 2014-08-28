@@ -105,7 +105,7 @@ class PurchaseController extends \Controller
 			$purchaseItem -> printed_invoice_num	 = \Input::get ( 'printed_invoice_num' ) ;
 			$purchaseItem -> completely_paid		 = \NullHelper::zeroIfNull ( \Input::get ( 'completely_paid' ) ) ;
 			$purchaseItem -> other_expenses_amount	 = \Input::get ( 'other_expenses_amount' ) ;
-			$purchaseItem -> other_expenses_total	 = \Input::get ( 'other_expenses_total' ) ;
+			$purchaseItem -> other_expenses_details	 = \Input::get ( 'other_expenses_details' ) ;
 
 			$purchaseItem -> update () ;
 
@@ -231,26 +231,27 @@ class PurchaseController extends \Controller
 			$isPaid				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
 			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
 			{
-				$otherExpenseAmount = 0 ;
+				$otherExpensesAmount = 0 ;
 			} else
 			{
-				$otherExpenseAmount = \Input::get ( 'other_expense_amount' ) ;
+				$otherExpensesAmount = \Input::get ( 'other_expense_amount' ) ;
 			}
-			if ( empty ( \Input::get ( 'other_expense_total' ) ) )
+			if ( empty ( \Input::get ( 'other_expenses_details' ) ) )
 			{
-				$otherExpenseTotal = 0 ;
+				$otherExpensesDetail = '' ;
 			} else
 			{
-				$otherExpenseTotal = \Input::get ( 'other_expense_total' ) ;
+				$otherExpensesDetail = \Input::get ( 'other_expenses_details' ) ;
 			}
-			$buyingInvoices							 = new \Models\BuyingInvoice() ;
-			$buyingInvoices -> date					 = $purchaseDate ;
-			$buyingInvoices -> vendor_id			 = $vendorId ;
-			$buyingInvoices -> printed_invoice_num	 = $printedInvoiceNum ;
-			$buyingInvoices -> completely_paid		 = $isPaid ;
-			$buyingInvoices -> other_expenses_amount = $otherExpenseAmount ;
-			$buyingInvoices -> other_expenses_total	 = $otherExpenseTotal ;
-			$buyingInvoices -> stock_id				 = $toStockId ;
+
+			$buyingInvoices								 = new \Models\BuyingInvoice() ;
+			$buyingInvoices -> date						 = $purchaseDate ;
+			$buyingInvoices -> vendor_id				 = $vendorId ;
+			$buyingInvoices -> printed_invoice_num		 = $printedInvoiceNum ;
+			$buyingInvoices -> completely_paid			 = $isPaid ;
+			$buyingInvoices -> other_expenses_amount	 = $otherExpensesAmount ;
+			$buyingInvoices -> other_expenses_details	 = $otherExpensesDetail ;
+			$buyingInvoices -> stock_id					 = $toStockId ;
 			$buyingInvoices -> save () ;
 
 			$countRows = \Models\Item::all () ;

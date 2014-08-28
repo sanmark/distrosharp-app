@@ -133,9 +133,8 @@ class SetupDb extends Migration
 			$t -> string ( 'printed_invoice_num' ) ;
 			$t -> boolean ( 'completely_paid' ) ;
 			$t -> float ( 'other_expenses_amount' ) ;
-			$t -> string ( 'other_expenses_total' ) ;
+			$t -> text ( 'other_expenses_details' ) ;
 			$t -> string ( 'stock_id' ) ;
-
 
 			$t -> foreign ( 'vendor_id' )
 			-> references ( 'id' )

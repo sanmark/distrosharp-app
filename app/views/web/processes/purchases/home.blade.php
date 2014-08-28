@@ -48,7 +48,7 @@
 		<th>Printed Invoice Number</th>
 		<th>Completely Paid</th>
 		<th>Other Expense Amount</th>
-		<th>Other Expense Total</th>
+		<th>Other Expense Details</th>
 		<th>Stock</th>
 	</tr>
 	@foreach($buyingInvoiceRows as $buyingInvoiceRow)
@@ -59,8 +59,8 @@
 		<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
 		<td>{{$buyingInvoiceRow->completely_paid}}</td>
 		<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
-		<td>{{$buyingInvoiceRow->other_expenses_total}}</td>
-		<th>{{$buyingInvoiceRow->stock->name}}</th>
+		<td>{{$buyingInvoiceRow->other_expenses_details}}</td>
+		<td>{{$buyingInvoiceRow->stock->name}}</td>
 	</tr>
 	@endforeach
 </table>
