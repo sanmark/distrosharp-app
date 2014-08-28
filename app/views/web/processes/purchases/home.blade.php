@@ -35,6 +35,12 @@
 			</div>
 		</div>
 		<div class="form-group">
+			{{Form::label('stock_id', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('stock_id',$stockSelectBox,$stockId, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
 			{{Form::label('sort', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3 form-inline">
 				{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date'=>'Date'],$sortBy, array('class' => 'form-control', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control', 'style' => 'width: 145px;'))}}
@@ -58,6 +64,7 @@
 				<th>Completely Paid</th>
 				<th>Other Expense Amount</th>
 				<th>Other Expense Total</th>
+				<th>Stock</th>
 			</tr>
 			<tbody>
 				@foreach($buyingInvoiceRows as $buyingInvoiceRow)
@@ -68,7 +75,8 @@
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
 					<td>{{$buyingInvoiceRow->completely_paid}}</td>
 					<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
-					<td>{{$buyingInvoiceRow->other_expenses_total}}</td>
+					<td>{{$buyingInvoiceRow->other_expenses_details}}</td>
+					<td>{{$buyingInvoiceRow->stock->name}}</td>
 				</tr>
 				@endforeach
 			</tbody>

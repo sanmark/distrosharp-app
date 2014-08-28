@@ -116,13 +116,9 @@ class BuyingInvoice extends \Eloquent implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'stock_id' , '=' , $stockId ) ;
 			}
-			if ( $isPaid == '1' )
+			if ( $isPaid != '' )
 			{
-				$requestObject = $requestObject -> where ( 'completely_paid' , '=' , 1 ) ;
-			}
-			elseif($isPaid == '0')
-			{
-				$requestObject = $requestObject -> where ( 'completely_paid' , '=' , 0 ) ;
+				$requestObject = $requestObject -> where ( 'completely_paid' , '=' , $isPaid ) ;
 			}
 			if ( strlen ( $sortBy ) > 0 && strlen ( $sortOrder ) > 0 )
 			{
