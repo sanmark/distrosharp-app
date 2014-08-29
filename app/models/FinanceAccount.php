@@ -7,6 +7,12 @@ class FinanceAccount extends \Eloquent implements \Interfaces\iEntity
 
 	public $timestamps = FALSE ;
 
+	public function bank ()
+	{
+
+		return $this -> belongsTo ( 'Models\Bank' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
@@ -34,17 +40,49 @@ class FinanceAccount extends \Eloquent implements \Interfaces\iEntity
 
 	public static function filter ( $filterValues )
 	{
-		throw new \Exceptions\NotImplementedException() ;
+		$requestObject = new FinanceAccount() ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$name		 = $filterValues [ 'name' ] ;
+			$bankId		 = $filterValues [ 'bank_id' ] ;
+			$isInHouse	 = $filterValues [ 'is_in_house' ] ;
+			$isActive	 = $filterValues [ 'is_active' ] ;
+
+			if ( strlen ( $name ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'name' , 'LIKE' , "%$name%" ) ;
+			}
+			if ( ! empty ( $bankId ) )
+			{
+				if ( $bankId == 'none' )
+				{
+					$requestObject = $requestObject -> whereNull ( 'bank_id' ) ;
+				} else
+				{
+					$requestObject = $requestObject -> where ( 'bank_id' , '=' , $bankId ) ;
+				}
+			}
+			if ( $isInHouse != '' )
+			{
+				$requestObject = $requestObject -> where ( 'is_in_house' , '=' , $isInHouse ) ;
+			}
+			if ( $isActive != '' )
+			{
+				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
+			}
+		}
+		return $requestObject -> get () ;
 	}
 
 	public static function getArray ( $key , $value )
 	{
-		throw new \Exceptions\NotImplementedException() ;
+		throw \Exceptions\NotImplementedException () ;
 	}
 
 	public static function getArrayForHtmlSelect ( $key , $value )
 	{
-		throw new \Exceptions\NotImplementedException() ;
+		throw \Exceptions\NotImplementedException () ;
 	}
 
 }

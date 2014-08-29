@@ -57,6 +57,7 @@ class MenuButler
 		['Finance' , [
 				['Account' , [
 						['Add Account' , 'finances.accounts.add' , ['add_finance_account' ] ] ,
+						['View Account' , 'finances.accounts.view' , ['view_finance_accounts' ] ]
 					]
 				] ,
 			] ,

@@ -44,4 +44,34 @@ class AccountsController extends \Controller
 		}
 	}
 
+	public function home ()
+	{
+		$data = [ ] ;
+
+		$filterValues	 = \Input::all () ;
+		$financeAccounts = \Models\FinanceAccount::filter ( $filterValues ) ;
+
+		$name					 = \Input::get ( 'name' ) ;
+		$bankId					 = \Input::get ( 'bank_id' ) ;
+		$isInHouse				 = \Input::get ( 'is_in_house' ) ;
+		$isActive				 = \Input::get ( 'is_active' ) ;
+		$financeAccountsDetails	 = \Models\FinanceAccount::get () ;
+		$banks					 = \Models\FinanceAccount::distinct () -> lists ( 'bank_id' ) ;
+		$bankSelectBox			 = \Models\Bank::getArrayForHtmlSelectByIds ( 'id' , 'name' , $banks , [
+			''		 => 'Any' ,
+			'none'	 => 'None'
+		] ) ;
+		$data					 = compact ( [
+			'financeAccounts' ,
+			'name' ,
+			'bankId' ,
+			'isInHouse' ,
+			'isActive' ,
+			'financeAccountsDetails' ,
+			'bankSelectBox'
+		] ) ;
+
+		return \View::make ( 'web.finances.accounts.home' , $data ) ;
+	}
+
 }

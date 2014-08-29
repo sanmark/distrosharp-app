@@ -16,4 +16,14 @@ Route::group ( [
 		'before' => ['hasAbilities:add_finance_account' ] ,
 		'uses'	 => 'Controllers\Finances\AccountsController@save' ,
 	] ) ;
+	Route::get('view', [
+		'as'=>'finances.accounts.view',
+		'before'=>['hasAbilities:view_finance_accounts'],
+		'uses'=>'Controllers\Finances\AccountsController@home',
+	]);
+	Route::post('view', [
+		'as'=>'finances.accounts.view',
+		'before'=>['hasAbilities:view_finance_accounts'],
+		'uses'=>'Controllers\Finances\AccountsController@home',
+	]);
 } ) ;
