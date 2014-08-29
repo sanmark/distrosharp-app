@@ -88,15 +88,14 @@ class User extends Eloquent implements UserInterface , RemindableInterface , Int
 		return $array ;
 	}
 
-	public static function getArrayForHtmlSelectByIds ( $key , $value , $by )
+	public static function getArrayForHtmlSelectByIds ( $key , $value , $by , array $firstElement = NULL )
 	{
 		$array = self::getArrayByIds ( $key , $value , $by ) ;
 
-		$anyElemet = [
-			'0' => 'Any'
-		] ;
-
-		$array = $anyElemet + $array ;
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
 
 		return $array ;
 	}

@@ -16,7 +16,7 @@ class RouteController extends \Controller
 		$isActive						 = \Input::get ( 'is_active' ) ;
 		$repId							 = \Input::get ( 'rep_id' ) ;
 		$reps							 = \Models\Route::distinct () -> lists ( 'rep_id' ) ;
-		$repSelectBoxContent			 = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $reps ) ;
+		$repSelectBoxContent			 = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $reps , [NULL => 'Any' ] ) ;
 		$data[ 'repSelectBoxContent' ]	 = $repSelectBoxContent ;
 		$data[ 'routes' ]				 = $routes ;
 		$data[ 'name' ]					 = $name ;

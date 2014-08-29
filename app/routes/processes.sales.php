@@ -11,6 +11,12 @@ Route::group ( [
 		'uses'	 => 'Controllers\Processes\SaleController@all'
 	] ) ;
 
+	Route::post ( '' , [
+		'as'	 => 'processes.sales.all' ,
+		'before' => ['hasAbilities:view_sales' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@all'
+	] ) ;
+
 	Route::get ( 'add' , [
 		'as'	 => 'processes.sales.add' ,
 		'before' => ['hasAbilities:add_sale' ] ,

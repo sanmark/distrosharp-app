@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class SellingInvoice extends \Eloquent
+class SellingInvoice extends \Eloquent implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -15,6 +15,16 @@ class SellingInvoice extends \Eloquent
 		$this -> validateForSave () ;
 
 		parent::save ( $options ) ;
+	}
+
+	public function customer ()
+	{
+		return $this -> belongsTo ( 'Models\Customer' ) ;
+	}
+
+	public function rep ()
+	{
+		return $this -> belongsTo ( 'User' , 'rep_id' ) ;
 	}
 
 	private function validateForSave ()
@@ -55,6 +65,88 @@ class SellingInvoice extends \Eloquent
 
 			throw $iie ;
 		}
+	}
+
+	public static function filter ( $filterValues )
+	{
+		$requestObject = new SellingInvoice() ;
+
+		$requestObject = self::prepareRequestObjectForFiletering ( $requestObject , $filterValues ) ;
+
+		$requestObject	 = $requestObject -> with ( 'customer' ) ;
+		$requestObject	 = $requestObject -> with ( 'rep' ) ;
+
+		return $requestObject -> get () ;
+	}
+
+	public static function getArray ( $key , $value )
+	{
+		throw new \Exceptions\NotImplementedException() ;
+	}
+
+	public static function getArrayForHtmlSelect ( $key , $value )
+	{
+		throw new \Exceptions\NotImplementedException() ;
+	}
+
+	private static function prepareRequestObjectForFiletering ( SellingInvoice $requestObject , array $filterValues )
+	{
+		if ( count ( $filterValues ) > 0 )
+		{
+			$id						 = $filterValues[ 'id' ] ;
+			$dateTimeFrom			 = $filterValues[ 'date_time_from' ] ;
+			$dateTimeTo				 = $filterValues[ 'date_time_to' ] ;
+			$customerId				 = $filterValues[ 'customer_id' ] ;
+			$repId					 = $filterValues[ 'rep_id' ] ;
+			$printedInvoiceNumber	 = $filterValues[ 'printed_invoice_number' ] ;
+			$isCompletelyPaid		 = $filterValues[ 'is_completely_paid' ] ;
+
+
+			if ( strlen ( $id ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'id' , 'LIKE' , '%' . $id . '%' ) ;
+			}
+
+			if ( strlen ( $dateTimeFrom ) > 0 && strlen ( $dateTimeTo ) > 0 )
+			{
+				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom , 'Y-m-d H:i:s' ) ;
+				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo , 'Y-m-d H:i:s' ) ;
+
+				$datesAndTimes = [$dateTimeFrom , $dateTimeTo ] ;
+
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
+			} elseif ( strlen ( $dateTimeFrom ) > 0 )
+			{
+				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom , 'Y-m-d H:i:s' ) ;
+				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $dateTimeFrom ) ;
+			} elseif ( strlen ( $dateTimeTo ) > 0 )
+			{
+				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo , 'Y-m-d H:i:s' ) ;
+				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $dateTimeTo ) ;
+			}
+
+			if ( strlen ( $customerId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'customer_id' , '=' , $customerId ) ;
+			}
+
+			if ( strlen ( $repId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $repId ) ;
+			}
+
+			if ( strlen ( $printedInvoiceNumber ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'printed_invoice_number' , 'LIKE' , '%' . $printedInvoiceNumber . '%' ) ;
+			}
+
+			if ( strlen ( $isCompletelyPaid ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'is_completely_paid' , '=' , $isCompletelyPaid ) ;
+			}
+		}
+
+		return $requestObject ;
 	}
 
 }

@@ -75,6 +75,38 @@ class SaleController extends \Controller
 		}
 	}
 
+	public function all ()
+	{
+		$filterValues			 = \Input::all () ;
+		$sellingInvoices		 = \Models\SellingInvoice::filter ( $filterValues ) ;
+		$customerSelectBox		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Any' ] ) ;
+		$repSelectBox			 = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
+		$isActiveSelectBox		 = \ViewButler::htmlSelectAnyYesNo () ;
+		$id						 = \Input::get ( 'id' ) ;
+		$printedInvoiceNumber	 = \Input::get ( 'printed_invoice_number' ) ;
+		$dateTimeFrom			 = \Input::get ( 'date_time_from' ) ;
+		$dateTimeTo				 = \Input::get ( 'date_time_to' ) ;
+		$customerId				 = \Input::get ( 'customer_id' ) ;
+		$repId					 = \Input::get ( 'rep_id' ) ;
+		$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
+
+
+		$data = compact ( [
+			'sellingInvoices' ,
+			'customerSelectBox' ,
+			'repSelectBox' ,
+			'isActiveSelectBox' ,
+			'id' ,
+			'printedInvoiceNumber' ,
+			'dateTimeFrom' ,
+			'dateTimeTo' ,
+			'customerId' ,
+			'repId' ,
+			'isCompletelyPaid' ,
+		] ) ;
+		return \View::make ( 'web.processes.sales.all' , $data ) ;
+	}
+
 	private function validateSaleItems ( $items )
 	{
 		foreach ( $items as $itemId => $item )
