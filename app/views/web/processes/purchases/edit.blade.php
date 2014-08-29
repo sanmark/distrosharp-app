@@ -127,7 +127,7 @@
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>
 			</div>
 		</div>
-		
+
 		{{Form::close()}}
 
 	</div>

@@ -7,18 +7,18 @@ class AccountsController extends \Controller
 
 	public function add ()
 	{
-		$data = [ ] ;
 
 		$bankSelectBox = \Models\Bank::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'None' ] ) ;
 
-		$data[ 'bankSelectBox' ] = $bankSelectBox ;
+		$data = compact ( [
+			'bankSelectBox'
+		] ) ;
 
 		return \View::make ( 'web.finances.accounts.add' , $data ) ;
 	}
 
 	public function edit ( $id )
 	{
-		$data = [ ] ;
 
 		$financeAccount	 = \Models\FinanceAccount::findOrFail ( $id ) ;
 		$bankSelectBox	 = \Models\Bank::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'None' ] ) ;
@@ -65,11 +65,10 @@ class AccountsController extends \Controller
 		try
 		{
 
-			$name		 = \Input::get ( 'name' ) ;
-			$bankId		 = \Input::get ( 'bank_id' ) ;
-			$isInHouse	 = \Input::get ( 'is_in_house' ) ;
-			$isActive	 = \Input::get ( 'is_active' ) ;
-
+			$name			 = \Input::get ( 'name' ) ;
+			$bankId			 = \Input::get ( 'bank_id' ) ;
+			$isInHouse		 = \Input::get ( 'is_in_house' ) ;
+			$isActive		 = \Input::get ( 'is_active' ) ;
 			$financeAccounts = new \Models\FinanceAccount() ;
 
 			$financeAccounts -> name			 = $name ;
@@ -89,7 +88,6 @@ class AccountsController extends \Controller
 
 	public function home ()
 	{
-		$data = [ ] ;
 
 		$filterValues	 = \Input::all () ;
 		$financeAccounts = \Models\FinanceAccount::filter ( $filterValues ) ;

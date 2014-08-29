@@ -58,7 +58,7 @@
 			</div>
 		</div>
 		{{Form::close()}}
-		
+
 		<br/>
 
 		<table class="table table-striped" style="width: 80%;">

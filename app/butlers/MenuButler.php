@@ -60,6 +60,10 @@ class MenuButler
 						['View Account' , 'finances.accounts.view' , ['view_finance_accounts' ] ]
 					]
 				] ,
+				['Transfers' , [
+						['Add Transfer' , 'finances.transfers.selectAccountsInvolved' , ['add_finance_transfer' ] ]
+					]
+				]
 			] ,
 		] ,
 		['Account' , [
