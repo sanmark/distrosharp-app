@@ -69,9 +69,14 @@ class User extends Eloquent implements UserInterface , RemindableInterface , Int
 
 	public static function getArrayByIds ( $key , $value , $by )
 	{
-		$array = self::whereIn ( 'id' , $by )
-		-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
-		-> lists ( 'value' , $key ) ;
+		$array = [ ] ;
+
+		if ( count ( $by ) > 0 )
+		{
+			$array = self::whereIn ( 'id' , $by )
+			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
+			-> lists ( 'value' , $key ) ;
+		}
 
 		return $array ;
 	}
