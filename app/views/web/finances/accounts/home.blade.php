@@ -35,6 +35,7 @@
 		<th>Account Balance</th>
 		<th>Is In House</th>
 		<th>Is Active</th>
+		<th>Edit Account</th>
 	</tr>
 	@foreach($financeAccounts as $financeAccount)
 	<tr>
@@ -49,6 +50,7 @@
 		<th>{{$financeAccount->account_balance}}</th>
 		<th>{{$financeAccount->is_in_house}}</th>
 		<th>{{$financeAccount->is_active}}</th>
+		<th>{{HTML::link ( URL::action ( 'finances.accounts.edit', [$financeAccount->id] ), 'Edit' ) }}</th>
 	</tr>
 	@endforeach
 </table>

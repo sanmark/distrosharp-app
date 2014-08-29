@@ -80,12 +80,22 @@ class Bank extends \Eloquent implements \Interfaces\iEntity
 
 	public static function getArray ( $key , $value )
 	{
-		throw \Exceptions\NotImplementedException () ;
+		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) )
+		-> lists ( 'value' , $key ) ;
+
+		return $array ;
 	}
 
 	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
-		throw \Exceptions\NotImplementedException () ;
+		$array = self::getArray ( $key , $value ) ;
+
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
+
+		return $array ;
 	}
 
 	public static function getArrayByIds ( $key , $value , $ids )

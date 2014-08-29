@@ -19,6 +19,31 @@ class FinanceAccount extends \Eloquent implements \Interfaces\iEntity
 		parent::save ( $options ) ;
 	}
 
+	public function update ( array $attributes = array () )
+	{
+		$this -> validateForUpdate () ;
+		parent::update ( $attributes ) ;
+	}
+
+	public function validateForUpdate ()
+	{
+		$data		 = $this -> toArray () ;
+		$rules		 = [
+			'name' => [
+				'required'
+			]
+		] ;
+		$validator	 = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
 	public function validateForSave ()
 	{
 		$data		 = $this -> toArray () ;
