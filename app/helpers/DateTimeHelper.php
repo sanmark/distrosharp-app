@@ -3,7 +3,7 @@
 class DateTimeHelper
 {
 
-	public static function convertTextToFormattedDateTime ( $text , $format )
+	public static function convertTextToFormattedDateTime ( $text , $format = "Y-m-d H:i:s" )
 	{
 		if ( ! NullHelper::isNullEmptyOrWhitespace ( $text ) )
 		{

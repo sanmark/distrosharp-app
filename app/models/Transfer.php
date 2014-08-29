@@ -9,7 +9,7 @@ class Transfer extends \Eloquent implements \Interfaces\iEntity
 
 	public function save ( array $options = array () )
 	{
-		$this -> date_time = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time , 'Y-m-d H:i:s' ) ;
+		$this -> date_time = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;
 
 		$this -> validateForSave () ;
 

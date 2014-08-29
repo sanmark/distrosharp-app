@@ -9,7 +9,7 @@ class SellingInvoice extends \Eloquent implements \Interfaces\iEntity
 
 	public function save ( array $options = array () )
 	{
-		$this -> date_time			 = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time , 'Y-m-d H:i:s' ) ;
+		$this -> date_time			 = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;
 		$this -> is_completely_paid	 = \NullHelper::zeroIfNull ( $this -> is_completely_paid ) ;
 
 		$this -> validateForSave () ;
@@ -109,19 +109,19 @@ class SellingInvoice extends \Eloquent implements \Interfaces\iEntity
 
 			if ( strlen ( $dateTimeFrom ) > 0 && strlen ( $dateTimeTo ) > 0 )
 			{
-				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom , 'Y-m-d H:i:s' ) ;
-				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo , 'Y-m-d H:i:s' ) ;
+				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom ) ;
+				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo ) ;
 
 				$datesAndTimes = [$dateTimeFrom , $dateTimeTo ] ;
 
 				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
 			} elseif ( strlen ( $dateTimeFrom ) > 0 )
 			{
-				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom , 'Y-m-d H:i:s' ) ;
+				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom ) ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $dateTimeFrom ) ;
 			} elseif ( strlen ( $dateTimeTo ) > 0 )
 			{
-				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo , 'Y-m-d H:i:s' ) ;
+				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo ) ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $dateTimeTo ) ;
 			}
 
