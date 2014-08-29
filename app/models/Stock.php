@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Stock extends \Eloquent implements \Interfaces\iEntity
+class Stock extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -62,26 +62,6 @@ class Stock extends \Eloquent implements \Interfaces\iEntity
 	public static function filter ( $filterValues )
 	{
 		throw new \Exceptions\NotImplementedException() ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') AS `value`' ) )
-		-> lists ( 'value' , $key ) ;
-
-		return $array ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
-	{
-		$array = self::getArray ( $key , $value ) ;
-
-		if ( ! is_null ( $firstElement ) )
-		{
-			$array = $firstElement + $array ;
-		}
-
-		return $array ;
 	}
 
 	private function validateForUpdate ()

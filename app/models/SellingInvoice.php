@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class SellingInvoice extends \Eloquent implements \Interfaces\iEntity
+class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -77,16 +77,6 @@ class SellingInvoice extends \Eloquent implements \Interfaces\iEntity
 		$requestObject	 = $requestObject -> with ( 'rep' ) ;
 
 		return $requestObject -> get () ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		throw new \Exceptions\NotImplementedException() ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value )
-	{
-		throw new \Exceptions\NotImplementedException() ;
 	}
 
 	private static function prepareRequestObjectForFiletering ( SellingInvoice $requestObject , array $filterValues )

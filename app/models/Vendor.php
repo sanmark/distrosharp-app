@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Vendor extends \Eloquent implements \Interfaces\iEntity
+class Vendor extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -80,54 +80,6 @@ class Vendor extends \Eloquent implements \Interfaces\iEntity
 			$iie -> validator	 = $validator ;
 			throw $iie ;
 		}
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') AS `value`' ) )
-		-> lists ( 'value' , $key ) ;
-
-		return $array ;
-	}
-
-	public static function getArrayByIds ( $key , $value , $ids )
-	{
-
-
-		if ( count ( $ids ) > 0 && ( $ids[ 0 ] > 0 || $ids[ 0 ] != null) )
-		{
-			$array = self::whereIn ( 'id' , $ids )
-			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
-			-> lists ( 'value' , $key ) ;
-
-			return $array ;
-		}
-		return [ ] ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
-	{
-		$array = self::getArray ( $key , $value ) ;
-
-		if ( ! is_null ( $firstElement ) )
-		{
-			$array = $firstElement + $array ;
-		}
-
-		return $array ;
-	}
-
-	public static function getArrayForHtmlSelectByIds ( $key , $value , $by )
-	{
-		$array = self::getArrayByIds ( $key , $value , $by ) ;
-
-		$anyElemet = [
-			NULL => 'Any'
-		] ;
-
-		$array = $anyElemet + $array ;
-
-		return $array ;
 	}
 
 }

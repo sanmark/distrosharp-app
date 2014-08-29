@@ -13,5 +13,9 @@ interface iEntity
 
 	public static function getArray ( $key , $value ) ;
 
-	public static function getArrayForHtmlSelect ( $key , $value ) ;
+	public static function getArrayByIds ( $key , $value , $by ) ;
+
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL ) ;
+
+	public static function getArrayForHtmlSelectByIds ( $key , $value , $by , array $firstElement = NULL ) ;
 }

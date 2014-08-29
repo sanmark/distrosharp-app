@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Item extends \Eloquent implements \Interfaces\iEntity
+class Item extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -112,16 +112,6 @@ class Item extends \Eloquent implements \Interfaces\iEntity
 		}
 
 		return $requestObject -> get () ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		return new \Exceptions\NotImplementedException() ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
-	{
-		return new \Exceptions\NotImplementedException() ;
 	}
 
 }

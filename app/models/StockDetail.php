@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class StockDetail extends \Eloquent
+class StockDetail extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -15,6 +15,11 @@ class StockDetail extends \Eloquent
 	public function update ( array $attributes = array () )
 	{
 		parent::update ( $attributes ) ;
+	}
+
+	public static function filter ( $filterValues )
+	{
+		throw new \Exceptions\NotImplementedException() ;
 	}
 
 }

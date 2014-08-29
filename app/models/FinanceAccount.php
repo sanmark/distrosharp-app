@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class FinanceAccount extends \Eloquent implements \Interfaces\iEntity
+class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -98,16 +98,6 @@ class FinanceAccount extends \Eloquent implements \Interfaces\iEntity
 			}
 		}
 		return $requestObject -> get () ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		throw \Exceptions\NotImplementedException () ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value )
-	{
-		throw \Exceptions\NotImplementedException () ;
 	}
 
 }

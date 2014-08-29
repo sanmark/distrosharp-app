@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Bank extends \Eloquent implements \Interfaces\iEntity
+class Bank extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -76,49 +76,6 @@ class Bank extends \Eloquent implements \Interfaces\iEntity
 		}
 
 		return $requestObject -> get () ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) )
-		-> lists ( 'value' , $key ) ;
-
-		return $array ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
-	{
-		$array = self::getArray ( $key , $value ) ;
-
-		if ( ! is_null ( $firstElement ) )
-		{
-			$array = $firstElement + $array ;
-		}
-
-		return $array ;
-	}
-
-	public static function getArrayByIds ( $key , $value , $ids )
-	{
-		$array = [ ] ;
-		if ( count ( $ids ) > 0 )
-		{
-			$array = self::whereIn ( 'id' , $ids )
-			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
-			-> lists ( 'value' , $key ) ;
-			return $array ;
-		}
-		return $array ;
-	}
-
-	public static function getArrayForHtmlSelectByIds ( $key , $value , $by , array $firstElements = NULL )
-	{
-		$array = self::getArrayByIds ( $key , $value , $by ) ;
-		if ( ! is_null ( $firstElements ) )
-		{
-			$array = $firstElements + $array ;
-		}
-		return $array ;
 	}
 
 }

@@ -2,7 +2,7 @@
 
 namespace Models ;
 
-class Transfer extends \Eloquent implements \Interfaces\iEntity
+class Transfer extends BaseEntity implements \Interfaces\iEntity
 {
 
 	public $timestamps = FALSE ;
@@ -17,16 +17,6 @@ class Transfer extends \Eloquent implements \Interfaces\iEntity
 	}
 
 	public static function filter ( $filterValues )
-	{
-		throw new \Exceptions\NotImplementedException() ;
-	}
-
-	public static function getArray ( $key , $value )
-	{
-		throw new \Exceptions\NotImplementedException() ;
-	}
-
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
 	{
 		throw new \Exceptions\NotImplementedException() ;
 	}

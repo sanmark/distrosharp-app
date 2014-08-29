@@ -34,7 +34,7 @@ class PurchaseController extends \Controller
 		$sortOrder		 = \Input::get ( 'sort_order' ) ;
 		$stockId		 = \Input::get ( 'stock_id' ) ;
 		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
 
 		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
@@ -69,7 +69,7 @@ class PurchaseController extends \Controller
 		-> lists ( 'batch_number' , 'item_id' ) ;
 
 		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
 
