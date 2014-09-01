@@ -66,7 +66,11 @@
 					<td>{{$financeAccount->account_balance}}</td>
 					<td>{{$financeAccount->is_in_house}}</td>
 					<td>{{$financeAccount->is_active}}</td>
-					<td>{{HTML::link ( URL::action ( 'finances.accounts.edit', [$financeAccount->id] ), 'Edit' ) }}</td>
+					<td>
+						@if($financeAccount->is_in_house == TRUE)
+						{{HTML::link ( URL::action ( 'finances.accounts.edit', [$financeAccount->id] ), 'Edit' ) }}
+						@endif
+					</td>
 				</tr>
 				@endforeach
 			</tbody>

@@ -19,9 +19,15 @@ class AccountsController extends \Controller
 
 	public function edit ( $id )
 	{
-
 		$financeAccount	 = \Models\FinanceAccount::findOrFail ( $id ) ;
 		$bankSelectBox	 = \Models\Bank::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'None' ] ) ;
+
+		if ( $financeAccount -> is_in_house == FALSE )
+		{
+			\MessageButler::setError ( 'Can\'t edit accounts not in house.' ) ;
+
+			return \Redirect::action ( 'finances.accounts.view' ) ;
+		}
 
 		$data = compact ( [
 			'financeAccount' ,

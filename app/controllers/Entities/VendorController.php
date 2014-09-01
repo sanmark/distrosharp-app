@@ -31,12 +31,17 @@ class VendorController extends \Controller
 	{
 		try
 		{
-			$vendor = new \Models\Vendor() ;
+			$financeAccount					 = new \Models\FinanceAccount() ;
+			$financeAccount -> name			 = \Input::get ( 'name' ) ;
+			$financeAccount -> is_active	 = TRUE ;
+			$financeAccount -> is_in_house	 = FALSE ;
+			$financeAccount -> save () ;
 
-			$vendor -> name		 = \Input::get ( 'name' ) ;
-			$vendor -> details	 = \Input::get ( 'details' ) ;
-			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-
+			$vendor							 = new \Models\Vendor() ;
+			$vendor -> name					 = \Input::get ( 'name' ) ;
+			$vendor -> details				 = \Input::get ( 'details' ) ;
+			$vendor -> is_active			 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$vendor -> finance_account_id	 = $financeAccount -> id ;
 			$vendor -> save () ;
 
 			return \Redirect::action ( 'entities.vendors.view' ) ;
@@ -69,8 +74,13 @@ class VendorController extends \Controller
 			$vendor -> name		 = \Input::get ( 'name' ) ;
 			$vendor -> details	 = \Input::get ( 'details' ) ;
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-
 			$vendor -> update () ;
+
+			$financeAccount				 = \Models\FinanceAccount::findOrFail ( $vendor -> finance_account_id ) ;
+			$financeAccount -> name		 = $vendor -> name ;
+			$financeAccount -> is_active = $vendor -> is_active ;
+			$financeAccount -> update () ;
+
 			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

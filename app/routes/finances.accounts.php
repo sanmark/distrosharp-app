@@ -5,6 +5,16 @@ Route::group ( [
 	'before' => 'auth'
 ] , function()
 {
+	Route::get ( '' , [
+		'as'	 => 'finances.accounts.view' ,
+		'before' => ['hasAbilities:view_finance_accounts' ] ,
+		'uses'	 => 'Controllers\Finances\AccountsController@home' ,
+	] ) ;
+	Route::post ( '' , [
+		'as'	 => 'finances.accounts.view' ,
+		'before' => ['hasAbilities:view_finance_accounts' ] ,
+		'uses'	 => 'Controllers\Finances\AccountsController@home' ,
+	] ) ;
 	Route::get ( 'add' , [
 		'as'	 => 'finances.accounts.add' ,
 		'before' => ['hasAbilities:add_finance_account' ] ,
@@ -15,16 +25,6 @@ Route::group ( [
 		'as'	 => 'finances.accounts.add' ,
 		'before' => ['hasAbilities:add_finance_account' ] ,
 		'uses'	 => 'Controllers\Finances\AccountsController@save' ,
-	] ) ;
-	Route::get ( 'view' , [
-		'as'	 => 'finances.accounts.view' ,
-		'before' => ['hasAbilities:view_finance_accounts' ] ,
-		'uses'	 => 'Controllers\Finances\AccountsController@home' ,
-	] ) ;
-	Route::post ( 'view' , [
-		'as'	 => 'finances.accounts.view' ,
-		'before' => ['hasAbilities:view_finance_accounts' ] ,
-		'uses'	 => 'Controllers\Finances\AccountsController@home' ,
 	] ) ;
 	Route::get ( '{id}/edit' , [
 		'as'	 => 'finances.accounts.edit' ,

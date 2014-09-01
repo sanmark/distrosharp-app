@@ -45,12 +45,42 @@ class SetupDb extends Migration
 			$t -> boolean ( 'is_active' ) ;
 		} ) ;
 
+		Schema::create ( 'banks' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' , 50 ) ;
+			$t -> boolean ( 'is_active' ) ;
+		} ) ;
+
+		Schema::create ( 'finance_accounts' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> string ( 'name' ) ;
+			$t -> integer ( 'bank_id' ) -> unsigned () -> nullable () ;
+			$t -> boolean ( 'is_active' ) ;
+			$t -> float ( 'account_balance' ) ;
+			$t -> boolean ( 'is_in_house' ) ;
+
+			$t -> foreign ( 'bank_id' )
+			-> references ( 'id' )
+			-> on ( 'banks' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
+
 		Schema::create ( 'vendors' , function ($t)
 		{
 			$t -> increments ( 'id' ) ;
 			$t -> string ( 'name' , 50 ) ;
 			$t -> longtext ( 'details' ) ;
 			$t -> boolean ( 'is_active' ) ;
+			$t -> integer ( 'finance_account_id' ) -> unsigned () ;
+
+			$t -> foreign ( 'finance_account_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_accounts' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'routes' , function($t)
@@ -80,14 +110,6 @@ class SetupDb extends Migration
 			-> on ( 'routes' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
-		} ) ;
-
-
-		Schema::create ( 'banks' , function ($t)
-		{
-			$t -> increments ( 'id' ) ;
-			$t -> string ( 'name' , 50 ) ;
-			$t -> boolean ( 'is_active' ) ;
 		} ) ;
 
 		Schema::create ( 'stocks' , function ($t)
@@ -256,22 +278,6 @@ class SetupDb extends Migration
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
 
-		Schema::create ( 'finance_accounts' , function($t)
-		{
-			$t -> increments ( 'id' ) ;
-			$t -> string ( 'name' ) ;
-			$t -> integer ( 'bank_id' ) -> unsigned () -> nullable () ;
-			$t -> boolean ( 'is_active' ) ;
-			$t -> float ( 'account_balance' ) ;
-			$t -> boolean ( 'is_in_house' ) ;
-
-			$t -> foreign ( 'bank_id' )
-			-> references ( 'id' )
-			-> on ( 'banks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
-		} ) ;
-
 		Schema::create ( 'finance_transfers' , function ($t)
 		{
 			$t -> increments ( 'id' ) ;
@@ -298,7 +304,6 @@ class SetupDb extends Migration
 	public function down ()
 	{
 		Schema::dropIfExists ( 'finance_transfers' ) ;
-		Schema::dropIfExists ( 'finance_accounts' ) ;
 		Schema::dropIfExists ( 'selling_items' ) ;
 		Schema::dropIfExists ( 'selling_invoices' ) ;
 		Schema::dropIfExists ( 'transfer_details' ) ;
@@ -307,10 +312,11 @@ class SetupDb extends Migration
 		Schema::dropIfExists ( 'buying_invoices' ) ;
 		Schema::dropIfExists ( 'stock_details' ) ;
 		Schema::dropIfExists ( 'stocks' ) ;
-		Schema::dropIfExists ( 'banks' ) ;
 		Schema::dropIfExists ( 'customers' ) ;
 		Schema::dropIfExists ( 'routes' ) ;
 		Schema::dropIfExists ( 'vendors' ) ;
+		Schema::dropIfExists ( 'finance_accounts' ) ;
+		Schema::dropIfExists ( 'banks' ) ;
 		Schema::dropIfExists ( 'items' ) ;
 		Schema::dropIfExists ( 'ability_user' ) ;
 		Schema::dropIfExists ( 'users' ) ;
