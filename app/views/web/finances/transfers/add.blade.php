@@ -16,9 +16,9 @@
 		<td>{{Form::label('to','to')}}</td>
 	</tr>
 	<tr>
-		<td>{{$fromAccount->name}}</td>
+		<td>{{$fromAccount->name}}<br><span style="font-size:20px;">{{$fromAccount->account_balance}}</span></td>
 		<td>{{Form::input('number','amount',null,['step'=>'any','required'=>'required'])}}</td>
-		<td>{{$toAccount->name}}</td>
+		<td>{{$toAccount->name}}<br><span  style="font-size:20px;">{{$toAccount->account_balance}}</span></td>
 	</tr>
 	<tr colspan="3">
 		<td>{{Form::label('description','description')}}</td>
