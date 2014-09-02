@@ -8,7 +8,9 @@ class TransfersController extends \Controller
 	public function selectAccountsInvolved ()
 	{
 
-		$accountSelectBox = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Account' ] ) ;
+		$accountSelectBox1	 = \Models\FinanceAccount::where ( 'is_active' , '=' , '1' ) -> lists ( 'name' , 'id' ) ;
+		$accountSelectBox2	 = ['' => 'Select Account' ] ;
+		$accountSelectBox	 = $accountSelectBox2 + $accountSelectBox1 ;
 
 		$data = compact ( [
 			'accountSelectBox'
@@ -92,14 +94,38 @@ class TransfersController extends \Controller
 	public function home ( $accountId )
 	{
 
-		$accountTransfers = \Models\FinanceTransfer::where ( 'from_id' , '=' , $accountId )
-		-> orWhere ( 'to_id' , '=' , $accountId ) -> get () ;
+		$filterValues = \Input::all () + ['id' => $accountId ] ;
+
+//		$accountTransfers = \Models\FinanceTransfer::where ( 'from_id' , '=' , $accountId )
+//		-> orWhere ( 'to_id' , '=' , $accountId ) -> get () ;
+
+		$accountTransfers = \Models\FinanceTransfer::filter ( $filterValues ) ;
+
+		$fromDate				 = \Input::get ( 'from_date' ) ;
+		$toDate					 = \Input::get ( 'to_date' ) ;
+		$inOrOut				 = \Input::get ( 'in_or_out' ) ;
+		$compareSign			 = \Input::get ( 'compare_sign' ) ;
+		$amount					 = \Input::get ( 'amount' ) ;
+		$accountRefill			 = \Input::get ( 'transfer_account' ) ;
+		$compareSignSelectBox	 = ['' => 'Compare' , '>' => 'Greater Than' , '<' => 'Smaller Than' , '=' => 'Equals to' ] ;
+
+		$inOrOutSelectBox	 = ['' => 'Any' , 'in' => 'In' , 'out' => 'Out' ] ;
+		$accountName		 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Transfer Account' ] ) ;
 
 		$account = \Models\FinanceAccount::findOrFail ( $accountId ) ;
 
 		$data = compact ( [
 			'accountTransfers' ,
-			'account'
+			'compareSignSelectBox' ,
+			'account' ,
+			'inOrOutSelectBox' ,
+			'fromDate' ,
+			'toDate' ,
+			'compareSign' ,
+			'inOrOut' ,
+			'amount' ,
+			'accountName' ,
+			'accountRefill'
 		] ) ;
 
 		return \View::make ( 'web.finances.transfers.home' , $data ) ;
@@ -109,8 +135,7 @@ class TransfersController extends \Controller
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTimeWithUTC	 = date ( 'Y-m-dTH:i:s' , strtotime ( $financeTransfer -> date_time ) ) ;
-		$dateTime			 = str_replace ( 'UTC' , 'T' , $dateTimeWithUTC ) ;
+		$dateTime			 = \ViewButler::dateTimeRefill ( $financeTransfer , 'date_time' ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,
@@ -138,7 +163,7 @@ class TransfersController extends \Controller
 			$preToFinanceAccount = \Models\FinanceAccount::findOrFail ( $financeTransferUpdateRow -> to_id ) ;
 
 			$preFromAccountBalance = ($preFromFinanceAccount -> account_balance) + ($financeTransferUpdateRow -> amount) ;
-			
+
 			$preToAccountBalance = ($preToFinanceAccount -> account_balance) - ($financeTransferUpdateRow -> amount) ;
 
 			$preFromFinanceAccount -> account_balance	 = $preFromAccountBalance ;
@@ -154,7 +179,7 @@ class TransfersController extends \Controller
 			$financeTransferUpdateRow -> to_id		 = $toId ;
 
 			$financeTransferUpdateRow -> update () ;
-			
+
 			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromId ) ;
 			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toId ) ;
 
@@ -166,7 +191,6 @@ class TransfersController extends \Controller
 
 			$financeAccountFrom -> update () ;
 			$financeAccountTo -> update () ;
-			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

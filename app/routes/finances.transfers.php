@@ -30,6 +30,11 @@ Route::group ( [
 		'before' => ['hasAbilities:view_finance_transfers_details' ] ,
 		'uses'	 => 'Controllers\Finances\TransfersController@home'
 	] ) ;
+	Route::post ( '{accountId}/view' , [
+		'as'	 => 'finances.transfers.view' ,
+		'before' => ['hasAbilities:view_finance_transfers_details' ] ,
+		'uses'	 => 'Controllers\Finances\TransfersController@home'
+	] ) ;
 	Route::get ( '{transferId}/edit' , [
 		'as'	 => 'finances.transfers.edit' ,
 		'before' => ['hasAbilities:edit_finance_transfer_details' ] ,
