@@ -2,33 +2,54 @@
 
 @section('body')
 
-<h3>Add finance transfers</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Add finance transfers</h3>
+	</div>
+	<div class="panel-body">
 
-{{Form::open()}}
-<table>
-	<tr colspan="3">
-		<td>Date and Time</td>
-		<td>{{Form::input('datetime-local','date_time',null,['required'=>'required'])}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('from','from')}}</td>
-		<td>{{Form::label('amount','amount')}}</td>
-		<td>{{Form::label('to','to')}}</td>
-	</tr>
-	<tr>
-		<td>{{$fromAccount->name}}<br><span style="font-size:20px;">{{$fromAccount->account_balance}}</span></td>
-		<td>{{Form::input('number','amount',null,['step'=>'any','required'=>'required'])}}</td>
-		<td>{{$toAccount->name}}<br><span  style="font-size:20px;">{{$toAccount->account_balance}}</span></td>
-	</tr>
-	<tr colspan="3">
-		<td>{{Form::label('description','description')}}</td>
-		<td>{{Form::textarea('description')}}</td>
-	</tr>
-	<tr colspan="3">
-		<td>{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('date_and_time', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('datetime-local','date_time',null, array('class' => 'form-control'),['required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('from', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3" style="padding-top: 7px;">
+				{{$fromAccount->name}} <b>({{$fromAccount->account_balance}})</b>
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('amount', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('number','amount',null, array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+			</div>			
+		</div>
+		<div class="form-group">
+			{{Form::label('to', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3" style="padding-top: 7px;">
+				{{$toAccount->name}} <b>({{$toAccount->account_balance}})</b>
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('description', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::textarea('description', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-3">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+
+		{{Form::close()}}
+
+	</div>
+</div>
 
 @stop
 

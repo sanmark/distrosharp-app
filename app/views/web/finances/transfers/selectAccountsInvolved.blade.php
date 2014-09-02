@@ -2,24 +2,35 @@
 
 @section('body')
 
-<h3>Select Accounts</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Select Accounts</h3>
+	</div>
+	<div class="panel-body">
 
-{{Form::open()}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('from', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('from',$accountSelectBox, null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('to', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('to',$accountSelectBox, null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-1 col-sm-3">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
 
-<table>
-	<tr>
-		<td>{{Form::label('from','from')}}</td>
-		<td>{{Form::select('from',$accountSelectBox)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('to','to')}}</td>
-		<td>{{Form::select('to',$accountSelectBox)}}</td>
-	</tr>
-	<tr>
-		<td colspan="2">{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
+		{{Form::close()}}
 
-{{Form::close()}}
+	</div>
+</div>
 
 @stop
