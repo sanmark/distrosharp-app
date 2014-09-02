@@ -7,7 +7,7 @@ class TransfersController extends \Controller
 
 	public function selectAccountsInvolved ()
 	{
-		
+
 		$accountSelectBox = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Account' ] ) ;
 
 		$data = compact ( [
@@ -24,7 +24,7 @@ class TransfersController extends \Controller
 			$from	 = \Input::get ( 'from' ) ;
 			$to		 = \Input::get ( 'to' ) ;
 
-			$data	 = compact ( [
+			$data = compact ( [
 				'from' ,
 				'to'
 			] ) ;
@@ -42,7 +42,7 @@ class TransfersController extends \Controller
 
 	public function add ( $fromAccountId , $toAccountId )
 	{
-		
+
 		$fromAccount = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
 		$toAccount	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
 
@@ -61,8 +61,19 @@ class TransfersController extends \Controller
 			$amount		 = \Input::get ( 'amount' ) ;
 			$description = \Input::get ( 'description' ) ;
 
-			$financeTransfer = new \Models\FinanceTransfer() ;
+			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
+			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
 
+			$fromAccountBalance	 = ($financeAccountFrom -> account_balance - $amount) ;
+			$toAccountBalance	 = ($financeAccountTo -> account_balance + $amount) ;
+
+			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
+			$financeAccountTo -> account_balance	 = $toAccountBalance ;
+
+			$financeAccountFrom -> update () ;
+			$financeAccountTo -> update () ;
+
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
 			$financeTransfer -> from_id		 = $fromAccountId ;
 			$financeTransfer -> to_id		 = $toAccountId ;
 			$financeTransfer -> date_time	 = $dateTime ;
@@ -70,6 +81,92 @@ class TransfersController extends \Controller
 			$financeTransfer -> description	 = $description ;
 
 			$financeTransfer -> save () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
+	public function home ( $accountId )
+	{
+
+		$accountTransfers = \Models\FinanceTransfer::where ( 'from_id' , '=' , $accountId )
+		-> orWhere ( 'to_id' , '=' , $accountId ) -> get () ;
+
+		$account = \Models\FinanceAccount::findOrFail ( $accountId ) ;
+
+		$data = compact ( [
+			'accountTransfers' ,
+			'account'
+		] ) ;
+
+		return \View::make ( 'web.finances.transfers.home' , $data ) ;
+	}
+
+	public function edit ( $transferId )
+	{
+		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
+		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
+		$dateTimeWithUTC	 = date ( 'Y-m-dTH:i:s' , strtotime ( $financeTransfer -> date_time ) ) ;
+		$dateTime			 = str_replace ( 'UTC' , 'T' , $dateTimeWithUTC ) ;
+
+		$data = compact ( [
+			'financeTransfer' ,
+			'accountSelectBox' ,
+			'dateTime'
+		] ) ;
+
+		return \View::make ( 'web.finances.transfers.edit' , $data ) ;
+	}
+
+	public function update ( $transferId )
+	{
+		try
+		{
+			$financeTransferUpdateRow = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
+
+			$dateTime	 = \Input::get ( 'date_time' ) ;
+			$amount		 = \Input::get ( 'amount' ) ;
+			$description = \Input::get ( 'description' ) ;
+			$fromId		 = \Input::get ( 'from_id' ) ;
+			$toId		 = \Input::get ( 'to_id' ) ;
+
+			$preFromFinanceAccount = \Models\FinanceAccount::findOrFail ( $financeTransferUpdateRow -> from_id ) ;
+
+			$preToFinanceAccount = \Models\FinanceAccount::findOrFail ( $financeTransferUpdateRow -> to_id ) ;
+
+			$preFromAccountBalance = ($preFromFinanceAccount -> account_balance) + ($financeTransferUpdateRow -> amount) ;
+			
+			$preToAccountBalance = ($preToFinanceAccount -> account_balance) - ($financeTransferUpdateRow -> amount) ;
+
+			$preFromFinanceAccount -> account_balance	 = $preFromAccountBalance ;
+			$preToFinanceAccount -> account_balance		 = $preToAccountBalance ;
+
+			$preFromFinanceAccount -> update () ;
+			$preToFinanceAccount -> update () ;
+
+			$financeTransferUpdateRow -> date_time	 = $dateTime ;
+			$financeTransferUpdateRow -> amount		 = $amount ;
+			$financeTransferUpdateRow -> description = $description ;
+			$financeTransferUpdateRow -> from_id	 = $fromId ;
+			$financeTransferUpdateRow -> to_id		 = $toId ;
+
+			$financeTransferUpdateRow -> update () ;
+			
+			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromId ) ;
+			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toId ) ;
+
+			$fromAccountBalance	 = ($preFromAccountBalance - $amount) ;
+			$toAccountBalance	 = ($preToAccountBalance + $amount) ;
+
+			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
+			$financeAccountTo -> account_balance	 = $toAccountBalance ;
+
+			$financeAccountFrom -> update () ;
+			$financeAccountTo -> update () ;
+			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

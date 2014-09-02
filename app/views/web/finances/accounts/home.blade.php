@@ -55,7 +55,7 @@
 			<tbody>
 				@foreach($financeAccounts as $financeAccount)
 				<tr>
-					<td>{{$financeAccount->name}}</td>
+					<td>{{HTML::link ( URL::action ( 'finances.transfers.view', [$financeAccount->id] ),"$financeAccount->name" ) }}</td>
 
 					@if($financeAccount->bank_id==NULL)
 					<td></td>
