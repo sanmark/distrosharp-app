@@ -147,7 +147,7 @@ class AbilityUserSeeder extends Seeder
 				'user_id'	 => 1
 			] ,
 			[
-				'ability_id' => 38 ,
+				'ability_id' => 40 ,
 				'user_id'	 => 1
 			] ,
 //			[
