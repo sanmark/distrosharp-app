@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>d-071-1-v2-app</title>
-		{{ HTML::style('css/style.css') }}
 		{{ HTML::style('packages/bootstrap/css/bootstrap.min.css') }}
 		{{ HTML::style('packages/bootstrap/css/bootstrap-theme.min.css') }}
+		{{ HTML::style('packages/jQueryUI/css/jquery-ui.css') }}
+		{{ HTML::style('css/style.css') }}
 
 		{{ HTML::script('packages/jQuery/jquery.min.js') }}
+		{{ HTML::script('packages/jQueryUI/js/jquery-ui.min.js') }}
 		{{ HTML::script('packages/bootstrap/js/bootstrap.min.js') }}
 	</head>
 	<body>
+
 		<div class="container-fluid">
 
 			<div class="main-nav">
@@ -46,5 +50,7 @@
 			</div>
 
 		</div>
+
+		@yield('file-footer')
 	</body>
 </html>

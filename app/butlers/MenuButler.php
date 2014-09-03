@@ -3,6 +3,14 @@
 class MenuButler
 {
 
+	/**
+	 * Builds the menu for the system.
+	 * ['File Manager' , 'fileManager.home' , [ 'manage_files' ] ]
+	 * In the array first is the menu lable, second is the route name thre is
+	 * an array containing permissons.
+	 *
+	 * @var type
+	 */
 	private static $menuTemplate = [
 		[ 'Home' , 'home' ] ,
 		[ 'Entities' , [
@@ -70,11 +78,12 @@ class MenuButler
 				['Settings' , 'system.settings' , ['edit_system_settings' ] ]
 			]
 		] ,
+		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]
 			]
-		]
+		] ,
 	] ;
 
 	public static function getMenu ( User $user )
