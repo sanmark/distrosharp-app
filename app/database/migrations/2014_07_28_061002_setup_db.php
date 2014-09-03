@@ -299,10 +299,18 @@ class SetupDb extends Migration
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'system_settings' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'system_settable_id' ) -> unsigned () ;
+			$t -> text ( 'value' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'system_settings' ) ;
 		Schema::dropIfExists ( 'finance_transfers' ) ;
 		Schema::dropIfExists ( 'selling_items' ) ;
 		Schema::dropIfExists ( 'selling_invoices' ) ;

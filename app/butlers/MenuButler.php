@@ -66,6 +66,10 @@ class MenuButler
 				]
 			] ,
 		] ,
+		['System' , [
+				['Settings' , 'system.settings' , ['edit_system_settings' ] ]
+			]
+		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]

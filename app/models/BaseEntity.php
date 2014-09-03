@@ -57,4 +57,17 @@ class BaseEntity extends \Eloquent implements \Interfaces\iEntity
 		return $array ;
 	}
 
+	public static function getArrayForHtmlSelectByRequestObject ( $key , $value , \Illuminate\Database\Eloquent\Builder $requestObject , array $firstElement = NULL )
+	{
+		$requestObject	 = $requestObject -> select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) ) ;
+		$array			 = $requestObject -> lists ( 'value' , $key ) ;
+
+		if ( ! is_null ( $firstElement ) )
+		{
+			$array = $firstElement + $array ;
+		}
+
+		return $array ;
+	}
+
 }
