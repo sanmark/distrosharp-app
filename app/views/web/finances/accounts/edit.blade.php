@@ -31,15 +31,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_in_house', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('is_active', null,array('class' => 'col-sm-1 control-label;'))}}
 			<div class="col-sm-3">
-				{{Form::checkbox('is_in_house',null,null, array('style' => 'margin-top:10px;'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::checkbox('is_active',null,null, array('style' => 'margin-top:10px;'))}}
+				{{Form::checkbox('is_active',null,null,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">

@@ -29,12 +29,6 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_in_house', null, array('class' => 'col-sm-1 control-label', 'style'=>'padding-top: 0;'))}}
-			<div class="col-sm-4">
-				{{Form::checkbox('is_in_house')}}
-			</div>
-		</div>
-		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label', 'style'=>'padding-top: 0;'))}}
 			<div class="col-sm-4">
 				{{Form::checkbox('is_active')}}
