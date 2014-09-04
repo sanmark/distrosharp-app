@@ -26,15 +26,10 @@
 					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::label('sort', null, array('class' => 'control-label'))}}
-					{{Form::select('sort_by',[
-						NULL=>'By',
-						'reorder_level'=>'Reorder Level',
-						'current_buying_price'=>'Buying Price',
-						'current_selling_price'=>'Selling Price',
-						'buying_invoice_order'=>'Buying Invoice Order',
-						'selling_invoice_order'=>'Selling Invoice Order',
-					],$sortBy, array('class' => 'form-control'))}}&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control'))}}
+					{{Form::label('sort by', null, array('class' => 'control-label'))}}
+					{{Form::select('sort_by',ViewButler::htmlSelectSortItems () ,$sortBy, array('class' => 'form-control'))}}
+					&nbsp;
+					{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}

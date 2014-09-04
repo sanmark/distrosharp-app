@@ -54,7 +54,7 @@ class ViewButler
 	public static function htmlSelectSortItems ()
 	{
 		$values = [
-			NULL					 => 'By' ,
+			NULL					 => 'None' ,
 			'reorder_level'			 => 'Reorder Level' ,
 			'current_buying_price'	 => 'Buying Price' ,
 			'current_selling_price'	 => 'Selling Price' ,
@@ -67,7 +67,6 @@ class ViewButler
 	public static function htmlSelectSortOrder ()
 	{
 		$values = [
-			NULL	 => 'Order' ,
 			'ASC'	 => 'Ascending' ,
 			'DESC'	 => 'Descending' ,
 		] ;
