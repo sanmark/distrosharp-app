@@ -49,9 +49,9 @@
 		<td>{{$accountTransfer->description}}</td>
 		<td>
 			@if($account->id==$accountTransfer->from_id)
-			{{$accountTransfer->toAccount->name}}
+			{{HTML::link(URL::action('finances.transfers.view',[$accountTransfer->to_id]),$accountTransfer->toAccount->name)}}
 			@elseif($account->id==$accountTransfer->to_id)
-			{{$accountTransfer->fromAccount->name}}
+			{{HTML::link(URL::action('finances.transfers.view',[$accountTransfer->from_id]),$accountTransfer->fromAccount->name)}}
 			@endif
 		</td>
 
