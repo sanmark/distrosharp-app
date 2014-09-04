@@ -13,7 +13,7 @@
 		<div class="form-group">
 			{{Form::label('date', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('date','date', $purchaseInvoice->date, array('class' => 'form-control'),['required'=>'required'])}}
+				{{Form::input('datetime-local','date_time',$purchaseDateRefill, array('class' => 'form-control'),['required'=>'required'])}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -35,9 +35,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Total', array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('other_expense_details', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('other_expenses_total',$purchaseInvoice->other_expenses_total, array('class' => 'form-control'))}}
+				{{Form::textarea('other_expenses_details',$purchaseInvoice->other_expenses_details, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">

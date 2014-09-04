@@ -150,7 +150,7 @@ class SetupDb extends Migration
 		Schema::create ( 'buying_invoices' , function ($t)
 		{
 			$t -> increments ( 'id' ) ;
-			$t -> date ( 'date' ) ;
+			$t -> datetime ( 'date_time' ) ;
 			$t -> integer ( 'vendor_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_num' ) ;
 			$t -> boolean ( 'completely_paid' ) ;

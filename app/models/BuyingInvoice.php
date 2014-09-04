@@ -28,7 +28,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$data = $this -> toArray () ;
 
 		$rules = [
-			'date'					 => [
+			'date_time'				 => [
 				'required'
 			] ,
 			'vendor_id'				 => [
@@ -64,7 +64,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$data = $this -> toArray () ;
 
 		$rules = [
-			'date'					 => [
+			'date_time'				 => [
 				'required' ,
 			] ,
 			'vendor_id'				 => [
@@ -94,11 +94,14 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 		{
 			$id			 = $filterValues[ 'id' ] ;
 			$vendorId	 = $filterValues[ 'vendor_id' ] ;
-			$date		 = $filterValues[ 'date' ] ;
+			$fromDate	 = $filterValues[ 'from_date_time' ] ;
+			$toDate		 = $filterValues[ 'to_date_time' ] ;
 			$isPaid		 = $filterValues[ 'is_paid' ] ;
 			$sortBy		 = $filterValues[ 'sort_by' ] ;
 			$sortOrder	 = $filterValues[ 'sort_order' ] ;
 			$stockId	 = $filterValues[ 'stock_id' ] ;
+			$minDate	 = $requestObject -> min ( 'date_time' ) ;
+			$maxDate	 = $requestObject -> max ( 'date_time' ) ;
 
 			if ( strlen ( $id ) > 0 )
 			{
@@ -108,9 +111,17 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'vendor_id' , '=' , $vendorId ) ;
 			}
-			if ( ! empty ( $date ) )
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) > 0 )
 			{
-				$requestObject = $requestObject -> where ( 'date' , '=' , $date ) ;
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $toDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) == 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $maxDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) == 0 && strlen ( $toDate ) > 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$minDate , $toDate ] ) ;
 			}
 			if ( $stockId != '' )
 			{

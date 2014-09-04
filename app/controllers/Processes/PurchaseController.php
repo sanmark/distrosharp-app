@@ -28,7 +28,8 @@ class PurchaseController extends \Controller
 
 		$id				 = \Input::get ( 'id' ) ;
 		$vendorId		 = \Input::get ( 'vendor_id' ) ;
-		$date			 = \Input::get ( 'date' ) ;
+		$fromDate		 = \Input::get ( 'from_date_time' ) ;
+		$toDate			 = \Input::get ( 'to_date_time' ) ;
 		$isPaid			 = \Input::get ( 'is_paid' ) ;
 		$sortBy			 = \Input::get ( 'sort_by' ) ;
 		$sortOrder		 = \Input::get ( 'sort_order' ) ;
@@ -40,7 +41,8 @@ class PurchaseController extends \Controller
 		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
 		$data[ 'id' ]				 = $id ;
 		$data[ 'vendorId' ]			 = $vendorId ;
-		$data[ 'date' ]				 = $date ;
+		$data[ 'fromDate' ]			 = $fromDate ;
+		$data[ 'toDate' ]			 = $toDate ;
 		$data[ 'isPaid' ]			 = $isPaid ;
 		$data[ 'sortBy' ]			 = $sortBy ;
 		$data[ 'sortOrder' ]		 = $sortOrder ;
@@ -68,10 +70,11 @@ class PurchaseController extends \Controller
 		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'batch_number' , 'item_id' ) ;
 
-		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
-		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		$vendors			 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
+		$purchaseRows		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
+		$purchaseDateRefill	 = \ViewButler::dateTimeRefill ( $purchaseInvoice , 'date_time' ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;
@@ -83,6 +86,7 @@ class PurchaseController extends \Controller
 		$data[ 'freeQuantity' ]				 = $freeQuantity ;
 		$data[ 'expDate' ]					 = $expDate ;
 		$data[ 'batchNumber' ]				 = $batchNumber ;
+		$data[ 'purchaseDateRefill' ]		 = $purchaseDateRefill ;
 
 		return \View::make ( 'web.processes.purchases.edit' , $data ) ;
 	}
@@ -94,7 +98,7 @@ class PurchaseController extends \Controller
 
 			$purchaseItem = \Models\BuyingInvoice::findOrFail ( $id ) ;
 
-			$purchaseItem -> date					 = \Input::get ( 'date' ) ;
+			$purchaseItem -> date_time				 = \Input::get ( 'date_time' ) ;
 			$purchaseItem -> vendor_id				 = \Input::get ( 'vendor_id' ) ;
 			$purchaseItem -> printed_invoice_num	 = \Input::get ( 'printed_invoice_num' ) ;
 			$purchaseItem -> completely_paid		 = \NullHelper::zeroIfNull ( \Input::get ( 'completely_paid' ) ) ;
@@ -219,7 +223,7 @@ class PurchaseController extends \Controller
 		{
 
 			$toStockId			 = \Input::get ( 'stock_id' ) ;
-			$purchaseDate		 = \Input::get ( 'purchase_date' ) ;
+			$purchaseDate		 = \Input::get ( 'date_time' ) ;
 			$vendorId			 = \Input::get ( 'vendor_id' ) ;
 			$printedInvoiceNum	 = \Input::get ( 'printed_invoice_num' ) ;
 			$isPaid				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
@@ -239,7 +243,7 @@ class PurchaseController extends \Controller
 			}
 
 			$buyingInvoices								 = new \Models\BuyingInvoice() ;
-			$buyingInvoices -> date						 = $purchaseDate ;
+			$buyingInvoices -> date_time				 = $purchaseDate ;
 			$buyingInvoices -> vendor_id				 = $vendorId ;
 			$buyingInvoices -> printed_invoice_num		 = $printedInvoiceNum ;
 			$buyingInvoices -> completely_paid			 = $isPaid ;

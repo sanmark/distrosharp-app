@@ -23,9 +23,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('date', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('from_date', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('date','date',$date, array('class' => 'form-control'))}}
+				{{Form::input('datetime-local','from_date_time',$fromDate, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('to_date', null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('datetime-local','to_date_time',$toDate, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -43,7 +49,7 @@
 		<div class="form-group">
 			{{Form::label('sort', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3 form-inline">
-				{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date'=>'Date'],$sortBy, array('class' => 'form-control', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control', 'style' => 'width: 145px;'))}}
+				{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date_time'=>'Date'],$sortBy, array('class' => 'form-control', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control', 'style' => 'width: 145px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -70,7 +76,7 @@
 				@foreach($buyingInvoiceRows as $buyingInvoiceRow)
 				<tr>
 					<td>{{HTML::link(URL::action('processes.purchases.edit', [$buyingInvoiceRow->id]), $buyingInvoiceRow->id)}}</td>
-					<td>{{$buyingInvoiceRow->date}}</td>
+					<td>{{$buyingInvoiceRow->date_time}}</td>
 					<td>{{$buyingInvoiceRow->vendor->name}}</td>
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
 					<td>{{$buyingInvoiceRow->completely_paid}}</td>
