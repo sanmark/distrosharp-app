@@ -306,10 +306,29 @@ class SetupDb extends Migration
 			$t -> integer ( 'system_settable_id' ) -> unsigned () ;
 			$t -> text ( 'value' ) ;
 		} ) ;
+
+		Schema::create ( 'buying_invoice_finance_transfer' , function($t)
+		{
+			$t -> integer ( 'buying_invoice_id' ) -> unsigned () ;
+			$t -> integer ( 'finance_transfer_id' ) -> unsigned () ;
+
+			$t -> foreign ( 'buying_invoice_id' )
+			-> references ( 'id' )
+			-> on ( 'buying_invoices' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'finance_transfer_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_transfers' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'buying_invoice_finance_transfer' ) ;
 		Schema::dropIfExists ( 'system_settings' ) ;
 		Schema::dropIfExists ( 'finance_transfers' ) ;
 		Schema::dropIfExists ( 'selling_items' ) ;

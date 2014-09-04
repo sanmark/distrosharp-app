@@ -17,6 +17,11 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\Vendor' ) ;
 	}
 
+	public function financeTransfers ()
+	{
+		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;

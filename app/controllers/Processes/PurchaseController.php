@@ -253,17 +253,17 @@ class PurchaseController extends \Controller
 				$otherExpensesDetail = \Input::get ( 'other_expenses_details' ) ;
 			}
 
-			$buyingInvoices								 = new \Models\BuyingInvoice() ;
-			$buyingInvoices -> date_time				 = $purchaseDate ;
-			$buyingInvoices -> vendor_id				 = $vendorId ;
-			$buyingInvoices -> printed_invoice_num		 = $printedInvoiceNum ;
-			$buyingInvoices -> completely_paid			 = $isPaid ;
-			$buyingInvoices -> other_expenses_amount	 = $otherExpensesAmount ;
-			$buyingInvoices -> other_expenses_details	 = $otherExpensesDetail ;
-			$buyingInvoices -> stock_id					 = $toStockId ;
-			$buyingInvoices -> save () ;
+			$buyingInvoice							 = new \Models\BuyingInvoice() ;
+			$buyingInvoice -> date_time				 = $purchaseDate ;
+			$buyingInvoice -> vendor_id				 = $vendorId ;
+			$buyingInvoice -> printed_invoice_num	 = $printedInvoiceNum ;
+			$buyingInvoice -> completely_paid		 = $isPaid ;
+			$buyingInvoice -> other_expenses_amount	 = $otherExpensesAmount ;
+			$buyingInvoice -> other_expenses_details = $otherExpensesDetail ;
+			$buyingInvoice -> stock_id				 = $toStockId ;
+			$buyingInvoice -> save () ;
 
-			$this -> savePayments ( $vendorId , $purchaseDate , $cashPayment , $chequePayment ) ;
+			$this -> savePayments ( $buyingInvoice , $cashPayment , $chequePayment ) ;
 
 			$countRows = \Models\Item::all () ;
 
@@ -293,7 +293,7 @@ class PurchaseController extends \Controller
 
 					$buyingItems = new \Models\BuyingItem() ;
 
-					$buyingItems -> invoice_id		 = $buyingInvoices -> id ;
+					$buyingItems -> invoice_id		 = $buyingInvoice -> id ;
 					$buyingItems -> item_id			 = $itemId ;
 					$buyingItems -> price			 = $price ;
 					$buyingItems -> quantity		 = $quantity ;
@@ -341,8 +341,12 @@ class PurchaseController extends \Controller
 		}
 	}
 
-	private function savePayments ( $vendorId , $dateTime , $cashPayment , $chequePayment )
+	private function savePayments ( $buyingInvoice , $cashPayment , $chequePayment )
 	{
+		$vendorId	 = $buyingInvoice -> vendor_id ;
+		$dateTime	 = $buyingInvoice -> date_time ;
+		$dateTime	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
 		$this -> validateSavePayment ( $vendorId , $dateTime , $cashPayment , $chequePayment ) ;
 
 		$vendor = \Models\Vendor::findOrFail ( $vendorId ) ;
@@ -355,7 +359,6 @@ class PurchaseController extends \Controller
 		$cashAccount	 = \Models\FinanceAccount::findOrFail ( $cashAccountId ) ;
 		$chequeAccount	 = \Models\FinanceAccount::findOrFail ( $chequeAccountId ) ;
 
-		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
 
 		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $cashPayment ) )
 		{
@@ -366,6 +369,8 @@ class PurchaseController extends \Controller
 			$financeTransfer -> amount		 = $cashPayment ;
 
 			$financeTransfer -> save () ;
+
+			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
 
 			$cashAccount -> account_balance -= $cashPayment ;
 			$vendorAccount -> account_balance += $cashPayment ;
@@ -383,6 +388,8 @@ class PurchaseController extends \Controller
 			$financeTransfer -> amount		 = $chequePayment ;
 
 			$financeTransfer -> save () ;
+
+			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
 
 			$chequeAccount -> account_balance -= $chequePayment ;
 			$vendorAccount -> account_balance += $chequePayment ;
