@@ -10,7 +10,7 @@ class PurchaseController extends \Controller
 
 		$data = [ ] ;
 
-		$itemRows	 = \Models\Item::all () ;
+		$itemRows	 = \Models\Item::where ( 'is_active' , '=' , 1 ) ->  get ();
 		$stocks		 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 
 		$data[ 'itemRows' ]	 = $itemRows ;
