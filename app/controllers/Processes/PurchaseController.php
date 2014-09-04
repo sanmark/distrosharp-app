@@ -74,7 +74,7 @@ class PurchaseController extends \Controller
 		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$purchaseRows		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
-		$purchaseDateRefill	 = \ViewButler::dateTimeRefill ( $purchaseInvoice , 'date_time' ) ;
+		$purchaseDateRefill	 = \DateTimeHelper::dateTimeRefill ( $purchaseInvoice , 'date_time' ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;

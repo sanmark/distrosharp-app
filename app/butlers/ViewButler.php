@@ -74,13 +74,6 @@ class ViewButler
 		return $values ;
 	}
 
-	public static function dateTimeRefill ( $collection , $column )
-	{
-		$dateTimeWithUTC = date ( 'Y-m-dTH:i:s' , strtotime ( $collection -> $column ) ) ;
-		$dateTime		 = str_replace ( 'UTC' , 'T' , $dateTimeWithUTC ) ;
-		return $dateTime ;
-	}
-
 	public static function bootstrapDismissibleAlertCloseButton ()
 	{
 		return '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' ;

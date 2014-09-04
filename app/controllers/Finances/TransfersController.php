@@ -135,7 +135,7 @@ class TransfersController extends \Controller
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTime			 = \ViewButler::dateTimeRefill ( $financeTransfer , 'date_time' ) ;
+		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer , 'date_time' ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,

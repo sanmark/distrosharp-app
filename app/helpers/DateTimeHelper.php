@@ -16,4 +16,11 @@ class DateTimeHelper
 		return NULL ;
 	}
 
+	public static function dateTimeRefill ( $collection , $column )
+	{
+		$dateTimeWithUTC = date ( 'Y-m-dTH:i:s' , strtotime ( $collection -> $column ) ) ;
+		$dateTime		 = str_replace ( 'UTC' , 'T' , $dateTimeWithUTC ) ;
+		return $dateTime ;
+	}
+
 }
