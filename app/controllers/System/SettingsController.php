@@ -47,4 +47,38 @@ class SettingsController extends \Controller
 		}
 	}
 
+	public function selectTimeZone ()
+	{
+		$allTimeZones	 = timezone_identifiers_list () ;
+		$all			 = [ ] ;
+
+		foreach ( $allTimeZones as $timeZone )
+		{
+			$all[ $timeZone ] = $timeZone ;
+		}
+		$all	 = ['' => 'Select Time Zone' ] + $all ;
+		$data	 = compact ( [
+			'all'
+		] ) ;
+
+		return \View::make ( 'web.system.settings.timezone' , $data ) ;
+	}
+
+	public function updateTimeZone ()
+	{
+		try
+		{
+			$timezone = \Input::get ( 'time_zone' ) ;
+			\SystemSettingButler::setValue ( 'time_zone' , $timezone ) ;
+
+			\MessageButler::setSuccess ( 'Timezone were saved successfully.' ) ;
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
 }

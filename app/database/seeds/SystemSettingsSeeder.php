@@ -16,6 +16,11 @@ class SystemSettingsSeeder extends Seeder
 				'system_settable_id' => 2 ,
 				'value'				 => 5
 			] ,
+			[
+				'id'				 => 3 ,
+				'system_settable_id' => 3 ,
+				'value'				 => 'Asia/Jayapura'
+			]
 //			[
 //				'id'				 =>  ,
 //				'system_settable_id' =>  ,
