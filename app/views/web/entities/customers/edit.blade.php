@@ -16,7 +16,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('route_id', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('route_id','Route', array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
 				{{Form::select('route_id',$routeSelectBox,null,array('class' => 'form-control'))}}
 			</div>
