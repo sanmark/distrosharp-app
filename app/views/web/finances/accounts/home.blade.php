@@ -64,8 +64,8 @@
 					@endif
 
 					<td>{{$financeAccount->account_balance}}</td>
-					<td>{{$financeAccount->is_in_house}}</td>
-					<td>{{$financeAccount->is_active}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_in_house)}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_active)}}</td>
 					<td>
 						@if($financeAccount->is_in_house == TRUE)
 						{{HTML::link ( URL::action ( 'finances.accounts.edit', [$financeAccount->id] ), 'Edit' ) }}

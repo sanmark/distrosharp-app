@@ -79,7 +79,7 @@
 					<td>{{$buyingInvoiceRow->date_time}}</td>
 					<td>{{$buyingInvoiceRow->vendor->name}}</td>
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
-					<td>{{$buyingInvoiceRow->completely_paid}}</td>
+					<td>{{ViewButler::getYesNoFromBoolean ( $buyingInvoiceRow->completely_paid)}}</td>
 					<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
 					<td>{{$buyingInvoiceRow->other_expenses_details}}</td>
 					<td>{{$buyingInvoiceRow->stock->name}}</td>
