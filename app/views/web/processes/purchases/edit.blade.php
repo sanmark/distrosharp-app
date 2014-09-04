@@ -41,13 +41,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				@if($purchaseInvoice->completely_paid=='0')
-				{{Form::checkbox('completely_paid')}}
-				@elseif($purchaseInvoice->completely_paid=='1')
-				{{Form::checkbox('completely_paid','1',true)}}
-				@endif
+				{{Form::checkbox('completely_paid',TRUE,$purchaseInvoice->completely_paid,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 

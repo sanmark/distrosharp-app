@@ -47,9 +47,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::checkbox('is_paid')}}
+				{{Form::checkbox('is_paid',TRUE,null,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 

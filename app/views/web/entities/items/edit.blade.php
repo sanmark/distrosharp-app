@@ -52,9 +52,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
+			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::checkbox('is_active')}}
+				{{Form::checkbox('is_active',TRUE,null,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
