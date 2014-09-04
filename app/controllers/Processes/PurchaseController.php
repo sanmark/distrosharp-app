@@ -7,15 +7,24 @@ class PurchaseController extends \Controller
 
 	public function add ()
 	{
-		$data = [ ] ;
+		try
+		{
+			$this -> checkIfPaymentAccountsAreSet () ;
 
-		$itemRows	 = \Models\Item::where ( 'is_active' , '=' , 1 ) ->  get ();
-		$stocks		 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
+			$itemRows	 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
+			$stocks		 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 
-		$data[ 'itemRows' ]	 = $itemRows ;
-		$data[ 'stocks' ]	 = $stocks ;
+			$data = compact ( [
+				'itemRows' ,
+				'stocks'
+			] ) ;
 
-		return \View::make ( 'web.processes.purchases.add' , $data ) ;
+			return \View::make ( 'web.processes.purchases.add' , $data ) ;
+		} catch ( \Exceptions\NotAllPaymentAccountsAreSetException $ex )
+		{
+			\MessageButler::setInfo ( 'Please set Payment Source Accounts before adding purchases.' ) ;
+			return \Redirect::action ( 'system.settings.paymentSourceAccounts' ) ;
+		}
 	}
 
 	public function home ()
@@ -34,8 +43,8 @@ class PurchaseController extends \Controller
 		$sortOrder		 = \Input::get ( 'sort_order' ) ;
 		$stockId		 = \Input::get ( 'stock_id' ) ;
 		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
-		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [ NULL => 'Any' ] ) ;
+		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ '' => 'Any' ] ) ;
 
 		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
 		$data[ 'id' ]				 = $id ;
@@ -70,7 +79,7 @@ class PurchaseController extends \Controller
 		-> lists ( 'batch_number' , 'item_id' ) ;
 
 		$vendors			 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
+		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [ NULL => 'Any' ] ) ;
 		$purchaseRows		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
 		$purchaseDateRefill	 = \DateTimeHelper::dateTimeRefill ( $purchaseInvoice , 'date_time' ) ;
@@ -153,7 +162,7 @@ class PurchaseController extends \Controller
 
 						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
 						-> where ( 'item_id' , '=' , $itemId )
-						-> update ( ['good_quantity' => $newQuantity ] ) ;
+						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 
 						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 						-> where ( 'item_id' , '=' , $rows -> id )
@@ -190,7 +199,7 @@ class PurchaseController extends \Controller
 
 						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
 						-> where ( 'item_id' , '=' , $itemId )
-						-> update ( ['good_quantity' => $newQuantity ] ) ;
+						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 
 						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 						-> where ( 'item_id' , '=' , $rows -> id )
@@ -226,6 +235,9 @@ class PurchaseController extends \Controller
 			$vendorId			 = \Input::get ( 'vendor_id' ) ;
 			$printedInvoiceNum	 = \Input::get ( 'printed_invoice_num' ) ;
 			$isPaid				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
+			$cashPayment		 = \Input::get ( 'cash_payment' ) ;
+			$chequePayment		 = \Input::get ( 'cheque_payment' ) ;
+
 			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
 			{
 				$otherExpensesAmount = 0 ;
@@ -250,6 +262,8 @@ class PurchaseController extends \Controller
 			$buyingInvoices -> other_expenses_details	 = $otherExpensesDetail ;
 			$buyingInvoices -> stock_id					 = $toStockId ;
 			$buyingInvoices -> save () ;
+
+			$this -> savePayments ( $vendorId , $purchaseDate , $cashPayment , $chequePayment ) ;
 
 			$countRows = \Models\Item::all () ;
 
@@ -298,7 +312,7 @@ class PurchaseController extends \Controller
 
 					$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
 					-> where ( 'item_id' , '=' , $itemId )
-					-> update ( ['good_quantity' => $newQuantity ] ) ;
+					-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 				}
 			}
 
@@ -308,6 +322,114 @@ class PurchaseController extends \Controller
 			return \Redirect::back ()
 			-> withErrors ( $ex -> validator )
 			-> withInput () ;
+		}
+	}
+
+	private function checkIfPaymentAccountsAreSet ()
+	{
+		$paymentSourceCash	 = \SystemSettingButler::getValue ( 'payment_source_cash' ) ;
+		$paymentSourceCheque = \SystemSettingButler::getValue ( 'payment_source_cheque' ) ;
+
+		if ( \NullHelper::isNullEmptyOrWhitespace ( $paymentSourceCash ) )
+		{
+			throw new \Exceptions\NotAllPaymentAccountsAreSetException() ;
+		}
+
+		if ( \NullHelper::isNullEmptyOrWhitespace ( $paymentSourceCheque ) )
+		{
+			throw new \Exceptions\NotAllPaymentAccountsAreSetException() ;
+		}
+	}
+
+	private function savePayments ( $vendorId , $dateTime , $cashPayment , $chequePayment )
+	{
+		$this -> validateSavePayment ( $vendorId , $dateTime , $cashPayment , $chequePayment ) ;
+
+		$vendor = \Models\Vendor::findOrFail ( $vendorId ) ;
+
+		$vendorAccountId = $vendor -> finance_account_id ;
+		$cashAccountId	 = \SystemSettingButler::getValue ( 'payment_source_cash' ) ;
+		$chequeAccountId = \SystemSettingButler::getValue ( 'payment_source_cheque' ) ;
+
+		$vendorAccount	 = \Models\FinanceAccount::findOrFail ( $vendorAccountId ) ;
+		$cashAccount	 = \Models\FinanceAccount::findOrFail ( $cashAccountId ) ;
+		$chequeAccount	 = \Models\FinanceAccount::findOrFail ( $chequeAccountId ) ;
+
+		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $cashPayment ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $cashAccountId ;
+			$financeTransfer -> to_id		 = $vendorAccountId ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $cashPayment ;
+
+			$financeTransfer -> save () ;
+
+			$cashAccount -> account_balance -= $cashPayment ;
+			$vendorAccount -> account_balance += $cashPayment ;
+
+			$cashAccount -> update () ;
+			$vendorAccount -> update () ;
+		}
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $chequePayment ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $chequeAccountId ;
+			$financeTransfer -> to_id		 = $vendorAccountId ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $chequePayment ;
+
+			$financeTransfer -> save () ;
+
+			$chequeAccount -> account_balance -= $chequePayment ;
+			$vendorAccount -> account_balance += $chequePayment ;
+
+			$chequeAccount -> update () ;
+			$vendorAccount -> update () ;
+		}
+	}
+
+	private function validateSavePayment ( $vendorId , $dateTime , $cashPayment , $chequePayment )
+	{
+		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
+		$data = compact ( [
+			'vendorId' ,
+			'dateTime' ,
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'vendorId'		 => [
+				'required'
+			] ,
+			'dateTime'		 => [
+				'required' ,
+				'date' ,
+				'date_format:Y-m-d H:i:s'
+			] ,
+			'cashPayment'	 => [
+				'required_without:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePayment'	 => [
+				'required_without:cashPayment' ,
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
 		}
 	}
 

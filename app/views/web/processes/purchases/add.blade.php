@@ -103,6 +103,18 @@
 			@endforeach
 		</div>
 		<div class="form-group">
+			{{Form::label('Cash Payment', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('number', 'cash_payment', NULL, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('Cheque Payment', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('number', 'cheque_payment', NULL, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				{{Form::hidden('row_counter',$rowCounter)}}
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}

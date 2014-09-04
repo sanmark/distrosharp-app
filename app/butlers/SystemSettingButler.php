@@ -5,10 +5,10 @@ class SystemSettingButler
 
 	public static function getValue ( $systemSettingName )
 	{
-		$requesObject	 = new \Models\SystemSettable() ;
-		$requesObject	 = $requesObject -> where ( 'name' , '=' , $systemSettingName ) ;
+		$requestObject	 = new \Models\SystemSettable() ;
+		$requestObject	 = $requestObject -> where ( 'name' , '=' , $systemSettingName ) ;
 
-		$systemSettable	 = $requesObject -> firstOrFail () ;
+		$systemSettable	 = $requestObject -> firstOrFail () ;
 		$systemSetting	 = $systemSettable -> systemSetting ;
 		$value			 = $systemSetting -> value ;
 
