@@ -7,7 +7,6 @@ class PurchaseController extends \Controller
 
 	public function add ()
 	{
-
 		$data = [ ] ;
 
 		$itemRows	 = \Models\Item::where ( 'is_active' , '=' , 1 ) ->  get ();

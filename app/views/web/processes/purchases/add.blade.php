@@ -1,7 +1,5 @@
 @extends('web._templates.template')
-
 @section('body')
-
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">Add Purchase</h3>
@@ -52,7 +50,6 @@
 				{{Form::checkbox('is_paid',TRUE,null,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
-
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
@@ -61,17 +58,26 @@
 					<div class="col-sm-2"><b>Free Quantity</b></div>
 					<div class="col-sm-3"><b>Date</b></div>
 					<div class="col-sm-3"><b>Batch Number</b></div>
-				</div>			
-			</div>			
+				</div>
+			</div>
 		</div>
-
 		<div id="add_purchase_items">
 			<?php $rowCounter = 0 ; ?>
 			@foreach($itemRows as $itemRow)
-
 			<div class="form-group">
-				{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
-				{{Form::label(null, $itemRow->name, array('class' => 'col-sm-2 control-label'))}}
+				<div class="col-sm-2">
+					{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
+					@if(false!=$itemRow->getImageUrl())
+					<a href="#"  style="position:relative;">
+						{{$itemRow->name}}
+						<div class="tool-tip slideIn bottom" >
+							<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
+						</div>
+					</a>
+					@else
+					{{Form::label(null, $itemRow->name)}}
+					@endif
+				</div>
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-2">
@@ -87,7 +93,7 @@
 							{{Form::input('date','exp_date_'.$itemRow->id, null, array('class' => 'form-control'))}}
 						</div>
 						<div class="col-sm-3">
-							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}} 
+							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}}
 						</div>
 					</div>
 				</div>
@@ -95,9 +101,7 @@
 
 			<?php //$rowCounter++; ?>
 			@endforeach
-
 		</div>
-
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				{{Form::hidden('row_counter',$rowCounter)}}
@@ -109,5 +113,4 @@
 
 	</div>
 </div>
-
 @stop

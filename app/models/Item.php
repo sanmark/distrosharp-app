@@ -114,4 +114,24 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 		return $requestObject -> get () ;
 	}
 
+	/**
+	 * Find the image for the item and return the url if have an image.
+	 *
+	 * @return string|boolean Image url if found else false.
+	 */
+	public function getImageUrl ()
+	{
+		$baseUrl	 = \URL::to ( '/' ) ;
+		$code		 = $this -> code ;
+		$filePath	 = \public_path () . '\images\product-images\/' ;
+
+		if ( file_exists ( $filePath . $code ) )
+		{
+			return $baseUrl . '/images/product-images/' . $code ;
+		} else
+		{
+			return FALSE ;
+		}
+	}
+
 }

@@ -66,7 +66,20 @@
 
 		@foreach($items as $item)
 		<div class="form-group">
-			{{Form::label(null, $item->name, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				@if(false!=$item->getImageUrl())
+				<a href="#"  style="position:relative;">
+					{{$item->name}}
+					<div class="tool-tip slideIn bottom" >
+						<img class="tool-tip-img" src="{{$item->getImageUrl()}}" >
+					</div>
+				</a>
+				@else
+				{{Form::label(null, $item->name)}}
+				@endif
+			</div>
+
+
 			<div class="col-sm-10">
 				<div class="row">
 

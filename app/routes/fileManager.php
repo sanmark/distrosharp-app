@@ -10,5 +10,4 @@ Route::group ( [
 		'before' => ['hasAbilities:manage_files' ] ,
 		'uses'	 => 'Controllers\FileManager\FileController@home'
 	] ) ;
-	//error_log ( 'in the route' ) ;
 } ) ;
