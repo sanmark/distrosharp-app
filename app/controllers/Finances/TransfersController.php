@@ -45,12 +45,14 @@ class TransfersController extends \Controller
 	public function add ( $fromAccountId , $toAccountId )
 	{
 
-		$fromAccount = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
-		$toAccount	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
+		$fromAccount	 = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
+		$toAccount		 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
+		$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
 
 		$data = compact ( [
 			'fromAccount' ,
-			'toAccount'
+			'toAccount' ,
+			'currentDateTime'
 		] ) ;
 		return \View::make ( 'web.finances.transfers.add' , $data ) ;
 	}
@@ -135,7 +137,7 @@ class TransfersController extends \Controller
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer , 'date_time' ) ;
+		$dateTime			 = \DateTimeHelper::dateTimeRefill ( [$financeTransfer -> date_time ] ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,

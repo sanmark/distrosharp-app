@@ -285,7 +285,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'to_id' ) -> unsigned () ;
 			$t -> dateTime ( 'date_time' ) ;
 			$t -> float ( 'amount' ) ;
-			$t -> text ( 'description' ) ;
+			$t -> text ( 'description' )->nullable() ;
 
 			$t -> foreign ( 'from_id' )
 			-> references ( 'id' )

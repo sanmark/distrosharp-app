@@ -11,12 +11,16 @@ class PurchaseController extends \Controller
 		{
 			$this -> checkIfPaymentAccountsAreSet () ;
 
-			$itemRows	 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
-			$stocks		 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
+			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
+			$itemRowsForTotal	 = $itemRows -> lists ( 'id' ) ;
+			$stocks				 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
+			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
 
 			$data = compact ( [
 				'itemRows' ,
-				'stocks'
+				'itemRowsForTotal' ,
+				'stocks' ,
+				'currentDateTime' ,
 			] ) ;
 
 			return \View::make ( 'web.processes.purchases.add' , $data ) ;
@@ -64,11 +68,12 @@ class PurchaseController extends \Controller
 	{
 		$data					 = [ ] ;
 		$purchaseInvoice		 = \Models\BuyingInvoice::with ( 'financeTransfers.fromAccount' ) -> findOrFail ( $id ) ;
+		$purchaseInvoiceDate	 = \Models\BuyingInvoice::findOrFail ( $id);
 		$ItemRows				 = \Models\Item::lists ( 'id' , 'name' ) ;
+		$itemRowsForTotal		 = \Models\Item::lists ( 'id' ) ;
 		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> get () ;
-		$price					 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'price' , 'item_id' ) ;
+		$price					 = \Models\Item::lists ( 'current_buying_price' , 'id' ) ;
 		$quantity				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'quantity' , 'item_id' ) ;
 		$freeQuantity			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
@@ -78,11 +83,12 @@ class PurchaseController extends \Controller
 		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'batch_number' , 'item_id' ) ;
 
-		$vendors			 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
-		$vendorSelectBox	 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [ NULL => 'Any' ] ) ;
-		$purchaseRows		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
+		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
-		$purchaseDateRefill	 = \DateTimeHelper::dateTimeRefill ( $purchaseInvoice , 'date_time' ) ;
+		
+		$purchaseDateRefill = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate->date_time ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;
@@ -95,6 +101,7 @@ class PurchaseController extends \Controller
 		$data[ 'expDate' ]					 = $expDate ;
 		$data[ 'batchNumber' ]				 = $batchNumber ;
 		$data[ 'purchaseDateRefill' ]		 = $purchaseDateRefill ;
+		$data[ 'itemRowsForTotal' ]			 = $itemRowsForTotal ;
 
 		return \View::make ( 'web.processes.purchases.edit' , $data ) ;
 	}

@@ -16,10 +16,11 @@ class DateTimeHelper
 		return NULL ;
 	}
 
-	public static function dateTimeRefill ( $collection , $column )
+	public static function dateTimeRefill ( $dateTimeForFormat )
 	{
-		$dateTimeWithUTC = date ( 'Y-m-dTH:i:s' , strtotime ( $collection -> $column ) ) ;
-		$dateTime		 = str_replace ( 'UTC' , 'T' , $dateTimeWithUTC ) ;
+
+		$dateTime	 = preg_replace ( "/[A-Z, ]/" , '' , $dateTimeForFormat ) ;
+		$dateTime	 = substr_replace ( $dateTime , 'T' , 10,0) ;
 		return $dateTime ;
 	}
 

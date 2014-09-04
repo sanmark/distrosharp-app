@@ -37,7 +37,7 @@
 		<div class="form-group">
 			{{Form::label('other_expense_details', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::textarea('other_expenses_details',$purchaseInvoice->other_expenses_details, array('class' => 'form-control'))}}
+				{{Form::text('other_expenses_details',$purchaseInvoice->other_expenses_details, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -50,74 +50,80 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
-					<div class="col-sm-2"><b>Price</b></div>
 					<div class="col-sm-2"><b>Quantity</b></div>
 					<div class="col-sm-2"><b>Free Quantity</b></div>
-					<div class="col-sm-3"><b>Date</b></div>
+					<div class="col-sm-3"><b>Expire Date</b></div>
 					<div class="col-sm-3"><b>Batch Number</b></div>
+					<div class="col-sm-2"><b>Line Total</b></div>
 				</div>			
 			</div>			
 		</div>
-
-
 		@foreach($ItemRows as $ItemRowName=>$ItemRowValue )
 		<div class="form-group">
-
 			@if(in_array($ItemRowValue,$purchaseRows))
-
+			{{Form::hidden('buying_price_'.$ItemRowValue,$price[$ItemRowValue])}}
 			{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}
 			{{Form::label($ItemRowName, null, array('class' => 'col-sm-2 control-label'))}}
 
 			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number','buying_price_'.$ItemRowValue,$price[$ItemRowValue], array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','required'=>'required','class' => 'form-control','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue], array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any','class' => 'form-control'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::input('date','exp_date_'.$ItemRowValue,$expDate[$ItemRowValue],['step'=>'any','class' => 'form-control'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::text('batch_number_'.$ItemRowValue,$batchNumber[$ItemRowValue],['class' => 'form-control'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue], array('class' => 'form-control'),['step'=>'any'])}}
-					</div>
-					<div class="col-sm-3">
-						{{Form::input('date','exp_date_'.$ItemRowValue,$expDate[$ItemRowValue], array('class' => 'form-control'),['step'=>'any'])}}
-					</div>
-					<div class="col-sm-3">
-						{{Form::text('batch_number_'.$ItemRowValue,$batchNumber[$ItemRowValue], array('class' => 'form-control'))}}
+						{{Form::text('line_total_'.$ItemRowValue, null, ['class' => 'form-control', 'step'=>'any','readonly'=>'readonly'])}}
 					</div>
 				</div>
 			</div>
-
 			@else
 
+			{{Form::hidden('buying_price_'.$ItemRowValue,$price[$ItemRowValue])}}
 			{{Form::hidden('item_id_'.$ItemRowValue,$ItemRowValue)}}
 			{{Form::label($ItemRowName, null, array('class' => 'col-sm-2 control-label'))}}
 
 			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number','buying_price_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','quantity_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::input('date','exp_date_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any'])}}
+					</div>
+					<div class="col-sm-3">
+						{{Form::text('batch_number_'.$ItemRowValue,null, ['class' => 'form-control'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','free_quantity_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
-					</div>
-					<div class="col-sm-3">
-						{{Form::input('date','exp_date_'.$ItemRowValue,null, array('class' => 'form-control'),['step'=>'any'])}}
-					</div>
-					<div class="col-sm-3">
-						{{Form::text('batch_number_'.$ItemRowValue,null, array('class' => 'form-control'))}}
+						{{Form::text('line_total_'.$ItemRowValue, null,['class' => 'form-control', 'step'=>'any','readonly'=>'readonly'])}}
 					</div>
 				</div>
 			</div>
 
 			@endif
-
 		</div>
 		@endforeach
-
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-3"></div>
+					<div class="col-sm-3"></div>
+					<div class="col-sm-2">{{Form::text('full_total',null, ['class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'])}}</div>
+				</div>			
+			</div>			
+		</div>
 		<div class="form-group">
 			<span class="col-sm-2 control-label">Payments</span>
 			<div class="col-sm-10">
@@ -152,5 +158,33 @@
 
 	</div>
 </div>
+<script type="text/javascript">
+	function changeOnQuantity(name, quantity)
+	{
+		var price = document.getElementsByName('buying_price_' + name)[0].value;
+		var lineTotal = price * quantity;
+		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
+		var i;
+		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
+		var finalTotal = 0;
+		for (i = 0; i < a.length; i++) {
+			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
+			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
+		}
+		document.getElementsByName('full_total')[0].value = finalTotal;
+	}
 
+	var i;
+	var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
+	var finalTotal = 0;
+	for (i = 0; i < a.length; i++) {
+		var price = document.getElementsByName('buying_price_' + a[i])[0].value;
+		var quantity = document.getElementsByName('quantity_' + a[i])[0].value;
+		var lineTotal = Number(price) * Number(quantity);
+		document.getElementsByName('line_total_' + a[i])[0].value = lineTotal;
+		var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
+		var finalTotal = Number(finalTotal) + Number(fullTotalCell);
+	}
+	document.getElementsByName('full_total')[0].value = finalTotal;
+</script>
 @stop

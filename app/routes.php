@@ -1,5 +1,7 @@
 <?php
 
+$currentTimeZone = \SystemSettingButler::getValue ( 'time_zone' ) ;
+date_default_timezone_set ( $currentTimeZone ) ;
 /*
   |--------------------------------------------------------------------------
   | Application Routes
