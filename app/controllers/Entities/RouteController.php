@@ -27,7 +27,10 @@ class RouteController extends \Controller
 
 	public function add ()
 	{
-		return \View::make ( 'web.entities.routes.add' ) ;
+		$data					 = [ ] ;
+		$repSelectBox			 = \User::getArrayForHtmlSelect ( 'id' , 'username' , ['' => 'Select Rep' ] ) ;
+		$data[ 'repSelectBox' ]	 = $repSelectBox ;
+		return \View::make ( 'web.entities.routes.add' , $data ) ;
 	}
 
 	public function save ()
@@ -52,10 +55,12 @@ class RouteController extends \Controller
 
 	public function edit ( $id )
 	{
-		$route = \Models\Route::findOrFail ( $id ) ;
+		$route			 = \Models\Route::findOrFail ( $id ) ;
+		$repSelectBox	 = \User::getArrayForHtmlSelect ( 'id' , 'username' , ['' => 'Select Rep' ] ) ;
 
-		$data			 = [ ] ;
-		$data[ 'route' ] = $route ;
+		$data					 = [ ] ;
+		$data[ 'route' ]		 = $route ;
+		$data[ 'repSelectBox' ]	 = $repSelectBox ;
 
 		return \View::make ( 'web.entities.routes.edit' , $data ) ;
 	}

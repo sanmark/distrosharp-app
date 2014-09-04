@@ -16,9 +16,9 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('rep_id', null, array('class' => 'col-sm-1 control-label'))}}
+			{{Form::label('rep_name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('rep_id', null, array('class' => 'form-control'))}}
+				{{Form::select('rep_id',$repSelectBox,null,array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
