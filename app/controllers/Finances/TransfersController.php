@@ -7,12 +7,10 @@ class TransfersController extends \Controller
 
 	public function selectAccountsInvolved ()
 	{
-
-		$accountSelectBox1	 = \Models\FinanceAccount::where ( 'is_active' , '=' , '1' ) -> lists ( 'name' , 'id' ) ;
-		$accountSelectBox2	 = ['' => 'Select Account' ] ;
-		$accountSelectBox	 = $accountSelectBox2 + $accountSelectBox1 ;
-
-		$data = compact ( [
+		$requestObject		 = \Models\FinanceAccount::where ( 'is_active' , '=' , TRUE )
+		-> where ( 'is_in_house' , '=' , TRUE ) ;
+		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $requestObject , [NULL => 'Select Account' ] ) ;
+		$data				 = compact ( [
 			'accountSelectBox'
 		] ) ;
 
@@ -45,14 +43,13 @@ class TransfersController extends \Controller
 	public function add ( $fromAccountId , $toAccountId )
 	{
 
-		$fromAccount	 = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
-		$toAccount		 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
-		$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
-
+		$fromAccount = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
+		$toAccount	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
+		$currentDate = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
 		$data = compact ( [
 			'fromAccount' ,
 			'toAccount' ,
-			'currentDateTime'
+			'currentDate'
 		] ) ;
 		return \View::make ( 'web.finances.transfers.add' , $data ) ;
 	}
