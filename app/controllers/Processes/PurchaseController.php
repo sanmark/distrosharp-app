@@ -63,7 +63,7 @@ class PurchaseController extends \Controller
 	public function edit ( $id )
 	{
 		$data					 = [ ] ;
-		$purchaseInvoice		 = \Models\BuyingInvoice::findOrFail ( $id ) ;
+		$purchaseInvoice		 = \Models\BuyingInvoice::with ( 'financeTransfers.fromAccount' ) -> findOrFail ( $id ) ;
 		$ItemRows				 = \Models\Item::lists ( 'id' , 'name' ) ;
 		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> get () ;

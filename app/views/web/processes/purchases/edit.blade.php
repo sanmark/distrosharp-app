@@ -119,6 +119,30 @@
 		@endforeach
 
 		<div class="form-group">
+			<span class="col-sm-2 control-label">Payments</span>
+			<div class="col-sm-10">
+				<table border="1">
+					<tr>
+						<th>ID</th>
+						<th>From</th>
+						<th>Date</th>
+						<th>Amount</th>
+						<th></th>
+					</tr>
+					@foreach($purchaseInvoice->financeTransfers as $financeTransfer)
+					<tr>
+						<td>{{$financeTransfer->id}}</td>
+						<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
+						<td>{{$financeTransfer->date_time}}</td>
+						<td>{{$financeTransfer->amount}}</td>
+						<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
+					</tr>
+					@endforeach
+				</table>
+			</div>
+		</div>
+
+		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>
 			</div>
