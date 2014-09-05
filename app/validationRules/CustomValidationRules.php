@@ -36,4 +36,9 @@ class CustomValidationRules extends \Validator
 		return $value >= $againstValue ;
 	}
 
+	public function noSpacesInString( $attribute , $value )
+	{
+		return ! preg_match ( '/ /' , $value ) ;
+	}
+
 }

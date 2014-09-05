@@ -27,7 +27,8 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 
 		$rules = [
 			'code'					 => [
-				'required' ,
+				'required',
+				'no_spaces_in_string' ,
 				'unique:items'
 			] ,
 			'name'					 => [
