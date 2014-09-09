@@ -79,6 +79,10 @@ class MenuButler
 			]
 		] ,
 		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,
+		['Reports' , [
+				['Stock Report' , 'reports.stocks' , [ 'view_stock_report' ] ]
+			] ,
+		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]
