@@ -10,8 +10,7 @@ class PurchaseController extends \Controller
 		try
 		{
 			$this -> checkIfPaymentAccountsAreSet () ;
-
-			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
+			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> orderBy ( 'buying_invoice_order' , 'ASC' ) -> get () ;
 			$itemRowsForTotal	 = $itemRows -> lists ( 'id' ) ;
 			$stocks				 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;

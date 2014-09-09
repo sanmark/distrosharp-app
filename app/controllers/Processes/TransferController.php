@@ -42,7 +42,7 @@ class TransferController extends \Controller
 
 			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$items		 = \Models\Item::all () ;
+			$items		 = \Models\Item::orderBy('buying_invoice_order', 'ASC')->get();
 
 			$fromStockDetails	 = $fromStock -> goodQuantities () ;
 			$toStockDetails		 = $toStock -> goodQuantities () ;

@@ -7,8 +7,8 @@ class SaleController extends \Controller
 
 	public function add ()
 	{
-		$customers	 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
-		$items		 = \Models\Item::all () ;
+		$customers		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$items			 = \Models\Item::orderBy ( 'selling_invoice_order' , 'ASC' ) -> get () ;
 		$user			 = \Auth::user () ;
 		$user			 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
 		$stockDetails	 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
