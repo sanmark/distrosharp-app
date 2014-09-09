@@ -13,13 +13,13 @@
 		<div class="form-group">
 			{{Form::label('from', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('from', $stocksHtmlSelect, null, array('class' => 'form-control'))}}
+				{{Form::select('from', $stocksHtmlSelect, null, array('class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('to', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('to', $stocksHtmlSelect, null, array('class' => 'form-control'))}}
+				{{Form::select('to', $stocksHtmlSelect, null, array('class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">

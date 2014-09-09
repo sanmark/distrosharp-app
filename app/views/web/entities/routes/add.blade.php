@@ -11,13 +11,13 @@
 		<div class="form-group">
 			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('name', null, array('class' => 'form-control'))}}
+				{{Form::text('name', null, array('class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('rep_name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::select('rep_id',$repSelectBox,null,array('class' => 'form-control'))}}
+				{{Form::select('rep_id',$repSelectBox,null,array('class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">

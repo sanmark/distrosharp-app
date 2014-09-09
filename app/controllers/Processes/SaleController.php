@@ -9,7 +9,6 @@ class SaleController extends \Controller
 	{
 		$customers	 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 		$items		 = \Models\Item::all () ;
-
 		$user			 = \Auth::user () ;
 		$user			 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
 		$stockDetails	 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;

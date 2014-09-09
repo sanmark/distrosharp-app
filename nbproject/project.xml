@@ -11,6 +11,7 @@
             <word>elseif</word>
             <word>endforeach</word>
             <word>endif</word>
+            <word>itemRowsAscSellingInvoice</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

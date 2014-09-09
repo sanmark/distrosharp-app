@@ -35,15 +35,26 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'unique:items'
 			] ,
-			'reorder_level'			 => ['required' ] ,
-			'current_buying_price'	 => ['required' ] ,
-			'current_selling_price'	 => ['required' ] ,
+			'reorder_level'			 => [
+				'numeric' ,
+				'required'
+			] ,
+			'current_buying_price'	 => [ 
+				'numeric' ,
+				'required'
+			] ,
+			'current_selling_price'	 => [ 
+				'numeric' ,
+				'required'
+			] ,
 			'buying_invoice_order'	 => [
 				'required' ,
+				'numeric' ,
 				'unique:items'
 			] ,
 			'selling_invoice_order'	 => [
 				'required' ,
+				'numeric' ,
 				'unique:items'
 			]
 		] ;

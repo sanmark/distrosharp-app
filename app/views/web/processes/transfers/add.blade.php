@@ -15,7 +15,7 @@
 		<div class="form-group">
 			{{Form::label('date_time', 'Date and Time', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input ( 'datetime-local', 'date_time',null, array('class' => 'form-control'))}}
+				{{Form::input ( 'datetime-local', 'date_time',null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<br/>
@@ -37,8 +37,8 @@
 					<div class="col-sm-1 text-right">
 						{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}
 					</div>
-					<div class="col-sm-1 text-right">
-						{{Form::text('transfer_amounts['.$item->id.']', null, array('class' => 'form-control text-right'))}}
+					<div class="col-sm-1 text-right"> 
+						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control','step' => 'any'))}}
 					</div>
 					<div class="col-sm-1 text-right">
 						{{$toStockDetails[$item->id]}}

@@ -68,7 +68,7 @@ class PurchaseController extends \Controller
 	{
 		$data					 = [ ] ;
 		$purchaseInvoice		 = \Models\BuyingInvoice::with ( 'financeTransfers.fromAccount' ) -> findOrFail ( $id ) ;
-		$purchaseInvoiceDate	 = \Models\BuyingInvoice::findOrFail ( $id);
+		$purchaseInvoiceDate	 = \Models\BuyingInvoice::findOrFail ( $id ) ;
 		$ItemRows				 = \Models\Item::lists ( 'id' , 'name' ) ;
 		$itemRowsForTotal		 = \Models\Item::lists ( 'id' ) ;
 		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
@@ -87,8 +87,8 @@ class PurchaseController extends \Controller
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
-		
-		$purchaseDateRefill = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate->date_time ) ;
+
+		$purchaseDateRefill = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate -> date_time ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;

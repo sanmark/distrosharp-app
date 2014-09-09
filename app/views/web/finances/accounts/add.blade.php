@@ -19,7 +19,7 @@
 		<div class="form-group">
 			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('name',null, array('class' => 'form-control'),['required'=>'required'])}}
+				{{Form::text('name',null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">

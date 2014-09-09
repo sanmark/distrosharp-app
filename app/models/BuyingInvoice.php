@@ -31,7 +31,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
-
+		 
 		$rules = [
 			'date_time'				 => [
 				'required'
@@ -41,6 +41,9 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 			] ,
 			'printed_invoice_num'	 => [
 				'required' ,
+			] ,
+			'other_expenses_amount'	 => [  
+				'numeric' ,
 			] ,
 			'stock_id'				 => [
 				'required' ,

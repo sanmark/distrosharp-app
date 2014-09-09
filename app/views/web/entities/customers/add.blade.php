@@ -12,13 +12,13 @@
 		<div class="form-group">
 			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('name', null, array('class' => 'form-control'))}}
+				{{Form::text('name', null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('route_id','Route', array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::select('route_id',\Models\Route::getArrayForHtmlSelect('id','name',[''=>'Select Route']),null,['class' => 'form-control'])}}
+				{{Form::select('route_id',\Models\Route::getArrayForHtmlSelect('id','name',[''=>'Select Route']),null,['class' => 'form-control','required'=>true])}}
 			</div>
 		</div>
 		<div class="form-group">

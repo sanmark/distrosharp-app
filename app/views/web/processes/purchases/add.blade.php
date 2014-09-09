@@ -11,25 +11,25 @@
 		<div class="form-group">
 			{{Form::label('date', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input ( 'datetime-local','date_time',$currentDateTime, array('class' => 'form-control'))}}</td>
+				{{Form::input ( 'datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true))}} 
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('vendor', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('vendor_id',\Models\Vendor::getArrayForHtmlSelect('id','name',[''=>'Select Vendor']), null, array('class' => 'form-control'))}}
+				{{Form::select('vendor_id',\Models\Vendor::getArrayForHtmlSelect('id','name',[''=>'Select Vendor']), null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Print Invoice Number', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('printed_invoice_num',null, array('class' => 'form-control'))}}
+				{{Form::text('printed_invoice_num',null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('other_expense_amount',null, array('class' => 'form-control'))}}
+			<div class="col-sm-3"> 
+				{{Form::input('number','other_expense_amount', null, array('class' => 'form-control','step' => 'any'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -41,7 +41,7 @@
 		<div class="form-group">
 			{{Form::label('Stock', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control'))}}
+				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -145,10 +145,10 @@
 		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
 		var i;
 		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
-		var finalTotal=0;
+		var finalTotal = 0;
 		for (i = 0; i < a.length; i++) {
 			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
-			var finalTotal =Number(finalTotal)+Number(fullTotalCell);
+			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 		}
 		document.getElementsByName('full_total')[0].value = finalTotal;
 	}
@@ -159,10 +159,10 @@
 		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
 		var i;
 		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
-		var finalTotal=0;
+		var finalTotal = 0;
 		for (i = 0; i < a.length; i++) {
 			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
-			var finalTotal =Number(finalTotal)+Number(fullTotalCell);
+			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 		}
 		document.getElementsByName('full_total')[0].value = finalTotal;
 	}
