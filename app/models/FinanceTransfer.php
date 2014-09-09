@@ -17,6 +17,49 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\FinanceAccount' , 'from_id' ) ;
 	}
 
+	public static function viewAllFilter ( $filterValues )
+	{
+		$requestObject = new FinanceTransfer () ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$fromDate	 = $filterValues[ 'from_date' ] ;
+			$toDate		 = $filterValues[ 'to_date' ] ;
+			$amount		 = $filterValues[ 'amount' ] ;
+			$compareSign = $filterValues[ 'compare_sign' ] ;
+			$fromAccount = $filterValues[ 'from_account' ] ;
+			$toAccount	 = $filterValues[ 'to_account' ] ;
+			$minDate	 = $requestObject -> min ( 'date_time' ) ;
+			$maxDate	 = $requestObject -> max ( 'date_time' ) ;
+
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) > 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $toDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) == 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $maxDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) == 0 && strlen ( $toDate ) > 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$minDate , $toDate ] ) ;
+			}
+			if ( strlen ( $amount ) > 0 && strlen ( $compareSign ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'amount' , $compareSign , $amount ) ;
+			}
+			if ( strlen ( $fromAccount ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'from_id' , '=' , $fromAccount ) ;
+			}
+			if ( strlen ( $toAccount ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'to_id' , '=' , $toAccount ) ;
+			}
+		}
+		return $requestObject -> get () ;
+	}
+
 	public static function filter ( $filterValues )
 	{
 		$requestObject = new FinanceTransfer() ;

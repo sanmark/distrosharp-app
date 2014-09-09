@@ -5,6 +5,37 @@ namespace Controllers\Finances ;
 class TransfersController extends \Controller
 {
 
+	public function viewAll ()
+	{
+		$filterValues	 = \Input::all () ;
+		$financeData	 = \Models\FinanceTransfer::viewAllFilter ( $filterValues ) ;
+		$fromDate		 = \Input::get ( 'from_date' ) ;
+		$toDate			 = \Input::get ( 'to_date' ) ;
+		$compareSign	 = \Input::get ( 'compare_sign' ) ;
+		$amount			 = \Input::get ( 'amount' ) ;
+		$fromAccount	 = \Input::get ( 'from_account' ) ;
+		$toAccount		 = \Input::get ( 'to_account' ) ;
+
+		$compareSignSelectBox	 = ['' => 'Compare' , '>' => 'Greater Than' , '<' => 'Smaller Than' , '=' => 'Equals to' ] ;
+		$fromAccountsId			 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
+		$fromAccountsIds		 = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $fromAccountsId ) -> lists ( 'name' , 'id' ) ;
+		$toAccountsId			 = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
+		$toAccountsIds			 = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $toAccountsId ) -> lists ( 'name' , 'id' ) ;
+		$data					 = compact ( [
+			'financeData' ,
+			'compareSignSelectBox' ,
+			'fromAccountsIds' ,
+			'toAccountsIds' ,
+			'compareSign' ,
+			'fromAccount' ,
+			'toAccount' ,
+			'fromDate' ,
+			'toDate' ,
+			'amount'
+		] ) ;
+		return \View::make ( 'web.finances.transfers.viewAll' , $data ) ;
+	}
+
 	public function selectAccountsInvolved ()
 	{
 		$requestObject		 = \Models\FinanceAccount::where ( 'is_active' , '=' , TRUE )
@@ -93,12 +124,8 @@ class TransfersController extends \Controller
 	public function home ( $accountId )
 	{
 
-		$filterValues = \Input::all () + ['id' => $accountId ] ;
-
-//		$accountTransfers = \Models\FinanceTransfer::where ( 'from_id' , '=' , $accountId )
-//		-> orWhere ( 'to_id' , '=' , $accountId ) -> get () ;
-
-		$accountTransfers = \Models\FinanceTransfer::filter ( $filterValues ) ;
+		$filterValues		 = \Input::all () + ['id' => $accountId ] ;
+		$accountTransfers	 = \Models\FinanceTransfer::filter ( $filterValues ) ;
 
 		$fromDate				 = \Input::get ( 'from_date' ) ;
 		$toDate					 = \Input::get ( 'to_date' ) ;

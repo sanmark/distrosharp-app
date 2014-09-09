@@ -69,7 +69,8 @@ class MenuButler
 					]
 				] ,
 				['Transfers' , [
-						['Add Transfer' , 'finances.transfers.selectAccountsInvolved' , ['add_finance_transfer' ] ]
+						['Add Transfer' , 'finances.transfers.selectAccountsInvolved' , ['add_finance_transfer' ] ] ,
+						['View Transfers' , 'finances.transfers.viewAll' , ['view_finance_transfers_details' ] ]
 					]
 				]
 			] ,

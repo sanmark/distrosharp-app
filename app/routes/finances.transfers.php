@@ -45,5 +45,15 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_finance_transfer_details' ] ,
 		'uses'	 => 'Controllers\Finances\TransfersController@update'
 	] ) ;
+	Route::get ( 'view-all' , [
+		'as'	 => 'finances.transfers.viewAll' ,
+		'before' => ['hasAbilities:view_finance_transfers_details' ] ,
+		'uses'	 => 'Controllers\Finances\TransfersController@viewAll'
+	] ) ;
+	Route::post ( 'view-all' , [
+		'as'	 => 'finances.transfers.viewAll' ,
+		'before' => ['hasAbilities:view_finance_transfers_details' ] ,
+		'uses'	 => 'Controllers\Finances\TransfersController@viewAll'
+	] ) ;
 } ) ;
 
