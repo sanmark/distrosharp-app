@@ -15,7 +15,7 @@ class StockController extends \Controller
 		$data [ 'stockSelect' ]	 = $stockSelect ;
 		$data [ 'stockId' ]		 = 0 ;
 
-		return \View::make ( 'web.reports.home' , $data ) ;
+		return \View::make ( 'web.reports.stock.home' , $data ) ;
 	}
 
 	public function update ()
@@ -43,7 +43,7 @@ class StockController extends \Controller
 		}
 
 
-		return \View::make ( 'web.reports.home' , $data ) ;
+		return \View::make ( 'web.reports.stock.home' , $data ) ;
 	}
 
 	public function calculateDerivedValues ( $stock )
