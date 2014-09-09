@@ -45,19 +45,19 @@ class SaleController extends \Controller
 
 			foreach ( $items as $itemId => $item )
 			{
-				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' ] ) )
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' ] ) )
 				{
 					$sellingItem = new \Models\SellingItem() ;
 
 					$sellingItem -> selling_invoice_id		 = $sellingInvoiceId ;
 					$sellingItem -> item_id					 = $itemId ;
-					$sellingItem -> price					 = $item[ 'price' ] ;
-					$sellingItem -> paid_quantity			 = $item[ 'paid_quantity' ] ;
-					$sellingItem -> free_quantity			 = $item[ 'free_quantity' ] ;
-					$sellingItem -> good_return_price		 = $item[ 'good_return_price' ] ;
-					$sellingItem -> good_return_quantity	 = $item[ 'good_return_quantity' ] ;
-					$sellingItem -> company_return_price	 = $item[ 'company_return_price' ] ;
-					$sellingItem -> company_return_quantity	 = $item[ 'company_return_quantity' ] ;
+					$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
+					$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
+					$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
+					$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
+					$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
+					$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
+					$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
 
 					$sellingItem -> save () ;
 
@@ -104,6 +104,50 @@ class SaleController extends \Controller
 			'isCompletelyPaid' ,
 		] ) ;
 		return \View::make ( 'web.processes.sales.all' , $data ) ;
+	}
+
+	public function edit ( $id )
+	{
+		$sellingInvoice		 = \Models\SellingInvoice::with ( 'rep' , 'sellingItems' ) -> findOrFail ( $id ) ;
+		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
+		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [NULL => 'Select' ] ) ;
+		$items				 = \Models\Item::all () ;
+
+		$data = compact ( [
+			'sellingInvoice' ,
+			'customerDropDown' ,
+			'items'
+		] ) ;
+
+		return \View::make ( 'web.processes.sales.edit' , $data ) ;
+	}
+
+	public function update ( $id )
+	{
+		try
+		{
+			$items = \Input::get ( 'items' ) ;
+
+			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
+			$this -> validateSaleItemsForUpdate ( $items ) ;
+
+			$sellingInvoice = \Models\SellingInvoice::findOrFail ( $id ) ;
+
+			$sellingInvoice -> date_time				 = \Input::get ( 'date_time' ) ;
+			$sellingInvoice -> customer_id				 = \Input::get ( 'customer_id' ) ;
+			$sellingInvoice -> printed_invoice_number	 = \Input::get ( 'printed_invoice_number' ) ;
+			$sellingInvoice -> discount					 = \Input::get ( 'discount' ) ;
+			$sellingInvoice -> is_completely_paid		 = \Input::get ( 'is_completely_paid' ) ;
+
+			$sellingInvoice -> update () ;
+
+			$this -> updateSellingItems ( $id ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
 	}
 
 	private function validateSaleItems ( $items )
@@ -173,6 +217,68 @@ class SaleController extends \Controller
 		}
 	}
 
+	private function validateSaleItemsForUpdate ( $items )
+	{
+		foreach ( $items as $itemId => $item )
+		{
+			$itemO = \Models\Item::findOrFail ( $itemId ) ;
+
+			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' ] ) )
+			{
+				$rules = [
+					'price'						 => [
+						'required_with:paid_quantity,free_quantity' ,
+						'numeric'
+					] ,
+					'paid_quantity'				 => [
+						'required_without_all:free_quantity,good_return_quantity,company_return_quantity' ,
+						'numeric'
+					] ,
+					'free_quantity'				 => [
+						'required_without_all:paid_quantity,good_return_quantity,company_return_quantity' ,
+						'numeric'
+					] ,
+					'good_return_price'			 => [
+						'required_with:good_return_quantity' ,
+						'numeric'
+					] ,
+					'good_return_quantity'		 => [
+						'required_with_all:paid_quantity,free_quantity,company_return_quantity' ,
+						'numeric'
+					] ,
+					'company_return_price'		 => [
+						'required_with:company_return_quantity' ,
+						'numeric'
+					] ,
+					'company_return_quantity'	 => [
+						'required_with_all:paid_quantity,free_quantity,good_return_quantity' ,
+						'numeric'
+					]
+				] ;
+
+				$messages = [
+					'price.required_with'						 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
+					'paid_quantity.required_without_all'		 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
+					'free_quantity.required_without_all'		 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
+					'good_return_price.required_with'			 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
+					'good_return_quantity.required_with_all'	 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity, Free Quantity, or Company Return Quantity are present.' ,
+					'company_return_price.required_with'		 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
+					'company_return_quantity.required_with_all'	 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity, Free Quantity, or Good Return Quantity are present.'
+				] ;
+
+				$validator = \Validator::make ( $item , $rules , $messages ) ;
+
+				if ( $validator -> fails () )
+				{
+					$iie				 = new \Exceptions\InvalidInputException() ;
+					$iie -> validator	 = $validator ;
+
+					throw $iie ;
+				}
+			}
+		}
+	}
+
 	private function validateAtLeastOneItemIsFilled ( $items )
 	{
 		$itemsWithoutPriceAndAvailableQuantity = \ArrayHelper::withoutRecursive ( $items , ['price' , 'available_quantity' ] ) ;
@@ -209,6 +315,60 @@ class SaleController extends \Controller
 		\StockDetailButler::decreaseGoodQuantity ( $stockId , $itemId , $totalSoldQuantity ) ;
 		\StockDetailButler::increaseGoodQuantity ( $stockId , $itemId , $goodReturnQuantity ) ;
 		\StockDetailButler::increaseReturnQuantity ( $stockId , $itemId , $companyReturnQuantity ) ;
+	}
+
+	private function updateSellingItems ( $sellingInvoiceId )
+	{
+		$sellingItemsArray		 = \Input::get ( 'items' ) ;
+		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
+		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;
+		$deletedItems			 = $originalSellingItems -> diff ( $filledItems ) ;
+
+		foreach ( $filledItems as $filledItem )
+		{
+			$filledItem -> save () ;
+		}
+
+		foreach ( $deletedItems as $deletedItem )
+		{
+			$deletedItem -> delete () ;
+		}
+	}
+
+	private function getFilledItems ( $sellingInvoiceId , $sellingItems )
+	{
+		$filledItemsArray = [ ] ;
+
+		foreach ( $sellingItems as $itemId => $item )
+		{
+			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' ] ) )
+			{
+				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId )
+				-> where ( 'item_id' , '=' , $itemId )
+				-> first () ;
+
+				if ( is_null ( $sellingItem ) )
+				{
+					$sellingItem						 = new \Models\SellingItem() ;
+					$sellingItem -> selling_invoice_id	 = $sellingInvoiceId ;
+					$sellingItem -> item_id				 = $itemId ;
+				}
+
+				$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
+				$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
+				$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
+				$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
+				$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
+				$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
+				$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
+
+				$filledItemsArray[] = $sellingItem ;
+			}
+		}
+
+		$filledItems = new \Illuminate\Database\Eloquent\Collection ( $filledItemsArray ) ;
+
+		return $filledItems ;
 	}
 
 }

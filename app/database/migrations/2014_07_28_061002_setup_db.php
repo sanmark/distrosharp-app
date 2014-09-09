@@ -257,13 +257,13 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> integer ( 'selling_invoice_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
-			$t -> float ( 'price' ) ;
-			$t -> float ( 'paid_quantity' ) ;
-			$t -> float ( 'free_quantity' ) ;
-			$t -> float ( 'good_return_price' ) ;
-			$t -> float ( 'good_return_quantity' ) ;
-			$t -> float ( 'company_return_price' ) ;
-			$t -> float ( 'company_return_quantity' ) ;
+			$t -> float ( 'price' ) -> nullable () ;
+			$t -> float ( 'paid_quantity' ) -> nullable () ;
+			$t -> float ( 'free_quantity' ) -> nullable () ;
+			$t -> float ( 'good_return_price' ) -> nullable () ;
+			$t -> float ( 'good_return_quantity' ) -> nullable () ;
+			$t -> float ( 'company_return_price' ) -> nullable () ;
+			$t -> float ( 'company_return_quantity' ) -> nullable () ;
 
 			$t -> foreign ( 'selling_invoice_id' )
 			-> references ( 'id' )

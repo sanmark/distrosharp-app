@@ -28,4 +28,16 @@ Route::group ( [
 		'before' => ['hasAbilities:add_sale' ] ,
 		'uses'	 => 'Controllers\Processes\SaleController@save'
 	] ) ;
+
+	Route::get ( '{id}/edit' , [
+		'as'	 => 'processes.sales.edit' ,
+		'before' => ['hasAbilities:edit_sale' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@edit'
+	] ) ;
+
+	Route::post ( '{id}/edit' , [
+		'as'	 => 'processes.sales.edit' ,
+		'before' => ['hasAbilities:edit_sale' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@update'
+	] ) ;
 } ) ;

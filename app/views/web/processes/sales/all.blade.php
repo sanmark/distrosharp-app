@@ -73,7 +73,7 @@
 			<tbody>
 				@foreach($sellingInvoices as $sellingInvoice)
 				<tr>
-					<td>{{$sellingInvoice->id}}</td>
+					<td>{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
 					<td>{{$sellingInvoice->printed_invoice_number}}</td>
 					<td>{{$sellingInvoice->date_time}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
