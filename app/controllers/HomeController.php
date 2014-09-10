@@ -23,7 +23,7 @@ class HomeController extends BaseController
 	{
 		if ( \Input::get ( 'the_date' ) !== NULL )
 		{
-			$theDate = \Input::get ( 'the_date' ) ;
+			$theDate = DateTimeHelper::convertTextToFormattedDateTime ( \Input::get ( 'the_date' ) , 'Y-m-d' ) ;
 		} else
 		{
 			$theDate = date ( "Y-m-d" ) ;
@@ -33,7 +33,7 @@ class HomeController extends BaseController
 		if ( ! empty ( $theDate ) )
 		{
 			$data						 = [ ] ;
-			$buyingInvoices				 = Models\BuyingInvoice::where ( 'date' , '=' , $theDate ) -> count () ;
+			$buyingInvoices				 = Models\BuyingInvoice::whereBetween ( 'date_time' , [$theDate . ' 00:00:00' , $theDate . ' 23:59:59' ] ) -> count () ;
 			$data[ 'buyingInvoices' ]	 = $buyingInvoices ;
 			$data[ 'today' ]			 = $theDate ;
 
