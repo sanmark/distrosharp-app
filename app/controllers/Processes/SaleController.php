@@ -63,7 +63,7 @@ class SaleController extends \Controller
 
 					$stockId = \Auth::user () -> stock -> id ;
 
-					$this -> updateStock ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
+					$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
 				}
 			}
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -308,7 +308,7 @@ class SaleController extends \Controller
 		}
 	}
 
-	private function updateStock ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturnQuantity )
+	private function updateStockOnSave ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturnQuantity )
 	{
 		$totalSoldQuantity = $paidQuantity + $freeQuantity ;
 
@@ -317,22 +317,25 @@ class SaleController extends \Controller
 		\StockDetailButler::increaseReturnQuantity ( $stockId , $itemId , $companyReturnQuantity ) ;
 	}
 
+	private function updatestockOnUpdate ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturn )
+	{
+		$totalSoldQuantity = $paidQuantity + $freeQuantity ;
+
+		\StockDetailButler::increaseGoodQuantity ( $stockId , $itemId , $totalSoldQuantity ) ;
+		\StockDetailButler::decreaseGoodQuantity ( $stockId , $itemId , $goodReturnQuantity ) ;
+		\StockDetailButler::decreaseReturnQuantity ( $stockId , $itemId , $companyReturn ) ;
+	}
+
 	private function updateSellingItems ( $sellingInvoiceId )
 	{
-		$sellingItemsArray		 = \Input::get ( 'items' ) ;
+		$sellingItemsArray = \Input::get ( 'items' ) ;
+
 		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
 		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;
 		$deletedItems			 = $originalSellingItems -> diff ( $filledItems ) ;
 
-		foreach ( $filledItems as $filledItem )
-		{
-			$filledItem -> save () ;
-		}
-
-		foreach ( $deletedItems as $deletedItem )
-		{
-			$deletedItem -> delete () ;
-		}
+		$this -> updateFilledItems ( $filledItems ) ;
+		$this -> updateDeletedItems ( $deletedItems ) ;
 	}
 
 	private function getFilledItems ( $sellingInvoiceId , $sellingItems )
@@ -369,6 +372,58 @@ class SaleController extends \Controller
 		$filledItems = new \Illuminate\Database\Eloquent\Collection ( $filledItemsArray ) ;
 
 		return $filledItems ;
+	}
+
+	private function updateFilledItems ( $filledItems )
+	{
+		foreach ( $filledItems as $filledItem )
+		{
+			$filledItem -> load ( 'sellingInvoice.rep.stock' , 'item' ) ;
+
+			$sellingInvoice	 = $filledItem -> sellingInvoice ;
+			$originalItem	 = $sellingInvoice -> sellingItemById ( $filledItem -> id ) ;
+			$stockId		 = $sellingInvoice -> rep -> stock -> id ;
+			$itemId			 = $filledItem -> item -> id ;
+
+			$filledItem -> save () ;
+
+			if ( ! is_null ( $originalItem ) )
+			{
+				$paidQuantityDifference	 = $originalItem -> paid_quantity - $filledItem -> paid_quantity ;
+				$freeQuantityDifference	 = $originalItem -> free_quantity - $filledItem -> free_quantity ;
+				$goodReturnDifference	 = $originalItem -> good_return_quantity - $filledItem -> good_return_quantity ;
+				$companyReturnDifference = $originalItem -> company_return_quantity - $filledItem -> company_return_quantity ;
+
+				$this -> updatestockOnUpdate ( $stockId , $itemId , $paidQuantityDifference , $freeQuantityDifference , $goodReturnDifference , $companyReturnDifference ) ;
+			} else
+			{
+				$paidQuantity			 = $filledItem -> paid_quantity ;
+				$freeQuantity			 = $filledItem -> free_quantity ;
+				$goodReturnQuantity		 = $filledItem -> good_return_quantity ;
+				$companyReturnQuantity	 = $filledItem -> company_return_quantity ;
+
+				$this -> updateStockOnSave ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturnQuantity ) ;
+			}
+		}
+	}
+
+	public function updateDeletedItems ( $deletedItems )
+	{
+		foreach ( $deletedItems as $deletedItem )
+		{
+			$deletedItem -> load ( 'sellingInvoice.rep.stock' , 'item' ) ;
+
+			$deletedItem -> delete () ;
+			$stockId = $deletedItem -> sellingInvoice -> rep -> stock -> id ;
+			$itemId	 = $deletedItem -> item -> id ;
+
+			$paidQuantity			 = $deletedItem -> paid_quantity ;
+			$freeQuantity			 = $deletedItem -> free_quantity ;
+			$goodReturnQuantity		 = $deletedItem -> good_return_quantity ;
+			$companyReturnQuantity	 = $deletedItem -> company_return_quantity ;
+
+			$this -> updatestockOnUpdate ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturnQuantity ) ;
+		}
 	}
 
 }

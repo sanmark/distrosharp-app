@@ -22,6 +22,13 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\SellingItem' ) ;
 	}
 
+	public function sellingItemById ( $sellingItemId )
+	{
+		return $this -> hasOne ( 'Models\SellingItem' )
+		-> where ( 'id' , '=' , $sellingItemId )
+		-> first () ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> date_time			 = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;
