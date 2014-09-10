@@ -7,6 +7,16 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 
 	public $timestamps = FALSE ;
 
+	public function fromStock ()
+	{
+		return $this -> belongsTo ( 'Models\Stock' , 'from_stock_id' ) ;
+	}
+
+	public function toStock ()
+	{
+		return $this -> belongsTo ( 'Models\Stock' , 'to_stock_id' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> date_time = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;

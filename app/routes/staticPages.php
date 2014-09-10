@@ -6,7 +6,12 @@ Route::group ( [
 {
 	Route::get ( '' , [
 		'as'	 => 'home' ,
-		'uses'	 => 'StaticPagesController@home'
+		'uses'	 => 'HomeController@showHome'
+	] ) ;
+
+	Route::post ( '' , [
+		'as'	 => 'home' ,
+		'uses'	 => 'HomeController@refreshHome'
 	] ) ;
 } ) ;
 

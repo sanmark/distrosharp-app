@@ -24,6 +24,11 @@ class User extends \Models\BaseEntity implements UserInterface , RemindableInter
 		return $this -> hasOne ( 'Models\Stock' , 'incharge_id' ) ;
 	}
 
+	public function sellingInvoices ()
+	{
+		return $this -> hasMany ( 'Models\SellingInvoice' , 'rep_id' ) ;
+	}
+
 	public function getAbilityCodes ()
 	{
 		$abilityCodes = NULL ;

@@ -12,6 +12,7 @@
             <word>endforeach</word>
             <word>endif</word>
             <word>itemRowsAscSellingInvoice</word>
+            <word>foreach</word>
         </spellchecker-wordlist>
     </configuration>
 </project>
