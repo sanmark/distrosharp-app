@@ -81,6 +81,9 @@ class AccountsController extends \Controller
 			$financeAccounts -> is_active		 = \NullHelper::zeroIfNull ( $isActive ) ;
 
 			$financeAccounts -> save () ;
+			
+			return \Redirect::action ( 'finances.accounts.view' ) ;
+			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

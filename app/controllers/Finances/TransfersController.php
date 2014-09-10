@@ -77,7 +77,7 @@ class TransfersController extends \Controller
 		$fromAccount = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
 		$toAccount	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
 		$currentDate = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
-		$data = compact ( [
+		$data		 = compact ( [
 			'fromAccount' ,
 			'toAccount' ,
 			'currentDate'
@@ -113,6 +113,7 @@ class TransfersController extends \Controller
 			$financeTransfer -> description	 = $description ;
 
 			$financeTransfer -> save () ;
+			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -161,7 +162,7 @@ class TransfersController extends \Controller
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTime			 = \DateTimeHelper::dateTimeRefill ( [$financeTransfer -> date_time ] ) ;
+		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time  ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,
@@ -217,6 +218,9 @@ class TransfersController extends \Controller
 
 			$financeAccountFrom -> update () ;
 			$financeAccountTo -> update () ;
+			
+			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
+			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
