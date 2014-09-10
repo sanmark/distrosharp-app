@@ -29,18 +29,6 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('other_expenses_amount',$purchaseInvoice->other_expenses_amount, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('other_expense_details', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('other_expenses_details',$purchaseInvoice->other_expenses_details, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
 			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::checkbox('completely_paid',TRUE,$purchaseInvoice->completely_paid,array('style'=>'margin-top:10px;'))}}
@@ -147,7 +135,18 @@
 				</table>
 			</div>
 		</div>
-
+		<div class="form-group">
+			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('other_expenses_amount',$purchaseInvoice->other_expenses_amount, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('other_expense_details', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('other_expenses_details',$purchaseInvoice->other_expenses_details, array('class' => 'form-control'))}}
+			</div>
+		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>

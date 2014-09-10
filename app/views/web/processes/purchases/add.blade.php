@@ -27,18 +27,6 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3"> 
-				{{Form::input('number','other_expense_amount', null, array('class' => 'form-control','step' => 'any'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('other_expenses_details',null, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
 			{{Form::label('Stock', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control','required'=>true))}}
@@ -65,7 +53,6 @@
 		<div id="add_purchase_items">
 			@foreach($itemRows as $itemRow)
 			<div class="form-group">
-				<div class="col-sm-2">
 					{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
 					@if(false!=$itemRow->getImageUrl())
 					<a href="#"  style="position:relative;">
@@ -75,9 +62,8 @@
 						</div>
 					</a>
 					@else
-					{{Form::label(null, $itemRow->name)}}
+					{{Form::label(null, $itemRow->name,array('class' => 'col-sm-2 control-label'))}}
 					@endif
-				</div>
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-2">
@@ -104,6 +90,18 @@
 			@endforeach
 		</div>
 		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2"></div>
+					<div class="col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
+				</div>			
+			</div>			
+		</div>
+		<div class="form-group">
 			{{Form::label('Cash Payment', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
 				{{Form::input('number', 'cash_payment', NULL, array('class' => 'form-control'))}}
@@ -116,16 +114,16 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<div class="row">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
-				</div>			
-			</div>			
+			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3"> 
+				{{Form::input('number','other_expense_amount', null, array('class' => 'form-control','step' => 'any'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::text('other_expenses_details',null, array('class' => 'form-control'))}}
+			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
