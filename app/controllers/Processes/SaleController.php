@@ -8,7 +8,7 @@ class SaleController extends \Controller
 	public function add ()
 	{
 		$customers			 = [NULL => 'Select Route First' ] ;
-		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name', [NULL=>'Select'] ) ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
 		-> orderBy ( 'selling_invoice_order' , 'ASC' )
 		-> get () ;
@@ -97,6 +97,15 @@ class SaleController extends \Controller
 		$repId					 = \Input::get ( 'rep_id' ) ;
 		$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
 
+		if ( is_null ( $dateTimeFrom ) )
+		{
+			$dateTimeFrom = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( '-7 days midnight' ) ) ) ;
+		}
+
+		if ( is_null ( $dateTimeTo ) )
+		{
+			$dateTimeTo = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( 'today 23:59:59' ) ) ) ;
+		}
 
 		$data = compact ( [
 			'sellingInvoices' ,

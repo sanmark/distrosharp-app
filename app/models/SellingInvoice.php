@@ -29,6 +29,31 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		-> first () ;
 	}
 
+	public function getInvoiceTotal ()
+	{
+		$this -> load ( 'sellingItems' ) ;
+
+		$sellingItems = $this -> sellingItems ;
+
+		$invoiceTotal = 0 ;
+
+		foreach ( $sellingItems as $sellingItem )
+		{
+			$price					 = $sellingItem -> price ;
+			$paidQuantity			 = $sellingItem -> paid_quantity ;
+			$goodReturnPrice		 = $sellingItem -> good_return_price ;
+			$goodReturnQuantity		 = $sellingItem -> good_return_quantity ;
+			$companyReturnPrice		 = $sellingItem -> company_return_price ;
+			$companyReturnQuantity	 = $sellingItem -> company_return_quantity ;
+
+			$itemTotal = ($price * $paidQuantity) - (($goodReturnPrice * $goodReturnQuantity) + ($companyReturnPrice * $companyReturnQuantity)) ;
+
+			$invoiceTotal += $itemTotal ;
+		}
+
+		return $invoiceTotal ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> date_time			 = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;

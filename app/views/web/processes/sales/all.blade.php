@@ -11,7 +11,7 @@
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
-			{{Form::label('id', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('id', 'System Invoice Number', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::text('id', $id, array('class' => 'form-control'))}}
 			</div>
@@ -63,12 +63,13 @@
 
 		<table class="table table-striped" style="width: 80%;">
 			<tr>
-				<th>ID</th>
+				<th>System Invoice Number</th>
 				<th>Printed Invoice Number</th>
 				<th>Date/Time</th>
 				<th>Customer</th>
 				<th>Rep</th>
 				<th>Is Completely Paid</th>
+				<th>Invoice Total</th>
 			</tr>
 			<tbody>
 				@foreach($sellingInvoices as $sellingInvoice)
@@ -79,6 +80,7 @@
 					<td>{{$sellingInvoice->customer->name}}</td>
 					<td>{{$sellingInvoice->rep->username}}</td>
 					<td>{{ViewButler::getYesNoFromBoolean($sellingInvoice->is_completely_paid)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->getInvoiceTotal(), 2)}}</td>
 				</tr>
 				@endforeach
 			</tbody>
