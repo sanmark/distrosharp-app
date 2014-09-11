@@ -171,8 +171,8 @@ class SetupDb extends Migration
 			$t -> integer ( 'invoice_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
 			$t -> float ( 'price' ) ;
-			$t -> float ( 'quantity' ) ;
-			$t -> float ( 'free_quantity' ) ;
+			$t -> float ( 'quantity' ) -> nullable () ;
+			$t -> float ( 'free_quantity' ) -> nullable () ;
 			$t -> date ( 'exp_date' ) ;
 			$t -> string ( 'batch_number' ) ;
 
@@ -285,7 +285,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'to_id' ) -> unsigned () ;
 			$t -> dateTime ( 'date_time' ) ;
 			$t -> float ( 'amount' ) ;
-			$t -> text ( 'description' )->nullable() ;
+			$t -> text ( 'description' ) -> nullable () ;
 
 			$t -> foreign ( 'from_id' )
 			-> references ( 'id' )

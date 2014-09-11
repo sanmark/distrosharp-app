@@ -125,27 +125,22 @@ class PurchaseController extends \Controller
 
 			foreach ( $countRows as $rows )
 			{
-				if ( \Input::get ( 'quantity_' . $rows -> id ) != '' )
-				{
-					$itemId		 = \Input::get ( 'item_id_' . $rows -> id ) ;
-					$price		 = \Input::get ( 'buying_price_' . $rows -> id ) ;
-					$quantity	 = \Input::get ( 'quantity_' . $rows -> id ) ;
-					if ( \Input::get ( 'free_quantity_' . $rows -> id ) == '' )
-					{
-						$freeQuantity = 0 ;
-					} else
-					{
-						$freeQuantity = \Input::get ( 'free_quantity_' . $rows -> id ) ;
-					}
-					if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
-					{
-						$expDate = '0000-00-00' ;
-					} else
-					{
-						$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
-					}
-					$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
+				$itemId			 = \Input::get ( 'item_id_' . $rows -> id ) ;
+				$price			 = \Input::get ( 'buying_price_' . $rows -> id ) ;
+				$quantity		 = \Input::get ( 'quantity_' . $rows -> id ) ;
+				$freeQuantity	 = \Input::get ( 'free_quantity_' . $rows -> id ) ;
 
+				if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
+				{
+					$expDate = '0000-00-00' ;
+				} else
+				{
+					$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
+				}
+				$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
+
+				if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+				{
 					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 					-> lists ( 'item_id' ) ) )
 					{
@@ -178,7 +173,7 @@ class PurchaseController extends \Controller
 
 						$buyingItems -> price			 = $price ;
 						$buyingItems -> quantity		 = $quantity ;
-						$buyingItems -> free_quantity	 = $freeQuantity ;
+						$buyingItems -> free_quantity	 = \NullHelper::nullIfEmpty ( $freeQuantity ) ;
 						$buyingItems -> exp_date		 = $expDate ;
 						$buyingItems -> batch_number	 = $batchNumber ;
 						$buyingItems -> update () ;
@@ -190,7 +185,7 @@ class PurchaseController extends \Controller
 
 						$buyingItems -> price			 = $price ;
 						$buyingItems -> quantity		 = $quantity ;
-						$buyingItems -> free_quantity	 = $freeQuantity ;
+						$buyingItems -> free_quantity	 = \NullHelper::nullIfEmpty ( $freeQuantity ) ;
 						$buyingItems -> exp_date		 = $expDate ;
 						$buyingItems -> batch_number	 = $batchNumber ;
 						$buyingItems -> save () ;
@@ -206,19 +201,70 @@ class PurchaseController extends \Controller
 						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
 						-> where ( 'item_id' , '=' , $itemId )
 						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+					}
+				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+				{
+					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+					-> lists ( 'item_id' ) ) )
+					{
+						if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) == 0 )
+						{
 
-						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $rows -> id )
-						-> first () ;
+							$stockDetails = new \Models\StockDetail() ;
 
-						$buyingItems -> item_id = $itemId ;
+							$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+							-> where ( 'item_id' , '=' , $itemId )
+							-> lists ( 'good_quantity' ) ;
 
-						$buyingItems -> price			 = $price ;
-						$buyingItems -> quantity		 = $quantity ;
-						$buyingItems -> free_quantity	 = $freeQuantity ;
-						$buyingItems -> exp_date		 = $expDate ;
-						$buyingItems -> batch_number	 = $batchNumber ;
-						$buyingItems -> update () ;
+							$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+							$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+
+							$preQuantity = $previousPurchaseFreeQuantity[ 0 ] + $previousPurchaseQuantity[ 0 ] ;
+							$newQuantity = $stockRow[ 0 ] - $preQuantity ;
+
+							$delete = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $itemId )
+							-> delete () ;
+
+							$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+							-> where ( 'item_id' , '=' , $itemId )
+							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+						} elseif ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
+						{
+
+							$stockDetails = new \Models\StockDetail() ;
+
+							$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+							-> where ( 'item_id' , '=' , $itemId )
+							-> lists ( 'good_quantity' ) ;
+
+							$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+							$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+
+							$preQuantity = $previousPurchaseFreeQuantity[ 0 ] + $previousPurchaseQuantity[ 0 ] ;
+							$newQuantity = ($stockRow[ 0 ] - $preQuantity) + $freeQuantity ;
+
+							$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
+							-> where ( 'item_id' , '=' , $rows -> id )
+							-> first () ;
+
+							$buyingItems -> item_id = $itemId ;
+
+							$buyingItems -> price			 = $price ;
+							$buyingItems -> quantity		 = \NullHelper::nullIfEmpty ( $quantity ) ;
+							$buyingItems -> free_quantity	 = $freeQuantity ;
+							$buyingItems -> exp_date		 = $expDate ;
+							$buyingItems -> batch_number	 = $batchNumber ;
+							$buyingItems -> update () ;
+
+							$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
+							-> where ( 'item_id' , '=' , $itemId )
+							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+						}
 					}
 				}
 			}
@@ -275,35 +321,28 @@ class PurchaseController extends \Controller
 
 			foreach ( $countRows as $rows )
 			{
-
-				if ( \Input::get ( 'quantity_' . $rows -> id ) != '' )
+				$itemId			 = \Input::get ( 'item_id_' . $rows -> id ) ;
+				$price			 = \Input::get ( 'buying_price_' . $rows -> id ) ;
+				$quantity		 = \Input::get ( 'quantity_' . $rows -> id ) ;
+				$freeQuantity	 = \Input::get ( 'free_quantity_' . $rows -> id ) ;
+				if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
 				{
-					$itemId		 = \Input::get ( 'item_id_' . $rows -> id ) ;
-					$price		 = \Input::get ( 'buying_price_' . $rows -> id ) ;
-					$quantity	 = \Input::get ( 'quantity_' . $rows -> id ) ;
-					if ( \Input::get ( 'free_quantity_' . $rows -> id ) == '' )
-					{
-						$freeQuantity = 0 ;
-					} else
-					{
-						$freeQuantity = \Input::get ( 'free_quantity_' . $rows -> id ) ;
-					}
-					if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
-					{
-						$expDate = '0000-00-00' ;
-					} else
-					{
-						$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
-					}
-					$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
+					$expDate = '0000-00-00' ;
+				} else
+				{
+					$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
+				}
+				$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
 
+				if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+				{
 					$buyingItems = new \Models\BuyingItem() ;
 
 					$buyingItems -> invoice_id		 = $buyingInvoice -> id ;
 					$buyingItems -> item_id			 = $itemId ;
 					$buyingItems -> price			 = $price ;
 					$buyingItems -> quantity		 = $quantity ;
-					$buyingItems -> free_quantity	 = $freeQuantity ;
+					$buyingItems -> free_quantity	 = \NullHelper::nullIfEmpty ( $freeQuantity ) ;
 					$buyingItems -> exp_date		 = $expDate ;
 					$buyingItems -> batch_number	 = $batchNumber ;
 					$buyingItems -> save () ;
@@ -319,6 +358,33 @@ class PurchaseController extends \Controller
 					$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
 					-> where ( 'item_id' , '=' , $itemId )
 					-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+				{
+					if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
+					{
+						$buyingItems = new \Models\BuyingItem() ;
+
+						$buyingItems -> invoice_id		 = $buyingInvoice -> id ;
+						$buyingItems -> item_id			 = $itemId ;
+						$buyingItems -> price			 = $price ;
+						$buyingItems -> quantity		 = \NullHelper::nullIfEmpty ( $quantity ) ;
+						$buyingItems -> free_quantity	 = $freeQuantity ;
+						$buyingItems -> exp_date		 = $expDate ;
+						$buyingItems -> batch_number	 = $batchNumber ;
+						$buyingItems -> save () ;
+
+						$stockDetails = new \Models\StockDetail() ;
+
+						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $toStockId )
+						-> where ( 'item_id' , '=' , $itemId )
+						-> lists ( 'good_quantity' ) ;
+
+						$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
+
+						$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
+						-> where ( 'item_id' , '=' , $itemId )
+						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+					}
 				}
 			}
 

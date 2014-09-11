@@ -30,7 +30,23 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 		foreach ( $countRows as $rows )
 		{
 
-			if ( \Input::get ( 'quantity_' . $rows -> id ) != '' )
+			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+			{
+				$data = $this -> toArray () ;
+
+				$rules = [
+					'buying_price_' . $rows -> id	 => [
+						'numeric'
+					] ,
+					'quantity_' . $rows -> id		 => [
+						'numeric' ,
+					] ,
+					'free_quantity_' . $rows -> id	 => [
+						'numeric' ,
+					] ,
+				] ;
+			}
+			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
 			{
 				$data = $this -> toArray () ;
 
@@ -64,7 +80,23 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 		foreach ( $countRows as $rows )
 		{
 
-			if ( \Input::get ( 'quantity_' . $rows -> id ) != '' )
+			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+			{
+				$data = $this -> toArray () ;
+
+				$rules = [
+					'buying_price_' . $rows -> id	 => [
+						'numeric'
+					] ,
+					'quantity_' . $rows -> id		 => [
+						'numeric' ,
+					] ,
+					'free_quantity_' . $rows -> id	 => [
+						'numeric' ,
+					] ,
+				] ;
+			}
+			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
 			{
 				$data = $this -> toArray () ;
 

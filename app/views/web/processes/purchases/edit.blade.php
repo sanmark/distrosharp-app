@@ -56,7 +56,7 @@
 			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','required'=>'required','class' => 'form-control','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','class' => 'form-control','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
 						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any','class' => 'form-control'])}}
