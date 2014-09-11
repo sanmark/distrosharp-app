@@ -124,14 +124,21 @@
 
 	</div>
 </div>
-
 @stop
 
 @section('file-footer')
 <script>
+	$(document).ready(function() {
+		$('#route_id').change();
+		setTimeout(function() {
+			$("#customer_id").val({{Input::old('customer_id')}});
+		}, 2000);
+	});
+</script>
+
+<script>
 	$(document).on('change', '#route_id', function() {
 		routeId = $('#route_id').val();
-
 		$('#customer_id').find('option').remove();
 		$('#customer_id').append(
 				$('<option></option>').
@@ -159,32 +166,24 @@
 <script>
 	$(document).on('change keyup', '.saleDetail', function() {
 		var itemId = $(this).attr('data-item-id');
-
 		var price = $("input[name='items[" + itemId + "][price]']").val();
 		var paid_quantity = $("input[name='items[" + itemId + "][paid_quantity]']").val();
 		var good_return_price = $("input[name='items[" + itemId + "][good_return_price]']").val();
 		var good_return_quantity = $("input[name='items[" + itemId + "][good_return_quantity]']").val();
 		var company_return_price = $("input[name='items[" + itemId + "][company_return_price]']").val();
 		var company_return_quantity = $("input[name='items[" + itemId + "][company_return_quantity]']").val();
-
 		var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
-
 		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal);
-
 		displaySubTotal();
 	});
-
 	function displaySubTotal() {
 		var subTotal = null;
-
 		$('.lineTotal').each(function() {
 			var value = parseFloat($(this).val());
-
 			if (!isNaN(value)) {
 				subTotal += value;
 			}
 		});
-
 		$("input[name='subTotal']").val(subTotal);
 	}
 </script>
