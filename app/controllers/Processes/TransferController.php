@@ -42,16 +42,22 @@ class TransferController extends \Controller
 
 			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$items		 = \Models\Item::orderBy('buying_invoice_order', 'ASC')->get();
+			$items		 = \Models\Item::where ( 'is_active' , '=' , '1' )
+			-> orderBy ( 'buying_invoice_order' , 'ASC' )
+			-> get () ;
+			$dateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 
 			$fromStockDetails	 = $fromStock -> goodQuantities () ;
 			$toStockDetails		 = $toStock -> goodQuantities () ;
 
-			$data[ 'fromStock' ]		 = $fromStock ;
-			$data[ 'toStock' ]			 = $toStock ;
-			$data[ 'items' ]			 = $items ;
-			$data[ 'fromStockDetails' ]	 = $fromStockDetails ;
-			$data[ 'toStockDetails' ]	 = $toStockDetails ;
+			$data = compact ( [
+				'fromStock' ,
+				'toStock' ,
+				'items' ,
+				'dateTime' ,
+				'fromStockDetails' ,
+				'toStockDetails'
+			] ) ;
 
 			return \View::make ( 'web.processes.transfers.add' , $data ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
