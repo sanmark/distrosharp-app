@@ -7,16 +7,24 @@ class SaleController extends \Controller
 
 	public function add ()
 	{
-		$customers		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
-		$items			 = \Models\Item::orderBy ( 'selling_invoice_order' , 'ASC' ) -> get () ;
-		$user			 = \Auth::user () ;
-		$user			 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
-		$stockDetails	 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
+		$customers			 = [NULL => 'Select Route First' ] ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name', [NULL=>'Select'] ) ;
+		$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
+		-> orderBy ( 'selling_invoice_order' , 'ASC' )
+		-> get () ;
+		$user				 = \Auth::user () ;
+		$user				 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
+		$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
+		$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
+		$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 
 		$data = compact ( [
 			'customers' ,
+			'routes' ,
 			'items' ,
-			'stockDetails'
+			'stockDetails' ,
+			'guessedInvoiceId' ,
+			'currentDateTime'
 		] ) ;
 
 		return \View::make ( 'web.processes.sales.add' , $data ) ;
@@ -156,7 +164,7 @@ class SaleController extends \Controller
 		{
 			$itemO = \Models\Item::findOrFail ( $itemId ) ;
 
-			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' ] ) )
+			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
 			{
 				$rules = [
 					'price'						 => [
@@ -281,7 +289,7 @@ class SaleController extends \Controller
 
 	private function validateAtLeastOneItemIsFilled ( $items )
 	{
-		$itemsWithoutPriceAndAvailableQuantity = \ArrayHelper::withoutRecursive ( $items , ['price' , 'available_quantity' ] ) ;
+		$itemsWithoutPriceAndAvailableQuantity = \ArrayHelper::withoutRecursive ( $items , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) ;
 
 		$data = [
 			'field' => $itemsWithoutPriceAndAvailableQuantity

@@ -70,4 +70,17 @@ class BaseEntity extends \Eloquent implements \Interfaces\iEntity
 		return $array ;
 	}
 
+	public function scopeGetArrayForHtmlSelect ( $query , $key , $value , array $firstElements = NULL )
+	{
+		$query	 = $query -> select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) ) ;
+		$array	 = $query -> lists ( 'value' , $key ) ;
+
+		if ( ! is_null ( $firstElements ) )
+		{
+			$array = $firstElements + $array ;
+		}
+
+		return $array ;
+	}
+
 }

@@ -6,7 +6,7 @@
 <table>
 	<tr>
 		<td>{{Form::label('id')}}</td>
-		<td>{{Form::text('id', $sellingInvoice->id)}}</td>
+		<td>{{Form::label('id', $sellingInvoice->id)}}</td>
 	</tr>
 	<tr>
 		<td>{{Form::label('date_time')}}</td>

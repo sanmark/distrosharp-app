@@ -40,4 +40,15 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_customer' ] ,
 		'uses'	 => 'Controllers\Entities\CustomerController@update'
 	] ) ;
+
+	Route::group ( [
+		'prefix' => 'ajax' ,
+		'before' => 'csrf'
+	] , function()
+	{
+		Route::post ( 'forRouteId' , [
+			'as'	 => 'entities.customers.ajax.forRouteId' ,
+			'uses'	 => 'Controllers\Entities\CustomerController@aForRouteId'
+		] ) ;
+	} ) ;
 } ) ;
