@@ -42,6 +42,9 @@ class SaleController extends \Controller
 			$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
 			$cashPaymentAmount		 = \Input::get ( 'cash_payment' ) ;
 			$chequePaymentAmount	 = \Input::get ( 'cheque_payment' ) ;
+			$stockId				 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
+			-> firstOrFail()
+			-> lists ( 'id' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
@@ -55,9 +58,9 @@ class SaleController extends \Controller
 			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
 			$sellingInvoice -> discount					 = \NullHelper::zeroIfEmptyString ( $discount ) ;
 			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
+			$sellingInvoice -> stock_id					 = $stockId[ 0 ] ;
 
 			$sellingInvoice -> save () ;
-
 			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount ) ;
 
 			$sellingInvoiceId = $sellingInvoice -> id ;

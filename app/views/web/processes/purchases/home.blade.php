@@ -48,7 +48,7 @@
 
 		<br/>
 
-		<table class="table table-striped">
+		<table class="table table-striped" style="width:60%;">
 			<tr>
 				<th>Invoice ID</th>
 				<th>Date</th>

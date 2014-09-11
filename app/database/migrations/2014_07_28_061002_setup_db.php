@@ -246,6 +246,7 @@ class SetupDb extends Migration
 			$t -> string ( 'printed_invoice_number' , 100 ) ;
 			$t -> double ( 'discount' ) -> default ( 0 ) ;
 			$t -> boolean ( 'is_completely_paid' ) ;
+			$t -> integer ( 'stock_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'customer_id' )
 			-> references ( 'id' )
@@ -256,6 +257,12 @@ class SetupDb extends Migration
 			$t -> foreign ( 'rep_id' )
 			-> references ( 'id' )
 			-> on ( 'users' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+			
+			$t -> foreign ( 'stock_id' )
+			-> references ( 'id' )
+			-> on ( 'stocks' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;

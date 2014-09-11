@@ -18,10 +18,26 @@ class TransfersController extends \Controller
 
 		$compareSignSelectBox	 = ['' => 'Compare' , '>' => 'Greater Than' , '<' => 'Smaller Than' , '=' => 'Equals to' ] ;
 		$fromAccountsId			 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
-		$fromAccountsIds		 = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $fromAccountsId ) -> lists ( 'name' , 'id' ) ;
-		$toAccountsId			 = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
-		$toAccountsIds			 = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $toAccountsId ) -> lists ( 'name' , 'id' ) ;
-		$data					 = compact ( [
+		if ( count ( $fromAccountsId ) == 0 )
+		{
+			$fromAccountsIds = [NULL => 'Select Account' ] ;
+		} else
+		{
+			$fromAccountsIds = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $fromAccountsId )
+			-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
+		}
+
+		$toAccountsId = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
+		if ( count ( $fromAccountsId ) == 0 )
+		{
+			$toAccountsIds = [NULL => 'Select Account' ] ;
+		} else
+		{
+			$toAccountsIds = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $toAccountsId )
+			-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
+		}
+
+		$data = compact ( [
 			'financeData' ,
 			'compareSignSelectBox' ,
 			'fromAccountsIds' ,
@@ -180,6 +196,18 @@ class TransfersController extends \Controller
 			$financeTransferUpdateRow -> to_id		 = $toId ;
 
 			$financeTransferUpdateRow -> update () ;
+
+			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromId ) ;
+			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toId ) ;
+
+			$fromAccountBalance	 = ($preFromAccountBalance - $amount) ;
+			$toAccountBalance	 = ($preToAccountBalance + $amount) ;
+
+			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
+			$financeAccountTo -> account_balance	 = $toAccountBalance ;
+
+			$financeAccountFrom -> update () ;
+			$financeAccountTo -> update () ;
 
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )

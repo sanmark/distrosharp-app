@@ -9,14 +9,26 @@ class StocksSeeder extends Seeder
 			[
 				'id'			 => 1 ,
 				'name'			 => 'Main' ,
-				'incharge_id'	 => 1 ,
+				'incharge_id'	 => 3 ,
 				'stock_type_id'	 => 1 ,
 			] ,
 			[
 				'id'			 => 2 ,
 				'name'			 => 'Imbalance' ,
-				'incharge_id'	 => 1 ,
+				'incharge_id'	 => 2 ,
 				'stock_type_id'	 => 1 ,
+			] ,
+			[
+				'id'			 => 3 ,
+				'name'			 => 'SP-1234' ,
+				'incharge_id'	 => 1 ,
+				'stock_type_id'	 => 2 ,
+			] ,
+			[
+				'id'			 => 4 ,
+				'name'			 => 'BBD-2545' ,
+				'incharge_id'	 => 4 ,
+				'stock_type_id'	 => 2 ,
 			] ,
 //			[
 //				'id'			 =>  ,

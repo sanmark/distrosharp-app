@@ -22,4 +22,9 @@ class SellingItem extends BaseEntity implements \Interfaces\iEntity
 		throw new \Exceptions\NotImplementedException() ;
 	}
 
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
+	{
+		throw new \Exceptions\NotImplementedException() ;
+	}
+
 }

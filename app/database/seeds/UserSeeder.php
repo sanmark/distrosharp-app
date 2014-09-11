@@ -22,6 +22,22 @@ class UserSeeder extends Seeder
 				'first_name' => 'Sandun' ,
 				'last_name'	 => 'Dhanushka' ,
 			] ,
+			[
+				'id'		 => 3 ,
+				'username'	 => 'randika' ,
+				'email'		 => 'randika@thesanmark.com' ,
+				'password'	 => 'randika' ,
+				'first_name' => 'Randika' ,
+				'last_name'	 => 'Srimal' ,
+			] ,
+			[
+				'id'		 => 4 ,
+				'username'	 => 'kosala' ,
+				'email'		 => 'kosala@thesanmark.com' ,
+				'password'	 => 'kosala' ,
+				'first_name' => 'Kosala' ,
+				'last_name'	 => 'Indrasiri' ,
+			] ,
 //			[
 //				'id'		 =>  ,
 //				'username'	 => '' ,

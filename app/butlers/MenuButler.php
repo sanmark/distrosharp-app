@@ -83,7 +83,8 @@ class MenuButler
 		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,
 		['Reports' , [
 				['Stock Report' , 'reports.stocks' , [ 'view_stock_report' ] ] ,
-				['Debtor Summary' , 'reports.debtorSummary' , ['view_debtor_summary_report' ] ]
+				['Debtor Summary' , 'reports.debtorSummary' , ['view_debtor_summary_report' ] ],
+				['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ]
 			] ,
 		] ,
 		['Account' , [

@@ -10,7 +10,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_sales' ] ,
 		'uses'	 => 'Controllers\Processes\SaleController@all'
 	] ) ;
-
+	
 	Route::post ( '' , [
 		'as'	 => 'processes.sales.all' ,
 		'before' => ['hasAbilities:view_sales' ] ,

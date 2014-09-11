@@ -26,6 +26,48 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		parent::save ( $options ) ;
 	}
 
+	public static function unloadReportFilter ( $filterValues )
+	{
+		$requestObject	 = new Transfer() ;
+		$vehicleIds		 = \Models\Stock::where ( 'stock_type_id' , '=' , 2 ) -> lists ( 'id' ) ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$fromDate	 = \Input::get ( 'from_date_time' ) ;
+			$toDate		 = \Input::get ( 'to_date_time' ) ;
+			$fromStock	 = \Input::get ( 'from_stock' ) ;
+			$toStock	 = \Input::get ( 'to_stock' ) ;
+			$minDate	 = $requestObject -> min ( 'date_time' ) ;
+			$maxDate	 = $requestObject -> max ( 'date_time' ) ;
+
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) > 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $toDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) > 0 && strlen ( $toDate ) == 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$fromDate , $maxDate ] ) ;
+			}
+			if ( strlen ( $fromDate ) == 0 && strlen ( $toDate ) > 0 )
+			{
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , [$minDate , $toDate ] ) ;
+			}
+			if ( strlen ( $fromStock ) > 0 )
+			{
+				$requestObject = $requestObject
+				-> where ( 'from_stock_id' , '=' , $fromStock ) ;
+			}
+			if ( strlen ( $toStock ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'to_stock_id' , '=' , $toStock )
+				-> whereNotIn ( 'to_stock_id' , $vehicleIds ) ;
+			}
+		}
+		return $requestObject -> whereIn ( 'from_stock_id' , $vehicleIds )
+		-> whereNotIn ( 'to_stock_id' , $vehicleIds )
+		-> get () ;
+	}
+
 	public static function filter ( $filterValues )
 	{
 		$requestObject = self::prepareRequestObjectForFiltering ( $filterValues ) ;
@@ -111,6 +153,11 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		}
 
 		return $requestObject ;
+	}
+
+	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
+	{
+		throw new \Exceptions\NotImplementedException() ;
 	}
 
 }
