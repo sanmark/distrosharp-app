@@ -147,7 +147,7 @@
 			$.each(data, function(index, customer) {
 				$('#customer_id').append(
 						$('<option></option>')
-						.attr('value', index)
+						.attr('value', customer.id)
 						.text(customer.name)
 						);
 			});
