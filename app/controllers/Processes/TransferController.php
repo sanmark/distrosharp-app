@@ -75,6 +75,7 @@ class TransferController extends \Controller
 			$dateTime			 = \Input::get ( 'date_time' ) ;
 			$availableAmounts	 = \Input::get ( 'availale_amounts' ) ;
 			$transferAmounts	 = \Input::get ( 'transfer_amounts' ) ;
+			$description		 = \Input::get ( 'description' ) ;
 
 			$this -> validateItemTransfers ( $transferAmounts ) ;
 
@@ -83,6 +84,7 @@ class TransferController extends \Controller
 			$transfer -> from_stock_id	 = $fromStockId ;
 			$transfer -> to_stock_id	 = $toStockId ;
 			$transfer -> date_time		 = $dateTime ;
+			$transfer -> description	 = $description ;
 
 			$transfer -> save () ;
 

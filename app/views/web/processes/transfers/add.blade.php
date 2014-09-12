@@ -47,7 +47,12 @@
 			</div>
 		</div>
 		@endforeach
-
+		<div class="form-group">
+			{{Form::label('description', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::textarea('description', null, array('class' => 'form-control'))}}
+			</div>
+		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-3">
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
