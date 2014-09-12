@@ -15,8 +15,6 @@ interface iEntity
 
 	public static function getArrayByIds ( $key , $value , $by ) ;
 
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL ) ;
-
 	public static function getArrayForHtmlSelectByIds ( $key , $value , $by , array $firstElement = NULL ) ;
 
 	public static function getArrayForHtmlSelectByRequestObject ( $key , $value , \Illuminate\Database\Eloquent\Builder $requestObject , array $firstElement = NULL ) ;

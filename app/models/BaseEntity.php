@@ -33,18 +33,6 @@ class BaseEntity extends \Eloquent implements \Interfaces\iEntity
 		return $array ;
 	}
 
-	public static function getArrayForHtmlSelect ( $key , $value , array $firstElement = NULL )
-	{
-		$array = self::getArray ( $key , $value ) ;
-
-		if ( ! is_null ( $firstElement ) )
-		{
-			$array = $firstElement + $array ;
-		}
-
-		return $array ;
-	}
-
 	public static function getArrayForHtmlSelectByIds ( $key , $value , $by , array $firstElement = NULL )
 	{
 		$array = self::getArrayByIds ( $key , $value , $by ) ;

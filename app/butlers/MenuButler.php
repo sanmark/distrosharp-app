@@ -48,7 +48,8 @@ class MenuButler
 					]
 				] ,
 				['Transfers' , [
-						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ]
+						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ] ,
+						[ 'View Transfers' , 'processes.transfers.all' , ['view_transfers' ] ]
 					]
 				] ,
 				['Sales' , [

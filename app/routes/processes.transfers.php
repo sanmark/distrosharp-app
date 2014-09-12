@@ -5,6 +5,18 @@ Route::group ( [
 	'before' => 'auth'
 ] , function()
 {
+	Route::get ( '' , [
+		'as'	 => 'processes.transfers.all' ,
+		'before' => ['hasAbilities:view_transfers' ] ,
+		'uses'	 => 'Controllers\Processes\TransferController@all'
+	] ) ;
+	
+	Route::post ( '' , [
+		'as'	 => 'processes.transfers.all' ,
+		'before' => ['hasAbilities:view_transfers' ] ,
+		'uses'	 => 'Controllers\Processes\TransferController@all'
+	] ) ;
+
 	Route::get ( 'select-stocks-involved' , [
 		'as'	 => 'processes.transfers.selectStocksInvolved' ,
 		'before' => ['hasAbilities:add_transfer' ] ,

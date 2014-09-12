@@ -28,7 +28,14 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 
 	public static function filter ( $filterValues )
 	{
-		throw new \Exceptions\NotImplementedException() ;
+		$requestObject = self::prepareRequestObjectForFiltering ( $filterValues ) ;
+
+		$requestObject = $requestObject -> with ( [
+			'fromStock' ,
+			'toStock'
+		] ) ;
+
+		return $requestObject -> get () ;
 	}
 
 	private function validateForSave ()
@@ -59,6 +66,51 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
+	}
+
+	private static function prepareRequestObjectForFiltering ( $filterValues )
+	{
+		$requestObject = new Transfer() ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$fromStockId	 = $filterValues[ 'from_stock_id' ] ;
+			$toStockId		 = $filterValues[ 'to_stock_id' ] ;
+			$dateTimeFrom	 = $filterValues[ 'date_time_from' ] ;
+			$dateTimeTo		 = $filterValues[ 'date_time_to' ] ;
+
+			if ( strlen ( $fromStockId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'from_stock_id' , '=' , $fromStockId ) ;
+			}
+
+			if ( strlen ( $toStockId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'to_stock_id' , '=' , $toStockId ) ;
+			}
+
+			if ( strlen ( $dateTimeFrom ) > 0 && strlen ( $dateTimeTo ) > 0 )
+			{
+				$dateTimeFrom	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom ) ;
+				$dateTimeTo		 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo ) ;
+
+				$datesAndTimes = [$dateTimeFrom , $dateTimeTo ] ;
+
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
+			} elseif ( strlen ( $dateTimeFrom ) > 0 )
+			{
+				$dateTimeFrom = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeFrom ) ;
+
+				$requestObject = $requestObject -> where ( 'date_time' , '=' , $dateTimeFrom ) ;
+			} elseif ( strlen ( $dateTimeTo ) > 0 )
+			{
+				$dateTimeTo = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTimeTo ) ;
+
+				$requestObject = $requestObject -> where ( 'date_time' , '=' , $dateTimeTo ) ;
+			}
+		}
+
+		return $requestObject ;
 	}
 
 }

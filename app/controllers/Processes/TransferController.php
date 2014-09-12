@@ -5,6 +5,38 @@ namespace Controllers\Processes ;
 class TransferController extends \Controller
 {
 
+	public function all ()
+	{
+		$filterValues	 = \Input::all () ;
+		$transfers		 = \Models\Transfer::filter ( $filterValues ) ;
+		$stocks			 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Any' ] ) ;
+
+		$fromStockId	 = \Input::get ( 'from_stock_id' ) ;
+		$toStockId		 = \Input::get ( 'to_stock_id' ) ;
+		$dateTimeFrom	 = \Input::get ( 'date_time_from' ) ;
+		$dateTimeTo		 = \Input::get ( 'date_time_to' ) ;
+
+		if ( is_null ( $dateTimeFrom ) )
+		{
+			$dateTimeFrom = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( '-7 days midnight' ) ) ) ;
+		}
+		if ( is_null ( $dateTimeTo ) )
+		{
+			$dateTimeTo = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( 'today 23:59:59' ) ) ) ;
+		}
+
+		$data = compact ( [
+			'transfers' ,
+			'stocks' ,
+			'fromStockId' ,
+			'toStockId' ,
+			'dateTimeFrom' ,
+			'dateTimeTo'
+		] ) ;
+
+		return \View::make ( 'web.processes.transfers.all' , $data ) ;
+	}
+
 	public function selectStocksInvolved ()
 	{
 		$data = [ ] ;
