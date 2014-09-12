@@ -31,17 +31,10 @@ class VendorController extends \Controller
 	{
 		try
 		{
-			$financeAccount					 = new \Models\FinanceAccount() ;
-			$financeAccount -> name			 = \Input::get ( 'name' ) ;
-			$financeAccount -> is_active	 = TRUE ;
-			$financeAccount -> is_in_house	 = FALSE ;
-			$financeAccount -> save () ;
-
-			$vendor							 = new \Models\Vendor() ;
-			$vendor -> name					 = \Input::get ( 'name' ) ;
-			$vendor -> details				 = \Input::get ( 'details' ) ;
-			$vendor -> is_active			 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$vendor -> finance_account_id	 = $financeAccount -> id ;
+			$vendor				 = new \Models\Vendor() ;
+			$vendor -> name		 = \Input::get ( 'name' ) ;
+			$vendor -> details	 = \Input::get ( 'details' ) ;
+			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> save () ;
 
 			return \Redirect::action ( 'entities.vendors.view' ) ;

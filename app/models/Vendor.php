@@ -11,6 +11,14 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 	{
 		$this -> validateForSave () ;
 
+		$financeAccount					 = new \Models\FinanceAccount() ;
+		$financeAccount -> name			 = $this -> name ;
+		$financeAccount -> is_active	 = TRUE ;
+		$financeAccount -> is_in_house	 = FALSE ;
+		$financeAccount -> save () ;
+
+		$this -> finance_account_id = $financeAccount -> id ;
+
 		parent::save ( $options ) ;
 	}
 

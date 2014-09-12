@@ -8,30 +8,6 @@ class FinanceAccountsSeeder extends Seeder
 		$financeAccounts = [
 			[
 				'id'				 => 1 ,
-				'name'				 => 'M. K. Weerasinghe Acc' ,
-				'bank_id'			 => NULL ,
-				'is_active'			 => TRUE ,
-				'account_balance'	 => 0 ,
-				'is_in_house'		 => FALSE ,
-			] ,
-			[
-				'id'				 => 2 ,
-				'name'				 => 'K. M. Ranasinghe Acc' ,
-				'bank_id'			 => NULL ,
-				'is_active'			 => TRUE ,
-				'account_balance'	 => 0 ,
-				'is_in_house'		 => FALSE ,
-			] ,
-			[
-				'id'				 => 3 ,
-				'name'				 => 'Y. G. Mahesh Chathuranga Acc' ,
-				'bank_id'			 => NULL ,
-				'is_active'			 => TRUE ,
-				'account_balance'	 => 0 ,
-				'is_in_house'		 => FALSE ,
-			] ,
-			[
-				'id'				 => 4 ,
 				'name'				 => 'Cash' ,
 				'bank_id'			 => NULL ,
 				'is_active'			 => TRUE ,
@@ -39,8 +15,16 @@ class FinanceAccountsSeeder extends Seeder
 				'is_in_house'		 => TRUE ,
 			] ,
 			[
-				'id'				 => 5 ,
+				'id'				 => 2 ,
 				'name'				 => 'Cheque' ,
+				'bank_id'			 => NULL ,
+				'is_active'			 => TRUE ,
+				'account_balance'	 => 0 ,
+				'is_in_house'		 => TRUE ,
+			] ,
+			[
+				'id'				 => 3 ,
+				'name'				 => 'Imbalance' ,
 				'bank_id'			 => NULL ,
 				'is_active'			 => TRUE ,
 				'account_balance'	 => 0 ,
