@@ -10,12 +10,12 @@ class SystemSettingButler
 		$requestObject	 = new \Models\SystemSettable() ;
 		$requestObject	 = $requestObject -> where ( 'name' , '=' , $systemSettingName ) ;
 
-		$systemSettable = $requestObject -> first () ;
+		$systemSettable	 = $requestObject -> first () ;
+		$systemSetting	 = $systemSettable -> systemSetting ;
 
-		if ( ! is_null ( $systemSettable ) )
+		if ( ! is_null ( $systemSetting ) )
 		{
-			$systemSetting	 = $systemSettable -> systemSetting ;
-			$value			 = $systemSetting -> value ;
+			$value = $systemSetting -> value ;
 		}
 
 		return $value ;
