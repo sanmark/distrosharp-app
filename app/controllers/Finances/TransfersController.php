@@ -93,18 +93,6 @@ class TransfersController extends \Controller
 			$amount		 = \Input::get ( 'amount' ) ;
 			$description = \Input::get ( 'description' ) ;
 
-			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromAccountId ) ;
-			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toAccountId ) ;
-
-			$fromAccountBalance	 = ($financeAccountFrom -> account_balance - $amount) ;
-			$toAccountBalance	 = ($financeAccountTo -> account_balance + $amount) ;
-
-			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
-			$financeAccountTo -> account_balance	 = $toAccountBalance ;
-
-			$financeAccountFrom -> update () ;
-			$financeAccountTo -> update () ;
-
 			$financeTransfer				 = new \Models\FinanceTransfer() ;
 			$financeTransfer -> from_id		 = $fromAccountId ;
 			$financeTransfer -> to_id		 = $toAccountId ;
@@ -162,7 +150,7 @@ class TransfersController extends \Controller
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time  ) ;
+		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,
@@ -185,20 +173,6 @@ class TransfersController extends \Controller
 			$fromId		 = \Input::get ( 'from_id' ) ;
 			$toId		 = \Input::get ( 'to_id' ) ;
 
-			$preFromFinanceAccount = \Models\FinanceAccount::findOrFail ( $financeTransferUpdateRow -> from_id ) ;
-
-			$preToFinanceAccount = \Models\FinanceAccount::findOrFail ( $financeTransferUpdateRow -> to_id ) ;
-
-			$preFromAccountBalance = ($preFromFinanceAccount -> account_balance) + ($financeTransferUpdateRow -> amount) ;
-
-			$preToAccountBalance = ($preToFinanceAccount -> account_balance) - ($financeTransferUpdateRow -> amount) ;
-
-			$preFromFinanceAccount -> account_balance	 = $preFromAccountBalance ;
-			$preToFinanceAccount -> account_balance		 = $preToAccountBalance ;
-
-			$preFromFinanceAccount -> update () ;
-			$preToFinanceAccount -> update () ;
-
 			$financeTransferUpdateRow -> date_time	 = $dateTime ;
 			$financeTransferUpdateRow -> amount		 = $amount ;
 			$financeTransferUpdateRow -> description = $description ;
@@ -207,20 +181,7 @@ class TransfersController extends \Controller
 
 			$financeTransferUpdateRow -> update () ;
 
-			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromId ) ;
-			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toId ) ;
-
-			$fromAccountBalance	 = ($preFromAccountBalance - $amount) ;
-			$toAccountBalance	 = ($preToAccountBalance + $amount) ;
-
-			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
-			$financeAccountTo -> account_balance	 = $toAccountBalance ;
-
-			$financeAccountFrom -> update () ;
-			$financeAccountTo -> update () ;
-			
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
-			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

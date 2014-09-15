@@ -223,16 +223,23 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
+
+		$this -> adjustAccountBalances () ;
+
 		parent::save ( $options ) ;
 	}
 
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
-		parent::update ( $attributes ) ;
+
+		$this -> resetAccountBalances () ;
+		$this -> adjustAccountBalances () ;
+
+		parent::save ( $attributes ) ;
 	}
 
-	public function validateForSave ()
+	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
 
@@ -257,7 +264,7 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
-	public function validateForUpdate ()
+	private function validateForUpdate ()
 	{
 		$data = $this -> toArray () ;
 
@@ -283,6 +290,33 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
+	}
+
+	private function adjustAccountBalances ()
+	{
+		$financeAccountFrom	 = FinanceAccount::findOrFail ( $this -> from_id ) ;
+		$financeAccountTo	 = FinanceAccount::findOrFail ( $this -> to_id ) ;
+		$amount				 = $this -> amount ;
+
+		$financeAccountFrom -> account_balance -= $amount ;
+		$financeAccountTo -> account_balance += $amount ;
+
+		$financeAccountFrom -> update () ;
+		$financeAccountTo -> update () ;
+	}
+
+	private function resetAccountBalances ()
+	{
+		$originalFinanceTransfer = FinanceTransfer::findOrFail ( $this -> id ) ;
+
+		$originalFinanceAccountFrom	 = FinanceAccount::findOrFail ( $originalFinanceTransfer -> from_id ) ;
+		$originalFinanceAccountTo	 = FinanceAccount::findOrFail ( $originalFinanceTransfer -> to_id ) ;
+
+		$originalFinanceAccountFrom -> account_balance += $this -> amount ;
+		$originalFinanceAccountTo -> account_balance -= $this -> amount ;
+
+		$originalFinanceAccountFrom -> update () ;
+		$originalFinanceAccountTo -> update () ;
 	}
 
 }
