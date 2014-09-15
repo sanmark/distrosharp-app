@@ -17,7 +17,7 @@
 				<th>Return Quantity</th>
 			</tr>
 			<tbody>
-				@foreach($stock->stockDetails as $stockDetail)
+				@foreach($stockDetails as $stockDetail)
 				<tr>
 					<td>{{$stockDetail->item->name}}</td>
 					<td>{{$stockDetail->good_quantity}}</td>

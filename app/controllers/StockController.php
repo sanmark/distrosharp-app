@@ -21,17 +21,20 @@ class StockController extends \Controller
 	{
 		$data = [ ] ;
 
-		$stock			 = \Models\Stock::with ( 'stockDetails.item' , 'incharge' , 'stockType' )
+		$stock = \Models\Stock::with ( 'incharge' , 'stockType' )
 		-> findOrFail ( $stockId ) ;
-		
-		$stockDetails	 = $stock -> stockDetails ;
+
+		$stockDetails = $stock -> stockDetails () -> activeItems () -> get () ;
 
 		$stockDetails = $stockDetails -> sortBy ( function($stockDetail)
 		{
 			return $stockDetail -> item -> buying_invoice_order ;
 		} ) ;
-		
-		$data[ 'stock' ] = $stock ;
+
+		$data = compact ( [
+			'stock' ,
+			'stockDetails'
+		] ) ;
 
 		return \View::make ( 'web.stocks.view' , $data ) ;
 	}
