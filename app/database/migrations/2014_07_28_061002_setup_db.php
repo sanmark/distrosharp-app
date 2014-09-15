@@ -38,8 +38,8 @@ class SetupDb extends Migration
 			$t -> string ( 'code' , 20 ) ;
 			$t -> string ( 'name' , 50 ) ;
 			$t -> integer ( 'reorder_level' ) ;
-			$t -> float ( 'current_buying_price' ) ;
-			$t -> float ( 'current_selling_price' ) ;
+			$t -> double ( 'current_buying_price' ) ;
+			$t -> double ( 'current_selling_price' ) ;
 			$t -> integer ( 'buying_invoice_order' ) ;
 			$t -> integer ( 'selling_invoice_order' ) ;
 			$t -> boolean ( 'is_active' ) ;
@@ -58,7 +58,7 @@ class SetupDb extends Migration
 			$t -> string ( 'name' ) ;
 			$t -> integer ( 'bank_id' ) -> unsigned () -> nullable () ;
 			$t -> boolean ( 'is_active' ) ;
-			$t -> float ( 'account_balance' ) ;
+			$t -> double ( 'account_balance' ) ;
 			$t -> boolean ( 'is_in_house' ) ;
 
 			$t -> foreign ( 'bank_id' )
@@ -131,8 +131,8 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> integer ( 'stock_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
-			$t -> float ( 'good_quantity' ) ;
-			$t -> float ( 'return_quantity' ) ;
+			$t -> double ( 'good_quantity' ) ;
+			$t -> double ( 'return_quantity' ) ;
 
 			$t -> foreign ( 'stock_id' )
 			-> references ( 'id' )
@@ -154,7 +154,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'vendor_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_num' ) ;
 			$t -> boolean ( 'completely_paid' ) ;
-			$t -> float ( 'other_expenses_amount' ) ;
+			$t -> double ( 'other_expenses_amount' ) ;
 			$t -> text ( 'other_expenses_details' ) ;
 			$t -> string ( 'stock_id' ) ;
 
@@ -170,9 +170,9 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> integer ( 'invoice_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
-			$t -> float ( 'price' ) ;
-			$t -> float ( 'quantity' ) -> nullable () ;
-			$t -> float ( 'free_quantity' ) -> nullable () ;
+			$t -> double ( 'price' ) ;
+			$t -> double ( 'quantity' ) -> nullable () ;
+			$t -> double ( 'free_quantity' ) -> nullable () ;
 			$t -> date ( 'exp_date' ) ;
 			$t -> string ( 'batch_number' ) ;
 
@@ -215,7 +215,7 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> integer ( 'transfer_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
-			$t -> float ( 'quantity' ) ;
+			$t -> double ( 'quantity' ) ;
 
 			$t -> foreign ( 'transfer_id' )
 			-> references ( 'id' )
@@ -237,7 +237,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'customer_id' ) -> unsigned () ;
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_number' , 100 ) ;
-			$t -> float ( 'discount' ) ;
+			$t -> double ( 'discount' ) ;
 			$t -> boolean ( 'is_completely_paid' ) ;
 
 			$t -> foreign ( 'customer_id' )
@@ -258,13 +258,13 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> integer ( 'selling_invoice_id' ) -> unsigned () ;
 			$t -> integer ( 'item_id' ) -> unsigned () ;
-			$t -> float ( 'price' ) -> nullable () ;
-			$t -> float ( 'paid_quantity' ) -> nullable () ;
-			$t -> float ( 'free_quantity' ) -> nullable () ;
-			$t -> float ( 'good_return_price' ) -> nullable () ;
-			$t -> float ( 'good_return_quantity' ) -> nullable () ;
-			$t -> float ( 'company_return_price' ) -> nullable () ;
-			$t -> float ( 'company_return_quantity' ) -> nullable () ;
+			$t -> double ( 'price' ) -> nullable () ;
+			$t -> double ( 'paid_quantity' ) -> nullable () ;
+			$t -> double ( 'free_quantity' ) -> nullable () ;
+			$t -> double ( 'good_return_price' ) -> nullable () ;
+			$t -> double ( 'good_return_quantity' ) -> nullable () ;
+			$t -> double ( 'company_return_price' ) -> nullable () ;
+			$t -> double ( 'company_return_quantity' ) -> nullable () ;
 
 			$t -> foreign ( 'selling_invoice_id' )
 			-> references ( 'id' )
@@ -285,7 +285,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'from_id' ) -> unsigned () ;
 			$t -> integer ( 'to_id' ) -> unsigned () ;
 			$t -> dateTime ( 'date_time' ) ;
-			$t -> float ( 'amount' ) ;
+			$t -> double ( 'amount' ) ;
 			$t -> text ( 'description' ) -> nullable () ;
 
 			$t -> foreign ( 'from_id' )
