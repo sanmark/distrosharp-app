@@ -17,18 +17,29 @@ Route::group ( [
 		'as'	 => 'system.settings.paymentSourceAccounts' ,
 		'uses'	 => 'Controllers\System\SettingsController@showPaymentSourceAccounts'
 	] ) ;
-	
+
+	Route::post ( 'payment-source-accounts' , [
+		'as'	 => 'system.settings.paymentSourceAccounts' ,
+		'uses'	 => 'Controllers\System\SettingsController@updatePaymentSourceAccounts'
+	] ) ;
+
 	Route::get ( 'timezone' , [
 		'as'	 => 'system.settings.timezone' ,
 		'uses'	 => 'Controllers\System\SettingsController@selectTimeZone'
 	] ) ;
+
 	Route::post ( 'timezone' , [
 		'as'	 => 'system.settings.timezone' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateTimeZone'
 	] ) ;
 
-	Route::post ( 'payment-source-accounts' , [
-		'as'	 => 'system.settings.paymentSourceAccounts' ,
-		'uses'	 => 'Controllers\System\SettingsController@updatePaymentSourceAccounts'
+	Route::get ( 'payment-target-accounts' , [
+		'as'	 => 'system.settings.paymentTargetAccounts' ,
+		'uses'	 => 'Controllers\System\SettingsController@showPaymentTargetAccounts'
+	] ) ;
+
+	Route::post ( 'payment-target-accounts' , [
+		'as'	 => 'system.settings.paymentTargetAccounts' ,
+		'uses'	 => 'Controllers\System\SettingsController@updatePaymentTargetAccounts'
 	] ) ;
 } ) ;

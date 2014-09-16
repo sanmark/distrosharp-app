@@ -7,6 +7,9 @@
 		<td>{{HTML::link(URL::action('system.settings.paymentSourceAccounts'),'Payment Source Accounts')}}</td>
 	</tr>
 	<tr>
+		<td>{{HTML::link(URL::action('system.settings.paymentTargetAccounts'),'Payment Target Accounts')}}</td>
+	</tr>
+	<tr>
 		<td>{{HTML::link(URL::action('system.settings.timezone'),'Time Zone')}}</td>
 	</tr>
 </table>

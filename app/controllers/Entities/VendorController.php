@@ -69,11 +69,6 @@ class VendorController extends \Controller
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> update () ;
 
-			$financeAccount				 = \Models\FinanceAccount::findOrFail ( $vendor -> finance_account_id ) ;
-			$financeAccount -> name		 = $vendor -> name ;
-			$financeAccount -> is_active = $vendor -> is_active ;
-			$financeAccount -> update () ;
-
 			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

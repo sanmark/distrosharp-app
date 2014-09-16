@@ -427,11 +427,6 @@ class PurchaseController extends \Controller
 		$cashAccountId	 = \SystemSettingButler::getValue ( 'payment_source_cash' ) ;
 		$chequeAccountId = \SystemSettingButler::getValue ( 'payment_source_cheque' ) ;
 
-		$vendorAccount	 = \Models\FinanceAccount::findOrFail ( $vendorAccountId ) ;
-		$cashAccount	 = \Models\FinanceAccount::findOrFail ( $cashAccountId ) ;
-		$chequeAccount	 = \Models\FinanceAccount::findOrFail ( $chequeAccountId ) ;
-
-
 		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $cashPayment ) )
 		{
 			$financeTransfer				 = new \Models\FinanceTransfer() ;
@@ -443,12 +438,6 @@ class PurchaseController extends \Controller
 			$financeTransfer -> save () ;
 
 			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
-
-			$cashAccount -> account_balance -= $cashPayment ;
-			$vendorAccount -> account_balance += $cashPayment ;
-
-			$cashAccount -> update () ;
-			$vendorAccount -> update () ;
 		}
 
 		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $chequePayment ) )
@@ -462,12 +451,6 @@ class PurchaseController extends \Controller
 			$financeTransfer -> save () ;
 
 			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
-
-			$chequeAccount -> account_balance -= $chequePayment ;
-			$vendorAccount -> account_balance += $chequePayment ;
-
-			$chequeAccount -> update () ;
-			$vendorAccount -> update () ;
 		}
 	}
 

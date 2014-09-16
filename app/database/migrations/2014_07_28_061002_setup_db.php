@@ -104,10 +104,17 @@ class SetupDb extends Migration
 			$t -> integer ( 'route_id' ) -> unsigned () ;
 			$t -> boolean ( 'is_active' ) ;
 			$t -> longtext ( 'details' ) ;
+			$t -> integer ( 'finance_account_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'route_id' )
 			-> references ( 'id' )
 			-> on ( 'routes' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'finance_account_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_accounts' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
@@ -325,10 +332,29 @@ class SetupDb extends Migration
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'finance_transfer_selling_invoice' , function($t)
+		{
+			$t -> integer ( 'finance_transfer_id' ) -> unsigned () ;
+			$t -> integer ( 'selling_invoice_id' ) -> unsigned () ;
+
+			$t -> foreign ( 'finance_transfer_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_transfers' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'selling_invoice_id' )
+			-> references ( 'id' )
+			-> on ( 'selling_invoices' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'finance_transfer_selling_invoice' ) ;
 		Schema::dropIfExists ( 'buying_invoice_finance_transfer' ) ;
 		Schema::dropIfExists ( 'system_settings' ) ;
 		Schema::dropIfExists ( 'finance_transfers' ) ;

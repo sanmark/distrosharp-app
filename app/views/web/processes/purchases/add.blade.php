@@ -53,17 +53,17 @@
 		<div id="add_purchase_items">
 			@foreach($itemRows as $itemRow)
 			<div class="form-group">
-					{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
-					@if(false!=$itemRow->getImageUrl())
-					<a href="#"  style="position:relative;">
-						{{$itemRow->name}}
-						<div class="tool-tip slideIn bottom" >
-							<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
-						</div>
-					</a>
-					@else
-					{{Form::label(null, $itemRow->name,array('class' => 'col-sm-2 control-label'))}}
-					@endif
+				{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
+				@if(false!=$itemRow->getImageUrl())
+				<a href="#"  style="position:relative;">
+					{{$itemRow->name}}
+					<div class="tool-tip slideIn bottom" >
+						<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
+					</div>
+				</a>
+				@else
+				{{Form::label(null, $itemRow->name,array('class' => 'col-sm-2 control-label'))}}
+				@endif
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-2">
@@ -102,13 +102,13 @@
 			</div>			
 		</div>
 		<div class="form-group">
-			{{Form::label('Cash Payment', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
 				{{Form::input('number', 'cash_payment', NULL, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('Cheque Payment', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('cheque_payment', 'Cheque Payment', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
 				{{Form::input('number', 'cheque_payment', NULL, array('class' => 'form-control'))}}
 			</div>

@@ -13,7 +13,7 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 
 		$financeAccount					 = new \Models\FinanceAccount() ;
 		$financeAccount -> name			 = $this -> name ;
-		$financeAccount -> is_active	 = TRUE ;
+		$financeAccount -> is_active	 = $this -> is_active ;
 		$financeAccount -> is_in_house	 = FALSE ;
 		$financeAccount -> save () ;
 
@@ -25,6 +25,11 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
+
+		$financeAccount				 = \Models\FinanceAccount::findOrFail ( $this -> finance_account_id ) ;
+		$financeAccount -> name		 = $this -> name ;
+		$financeAccount -> is_active = $this -> is_active ;
+		$financeAccount -> update () ;
 
 		parent::save ( $attributes ) ;
 	}

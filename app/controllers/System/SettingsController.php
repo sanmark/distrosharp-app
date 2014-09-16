@@ -71,7 +71,43 @@ class SettingsController extends \Controller
 			$timezone = \Input::get ( 'time_zone' ) ;
 			\SystemSettingButler::setValue ( 'time_zone' , $timezone ) ;
 
-			\MessageButler::setSuccess ( 'Timezone were saved successfully.' ) ;
+			\MessageButler::setSuccess ( 'Timezone was saved successfully.' ) ;
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
+	public function showPaymentTargetAccounts ()
+	{
+		$inHouseAccounts	 = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE )
+		-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$paymentTargetCash	 = \SystemSettingButler::getValue ( 'payment_target_cash' ) ;
+		$paymentTargetCheque = \SystemSettingButler::getValue ( 'payment_target_cheque' ) ;
+
+		$data = compact ( [
+			'inHouseAccounts' ,
+			'paymentTargetCash' ,
+			'paymentTargetCheque'
+		] ) ;
+
+		return \View::make ( 'web.system.settings.paymentTargetAccounts' , $data ) ;
+	}
+
+	public function updatePaymentTargetAccounts ()
+	{
+		try
+		{
+			$paymentTargetCash	 = \Input::get ( 'payment_target_cash' ) ;
+			$paymentTargetCheque = \Input::get ( 'payment_target_cheque' ) ;
+
+			\SystemSettingButler::setValue ( 'payment_target_cash' , $paymentTargetCash ) ;
+			\SystemSettingButler::setValue ( 'payment_target_cheque' , $paymentTargetCheque ) ;
+
+			\MessageButler::setSuccess ( 'Payment targets were saved successfully.' ) ;
 			return \Redirect::back () ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

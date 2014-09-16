@@ -22,6 +22,11 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\SellingItem' ) ;
 	}
 
+	public function financeTransfers ()
+	{
+		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) ;
+	}
+
 	public function sellingItemById ( $sellingItemId )
 	{
 		return $this -> hasOne ( 'Models\SellingItem' )

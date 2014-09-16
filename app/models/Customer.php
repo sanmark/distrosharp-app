@@ -12,15 +12,35 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\Route' ) ;
 	}
 
+	public function financeAccount ()
+	{
+		return $this -> belongsTo ( 'Models\FinanceAccount' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
+
+		$financeAccount					 = new FinanceAccount() ;
+		$financeAccount -> name			 = $this -> name ;
+		$financeAccount -> is_active	 = $this -> is_active ;
+		$financeAccount -> is_in_house	 = FALSE ;
+		$financeAccount -> save () ;
+
+		$this -> finance_account_id = $financeAccount -> id ;
+
 		parent::save ( $options ) ;
 	}
 
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
+
+		$financeAccount					 = FinanceAccount::findOrFail ( $this -> finance_account_id ) ;
+		$financeAccount -> name			 = $this -> name ;
+		$financeAccount -> is_active	 = $this -> is_active ;
+		$financeAccount -> is_in_house	 = FALSE ;
+		$financeAccount -> update () ;
 
 		parent::save ( $attributes ) ;
 	}

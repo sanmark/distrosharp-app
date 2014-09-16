@@ -34,21 +34,31 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items = \Input::get ( 'items' ) ;
+			$items					 = \Input::get ( 'items' ) ;
+			$dateTime				 = \Input::get ( 'date_time' ) ;
+			$customerId				 = \Input::get ( 'customer_id' ) ;
+			$printedInvoiceNumber	 = \Input::get ( 'printed_invoice_number' ) ;
+			$discount				 = \Input::get ( 'discount' ) ;
+			$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
+			$cashPaymentAmount		 = \Input::get ( 'cash_payment' ) ;
+			$chequePaymentAmount	 = \Input::get ( 'cheque_payment' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
 
 			$sellingInvoice = new \Models\SellingInvoice() ;
 
-			$sellingInvoice -> date_time				 = \Input::get ( 'date_time' ) ;
-			$sellingInvoice -> customer_id				 = \Input::get ( 'customer_id' ) ;
+			$sellingInvoice -> date_time				 = $dateTime ;
+			$sellingInvoice -> customer_id				 = $customerId ;
 			$sellingInvoice -> rep_id					 = \Auth::user () -> id ;
-			$sellingInvoice -> printed_invoice_number	 = \Input::get ( 'printed_invoice_number' ) ;
-			$sellingInvoice -> discount					 = \Input::get ( 'discount' ) ;
-			$sellingInvoice -> is_completely_paid		 = \Input::get ( 'is_completely_paid' ) ;
+			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
+			$sellingInvoice -> discount					 = $discount ;
+			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
 
 			$sellingInvoice -> save () ;
+
+			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount ) ;
+
 			$sellingInvoiceId = $sellingInvoice -> id ;
 
 			foreach ( $items as $itemId => $item )
@@ -424,7 +434,7 @@ class SaleController extends \Controller
 		}
 	}
 
-	public function updateDeletedItems ( $deletedItems )
+	private function updateDeletedItems ( $deletedItems )
 	{
 		foreach ( $deletedItems as $deletedItem )
 		{
@@ -440,6 +450,86 @@ class SaleController extends \Controller
 			$companyReturnQuantity	 = $deletedItem -> company_return_quantity ;
 
 			$this -> updatestockOnUpdate ( $stockId , $itemId , $paidQuantity , $freeQuantity , $goodReturnQuantity , $companyReturnQuantity ) ;
+		}
+	}
+
+	private function savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount )
+	{
+		$customerId	 = $sellingInvoice -> customer_id ;
+		$dateTime	 = $sellingInvoice -> date_time ;
+
+		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
+		$this -> validateSavePayments ( $customerId , $dateTime , $cashPaymentAmount , $chequePaymentAmount ) ;
+
+		$customer = \Models\Customer::findOrFail ( $customerId ) ;
+
+		$cashTargetAccount	 = \FinanceAccountButler::getCashTargetAccount () ;
+		$chequeTargetAccount = \FinanceAccountButler::getChequeTargetAccount () ;
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $cashPaymentAmount ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $customer -> finance_account_id ;
+			$financeTransfer -> to_id		 = $cashTargetAccount -> id ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $cashPaymentAmount ;
+
+			$financeTransfer -> save () ;
+
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+		}
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $chequePaymentAmount ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $customer -> finance_account_id ;
+			$financeTransfer -> to_id		 = $chequeTargetAccount -> id ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $chequePaymentAmount ;
+
+			$financeTransfer -> save () ;
+
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+		}
+	}
+
+	private function validateSavePayments ( $customerId , $dateTime , $cashPayment , $chequePayment )
+	{
+		$data = compact ( [
+			'customerId' ,
+			'dateTime' ,
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'customerId'	 => [
+				'required'
+			] ,
+			'dateTime'		 => [
+				'required' ,
+				'date' ,
+				'date_format:Y-m-d H:i:s'
+			] ,
+			'cashPayment'	 => [
+				'required_without:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePayment'	 => [
+				'required_without:cashPayment' ,
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
 		}
 	}
 
