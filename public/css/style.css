@@ -87,7 +87,14 @@ body{
 	margin-right: 10px;
 }
 .bottom-space{
-	margin: 5px 10px 5px 0 !important;	
+	margin: 5px 10px 5px 0 !important;
+}
+.img-label{
+	position: relative;
+	display: inline-block;
+	padding-top: 7px !important;
+	color: #333 !important;
+	font-weight: bold;
 }
 
 

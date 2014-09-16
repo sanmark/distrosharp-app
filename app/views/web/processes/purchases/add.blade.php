@@ -55,12 +55,14 @@
 			<div class="form-group">
 				{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
 				@if(false!=$itemRow->getImageUrl())
-				<a href="#"  style="position:relative;">
-					{{$itemRow->name}}
-					<div class="tool-tip slideIn bottom" >
-						<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
-					</div>
-				</a>
+				<div class="col-sm-2 text-right">
+					<a href="#"  class="img-label">
+						{{$itemRow->name}}
+						<div class="tool-tip slideIn bottom" >
+							<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
+						</div>
+					</a>
+				</div>
 				@else
 				{{Form::label(null, $itemRow->name,array('class' => 'col-sm-2 control-label'))}}
 				@endif
