@@ -84,6 +84,8 @@ class SaleController extends \Controller
 					$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
 				}
 			}
+
+			return \Redirect::action ( 'processes.sales.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

@@ -70,6 +70,29 @@
 		</td>
 	</tr>
 	<tr>
+		<td>Payments</td>
+		<td>
+			<table border="1">
+				<tr>
+					<th>ID</th>
+					<th>From</th>
+					<th>Date</th>
+					<th>Amount</th>
+					<th></th>
+				</tr>
+				@foreach($sellingInvoice->financeTransfers as $financeTransfer)
+				<tr>
+					<td>{{$financeTransfer->id}}</td>
+					<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
+					<td>{{$financeTransfer->date_time}}</td>
+					<td>{{$financeTransfer->amount}}</td>
+					<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
+				</tr>
+				@endforeach
+			</table>
+		</td>
+	</tr>
+	<tr>
 		<td colspan="2" style="text-align: right;">
 			{{Form::submit('Submit')}}
 		</td>
