@@ -312,8 +312,8 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		$originalFinanceAccountFrom	 = FinanceAccount::findOrFail ( $originalFinanceTransfer -> from_id ) ;
 		$originalFinanceAccountTo	 = FinanceAccount::findOrFail ( $originalFinanceTransfer -> to_id ) ;
 
-		$originalFinanceAccountFrom -> account_balance += $this -> amount ;
-		$originalFinanceAccountTo -> account_balance -= $this -> amount ;
+		$originalFinanceAccountFrom -> account_balance += $originalFinanceTransfer -> amount ;
+		$originalFinanceAccountTo -> account_balance -= $originalFinanceTransfer -> amount ;
 
 		$originalFinanceAccountFrom -> update () ;
 		$originalFinanceAccountTo -> update () ;
