@@ -49,6 +49,21 @@ class PurchaseController extends \Controller
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [ NULL => 'Any' ] ) ;
 		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ '' => 'Any' ] ) ;
 
+		$lineTotalArray = [ ] ;
+		foreach ( $buyingInvoiceRows as $key )
+		{
+			$price			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $key -> id )
+			-> lists ( 'price' ) ;
+			$quantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $key -> id )
+			-> lists ( 'quantity' ) ;
+			$finalLineTotal	 = 0 ;
+			for ( $i = 0 ; $i < count ( $quantity ) ; $i ++ )
+			{
+				$sum[ $key -> id ]	 = $price[ $i ] * $quantity[ $i ] ;
+				$finalLineTotal		 = $finalLineTotal + $sum[ $key -> id ] ;
+			}
+			$lineTotalArray[ $key -> id ] = $finalLineTotal ;
+		}
 		$data[ 'buyingInvoiceRows' ] = $buyingInvoiceRows ;
 		$data[ 'id' ]				 = $id ;
 		$data[ 'vendorId' ]			 = $vendorId ;
@@ -60,6 +75,7 @@ class PurchaseController extends \Controller
 		$data[ 'stockId' ]			 = $stockId ;
 		$data[ 'vendorSelectBox' ]	 = $vendorSelectBox ;
 		$data[ 'stockSelectBox' ]	 = $stockSelectBox ;
+		$data[ 'lineTotalArray' ]	 = $lineTotalArray ;
 		return \View::make ( 'web.processes.purchases.home' , $data ) ;
 	}
 

@@ -56,8 +56,8 @@
 				<th>Printed Invoice Number</th>
 				<th>Completely Paid</th>
 				<th>Other Expense Amount</th>
-				<th>Other Expense Total</th>
 				<th>Stock</th>
+				<th>Invoice Total</th>
 			</tr>
 			<tbody>
 				@foreach($buyingInvoiceRows as $buyingInvoiceRow)
@@ -68,8 +68,8 @@
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
 					<td>{{ViewButler::getYesNoFromBoolean ( $buyingInvoiceRow->completely_paid)}}</td>
 					<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
-					<td>{{$buyingInvoiceRow->other_expenses_details}}</td>
 					<td>{{$buyingInvoiceRow->stock->name}}</td>
+					<td>{{Form::text(null,$lineTotalArray[$buyingInvoiceRow->id],['readonly'=>'readonly','class'=>'form-control'])}}</td>
 				</tr>
 				@endforeach
 			</tbody>
