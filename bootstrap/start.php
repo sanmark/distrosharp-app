@@ -28,6 +28,7 @@ $env = $app -> detectEnvironment ( array (
 	'local' => [
 		'homestead' ,
 		'*-PC',
+		'pc-*'
 	] ,
 ) ) ;
 
