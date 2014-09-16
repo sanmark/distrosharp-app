@@ -41,65 +41,92 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-3 col-sm-1"><b>Available</b></div>
-			<div class="col-sm-1"><b>Price</b></div>
-			<div class="col-sm-1"><b>Paid Q</b></div>
-			<div class="col-sm-1"><b>Free Q</b></div>
-			<div class="col-sm-1"><b>GR Price</b></div>
-			<div class="col-sm-1"><b>GR Q</b></div>
-			<div class="col-sm-1"><b>CR Price</b></div>
-			<div class="col-sm-1"><b>CR Q</b></div>
-			<div class="col-sm-1"><b>Line Total</b></div>
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-2"><b>Available</b></div>
+							<div class="col-sm-2"><b>Price</b></div>
+							<div class="col-sm-2"><b>Paid Q</b></div>
+							<div class="col-sm-2"><b>Free Q</b></div>
+							<div class="col-sm-2"><b>GR Price</b></div>
+							<div class="col-sm-2"><b>GR Q</b></div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="row">						
+							<div class="col-sm-4"><b>CR Price</b></div>
+							<div class="col-sm-4"><b>CR Q</b></div>
+							<div class="col-sm-4"><b>Line Total</b></div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		@foreach($items as $item)
 		<div class="form-group">
-			<div class="col-sm-3">
-				@if(false!=$item->getImageUrl())
-				<a href="#"  style="position:relative;">
-					{{$item->name}}
-					<div class="tool-tip slideIn bottom" >
-						<img class="tool-tip-img" src="{{$item->getImageUrl()}}" >
-					</div>
-				</a>
-				@else
-				{{Form::label(null, $item->name)}}
-				@endif
-			</div>
-			<div class="col-sm-1">
-				<p class="form-control text-right" disabled="true">{{$stockDetails[$item->id]['good_quantity']}}</p>
-				{{Form::hidden('items['.$item->id.'][available_quantity]', $stockDetails[$item->id]['good_quantity'])}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
-			</div>
+			@if(false!=$item->getImageUrl())
+			<a href="#"  style="position:relative;">
+				{{$item->name}}
+				<div class="tool-tip slideIn bottom" >
+					<img class="tool-tip-img" src="{{$item->getImageUrl()}}" >
+				</div>
+			</a>
+			@else
+			{{Form::label(null, $item->name, array('class' => 'col-sm-2 control-label'))}}
+			@endif
 
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][good_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][good_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][company_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::input('number','items['.$item->id.'][company_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
-			</div>
-			<div class="col-sm-1">
-				{{Form::text('items['.$item->id.'][line_total]',NULL, array('class' => 'form-control text-right lineTotal', 'disabled'=>TRUE))}}
+			<div class="col-sm-10">
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-2">
+								<p class="form-control text-right" disabled="true">{{$stockDetails[$item->id]['good_quantity']}}</p>
+								{{Form::hidden('items['.$item->id.'][available_quantity]', $stockDetails[$item->id]['good_quantity'])}}
+							</div>
+							<div class="col-sm-2">
+								{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+							</div>
+
+							<div class="col-sm-2">
+								{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+							</div>
+							<div class="col-sm-2">
+								{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+							</div>
+							<div class="col-sm-2">
+								{{Form::input('number','items['.$item->id.'][good_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+							</div>
+							<div class="col-sm-2">
+								{{Form::input('number','items['.$item->id.'][good_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="row">
+							<div class="col-sm-4">
+								{{Form::input('number','items['.$item->id.'][company_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+							</div>
+							<div class="col-sm-4">
+								{{Form::input('number','items['.$item->id.'][company_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+							</div>
+							<div class="col-sm-4">
+								{{Form::text('items['.$item->id.'][line_total]',NULL, array('class' => 'form-control text-right lineTotal', 'disabled'=>TRUE))}}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		@endforeach
 		<div class="form-group">
-			<div class="col-sm-1 col-sm-offset-11">
-				{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'disabled'=>TRUE])}}
+			<div class="col-sm-4 col-sm-offset-8">
+				<div class="row">
+					<div class="col-sm-4 col-sm-offset-8">					
+						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'disabled'=>TRUE])}}
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">

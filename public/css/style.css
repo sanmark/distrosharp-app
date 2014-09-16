@@ -84,7 +84,10 @@ body{
 	min-height: 450px;
 }
 .inline-form{
-	margin-right: 15px;
+	margin-right: 10px;
+}
+.bottom-space{
+	margin: 5px 10px 5px 0 !important;	
 }
 
 

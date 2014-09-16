@@ -8,56 +8,43 @@
 	</div>
 	<div class="panel-body">
 
-		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
-		<br />
-		<div class="form-group">
-			{{Form::label('invoice_id', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('id',$id, array('class' => 'form-control'))}}
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group bottom-space">
+					{{Form::label('invoice_id', null, array('class' => 'control-label'))}}
+					{{Form::text('id',$id, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('vendor_id', null, array('class' => 'control-label'))}}
+					{{Form::select('vendor_id',$vendorSelectBox,$vendorId, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('from_date', null, array('class' => 'control-label'))}}
+					{{Form::input('datetime-local','from_date_time',$fromDate, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('to_date', null, array('class' => 'control-label'))}}
+					{{Form::input('datetime-local','to_date_time',$toDate, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('is_paid', null, array('class' => 'control-label'))}}
+					{{Form::select('is_paid',ViewButler::htmlSelectAnyYesNo (),$isPaid, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('stock_id', null, array('class' => 'control-label'))}}
+					{{Form::select('stock_id',$stockSelectBox,$stockId, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('sort', null, array('class' => 'control-label'))}}
+					{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date_time'=>'Date'],$sortBy, array('class' => 'form-control', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control', 'style' => 'width: 145px;'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
 			</div>
 		</div>
-		<div class="form-group">
-			{{Form::label('vendor_id', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('vendor_id',$vendorSelectBox,$vendorId, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('from_date', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::input('datetime-local','from_date_time',$fromDate, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('to_date', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::input('datetime-local','to_date_time',$toDate, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('is_paid', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('is_paid',ViewButler::htmlSelectAnyYesNo (),$isPaid, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('stock_id', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('stock_id',$stockSelectBox,$stockId, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('sort', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3 form-inline">
-				{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date_time'=>'Date'],$sortBy, array('class' => 'form-control', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control', 'style' => 'width: 145px;'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
-			</div>
-		</div>
-		{{Form::close()}}
 
 		<br/>
 
