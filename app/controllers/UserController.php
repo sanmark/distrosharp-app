@@ -21,13 +21,13 @@ class UserController extends Controller
 		{
 			if ( ! Auth::attempt ( $credentials ) )
 			{
-				MessageButler::setError ( 'Invalid login details.' ) ;
+				MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
 				return Redirect::back ()
 				-> withInput () ;
 			}
 		} catch ( PDOException $exc )
 		{
-			MessageButler::setError ( 'Invalid login details.' ) ;
+			MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
 			return Redirect::back ()
 			-> withInput () ;
 		}

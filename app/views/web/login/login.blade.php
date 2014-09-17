@@ -31,8 +31,9 @@
 						</div>
 						{{Form::close()}}
 						<br />
+						
 						@if(MessageButler::hasError())
-						<p class="errorstring">{{MessageButler::getError()}}</p>
+						<p align="center" class="errorstring"><font color="red">{{MessageButler::getError()}}</font></p> 
 						@endif
 					</div>
 				</div>
