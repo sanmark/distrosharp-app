@@ -282,6 +282,7 @@ class PurchaseController extends \Controller
 		try
 		{
 
+			$items				 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
 			$toStockId			 = \Input::get ( 'stock_id' ) ;
 			$purchaseDate		 = \Input::get ( 'date_time' ) ;
 			$vendorId			 = \Input::get ( 'vendor_id' ) ;
@@ -289,6 +290,7 @@ class PurchaseController extends \Controller
 			$isPaid				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
 			$cashPayment		 = \Input::get ( 'cash_payment' ) ;
 			$chequePayment		 = \Input::get ( 'cheque_payment' ) ;
+			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 
 			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
 			{
@@ -313,8 +315,9 @@ class PurchaseController extends \Controller
 			$buyingInvoice -> other_expenses_amount	 = $otherExpensesAmount ;
 			$buyingInvoice -> other_expenses_details = $otherExpensesDetail ;
 			$buyingInvoice -> stock_id				 = $toStockId ;
-			$buyingInvoice -> save () ;
 
+			$this -> validateSavePaymentBefore ( $cashPayment , $chequePayment ) ;
+			$buyingInvoice -> save () ;
 			$this -> savePayments ( $buyingInvoice , $cashPayment , $chequePayment ) ;
 
 			$countRows = \Models\Item::all () ;
@@ -485,6 +488,71 @@ class PurchaseController extends \Controller
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	private function validateSavePaymentBefore ( $cashPayment , $chequePayment )
+	{
+		$data = compact ( [
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'cashPayment'	 => [
+				'required_without:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePayment'	 => [
+				'required_without:cashPayment' ,
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	private function validateAtLeastOneItemIsFilled ( $items )
+	{
+		$itemQuantityData		 = [ ] ;
+		$itemFreeQuantityData	 = [ ] ;
+		foreach ( $items as $row )
+		{
+			$itemQuantityData[ $row -> id ]		 = \Input::get ( 'quantity_' . $row -> id ) ;
+			$itemFreeQuantityData[ $row -> id ]	 = \Input::get ( 'free_quantity_' . $row -> id ) ;
+		}
+		$allItems = array_merge ( $itemFreeQuantityData , $itemQuantityData ) ;
+
+		$data = [
+			'field' => $allItems
+		] ;
+
+		$rules = [
+			'field' => [
+				'at_least_one_element_of_one_array_has_value'
+			]
+		] ;
+
+		$messages = [
+			'field.at_least_one_element_of_one_array_has_value' => 'Please enter purchase data.'
+		] ;
+
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{
