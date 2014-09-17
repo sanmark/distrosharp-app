@@ -97,7 +97,8 @@ class User extends \Models\BaseEntity implements UserInterface , RemindableInter
 				'hash_match:' . Auth::user () -> password
 			] ,
 			'new_password'			 => [
-				'required'
+				'required',
+				'no_spaces_in_string'
 			] ,
 			'confirm_new_password'	 => [
 				'required' ,
