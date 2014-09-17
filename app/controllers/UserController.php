@@ -11,8 +11,26 @@ class UserController extends Controller
 	public function pLogin ()
 	{
 		$organization = Input::get ( 'organization' ) ;
+
+		if ( NullHelper::isNullEmptyOrWhitespace ( $organization ) )
+		{
+			MessageButler::setError ( 'Please enter organization code.' ) ;
+
+			return Redirect::back ()
+			-> withInput () ;
+		}
+
 		SessionButler::setOrganization ( $organization ) ;
 		ConfigButler::setTenantDb ( $organization ) ;
+		$tenantDbName = ConfigButler::getTenantDb () ;
+
+		if ( ! DatabaseHelper::hasDatabase ( $tenantDbName ) )
+		{
+			MessageButler::setError ( 'Invalid organization code.' ) ;
+
+			return Redirect::back ()
+			-> withInput () ;
+		}
 
 		$credentials[ 'username' ]	 = Input::get ( 'username' ) ;
 		$credentials[ 'password' ]	 = Input::get ( 'password' ) ;

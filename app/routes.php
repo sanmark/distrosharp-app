@@ -15,17 +15,7 @@ date_default_timezone_set ( $currentTimeZone ) ;
 
 Route::get ( '/test' , function()
 {
-	//$rOne = \Models\FinanceTransfer::whereBetween ( 'date_time' , ["2014-09-11 00:00:00" , "2014-09-11 23:59:59" ] )
-	//-> where ( 'to_id' , '=' , '2' ) ;
-
-	$rO		 = new \Models\FinanceTransfer() ;
-	$rO		 = $rO -> whereBetween ( 'date_time' , ["2014-09-11 00:00:00" , "2014-09-11 23:59:59" ] ) ;
-	$rOne	 = $rO ;
-	$rTwo	 = $rO ;
-	$rOne	 = $rOne -> where ( 'from_id' , '=' , '2' ) ;
-	$rTwo	 = $rTwo -> where ( 'to_id' , '=' , '2' ) ;
-
-	dd ( $rTwo -> lists ( 'id' ) ) ;
+	dd ( DatabaseHelper::hasDatabase ( 'd-081-1' ) ) ;
 } ) ;
 
 Route::group ( [

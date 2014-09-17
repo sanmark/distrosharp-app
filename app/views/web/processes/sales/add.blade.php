@@ -1,7 +1,6 @@
 @extends('web._templates.template')
 
 @section('body')
-
 <div class="panel panel-default">
 	<div class="panel-heading">
 		<h3 class="panel-title">Add Sale</h3>
@@ -114,7 +113,7 @@
 								{{Form::input('number','items['.$item->id.'][company_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
 							</div>
 							<div class="col-sm-4">
-								{{Form::text('items['.$item->id.'][line_total]',NULL, array('class' => 'form-control text-right lineTotal', 'disabled'=>TRUE))}}
+								{{Form::text('items['.$item->id.'][line_total]',NULL, array('class' => 'form-control text-right lineTotal', 'readonly'=>TRUE))}}
 							</div>
 						</div>
 					</div>
@@ -126,7 +125,7 @@
 			<div class="col-sm-4 col-sm-offset-8">
 				<div class="row">
 					<div class="col-sm-4 col-sm-offset-8">					
-						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'disabled'=>TRUE])}}
+						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
 					</div>
 				</div>
 			</div>
