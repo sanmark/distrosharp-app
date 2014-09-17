@@ -45,6 +45,7 @@ class SaleController extends \Controller
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
+			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount ) ;
 
 			$sellingInvoice = new \Models\SellingInvoice() ;
 
@@ -63,7 +64,7 @@ class SaleController extends \Controller
 
 			foreach ( $items as $itemId => $item )
 			{
-				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' ] ) )
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
 				{
 					$sellingItem = new \Models\SellingItem() ;
 
@@ -171,6 +172,9 @@ class SaleController extends \Controller
 			$sellingInvoice -> update () ;
 
 			$this -> updateSellingItems ( $id ) ;
+
+			\MessageButler::setSuccess ( 'Selling invoice was updated successfully.' ) ;
+			return \Redirect::back () ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -462,8 +466,6 @@ class SaleController extends \Controller
 
 		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
 
-		$this -> validateSavePayments ( $customerId , $dateTime , $cashPaymentAmount , $chequePaymentAmount ) ;
-
 		$customer = \Models\Customer::findOrFail ( $customerId ) ;
 
 		$cashTargetAccount	 = \FinanceAccountButler::getCashTargetAccount () ;
@@ -496,24 +498,14 @@ class SaleController extends \Controller
 		}
 	}
 
-	private function validateSavePayments ( $customerId , $dateTime , $cashPayment , $chequePayment )
+	private function validateSavePayments ( $cashPayment , $chequePayment )
 	{
 		$data = compact ( [
-			'customerId' ,
-			'dateTime' ,
 			'cashPayment' ,
 			'chequePayment'
 		] ) ;
 
 		$rules = [
-			'customerId'	 => [
-				'required'
-			] ,
-			'dateTime'		 => [
-				'required' ,
-				'date' ,
-				'date_format:Y-m-d H:i:s'
-			] ,
 			'cashPayment'	 => [
 				'required_without:chequePayment' ,
 				'numeric'
