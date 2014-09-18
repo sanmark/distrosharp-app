@@ -2,49 +2,71 @@
 
 @section('body')
 
-<h3>All Finance Transfers</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">All Finance Transfers</h3>
+	</div>
+	<div class="panel-body">
 
-{{Form::open()}}
-<table border="1">
-	<tr>
-		<td>{{Form::label('from_date')}}</td>
-		<td>{{Form::input('datetime-local','from_date',$fromDate)}}</td>
-		<td>{{Form::label('to_date')}}</td>
-		<td>{{Form::input('datetime-local','to_date',$toDate)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('from_account')}}</td>
-		<td>{{Form::select('from_account',$fromAccountsIds,$fromAccount)}}</td>
-		<td>{{Form::label('to_account')}}</td>
-		<td>{{Form::select('to_account',$toAccountsIds,$toAccount)}}</td>
-	</tr>
-	<tr colspan="4">
-		<td>{{Form::label('amount')}}</td>
-		<td>{{Form::select('compare_sign',$compareSignSelectBox,$compareSign)}}</td>
-		<td>{{Form::input('number','amount',$amount,['step'=>'any'])}}</td>
-	</tr>
-	<tr colspan="4">
-		<td>{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+		<div class="panel panel-default">
+			<div class="panel-body">
 
-<table border="1">
-	<tr>
-		<th>Date/Time</th>
-		<th>Description</th>
-		<th>From account</th>
-		<th>To account</th>
-		<th>Amount</th>
-	</tr>
-	@foreach($financeData as $financeTransfer)
-	<tr>
-		<td>{{$financeTransfer->date_time}}</td>
-		<td>{{$financeTransfer->description}}</td>
-		<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
-		<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->to_id]),$financeTransfer->toAccount->name)}}</td>
-		<td>{{$financeTransfer->amount}}</td>
-	</tr>
-	@endforeach
-</table>
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group bottom-space">
+					{{Form::label('from_date')}}
+					{{Form::input('datetime-local','from_date',$fromDate, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('to_date')}}
+					{{Form::input('datetime-local','to_date',$toDate, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('from_account')}}
+					{{Form::select('from_account',$fromAccountsIds,$fromAccount, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('to_account')}}
+					{{Form::select('to_account',$toAccountsIds,$toAccount, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('amount')}}
+					{{Form::select('compare_sign',$compareSignSelectBox,$compareSign, array('class' => 'form-control'))}}
+					{{Form::input('number','amount',$amount, array('class' => 'form-control'),['step'=>'any'])}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
+
+			</div>
+		</div>
+
+		<br/>
+
+		<table class="table table-striped" style="width: 70%;">
+			<thead>
+				<tr>
+					<th>Date/Time</th>
+					<th>Description</th>
+					<th>From account</th>
+					<th>To account</th>
+					<th>Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($financeData as $financeTransfer)
+				<tr>
+					<td>{{$financeTransfer->date_time}}</td>
+					<td>{{$financeTransfer->description}}</td>
+					<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
+					<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->to_id]),$financeTransfer->toAccount->name)}}</td>
+					<td>{{$financeTransfer->amount}}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+
+	</div>
+</div>
+
 @stop

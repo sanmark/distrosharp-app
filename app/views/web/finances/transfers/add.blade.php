@@ -45,7 +45,6 @@
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
-
 		{{Form::close()}}
 
 	</div>

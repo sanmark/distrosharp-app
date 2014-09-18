@@ -2,34 +2,53 @@
 
 @section('body')
 
-<h3>Edit Transfer</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Edit Transfer</h3>
+	</div>
+	<div class="panel-body">
 
-{{Form::model($financeTransfer)}}
-<table>
-	<tr colspan="3">
-		<td>{{Form::label('date_time','date_time')}}</td>
-		<td>{{Form::input('datetime-local','date_time',$dateTime,['required'=>'required'])}}</td>
-	</tr>
-	<tr>
-		
-		<td>{{Form::label('from','from')}}</td>
-		<td>{{Form::label('amount','amount')}}</td>
-		<td>{{Form::label('to','to')}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::select('from_id',$accountSelectBox)}}</td>
-		<td>{{Form::input('number','amount',null,['step'=>'any','required'=>'required'])}}</td>
-		<td>{{Form::select('to_id',$accountSelectBox)}}</td>
-	</tr>
-	<tr colspan="3">
-		<td>{{Form::label('description','description')}}</td>
-		<td>{{Form::textarea('description')}}</td>
-	</tr>
-	<tr colspan="3">
-		<td>{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+		{{Form::model($financeTransfer,['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			{{Form::label('date_time',null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('datetime-local','date_time',$dateTime, array('class' => 'form-control'),['required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('from',null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('from_id',$accountSelectBox,null, array('class' => 'form-control'))}}			
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('amount',null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::input('number','amount',null, array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('to',null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::select('to_id',$accountSelectBox,null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('description',null, array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::textarea('description',null, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-1 col-sm-3">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+		{{Form::close()}}
+
+	</div>
+</div>
 
 @stop
 

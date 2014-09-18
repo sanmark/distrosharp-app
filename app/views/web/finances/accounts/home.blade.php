@@ -8,38 +8,33 @@
 	</div>
 	<div class="panel-body">
 
-		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
-		<br/>
-		<div class="form-group">
-			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::text('name',$name, array('class' => 'form-control'))}}
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group inline-form">
+					{{Form::label('name', null, array('class' => 'control-label'))}}
+					{{Form::text('name',$name, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('bank_id', null, array('control-label'))}}
+					{{Form::select('bank_id',$bankSelectBox,$bankId, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('is_in_house', null, array('class' => 'control-label'))}}
+					{{Form::select('is_in_house',ViewButler::htmlSelectAnyYesNo (),$isInHouse, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('is_active', null, array('class' => 'control-label'))}}
+					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
+
 			</div>
 		</div>
-		<div class="form-group">
-			{{Form::label('bank_id', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('bank_id',$bankSelectBox,$bankId, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('is_in_house', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('is_in_house',ViewButler::htmlSelectAnyYesNo (),$isInHouse, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
-			</div>
-		</div>
-		{{Form::close()}}
 
 		<br/>
 
