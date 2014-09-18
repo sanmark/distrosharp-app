@@ -13,6 +13,15 @@ class NullHelper
 		return $value ;
 	}
 
+	public static function zeroIfEmptyString ( $string )
+	{
+		if ( $string == "" )
+		{
+			return 0 ;
+		}
+		return $string ;
+	}
+
 	public static function isNullEmptyOrWhitespace ( $value )
 	{
 		if ( is_null ( $value ) )

@@ -53,7 +53,7 @@ class SaleController extends \Controller
 			$sellingInvoice -> customer_id				 = $customerId ;
 			$sellingInvoice -> rep_id					 = \Auth::user () -> id ;
 			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
-			$sellingInvoice -> discount					 = $discount ;
+			$sellingInvoice -> discount					 = \NullHelper::zeroIfEmptyString ( $discount ) ;
 			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
 
 			$sellingInvoice -> save () ;
@@ -86,7 +86,7 @@ class SaleController extends \Controller
 				}
 			}
 
-			return \Redirect::action ( 'processes.sales.view' ) ;
+			return \Redirect::action ( 'processes.sales.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

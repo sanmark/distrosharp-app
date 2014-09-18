@@ -58,7 +58,7 @@ class SetupDb extends Migration
 			$t -> string ( 'name' ) ;
 			$t -> integer ( 'bank_id' ) -> unsigned () -> nullable () ;
 			$t -> boolean ( 'is_active' ) ;
-			$t -> double ( 'account_balance' ) ;
+			$t -> double ( 'account_balance' ) -> default ( 0 ) ;
 			$t -> boolean ( 'is_in_house' ) ;
 
 			$t -> foreign ( 'bank_id' )
@@ -244,7 +244,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'customer_id' ) -> unsigned () ;
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_number' , 100 ) ;
-			$t -> double ( 'discount' ) ;
+			$t -> double ( 'discount' ) -> default ( 0 ) ;
 			$t -> boolean ( 'is_completely_paid' ) ;
 
 			$t -> foreign ( 'customer_id' )
