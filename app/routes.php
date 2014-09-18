@@ -15,7 +15,7 @@ date_default_timezone_set ( $currentTimeZone ) ;
 
 Route::get ( '/test' , function()
 {
-	dd ( DatabaseHelper::hasDatabase ( 'd-081-1' ) ) ;
+	
 } ) ;
 
 Route::group ( [

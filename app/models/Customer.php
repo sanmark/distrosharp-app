@@ -17,6 +17,11 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\FinanceAccount' ) ;
 	}
 
+	public function sellingInvoices ()
+	{
+		return $this -> hasMany ( 'Models\SellingInvoice' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
@@ -72,6 +77,25 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		}
 
 		return $requestObject -> get () ;
+	}
+
+	public function getSellingInvoiceBalanceBefore ( $time )
+	{
+		$time = \DateTimeHelper:: convertTextToFormattedDateTime ( $time ) ;
+
+		$sellingInvoices = SellingInvoice::where ( 'customer_id' , '=' , $this -> id )
+		-> where ( 'date_time' , '<' , $time )
+		-> where ( 'is_completely_paid' , '=' , FALSE )
+		-> get () ;
+
+		$invoiceBalanceBefore = 0 ;
+
+		foreach ( $sellingInvoices as $sellingInvoice )
+		{
+			$invoiceBalanceBefore += $sellingInvoice -> getInvoiceBalance () ;
+		}
+
+		return $invoiceBalanceBefore ;
 	}
 
 	private function validateForSave ()

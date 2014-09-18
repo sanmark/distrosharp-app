@@ -78,4 +78,9 @@ class ViewButler
 		return '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>' ;
 	}
 
+	public static function formatCurrency ( $value )
+	{
+		return number_format ( $value , 2 ) ;
+	}
+
 }

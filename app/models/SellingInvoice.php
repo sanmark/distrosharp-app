@@ -59,6 +59,45 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $invoiceTotal ;
 	}
 
+	public function getTotalPaymentValue ()
+	{
+		$totalPaymentValue = 0 ;
+
+		$this -> load ( 'financeTransfers' ) ;
+
+		$financeTransfers = $this -> financeTransfers ;
+
+		foreach ( $financeTransfers as $financeTransfer )
+		{
+			$totalPaymentValue += $financeTransfer -> amount ;
+		}
+
+		return $totalPaymentValue ;
+	}
+
+	public function getInvoiceBalance ()
+	{
+		$invoiceTotal		 = $this -> getInvoiceTotal () ;
+		$totalPaymentValue	 = $this -> getTotalPaymentValue () ;
+		$discount			 = $this -> discount ;
+
+		$invoiceBalance = $invoiceTotal - $totalPaymentValue - $discount ;
+
+		return $invoiceBalance ;
+	}
+
+	public function isInvoiceBalanceZero ()
+	{
+		$invoiceBalance = $this -> getInvoiceBalance () ;
+
+		if ( $invoiceBalance == 0 )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> date_time			 = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;

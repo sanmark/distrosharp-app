@@ -20,7 +20,14 @@ class DateTimeHelper
 	{
 
 		$dateTime	 = preg_replace ( "/[A-Z, ]/" , '' , $dateTimeForFormat ) ;
-		$dateTime	 = substr_replace ( $dateTime , 'T' , 10,0) ;
+		$dateTime	 = substr_replace ( $dateTime , 'T' , 10 , 0 ) ;
+		return $dateTime ;
+	}
+
+	public static function dateRefill ( $dateTimeForFormat )
+	{
+
+		$dateTime = preg_replace ( "/[A-Z, ]/" , '' , $dateTimeForFormat ) ;
 		return $dateTime ;
 	}
 
