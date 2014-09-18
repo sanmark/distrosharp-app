@@ -2,16 +2,27 @@
 
 @section('body')
 
-<h3>Set Default Time Zone</h3>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Set Default Time Zone</h3>
+	</div>
+	<div class="panel-body">
 
-{{Form::open()}}
-<table>
-	<tr>
-		<td>{{Form::select('time_zone',$all,SystemSettingButler::getValue('time_zone'))}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<br />
+		<div class="form-group">
+			<div class="col-sm-3">
+				{{Form::select('time_zone',$all,SystemSettingButler::getValue('time_zone'), array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+		</div>
+		{{Form::close()}}
+
+	</div>
+</div>
+
 @stop
