@@ -16,9 +16,12 @@
 
 		<div class="container-fluid">
 
+			@if(!Request::is('login'))
 			<div class="main-nav">
 				@include('web._inc.menu')
 			</div>
+			@endif
+
 
 			@if(MessageButler::hasError())
 			<div class="alert alert-danger alert-dismissible" role="alert">{{ViewButler::bootstrapDismissibleAlertCloseButton()}}{{MessageButler::getError()}}</div>
@@ -44,11 +47,14 @@
 			<div class="main-content">
 				@yield('body')
 			</div>
-
+             
+			
+			@if(!Request::is('login'))
 			<div class="footer">
 				footer
 			</div>
-
+			@endif
+			 
 		</div>
 
 		@yield('file-footer')
