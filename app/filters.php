@@ -18,3 +18,4 @@ foreach ( glob ( app_path () . '/filters/*.php' ) as $filterFile )
 {
 	include $filterFile ;
 }
+

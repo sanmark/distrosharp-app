@@ -363,3 +363,8 @@ body{
 {
 	font-size: 30px;
 }
+.panel-body-404
+{
+	min-height: 400px;
+	padding-top: 70px;
+}
