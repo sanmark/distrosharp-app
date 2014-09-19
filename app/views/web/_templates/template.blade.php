@@ -50,8 +50,8 @@
              
 			
 			@if(!Request::is('login'))
-			<div class="footer">
-				footer
+			<div class="footer navbar-default">
+				<p>System developed &amp; maintenance by <a href="http://thesanmark.com/" target="_blank">Sanmark Solutions.</a></p>
 			</div>
 			@endif
 			 
