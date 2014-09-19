@@ -43,7 +43,7 @@
 			<thead>
 				<tr>
 					<td>Name</td>
-					<td>Is Active</td>
+					<td class="text-center">Is Active</td>
 					<td>Rep</td>
 				</tr>
 			</thead>
@@ -51,7 +51,7 @@
 				@foreach($routes as $route)
 				<tr>
 					<td>{{HTML::link(URL::action('entities.routes.edit', [$route->id]), $route->name)}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $route->is_active)}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $route->is_active)}}</td>
 					<td>{{$route->rep->username}}</td>
 				</tr>
 				@endforeach

@@ -49,10 +49,10 @@
 			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','class' => 'form-control','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','class' => 'form-control text-right','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any','class' => 'form-control'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any','class' => 'form-control text-right'])}}
 					</div>
 					<div class="col-sm-3">
 						{{Form::input('date','exp_date_'.$ItemRowValue,$expDate[$ItemRowValue],['step'=>'any','class' => 'form-control'])}}
@@ -61,7 +61,7 @@
 						{{Form::text('batch_number_'.$ItemRowValue,$batchNumber[$ItemRowValue],['class' => 'form-control'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::text('line_total_'.$ItemRowValue, null, ['class' => 'form-control', 'step'=>'any','readonly'=>'readonly'])}}
+						{{Form::text('line_total_'.$ItemRowValue, null, ['class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'])}}
 					</div>
 				</div>
 			</div>
@@ -74,10 +74,10 @@
 			<div class="col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number','quantity_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,null, ['class' => 'form-control text-right','step'=>'any','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('number','free_quantity_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,null, ['class' => 'form-control text-right','step'=>'any'])}}
 					</div>
 					<div class="col-sm-3">
 						{{Form::input('date','exp_date_'.$ItemRowValue,null, ['class' => 'form-control','step'=>'any'])}}
@@ -86,7 +86,7 @@
 						{{Form::text('batch_number_'.$ItemRowValue,null, ['class' => 'form-control'])}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::text('line_total_'.$ItemRowValue, null,['class' => 'form-control', 'step'=>'any','readonly'=>'readonly'])}}
+						{{Form::text('line_total_'.$ItemRowValue, null,['class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'])}}
 					</div>
 				</div>
 			</div>
@@ -97,18 +97,14 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-3"></div>
-					<div class="col-sm-3"></div>
-					<div class="col-sm-2">{{Form::text('full_total',null, ['class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'])}}</div>
+					<div class="col-sm-offset-10 col-sm-2">{{Form::text('full_total',null, ['class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'])}}</div>
 				</div>			
 			</div>			
 		</div>
 		<div class="form-group">
-			<span class="col-sm-2 control-label">Payments</span>
+			<div class="col-sm-2 control-label" style="font-weight: bold;">Payments</div>
 			<div class="col-sm-10">
-				<table border="1">
+				<table class="table table-bordered" style="width: 50%;">
 					<tr>
 						<th>ID</th>
 						<th>From</th>
@@ -116,15 +112,17 @@
 						<th>Amount</th>
 						<th></th>
 					</tr>
-					@foreach($purchaseInvoice->financeTransfers as $financeTransfer)
-					<tr>
-						<td>{{$financeTransfer->id}}</td>
-						<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
-						<td>{{$financeTransfer->date_time}}</td>
-						<td>{{$financeTransfer->amount}}</td>
-						<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
-					</tr>
-					@endforeach
+					<tbody>
+						@foreach($purchaseInvoice->financeTransfers as $financeTransfer)
+						<tr>
+							<td>{{$financeTransfer->id}}</td>
+							<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
+							<td>{{$financeTransfer->date_time}}</td>
+							<td>{{$financeTransfer->amount}}</td>
+							<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
+						</tr>
+						@endforeach
+					</tbody>
 				</table>
 			</div>
 		</div>

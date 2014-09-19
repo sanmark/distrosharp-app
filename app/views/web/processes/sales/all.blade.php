@@ -61,8 +61,8 @@
 				<th>Date/Time</th>
 				<th>Customer</th>
 				<th>Rep</th>
-				<th>Is Completely Paid</th>
-				<th>Invoice Total</th>
+				<th class="text-center">Is Completely Paid</th>
+				<th class="text-right">Invoice Total</th>
 			</tr>
 			<tbody>
 				@foreach($sellingInvoices as $sellingInvoice)
@@ -72,7 +72,7 @@
 					<td>{{$sellingInvoice->date_time}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
 					<td>{{$sellingInvoice->rep->username}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean($sellingInvoice->is_completely_paid)}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean($sellingInvoice->is_completely_paid)}}</td>
 					<td class="text-right">{{number_format($sellingInvoice->getInvoiceTotal(), 2)}}</td>
 				</tr>
 				@endforeach

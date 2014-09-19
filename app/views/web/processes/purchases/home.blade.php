@@ -60,10 +60,10 @@
 				<th>Date</th>
 				<th>Vendor</th>
 				<th>Printed Invoice Number</th>
-				<th>Completely Paid</th>
-				<th>Other Expense Amount</th>
+				<th class="text-center">Completely Paid</th>
+				<th class="text-right">Other Expense Amount</th>
 				<th>Stock</th>
-				<th>Invoice Total</th>
+				<th class="text-right">Invoice Total</th>
 			</tr>
 			<tbody>
 				@foreach($buyingInvoiceRows as $buyingInvoiceRow)
@@ -72,10 +72,10 @@
 					<td>{{$buyingInvoiceRow->date_time}}</td>
 					<td>{{$buyingInvoiceRow->vendor->name}}</td>
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $buyingInvoiceRow->completely_paid)}}</td>
-					<td>{{$buyingInvoiceRow->other_expenses_amount}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $buyingInvoiceRow->completely_paid)}}</td>
+					<td class="text-right">{{$buyingInvoiceRow->other_expenses_amount}}</td>
 					<td>{{$buyingInvoiceRow->stock->name}}</td>
-					<td>{{Form::text(null,$lineTotalArray[$buyingInvoiceRow->id],['readonly'=>'readonly','class'=>'form-control'])}}</td>
+					<td>{{Form::text(null,$lineTotalArray[$buyingInvoiceRow->id],['readonly'=>'readonly','class'=>'form-control text-right'])}}</td>
 				</tr>
 				@endforeach
 			</tbody>

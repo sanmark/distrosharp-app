@@ -44,9 +44,10 @@
 			<tr>
 				<th>Name</th>
 				<th>Bank</th>
-				<th>Account Balance</th>
-				<th>Is Active</th>
-				<th>Edit Account</th>
+				<th class="text-right">Account Balance</th>
+				<th class="text-center">Is In House</th>
+				<th class="text-center">Is Active</th>
+				<th class="text-center">Edit Account</th>
 			</tr>
 			<tbody>
 				@foreach($financeAccounts as $financeAccount)
@@ -58,10 +59,10 @@
 					@else
 					<td>{{$financeAccount->bank->name}}</td>
 					@endif
-
-					<td>{{$financeAccount->account_balance}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_active)}}</td>
-					<td>
+					<td class="text-right">{{$financeAccount->account_balance}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_in_house)}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_active)}}</td>
+					<td class="text-center">
 						@if($financeAccount->is_in_house == TRUE)
 						{{HTML::link ( URL::action ( 'finances.accounts.edit', [$financeAccount->id] ), 'Edit' ) }}
 						@endif

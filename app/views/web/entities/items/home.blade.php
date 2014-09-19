@@ -50,12 +50,12 @@
 				<tr>
 					<th>Item Code</th>
 					<th>Name</th>
-					<th>Reorder Level</th>
-					<th>Buying Price</th>
-					<th>Selling Price</th>
-					<th>Buying Invoice Order</th>
-					<th>Selling Invoice Order</th>
-					<th>Is Active</th>
+					<th class="text-right">Reorder Level</th>
+					<th class="text-right">Buying Price</th>
+					<th class="text-right">Selling Price</th>
+					<th class="text-right">Buying Invoice Order</th>
+					<th class="text-right">Selling Invoice Order</th>
+					<th class="text-center">Is Active</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -63,12 +63,12 @@
 				<tr>
 					<td>{{$item->code}}</td>
 					<td>{{HTML::link ( URL::action ( 'entities.items.edit' , [$item -> id ] ) , $item -> name )}}</td>
-					<td>{{$item->reorder_level}}</td>
-					<td>{{$item->current_buying_price}}</td>
-					<td>{{$item->current_selling_price}}</td>
-					<td>{{$item->buying_invoice_order}}</td>
-					<td>{{$item->selling_invoice_order}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $item->is_active)}}</td>
+					<td class="text-right">{{$item->reorder_level}}</td>
+					<td class="text-right">{{$item->current_buying_price}}</td>
+					<td class="text-right">{{$item->current_selling_price}}</td>
+					<td class="text-right">{{$item->buying_invoice_order}}</td>
+					<td class="text-right">{{$item->selling_invoice_order}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $item->is_active)}}</td>
 				</tr>
 				@endforeach
 			</tbody>

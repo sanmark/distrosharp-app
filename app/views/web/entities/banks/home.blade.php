@@ -40,14 +40,14 @@
 			<thead>
 				<tr>
 					<td>Name</td>
-					<td>Is Active</td>
+					<td class="text-center">Is Active</td>
 				</tr>
 			</thead>
 			<tbody>
 				@foreach($banks as $bank)
 				<tr>
 					<td>{{HTML::link ( URL::action ('entities.banks.edit',[$bank->id] ),$bank->name )}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $bank->is_active)}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $bank->is_active)}}</td>
 				</tr>
 				@endforeach
 			</tbody>

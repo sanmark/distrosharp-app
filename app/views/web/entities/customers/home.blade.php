@@ -44,7 +44,7 @@
 				<tr>
 					<td>Name</td>
 					<td>Route</td>
-					<td>Is Active</td>
+					<td class="text-center">Is Active</td>
 					<td>Details</td>
 				</tr>
 			</thead>
@@ -53,7 +53,7 @@
 				<tr>
 					<td> {{HTML::link ( URL::action ( 'entities.customers.edit', [$customer->id] ), $customer->name ) }}</td>
 					<td>{{$customer->route->name}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $customer->is_active)}}</td>
+					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $customer->is_active)}}</td>
 					<td>{{$customer->details}}</td>
 				</tr>
 				@endforeach

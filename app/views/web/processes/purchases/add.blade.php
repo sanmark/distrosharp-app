@@ -63,13 +63,13 @@
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-2">
-							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control', 'step'=>'any','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
+							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
-							{{Form::input('number','quantity_'.$itemRow->id, null, array('class' => 'form-control', 'step'=>'any','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
+							{{Form::input('number','quantity_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
-							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('class' => 'form-control', 'step'=>'any'))}}
+							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any'))}}
 						</div>
 						<div class="col-sm-2">
 							{{Form::input('date','exp_date_'.$itemRow->id, null, array('class' => 'form-control'))}}
@@ -78,7 +78,7 @@
 							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}} 
 						</div>
 						<div class="col-sm-2">
-							{{Form::text('line_total_'.$itemRow->id, null, array('class' => 'form-control', 'step'=>'any','readonly'=>'readonly'))}}
+							{{Form::text('line_total_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'))}}
 						</div>
 					</div>
 				</div>
@@ -88,12 +88,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2"></div>
-					<div class="col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
+					<div class="col-sm-offset-10 col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
 				</div>			
 			</div>			
 		</div>
