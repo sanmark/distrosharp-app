@@ -4,10 +4,10 @@
 
 
 <div class="row">
-	<div class="col-md-offset-4 col-md-4">
-		<br />
-		<div class="panel panel-default">
-			<div class="panel-body">
+	<div class="col-md-offset-4 col-md-4 col-sm-4 col-sm-offset-4 col-xs-8 col-xs-offset-2 " id="login-form">
+ 
+		<div class="panel panel-default ">
+			<div class="panel-body offset3 span6">
 
 				<div class="row">
 					<div class="col-md-offset-1 col-md-10">

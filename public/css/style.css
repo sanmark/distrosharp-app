@@ -355,3 +355,7 @@ body{
 	border:1px #ccc solid;
 	padding:5px;
 }
+#login-form{
+	position: absolute;
+    top: 20%;
+}
