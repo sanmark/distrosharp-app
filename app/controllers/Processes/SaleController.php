@@ -7,8 +7,8 @@ class SaleController extends \Controller
 
 	public function add ()
 	{
-		$customers			 = [NULL => 'Select Route First' ] ;
-		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$customers			 = [ NULL => 'Select Route First' ] ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
 		-> orderBy ( 'selling_invoice_order' , 'ASC' )
 		-> get () ;
@@ -64,7 +64,7 @@ class SaleController extends \Controller
 
 			foreach ( $items as $itemId => $item )
 			{
-				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
 				{
 					$sellingItem = new \Models\SellingItem() ;
 
@@ -86,7 +86,8 @@ class SaleController extends \Controller
 				}
 			}
 
-			return \Redirect::action ( 'processes.sales.all' ) ;
+			\MessageButler::setSuccess ( 'Selling Invoice was saved successfully.' ) ;
+			return \Redirect::action ( 'processes.sales.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -99,7 +100,7 @@ class SaleController extends \Controller
 	{
 		$filterValues			 = \Input::all () ;
 		$sellingInvoices		 = \Models\SellingInvoice::filter ( $filterValues ) ;
-		$customerSelectBox		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Any' ] ) ;
+		$customerSelectBox		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 		$repSelectBox			 = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 		$isActiveSelectBox		 = \ViewButler::htmlSelectAnyYesNo () ;
 		$id						 = \Input::get ( 'id' ) ;
@@ -140,7 +141,7 @@ class SaleController extends \Controller
 	{
 		$sellingInvoice		 = \Models\SellingInvoice::with ( 'rep' , 'sellingItems' ) -> findOrFail ( $id ) ;
 		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
-		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [NULL => 'Select' ] ) ;
+		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
 
 		$data = compact ( [
@@ -174,7 +175,7 @@ class SaleController extends \Controller
 			$this -> updateSellingItems ( $id ) ;
 
 			\MessageButler::setSuccess ( 'Selling invoice was updated successfully.' ) ;
-			return \Redirect::back () ;
+			return \Redirect::action ( 'processes.sales.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
