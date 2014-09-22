@@ -37,7 +37,7 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> string ( 'code' , 20 ) ;
 			$t -> string ( 'name' , 50 ) ;
-			$t -> integer ( 'reorder_level' ) ;
+			$t -> double ( 'reorder_level' ) ;
 			$t -> double ( 'current_buying_price' ) ;
 			$t -> double ( 'current_selling_price' ) ;
 			$t -> integer ( 'buying_invoice_order' ) ;

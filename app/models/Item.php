@@ -27,7 +27,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 
 		$rules = [
 			'code'					 => [
-				'required',
+				'required' ,
 				'no_spaces_in_string' ,
 				'unique:items'
 			] ,
@@ -39,11 +39,11 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 				'numeric' ,
 				'required'
 			] ,
-			'current_buying_price'	 => [ 
+			'current_buying_price'	 => [
 				'numeric' ,
 				'required'
 			] ,
-			'current_selling_price'	 => [ 
+			'current_selling_price'	 => [
 				'numeric' ,
 				'required'
 			] ,
@@ -76,14 +76,37 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 
 		$rules = [
 
-			'code'	 => [
+			'code'					 => [
 				'required' ,
+				'no_spaces_in_string' ,
 				'unique:items,code,' . $this -> id
 			] ,
-			'name'	 => [
+			'name'					 => [
 				'required' ,
 				'unique:items,name,' . $this -> id
 			] ,
+			'reorder_level'			 => [
+				'numeric' ,
+				'required'
+			] ,
+			'current_buying_price'	 => [
+				'numeric' ,
+				'required'
+			] ,
+			'current_selling_price'	 => [
+				'numeric' ,
+				'required'
+			] ,
+			'buying_invoice_order'	 => [
+				'required' ,
+				'numeric' ,
+				'unique:items,buying_invoice_order,' . $this -> id
+			] ,
+			'selling_invoice_order'	 => [
+				'required' ,
+				'numeric' ,
+				'unique:items,selling_invoice_order,'. $this -> id
+			]
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;

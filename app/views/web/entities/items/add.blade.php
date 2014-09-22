@@ -10,13 +10,13 @@
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
-			{{Form::label('code', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('code','Item Code', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('code', null, array('class' => 'form-control', 'required'=>true))}}
+				{{Form::text('code', null, array('class' => 'form-control', 'required'=>true,'pattern'=>'[^\s]+','title'=>'Empty spaces not allowed'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('name', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('name','Item Name', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
 				{{Form::text('name', null, array('class' => 'form-control','required'=>true))}}
 			</div>
@@ -24,7 +24,7 @@
 		<div class="form-group">
 			{{Form::label('reorder_level', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','reorder_level', null, array('class' => 'form-control','required'=>true))}}
+				{{Form::input('number','reorder_level', null, array('class' => 'form-control','required'=>true,'step'=>'any'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -54,7 +54,7 @@
 		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::checkbox('is_active',TRUE,null,array('style'=>'margin-top:10px;'))}}
+				{{Form::checkbox('is_active',TRUE,TRUE,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">

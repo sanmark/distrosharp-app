@@ -24,7 +24,7 @@
 		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::checkbox('is_active',TRUE,null,array('style'=>'margin-top:10px;'))}}
+				{{Form::checkbox('is_active',TRUE,TRUE,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
