@@ -31,8 +31,8 @@
 					@foreach ($calculatedStockValues as $item)
 					<tr>
 						<td>{{$item->item->name}}</td>
-						<td>{{$item->good_quantity}}</td>
-						<td>{{$item->return_quantity}}</td>
+						<td class="text-right">{{$item->good_quantity}}</td>
+						<td class="text-right">{{$item->return_quantity}}</td>
 						<td class="text-right">{{number_format($item->good_quantity_value,2)}}</td>
 						<td class="text-right">{{number_format($item->return_quantity_value,2)}}</td>
 						<td class="text-right">{{number_format($item->total_value,2)}}</td>
