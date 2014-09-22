@@ -12,14 +12,19 @@ class PurchaseController extends \Controller
 			$this -> checkIfPaymentAccountsAreSet () ;
 			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> orderBy ( 'buying_invoice_order' , 'ASC' ) -> get () ;
 			$itemRowsForTotal	 = $itemRows -> lists ( 'id' ) ;
-			$stocks				 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
-			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
+			$notVehicleList		 = \Models\Stock::whereNotIn ( 'stock_type_id' , ['2' ] ) ;
+			$stocks				 = \Models\Stock::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $notVehicleList , [ '' => 'Select Stock' ] ) ;
+			$activeVendors		 = \Models\Vendor::where ( 'is_active' , '=' , 1 ) -> lists ( 'id' ) ;
+			$vendorList			 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $activeVendors , ['' => 'Select Vendor' ] ) ;
+
+			$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
 
 			$data = compact ( [
 				'itemRows' ,
 				'itemRowsForTotal' ,
 				'stocks' ,
 				'currentDateTime' ,
+				'vendorList'
 			] ) ;
 
 			return \View::make ( 'web.processes.purchases.add' , $data ) ;
@@ -98,7 +103,7 @@ class PurchaseController extends \Controller
 		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'batch_number' , 'item_id' ) ;
 
-		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
+		$vendors		 = \Models\Vendor::where ( 'is_active' , '=' , 1 ) -> lists ( 'id' ) ;
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;

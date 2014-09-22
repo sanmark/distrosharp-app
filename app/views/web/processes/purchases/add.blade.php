@@ -17,7 +17,7 @@
 		<div class="form-group">
 			{{Form::label('vendor', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('vendor_id',\Models\Vendor::getArrayForHtmlSelect('id','name',[''=>'Select Vendor']), null, array('class' => 'form-control','required'=>true))}}
+				{{Form::select('vendor_id',$vendorList, null, array('class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -30,12 +30,6 @@
 			{{Form::label('Stock', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control','required'=>true))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::checkbox('is_paid',TRUE,null,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -102,6 +96,12 @@
 					<div class="col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
 				</div>			
 			</div>			
+		</div>
+		<div class="form-group">
+			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::checkbox('is_paid',TRUE,TRUE,array('style'=>'margin-top:10px;'))}}
+			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-2 control-label'))}}
