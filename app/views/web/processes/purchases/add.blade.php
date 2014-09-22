@@ -11,7 +11,7 @@
 		<div class="form-group">
 			{{Form::label('date', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input ( 'datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true))}} 
+				{{Form::input ( 'datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true,'step'=>'1'))}} 
 			</div>
 		</div>
 		<div class="form-group">
