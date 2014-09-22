@@ -44,7 +44,7 @@ class AccountsController extends \Controller
 			$name		 = \Input::get ( 'name' ) ;
 			$bankId		 = \Input::get ( 'bank_id' ) ;
 			$isActive	 = \Input::get ( 'is_active' ) ;
-			
+
 			$financeAccounts = \Models\FinanceAccount::findOrFail ( $id ) ;
 
 			$financeAccounts -> name			 = $name ;
@@ -77,13 +77,12 @@ class AccountsController extends \Controller
 			$financeAccounts -> name			 = $name ;
 			$financeAccounts -> bank_id			 = \NullHelper::nullIfEmpty ( $bankId ) ;
 			$financeAccounts -> account_balance	 = 0 ;
-			$financeAccounts -> is_in_house		 = 1;
+			$financeAccounts -> is_in_house		 = 1 ;
 			$financeAccounts -> is_active		 = \NullHelper::zeroIfNull ( $isActive ) ;
 
 			$financeAccounts -> save () ;
-			
+
 			return \Redirect::action ( 'finances.accounts.view' ) ;
-			
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -100,9 +99,8 @@ class AccountsController extends \Controller
 
 		$name					 = \Input::get ( 'name' ) ;
 		$bankId					 = \Input::get ( 'bank_id' ) ;
-		$isInHouse				 = \Input::get ( 'is_in_house' ) ;
 		$isActive				 = \Input::get ( 'is_active' ) ;
-		$financeAccountsDetails	 = \Models\FinanceAccount::get () ;
+		$financeAccountsDetails	 = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE ) -> get () ;
 		$banks					 = \Models\FinanceAccount::distinct () -> lists ( 'bank_id' ) ;
 		$bankSelectBox			 = \Models\Bank::getArrayForHtmlSelectByIds ( 'id' , 'name' , $banks , [
 			''		 => 'Any' ,

@@ -21,10 +21,6 @@
 					{{Form::select('bank_id',$bankSelectBox,$bankId, array('class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::label('is_in_house', null, array('class' => 'control-label'))}}
-					{{Form::select('is_in_house',ViewButler::htmlSelectAnyYesNo (),$isInHouse, array('class' => 'form-control'))}}
-				</div>
-				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}
 					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('class' => 'form-control'))}}
 				</div>
@@ -43,7 +39,6 @@
 				<th>Name</th>
 				<th>Bank</th>
 				<th>Account Balance</th>
-				<th>Is In House</th>
 				<th>Is Active</th>
 				<th>Edit Account</th>
 			</tr>
@@ -59,7 +54,6 @@
 					@endif
 
 					<td>{{$financeAccount->account_balance}}</td>
-					<td>{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_in_house)}}</td>
 					<td>{{ViewButler::getYesNoFromBoolean ( $financeAccount->is_active)}}</td>
 					<td>
 						@if($financeAccount->is_in_house == TRUE)

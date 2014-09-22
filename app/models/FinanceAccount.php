@@ -71,7 +71,6 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 		{
 			$name		 = $filterValues [ 'name' ] ;
 			$bankId		 = $filterValues [ 'bank_id' ] ;
-			$isInHouse	 = $filterValues [ 'is_in_house' ] ;
 			$isActive	 = $filterValues [ 'is_active' ] ;
 
 			if ( strlen ( $name ) > 0 )
@@ -88,16 +87,11 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 					$requestObject = $requestObject -> where ( 'bank_id' , '=' , $bankId ) ;
 				}
 			}
-			if ( $isInHouse != '' )
-			{
-				$requestObject = $requestObject -> where ( 'is_in_house' , '=' , $isInHouse ) ;
-			}
 			if ( $isActive != '' )
 			{
 				$requestObject = $requestObject -> where ( 'is_active' , '=' , $isActive ) ;
 			}
 		}
-		return $requestObject -> get () ;
+		return $requestObject -> where ( 'is_in_house' , '=' , 1 ) -> get () ;
 	}
-
 }
