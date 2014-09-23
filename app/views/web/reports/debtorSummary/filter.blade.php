@@ -31,6 +31,13 @@
 			{{Form::close()}}
 			<br>
 		</div>
+		@if(count($sellingInvoices)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
+		</div>
+		<br>
+		@else
 		<table class="table table-striped" style="width:100%;">
 			<tr>
 				<th>Type</th>
@@ -70,9 +77,10 @@
 			@endforeach
 			@endforeach
 			<tr>
-				<td colspan="6">Ending Before: {{ViewButler::formatCurrency($endingBalance)}}</td>
+				<td colspan="6">Ending Balance: {{ViewButler::formatCurrency($endingBalance)}}</td>
 			</tr>
 		</table>
+		@endif
 	</div>
 </div>
 @stop

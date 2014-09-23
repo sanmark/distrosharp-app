@@ -24,11 +24,6 @@ class ItemController extends \Controller
 		$data[ 'sortBy' ]	 = $sortBy ;
 		$data[ 'sortOrder' ] = $sortOrder ;
 
-		if ( $items -> count () == 0 )
-		{
-			\MessageButler::setError ( 'There is no result to display for your search criteria' ) ;
-		}
-
 		return \View::make ( 'web.entities.items.home' , $data ) ;
 	}
 

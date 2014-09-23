@@ -47,7 +47,13 @@
 		</div>
 
 		<br/>
-
+		@if(count($sellingInvoices)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
+		</div>
+		<br>
+		@else
 		<table class="table table-striped" style="width: 80%;">
 			<tr>
 				<th>System Invoice Number</th>
@@ -72,7 +78,7 @@
 				@endforeach
 			</tbody>
 		</table>
-
+		@endif
 	</div>
 </div>
 

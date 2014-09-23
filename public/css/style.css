@@ -359,3 +359,7 @@ body{
 	position: absolute;
     top: 20%;
 }
+.no-records-message
+{
+	font-size: 30px;
+}

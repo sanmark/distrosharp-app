@@ -31,7 +31,13 @@
 
 			</div>
 		</div>
-
+		@if(count($customers)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
+		</div>
+		<br>
+		@else
 		<table class="table table-striped" style="width: 60%;">
 
 			<thead>
@@ -53,7 +59,7 @@
 				@endforeach
 			</tbody>
 		</table>
-
+		@endif
 	</div>
 </div>
 @stop

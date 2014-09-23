@@ -8,38 +8,44 @@
 	</div>
 	<div class="panel-body">
 		<div class="panel panel-default">
-		{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
-		<br />
-		<div class="form-group inline-form">
-			{{Form::label('from_date', null, array('class' => 'control-label'))}}
-			{{Form::input('datetime-local','from_date_time',$fromDate, array('class' => 'form-control'))}}
+			{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+			<br />
+			<div class="form-group inline-form">
+				{{Form::label('from_date', null, array('class' => 'control-label'))}}
+				{{Form::input('datetime-local','from_date_time',$fromDate, array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('to_date', null, array('class' => 'control-label'))}}
+				{{Form::input('datetime-local','to_date_time',$toDate, array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('from_stock', null, array('class' => 'control-label'))}}
+				{{Form::select('from_stock',$fromVehicleSelect,$fromStock, array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('to_stock', null, array('class' => 'control-label'))}}
+				{{Form::select('to_stock',$toVehicleSelect,$toStock, array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+			</div>
+			{{Form::close()}}
 		</div>
-		<div class="form-group inline-form">
-			{{Form::label('to_date', null, array('class' => 'control-label'))}}
-			{{Form::input('datetime-local','to_date_time',$toDate, array('class' => 'form-control'))}}
-		</div>
-		<div class="form-group inline-form">
-			{{Form::label('from_stock', null, array('class' => 'control-label'))}}
-			{{Form::select('from_stock',$fromVehicleSelect,$fromStock, array('class' => 'form-control'))}}
-		</div>
-		<div class="form-group inline-form">
-			{{Form::label('to_stock', null, array('class' => 'control-label'))}}
-			{{Form::select('to_stock',$toVehicleSelect,$toStock, array('class' => 'form-control'))}}
-		</div>
-		<div class="form-group inline-form">
-			{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
-		</div>
-		{{Form::close()}}
 		<br/>
+		@if(count($transferRows)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
 		</div>
-		<table class="table table-bordered" style="width:40%;">
+		<br>
+		@else
+		<table class="table table-striped" style="width:40%;">
 			<tr>
 				<th>Id</th>
 				<th>Date/Time</th>
 				<th>From</th>
 				<th>To</th>
 			</tr>
-			{{Form::open()}}
 			@foreach($transferRows as $unloadDetail)
 			<tr>
 				<td>{{$unloadDetail->id}}</td>
@@ -48,8 +54,8 @@
 				<td>{{$unloadDetail->toStock->name}}</td>
 			</tr>
 			@endforeach
-			{{Form::close()}}
 		</table>
+		@endif
 	</div>
 </div>
 @stop

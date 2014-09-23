@@ -66,6 +66,7 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		return $requestObject -> whereIn ( 'from_stock_id' , $vehicleIds )
 		-> whereNotIn ( 'to_stock_id' , $vehicleIds )
 		-> get () ;
+		
 	}
 
 	public static function filter ( $filterValues )

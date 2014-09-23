@@ -7,7 +7,13 @@
 		<h3 class="panel-title">Stocks</h3>
 	</div>
 	<div class="panel-body">
-
+		@if(count($stocks)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
+		</div>
+		<br>
+		@else
 		<table class="table table-striped" style="width: 60%;">
 			<tr>
 				<th>Name</th>
@@ -26,7 +32,7 @@
 				@endforeach
 			</tbody>
 		</table>
-
+		@endif
 	</div>
 </div>
 
