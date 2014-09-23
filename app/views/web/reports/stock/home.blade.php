@@ -14,6 +14,7 @@
 			<div class="col-md-1">{{Form::submit('submit', array('class' => 'btn btn-default pull-right'))}}</div>
 			{{Form::close()}}
 		</div>
+			
 		<div class="row">
 			<br>
 			<div class="col-md-12">

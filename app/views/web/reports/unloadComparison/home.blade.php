@@ -7,6 +7,7 @@
 		<h3 class="panel-title">View Unload Comparison</h3>
 	</div>
 	<div class="panel-body">
+		<div class="panel panel-default">
 		{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 		<br />
 		<div class="form-group inline-form">
@@ -30,7 +31,8 @@
 		</div>
 		{{Form::close()}}
 		<br/>
-		<table class="table table-striped" style="width:40%;">
+		</div>
+		<table class="table table-bordered" style="width:40%;">
 			<tr>
 				<th>Id</th>
 				<th>Date/Time</th>

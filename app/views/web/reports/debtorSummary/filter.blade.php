@@ -1,75 +1,80 @@
 @extends('web._templates.template')
 
 @section('body')
-<h2>Debtor Summary Report</h2>
-{{Form::open()}}
-<table>
-	<tr>
-		<td>{{Form::label('from_date')}}</td>
-		<td>{{Form::input('date', 'from_date', $fromDate)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('to_date')}}</td>
-		<td>{{Form::input('date', 'to_date', $toDate)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('route_id')}}</td>
-		<td>{{Form::select('route_id', $routes, $routeId)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('customer_id')}}</td>
-		<td>{{Form::select('customer_id', $customers)}}</td>
-	</tr>
-	<tr>
-		<td colspan="2">
-			{{Form::submit()}}
-		</td>
-	</tr>
-</table>
-{{Form::close()}}
-
-<table border="1">
-	<tr>
-		<th>Type</th>
-		<th>Date</th>
-		<th>Narration</th>
-		<th>DR</th>
-		<th>CR</th>
-		<th>Invoice Status</th>
-	</tr>
-	<tr>
-		<td colspan="6">Balance Before: {{ViewButler::formatCurrency($balanceBefore)}}</td>
-	</tr>
-	@foreach($sellingInvoices as $sellingInvoice)
-	<tr style="background-color: #ddd;">
-		<td>Invoice</td>
-		<td>{{$sellingInvoice->date_time}}</td>
-		<td>{{$sellingInvoice->printed_invoice_number}}</td>
-		<td></td>
-		<td>{{$sellingInvoice->getInvoiceTotal()}}</td>
-		<td>
-			@if($sellingInvoice->isInvoiceBalanceZero())
-			M*
-			@else
-			UM**
-			@endif
-		</td>
-	</tr>
-	@foreach($sellingInvoice->financeTransfers as $financeTransfer)
-	<tr>
-		<td>Payment</td>
-		<td>{{$financeTransfer->date_time}}</td>
-		<td>{{$sellingInvoice->printed_invoice_number}}</td>
-		<td></td>
-		<td>{{$financeTransfer->amount}}</td>
-		<td></td>
-	</tr>
-	@endforeach
-	@endforeach
-	<tr>
-		<td colspan="6">Ending Before: {{ViewButler::formatCurrency($endingBalance)}}</td>
-	</tr>
-</table>
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Debtor Summary Report</h3>
+	</div>
+	<div class="panel-body">
+		<div class="panel panel-default">
+			{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+			<br/>
+			<div class="form-group inline-form">
+				{{Form::label('from_date',null,array('class' => 'control-label'))}}
+				{{Form::input('date', 'from_date', $fromDate,array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('to_date',null,array('class' => 'control-label'))}}
+				{{Form::input('date', 'to_date', $toDate,array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('route_id','Route',array('class' => 'control-label'))}}
+				{{Form::select('route_id', $routes,$routeId,array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::label('customer_id','Customer',array('class' => 'control-label'))}}
+				{{Form::select('customer_id', $customers,null,array('class' => 'form-control'))}}
+			</div>
+			<div class="form-group inline-form">
+				{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+			</div>
+			{{Form::close()}}
+			<br>
+		</div>
+		<table class="table table-striped" style="width:100%;">
+			<tr>
+				<th>Type</th>
+				<th>Date</th>
+				<th>Narration</th>
+				<th>DR</th>
+				<th>CR</th>
+				<th>Invoice Status</th>
+			</tr>
+			<tr>
+				<td colspan="6">Balance Before: {{ViewButler::formatCurrency($balanceBefore)}}</td>
+			</tr>
+			@foreach($sellingInvoices as $sellingInvoice)
+			<tr style="background-color: #ddd;">
+				<td>Invoice</td>
+				<td>{{$sellingInvoice->date_time}}</td>
+				<td>{{$sellingInvoice->printed_invoice_number}}</td>
+				<td></td>
+				<td>{{$sellingInvoice->getInvoiceTotal()}}</td>
+				<td>
+					@if($sellingInvoice->isInvoiceBalanceZero())
+					M*
+					@else
+					UM**
+					@endif
+				</td>
+			</tr>
+			@foreach($sellingInvoice->financeTransfers as $financeTransfer)
+			<tr>
+				<td>Payment</td>
+				<td>{{$financeTransfer->date_time}}</td>
+				<td>{{$sellingInvoice->printed_invoice_number}}</td>
+				<td></td>
+				<td>{{$financeTransfer->amount}}</td>
+				<td></td>
+			</tr>
+			@endforeach
+			@endforeach
+			<tr>
+				<td colspan="6">Ending Before: {{ViewButler::formatCurrency($endingBalance)}}</td>
+			</tr>
+		</table>
+	</div>
+</div>
 @stop
 
 @section('file-footer')
