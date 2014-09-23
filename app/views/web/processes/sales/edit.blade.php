@@ -85,7 +85,7 @@
 					<td>{{$financeTransfer->id}}</td>
 					<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
 					<td>{{$financeTransfer->date_time}}</td>
-					<td>{{$financeTransfer->amount}}</td>
+					<td>{{number_format($financeTransfer->amount,2)}}</td>
 					<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
 				</tr>
 				@endforeach

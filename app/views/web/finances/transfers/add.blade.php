@@ -19,7 +19,7 @@
 		<div class="form-group">
 			{{Form::label('from', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3" style="padding-top: 7px;">
-				{{$fromAccount->name}} <b>({{$fromAccount->account_balance}})</b>
+				{{$fromAccount->name}} <b>({{number_format($fromAccount->account_balance,2)}})</b>
 			</div>
 		</div>
 		<div class="form-group">
@@ -31,7 +31,7 @@
 		<div class="form-group">
 			{{Form::label('to', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3" style="padding-top: 7px;">
-				{{$toAccount->name}} <b>({{$toAccount->account_balance}})</b>
+				{{$toAccount->name}} <b>({{number_format($toAccount->account_balance,2)}})</b>
 			</div>
 		</div>
 		<div class="form-group">

@@ -64,8 +64,8 @@
 					<td>{{$item->code}}</td>
 					<td>{{HTML::link ( URL::action ( 'entities.items.edit' , [$item -> id ] ) , $item -> name )}}</td>
 					<td class="text-right">{{$item->reorder_level}}</td>
-					<td class="text-right">{{$item->current_buying_price}}</td>
-					<td class="text-right">{{$item->current_selling_price}}</td>
+					<td class="text-right">{{number_format($item->current_buying_price,2)}}</td>
+					<td class="text-right">{{number_format($item->current_selling_price,2)}}</td>
 					<td class="text-right">{{$item->buying_invoice_order}}</td>
 					<td class="text-right">{{$item->selling_invoice_order}}</td>
 					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $item->is_active)}}</td>

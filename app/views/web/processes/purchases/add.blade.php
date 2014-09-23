@@ -137,7 +137,7 @@
 	{
 		var price = document.getElementsByName('buying_price_' + name)[0].value;
 		var lineTotal = price * quantity;
-		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
+		document.getElementsByName('line_total_' + name)[0].value = lineTotal.toFixed(2);
 		var i;
 		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
 		var finalTotal = 0;
@@ -145,13 +145,13 @@
 			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
 			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 		}
-		document.getElementsByName('full_total')[0].value = finalTotal;
+		document.getElementsByName('full_total')[0].value = finalTotal.toFixed(2);
 	}
 	function changeOnPrice(name, price)
 	{
 		var quantity = document.getElementsByName('quantity_' + name)[0].value;
 		var lineTotal = price * quantity;
-		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
+		document.getElementsByName('line_total_' + name)[0].value = lineTotal.toFixed(2);
 		var i;
 		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
 		var finalTotal = 0;
@@ -159,7 +159,7 @@
 			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
 			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 		}
-		document.getElementsByName('full_total')[0].value = finalTotal;
+		document.getElementsByName('full_total')[0].value = finalTotal.toFixed(2);
 	}
 </script>
 @stop

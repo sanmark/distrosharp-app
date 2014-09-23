@@ -33,18 +33,18 @@
 						<td>{{$item->item->name}}</td>
 						<td>{{$item->good_quantity}}</td>
 						<td>{{$item->return_quantity}}</td>
-						<td class="text-right">{{$item->good_quantity_value}}</td>
-						<td class="text-right">{{$item->return_quantity_value}}</td>
-						<td class="text-right">{{$item->total_value}}</td>
+						<td class="text-right">{{number_format($item->good_quantity_value,2)}}</td>
+						<td class="text-right">{{number_format($item->return_quantity_value,2)}}</td>
+						<td class="text-right">{{number_format($item->total_value,2)}}</td>
 					</tr>
 					@endforeach
 					@endif
 					<tr>
 						@if(isset($good_quantity_value_total))
 						<td colspan="3"></td>
-						<td class="text-right"><b>{{$good_quantity_value_total}}</b></td>
-						<td class="text-right"><b>{{$return_quantity_value_total}}</b></td>
-						<td class="text-right"><b>{{$grandTotal}}</b></td>
+						<td class="text-right"><b>{{number_format($good_quantity_value_total,2)}}</b></td>
+						<td class="text-right"><b>{{number_format($return_quantity_value_total,2)}}</b></td>
+						<td class="text-right"><b>{{number_format($grandTotal,2)}}</b></td>
 						@endif
 					</tr>
 				</table>

@@ -66,7 +66,7 @@
 					<td>{{$financeTransfer->description}}</td>
 					<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
 					<td>{{HTML::link(URL::action('finances.transfers.view',[$financeTransfer->to_id]),$financeTransfer->toAccount->name)}}</td>
-					<td class="text-right">{{$financeTransfer->amount}}</td>
+					<td class="text-right">{{number_format($financeTransfer->amount,2)}}</td>
 				</tr>
 				@endforeach
 			</tbody>

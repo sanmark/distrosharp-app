@@ -73,9 +73,9 @@
 					<td>{{$buyingInvoiceRow->vendor->name}}</td>
 					<td>{{$buyingInvoiceRow->printed_invoice_num}}</td>
 					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $buyingInvoiceRow->completely_paid)}}</td>
-					<td class="text-right">{{$buyingInvoiceRow->other_expenses_amount}}</td>
+					<td class="text-right">{{number_format($buyingInvoiceRow->other_expenses_amount,2)}}</td>
 					<td>{{$buyingInvoiceRow->stock->name}}</td>
-					<td>{{Form::text(null,$lineTotalArray[$buyingInvoiceRow->id],['readonly'=>'readonly','class'=>'form-control text-right'])}}</td>
+					<td>{{Form::text(null,number_format($lineTotalArray[$buyingInvoiceRow->id],2),['readonly'=>'readonly','class'=>'form-control text-right'])}}</td>
 				</tr>
 				@endforeach
 			</tbody>

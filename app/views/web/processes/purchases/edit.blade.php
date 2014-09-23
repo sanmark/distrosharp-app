@@ -118,7 +118,7 @@
 							<td>{{$financeTransfer->id}}</td>
 							<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
 							<td>{{$financeTransfer->date_time}}</td>
-							<td>{{$financeTransfer->amount}}</td>
+							<td>{{number_format($financeTransfer->amount,2)}}</td>
 							<td>{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
 						</tr>
 						@endforeach
@@ -135,7 +135,7 @@
 		<div class="form-group">
 			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('number','other_expenses_amount',$purchaseInvoice->other_expenses_amount, array('class' => 'form-control','step'=>'any'))}}
+				{{Form::input('number','other_expenses_amount',number_format($purchaseInvoice->other_expenses_amount,2), array('class' => 'form-control','step'=>'any'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -159,7 +159,7 @@
 	{
 		var price = document.getElementsByName('buying_price_' + name)[0].value;
 		var lineTotal = price * quantity;
-		document.getElementsByName('line_total_' + name)[0].value = lineTotal;
+		document.getElementsByName('line_total_' + name)[0].value = lineTotal.toFixed(2);
 		var i;
 		var a = [<?php echo '"' . implode ( '","' , $itemRowsForTotal ) . '"' ?>];
 		var finalTotal = 0;
@@ -167,7 +167,7 @@
 			var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
 			var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 		}
-		document.getElementsByName('full_total')[0].value = finalTotal;
+		document.getElementsByName('full_total')[0].value = finalTotal.toFixed(2);
 	}
 
 	var i;
@@ -177,10 +177,10 @@
 		var price = document.getElementsByName('buying_price_' + a[i])[0].value;
 		var quantity = document.getElementsByName('quantity_' + a[i])[0].value;
 		var lineTotal = Number(price) * Number(quantity);
-		document.getElementsByName('line_total_' + a[i])[0].value = lineTotal;
+		document.getElementsByName('line_total_' + a[i])[0].value = lineTotal.toFixed(2);
 		var fullTotalCell = document.getElementsByName('line_total_' + a[i])[0].value;
 		var finalTotal = Number(finalTotal) + Number(fullTotalCell);
 	}
-	document.getElementsByName('full_total')[0].value = finalTotal;
+	document.getElementsByName('full_total')[0].value = finalTotal.toFixed(2);
 </script>
 @stop
