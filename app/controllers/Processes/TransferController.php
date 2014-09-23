@@ -37,6 +37,17 @@ class TransferController extends \Controller
 		return \View::make ( 'web.processes.transfers.all' , $data ) ;
 	}
 
+	public function viewTransfer ( $id )
+	{
+		$basicStockDetails	 = \Models\Transfer::findOrFail ( $id ) ;
+		$transferData		 = \Models\TransferDetail::where ( 'transfer_id' , '=' , $id ) -> get () ;
+		$data				 = compact ( [
+			'basicStockDetails' ,
+			'transferData'
+		] ) ;
+		return \View::make ( 'web.processes.transfers.view' , $data ) ;
+	}
+
 	public function selectStocksInvolved ()
 	{
 		$data = [ ] ;

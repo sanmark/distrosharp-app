@@ -55,7 +55,7 @@
 			<tbody>
 				@foreach($transfers as $transfer)
 				<tr>
-					<td>{{$transfer->id}}</td>
+					<td>{{HTML::link ( URL::action ('processes.transfers.view',[$transfer->id] ),$transfer->id )}}</td>
 					<td>{{$transfer->fromStock->name}}</td>
 					<td>{{$transfer->toStock->name}}</td>
 					<td>{{$transfer->date_time}}</td>

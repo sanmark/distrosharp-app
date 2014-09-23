@@ -10,7 +10,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_transfers' ] ,
 		'uses'	 => 'Controllers\Processes\TransferController@all'
 	] ) ;
-	
+
 	Route::post ( '' , [
 		'as'	 => 'processes.transfers.all' ,
 		'before' => ['hasAbilities:view_transfers' ] ,
@@ -39,5 +39,10 @@ Route::group ( [
 		'as'	 => 'processes.transfers.add' ,
 		'before' => ['hasAbilities:add_transfer' ] ,
 		'uses'	 => 'Controllers\Processes\TransferController@save'
+	] ) ;
+	Route::get ( '{id}/view' , [
+		'as'	 => 'processes.transfers.view' ,
+		'before' => ['hasAbilities:view_transfers' ] ,
+		'uses'	 => 'Controllers\Processes\TransferController@viewTransfer'
 	] ) ;
 } ) ;
