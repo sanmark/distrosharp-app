@@ -8,11 +8,11 @@ class UserSeeder extends Seeder
 		$users = [
 			[
 				'id'		 => 1 ,
-				'username'	 => 'budhajeewa' ,
+				'username'	 => 'user' ,
 				'email'		 => 'budhajeewa@thesanmark.com' ,
-				'password'	 => 'budhajeewa' ,
-				'first_name' => 'Supun' ,
-				'last_name'	 => 'Budhajeewa' ,
+				'password'	 => 'user' ,
+				'first_name' => 'Firstname' ,
+				'last_name'	 => 'Lastname' ,
 			] ,
 			[
 				'id'		 => 2 ,
