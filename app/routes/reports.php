@@ -42,4 +42,14 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\UnloadComparisonController@view'
 	] ) ;
+	Route::get ( 'age-credit-report' , [
+		'as'	 => 'reports.ageCreditReport' ,
+		'before' => ['hasAbilities:view_age_credit_report' ] ,
+		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
+	] ) ;
+	Route::post ( 'age-credit-report' , [
+		'as'	 => 'reports.ageCreditReport' ,
+		'before' => ['hasAbilities:view_age_credit_report' ] ,
+		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
+	] ) ;
 } ) ;

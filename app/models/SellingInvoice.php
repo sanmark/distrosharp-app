@@ -17,6 +17,32 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'User' , 'rep_id' ) ;
 	}
 
+	public static function ageCreditFilter ( $filterValues )
+	{
+		$requestObject = new SellingInvoice() ;
+
+		if ( count ( $filterValues ) > 0 )
+		{
+			$repId		 = $filterValues[ 'rep' ] ;
+			$customerId	 = $filterValues[ 'customer' ] ;
+			$ageDays	 = $filterValues[ 'age_by_days' ] ;
+			if ( strlen ( $repId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $repId ) ;
+			}
+			if ( strlen ( $customerId ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'customer_id' , '=' , $customerId ) ;
+			}
+			if ( strlen ( $ageDays ) > 0 )
+			{
+				$DateTime		 = date ( 'Y-m-d H:i:s' , strtotime ( "now -$ageDays days" ) ) ;
+				$requestObject	 = $requestObject -> where ( 'date_time' , '<' , $DateTime ) ;
+			}
+		}
+		return $requestObject -> where ( 'is_completely_paid' , '=' , FALSE ) -> get () ;
+	}
+
 	public function sellingItems ()
 	{
 		return $this -> hasMany ( 'Models\SellingItem' ) ;
