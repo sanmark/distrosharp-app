@@ -102,9 +102,9 @@
 			</div>			
 		</div>
 		<div class="form-group">
-			<div class="col-sm-2 control-label" style="font-weight: bold;">Payments</div>
+			<span class="col-sm-2 control-label"><b>Payments</b></span>
 			<div class="col-sm-10">
-				<table class="table table-bordered" style="width: 50%;">
+				<table class="table table-bordered" style="width: 40%">
 					<tr>
 						<th>ID</th>
 						<th>From</th>
@@ -130,6 +130,18 @@
 			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::checkbox('completely_paid',TRUE,$purchaseInvoice->completely_paid,array('style'=>'margin-top:10px;'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('new_cash_payment', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control'))}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('new_cheque_payment', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">

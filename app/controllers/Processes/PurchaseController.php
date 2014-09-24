@@ -139,8 +139,12 @@ class PurchaseController extends \Controller
 			$purchaseItem -> completely_paid		 = \NullHelper::zeroIfNull ( \Input::get ( 'completely_paid' ) ) ;
 			$purchaseItem -> other_expenses_amount	 = \Input::get ( 'other_expenses_amount' ) ;
 			$purchaseItem -> other_expenses_details	 = \Input::get ( 'other_expenses_details' ) ;
+			$cashPayment							 = \Input::get ( 'new_cash_payment' ) ;
+			$chequePayment							 = \Input::get ( 'new_cheque_payment' ) ;
 
+			$this -> validateSaveNewPaymentBefore ( $cashPayment , $chequePayment ) ;
 			$purchaseItem -> update () ;
+			$this -> saveNewPayments ( $purchaseItem , $cashPayment , $chequePayment ) ;
 
 			$countRows = \Models\Item::all () ;
 
@@ -478,6 +482,47 @@ class PurchaseController extends \Controller
 		}
 	}
 
+	private function saveNewPayments ( $buyingInvoice , $cashPayment , $chequePayment )
+	{
+		$vendorId	 = $buyingInvoice -> vendor_id ;
+		$dateTime	 = $buyingInvoice -> date_time ;
+		$dateTime	 = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
+		$this -> validateSaveNewPayment ( $vendorId , $dateTime , $cashPayment , $chequePayment ) ;
+
+		$vendor = \Models\Vendor::findOrFail ( $vendorId ) ;
+
+		$vendorAccountId = $vendor -> finance_account_id ;
+		$cashAccountId	 = \SystemSettingButler::getValue ( 'payment_source_cash' ) ;
+		$chequeAccountId = \SystemSettingButler::getValue ( 'payment_source_cheque' ) ;
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $cashPayment ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $cashAccountId ;
+			$financeTransfer -> to_id		 = $vendorAccountId ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $cashPayment ;
+
+			$financeTransfer -> save () ;
+
+			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+		}
+
+		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $chequePayment ) )
+		{
+			$financeTransfer				 = new \Models\FinanceTransfer() ;
+			$financeTransfer -> from_id		 = $chequeAccountId ;
+			$financeTransfer -> to_id		 = $vendorAccountId ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $chequePayment ;
+
+			$financeTransfer -> save () ;
+
+			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+		}
+	}
+
 	private function validateSavePayment ( $vendorId , $dateTime , $cashPayment , $chequePayment )
 	{
 		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
@@ -519,6 +564,45 @@ class PurchaseController extends \Controller
 		}
 	}
 
+	private function validateSaveNewPayment ( $vendorId , $dateTime , $cashPayment , $chequePayment )
+	{
+		$dateTime = \DateTimeHelper::convertTextToFormattedDateTime ( $dateTime ) ;
+
+		$data = compact ( [
+			'vendorId' ,
+			'dateTime' ,
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'vendorId'		 => [
+				'required'
+			] ,
+			'dateTime'		 => [
+				'required' ,
+				'date' ,
+				'date_format:Y-m-d H:i:s'
+			] ,
+			'cashPayment'	 => [
+				'numeric'
+			] ,
+			'chequePayment'	 => [
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
 	private function validateSavePaymentBefore ( $cashPayment , $chequePayment )
 	{
 		$data = compact ( [
@@ -533,6 +617,33 @@ class PurchaseController extends \Controller
 			] ,
 			'chequePayment'	 => [
 				'required_without:cashPayment' ,
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	private function validateSaveNewPaymentBefore ( $cashPayment , $chequePayment )
+	{
+		$data = compact ( [
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'cashPayment'	 => [
+				'numeric'
+			] ,
+			'chequePayment'	 => [
 				'numeric'
 			]
 		] ;

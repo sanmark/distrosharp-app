@@ -43,7 +43,7 @@ class SaleController extends \Controller
 			$cashPaymentAmount		 = \Input::get ( 'cash_payment' ) ;
 			$chequePaymentAmount	 = \Input::get ( 'cheque_payment' ) ;
 			$stockId				 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
-			-> firstOrFail()
+			-> firstOrFail ()
 			-> lists ( 'id' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
@@ -160,10 +160,12 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items = \Input::get ( 'items' ) ;
-
+			$items				 = \Input::get ( 'items' ) ;
+			$cashPaymentAmount	 = \Input::get ( 'new_cash_payment' ) ;
+			$chequePaymentAmount = \Input::get ( 'new_cheque_payment' ) ;
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItemsForUpdate ( $items ) ;
+			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount ) ;
 
 			$sellingInvoice = \Models\SellingInvoice::findOrFail ( $id ) ;
 
@@ -174,6 +176,7 @@ class SaleController extends \Controller
 			$sellingInvoice -> is_completely_paid		 = \Input::get ( 'is_completely_paid' ) ;
 
 			$sellingInvoice -> update () ;
+			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount ) ;
 
 			$this -> updateSellingItems ( $id ) ;
 
@@ -516,6 +519,33 @@ class SaleController extends \Controller
 			] ,
 			'chequePayment'	 => [
 				'required_without:cashPayment' ,
+				'numeric'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	private function validateSaveNewPayments ( $cashPayment , $chequePayment )
+	{
+		$data = compact ( [
+			'cashPayment' ,
+			'chequePayment'
+		] ) ;
+
+		$rules = [
+			'cashPayment'	 => [
+				'numeric'
+			] ,
+			'chequePayment'	 => [
 				'numeric'
 			]
 		] ;

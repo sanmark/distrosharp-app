@@ -29,10 +29,6 @@
 		<td>{{Form::input('number', 'discount', $sellingInvoice->discount)}}</td>
 	</tr>
 	<tr>
-		<td>{{Form::label('is_completely_paid')}}</td>
-		<td>{{Form::checkbox('is_completely_paid', TRUE, $sellingInvoice->is_completely_paid)}}</td>
-	</tr>
-	<tr>
 		<td colspan="2">
 			<table>
 				<tr>
@@ -91,6 +87,18 @@
 				@endforeach
 			</table>
 		</td>
+	</tr>
+	<tr>
+		<td>{{Form::label('is_completely_paid')}}</td>
+		<td>{{Form::checkbox('is_completely_paid', TRUE, $sellingInvoice->is_completely_paid)}}</td>
+	</tr>
+	<tr>
+		<td>{{Form::label('new_cash_payment', null)}}</td>
+		<td>{{Form::input('number', 'new_cash_payment', NULL)}}</td>
+	</tr>
+	<tr>
+		<td>{{Form::label('new_cheque_payment', null)}}</td>
+		<td>{{Form::input('number', 'new_cheque_payment', NULL)}}</td>
 	</tr>
 	<tr>
 		<td colspan="2" style="text-align: right;">
