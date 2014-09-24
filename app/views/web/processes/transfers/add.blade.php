@@ -38,7 +38,7 @@
 						{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}
 					</div>
 					<div class="col-sm-1 text-right"> 
-						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control text-right','step' => 'any'))}}
+						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control','step' => 'any','max'=>$fromStockDetails[$item->id]))}}
 					</div>
 					<div class="col-sm-1 text-right">
 						{{$toStockDetails[$item->id]}}
@@ -62,5 +62,4 @@
 
 	</div>
 </div>
-
 @stop
