@@ -54,7 +54,7 @@
 		</div>
 		<br>
 		@else
-		<table class="table table-striped" style="width: 80%;">
+		<table class="table table-striped" style="">
 			<tr>
 				<th>System Invoice Number</th>
 				<th>Printed Invoice Number</th>
