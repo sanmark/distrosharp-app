@@ -293,6 +293,7 @@ class PurchaseController extends \Controller
 					}
 				}
 			}
+			\MessageButler::setSuccess ( 'Purchase invoice was updated successfully.' ) ;
 			return \Redirect::action ( 'processes.purchases.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
