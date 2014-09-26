@@ -54,28 +54,41 @@
 		</div>
 		<br>
 		@else
-		<table class="table table-striped" style="">
+		<table class="table table-striped" style="width: 100%;">
 			<tr>
+				<th>Date/Time</th>
 				<th>System Invoice Number</th>
 				<th>Printed Invoice Number</th>
-				<th>Date/Time</th>
 				<th>Customer</th>
 				<th>Rep</th>
 				<th class="text-center">Is Completely Paid</th>
 				<th class="text-right">Invoice Total</th>
+				<th class="text-right">Discount</th>
+				<th class="text-right">Total Paid</th>
+				<th class="text-right">Credit</th>
 			</tr>
 			<tbody>
 				@foreach($sellingInvoices as $sellingInvoice)
 				<tr>
+					<td>{{$sellingInvoice->date_time}}</td>
 					<td>{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
 					<td>{{$sellingInvoice->printed_invoice_number}}</td>
-					<td>{{$sellingInvoice->date_time}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
 					<td>{{$sellingInvoice->rep->username}}</td>
 					<td class="text-center">{{ViewButler::getYesNoFromBoolean($sellingInvoice->is_completely_paid)}}</td>
 					<td class="text-right">{{number_format($sellingInvoice->getInvoiceTotal(), 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->discount, 2)}}</td>
+					<td class="text-right">{{number_format($totalPayment[$sellingInvoice->id],2)}}</td>
+					<td class="text-right">{{number_format($creditBalance[$sellingInvoice->id],2)}}</td>
 				</tr>
 				@endforeach
+				<tr>
+					<td colspan="6"></td>
+					<td class="text-right"><b>{{number_format($totalOfInvoiceSum,2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totalOfDiscountSum,2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totalOfTotalPaid,2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totalOfTotalCredit,2)}}</b></td>
+				</tr>
 			</tbody>
 		</table>
 		@endif

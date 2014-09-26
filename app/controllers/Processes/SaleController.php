@@ -114,6 +114,27 @@ class SaleController extends \Controller
 		$repId					 = \Input::get ( 'rep_id' ) ;
 		$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
 
+
+		$creditBalance		 = [ ] ;
+		$totalPayment		 = [ ] ;
+		$invoiceTotalSum	 = [ ] ;
+		$totalOfTotalPaid	 = 0 ;
+		$totalOfTotalCredit	 = 0 ;
+		$totalOfInvoiceSum	 = 0 ;
+		$totalOfDiscountSum	 = 0 ;
+		for ( $i = 0 ; $i < count ( $sellingInvoices ) ; $i ++ )
+		{
+			$creditBalance[ $sellingInvoices[ $i ][ 'id' ] ]	 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getInvoiceBalance () ;
+			$totalPayment[ $sellingInvoices[ $i ][ 'id' ] ]		 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getTotalPaymentValue () ;
+			$invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ]	 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getInvoiceTotal () ;
+
+
+			$totalOfDiscountSum	 = $totalOfDiscountSum + $sellingInvoices[ $i ][ 'discount' ];
+			$totalOfTotalPaid	 = $totalOfTotalPaid + $totalPayment[ $sellingInvoices[ $i ][ 'id' ] ] ;
+			$totalOfTotalCredit	 = $totalOfTotalCredit + $creditBalance[ $sellingInvoices[ $i ][ 'id' ] ] ;
+			$totalOfInvoiceSum	 = $totalOfInvoiceSum + $invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ] ;
+		}
+
 		if ( is_null ( $dateTimeFrom ) )
 		{
 			$dateTimeFrom = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( '-7 days midnight' ) ) ) ;
@@ -123,6 +144,8 @@ class SaleController extends \Controller
 		{
 			$dateTimeTo = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( 'today 23:59:59' ) ) ) ;
 		}
+
+
 
 		$data = compact ( [
 			'sellingInvoices' ,
@@ -136,6 +159,12 @@ class SaleController extends \Controller
 			'customerId' ,
 			'repId' ,
 			'isCompletelyPaid' ,
+			'creditBalance' ,
+			'totalPayment' ,
+			'totalOfTotalPaid' ,
+			'totalOfTotalCredit' ,
+			'totalOfInvoiceSum',
+			'totalOfDiscountSum'
 		] ) ;
 		return \View::make ( 'web.processes.sales.all' , $data ) ;
 	}
