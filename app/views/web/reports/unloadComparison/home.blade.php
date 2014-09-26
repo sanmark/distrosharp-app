@@ -30,6 +30,7 @@
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
 			</div>
 			{{Form::close()}}
+			<br/>
 		</div>
 		<br/>
 		@if(count($transferRows)==0)
