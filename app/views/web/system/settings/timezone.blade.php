@@ -18,6 +18,7 @@
 		<div class="form-group">
 			<div class="col-sm-3">
 				{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}
+				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>
 		{{Form::close()}}

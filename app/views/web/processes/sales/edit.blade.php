@@ -155,7 +155,8 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>
+				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>
 		{{Form::close()}}

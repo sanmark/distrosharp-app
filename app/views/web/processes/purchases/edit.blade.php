@@ -173,6 +173,7 @@
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tabCount ++ ; ?>
 				{{Form::submit('Submit', array('tabindex' => $tabCount, 'class' => 'btn btn-default pull-right'))}}</td>
+				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>
 

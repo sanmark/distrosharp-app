@@ -56,6 +56,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-3">
 				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				
 			</div>
 		</div>
 		{{Form::close()}}

@@ -30,6 +30,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-4">
 				{{Form::submit('submit', array('tabindex' => '4', 'class' => 'btn btn-default pull-right'))}}
+				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>
 		{{Form::close()}}
