@@ -13,18 +13,18 @@
 		<div class="form-group">
 			{{Form::label('from', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('from',$accountSelectBox, null, array('class' => 'form-control','required'=>''))}}
+				{{Form::select('from',$accountSelectBox, null, array('tabindex' => '1', 'class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('to', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('to',$accountSelectBox, null, array('class' => 'form-control','required'=>''))}}
+				{{Form::select('to',$accountSelectBox, null, array('tabindex' => '2', 'class' => 'form-control','required'=>''))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '3', 'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 

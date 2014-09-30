@@ -11,25 +11,25 @@
 		<div class="form-group">
 			{{Form::label('date', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input ( 'datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true,'step'=>'1'))}} 
+				{{Form::input ( 'datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true,'step'=>'1'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('vendor', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('vendor_id',$vendorList, null, array('class' => 'form-control','required'=>true))}}
+				{{Form::select('vendor_id',$vendorList, null, array('tabindex'=> '1','class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Print Invoice Number', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('printed_invoice_num',null, array('class' => 'form-control','required'=>true))}}
+				{{Form::text('printed_invoice_num',null, array('tabindex'=> '2','class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('Stock', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('stock_id',$stocks, NULL, array('class' => 'form-control','required'=>true))}}
+				{{Form::select('stock_id',$stocks, NULL, array('tabindex'=> '3','class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -41,11 +41,13 @@
 					<div class="col-sm-2"><b>Expire Date</b></div>
 					<div class="col-sm-2"><b>Batch Number</b></div>
 					<div class="col-sm-2"><b>Line Total</b></div>
-				</div>			
-			</div>			
+				</div>
+			</div>
 		</div>
 		<div id="add_purchase_items">
+			<?php $tab = 3 ; ?>
 			@foreach($itemRows as $itemRow)
+			<?php $tab ++ ; ?>
 			<div class="form-group">
 				{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
 				@if(false!=$itemRow->getImageUrl())
@@ -66,16 +68,18 @@
 							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
-							{{Form::input('number','quantity_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
+							<?php $tab ++ ; ?>
+							{{Form::input('number','quantity_'.$itemRow->id, null, array('tabindex'=> $tab,'class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
-							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any'))}}
+							<?php $tab ++ ; ?>
+							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('tabindex'=> $tab, 'class' => 'form-control text-right', 'step'=>'any'))}}
 						</div>
 						<div class="col-sm-2">
 							{{Form::input('date','exp_date_'.$itemRow->id, null, array('class' => 'form-control'))}}
 						</div>
 						<div class="col-sm-2">
-							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}} 
+							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}}
 						</div>
 						<div class="col-sm-2">
 							{{Form::text('line_total_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'))}}
@@ -89,8 +93,8 @@
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
 					<div class="col-sm-offset-10 col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
-				</div>			
-			</div>			
+				</div>
+			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
@@ -101,30 +105,35 @@
 		<div class="form-group">
 			{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
-				{{Form::input('number', 'cash_payment', NULL, array('class' => 'form-control'))}}
+				<?php $tab ++ ; ?>
+				{{Form::input('number', 'cash_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('cheque_payment', 'Cheque Payment', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
-				{{Form::input('number', 'cheque_payment', NULL, array('class' => 'form-control'))}}
+				<?php $tab ++ ; ?>
+				{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3"> 
-				{{Form::input('number','other_expense_amount', null, array('class' => 'form-control','step' => 'any'))}}
+			<div class="col-sm-3">
+				<?php $tab ++ ; ?>
+				{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => 'any'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('other_expenses_details',null, array('class' => 'form-control'))}}
+				<?php $tab ++ ; ?>
+				{{Form::text('other_expenses_details',null, array('tabindex'=> $tab,'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				<?php $tab ++ ; ?>
+				{{Form::submit('Submit', array('tabindex'=> $tab,'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 

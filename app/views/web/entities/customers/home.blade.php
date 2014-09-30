@@ -14,18 +14,18 @@
 
 				<div class="form-group inline-form">
 					{{Form::label('name', null, array('class' => 'control-label'))}}
-					{{Form::text('name', $name, array('class' => 'form-control'))}}
+					{{Form::text('name', $name, array('tabindex' => '1', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('route', null, array('class' => 'control-label'))}}
-					{{Form::select ( 'route' , $routeSelectBox, $routeId, array('class' => 'form-control'))}}
+					{{Form::select ( 'route' , $routeSelectBox, $routeId, array('tabindex' => '2', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}
-					{{Form::select ( 'is_active' , ViewButler::htmlSelectAnyYesNo (), $isActive, array('class' => 'form-control'))}}
+					{{Form::select ( 'is_active' , ViewButler::htmlSelectAnyYesNo (), $isActive, array('tabindex' => '3', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group">
-					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '4', 'class' => 'btn btn-default pull-right'))}}
 				</div>
 				{{Form::close()}}
 

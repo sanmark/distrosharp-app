@@ -14,18 +14,18 @@
 
 				<div class="form-group inline-form">
 					{{Form::label('name', null, array('class' => 'control-label'))}}
-					{{Form::text('name',$name, array('class' => 'form-control'))}}
-				</div>			
+					{{Form::text('name',$name, array('tabindex' => '1', 'class' => 'form-control'))}}
+				</div>
 				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}
-					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (), $isActive, array('class' => 'form-control'))}}
-				</div>	
+					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (), $isActive, array('tabindex' => '2', 'class' => 'form-control'))}}
+				</div>
 				<div class="form-group inline-form">
 					{{Form::label('rep_id', null, array('class' => 'control-label'))}}
-					{{Form::select('rep_id',$repSelectBoxContent, $repId, array('class' => 'form-control'),['autocomplete'=>'off'])}}
-				</div>	
+					{{Form::select('rep_id',$repSelectBoxContent, $repId, array('tabindex' => '3', 'class' => 'form-control'),['autocomplete'=>'off'])}}
+				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '4', 'class' => 'btn btn-default pull-right'))}}
 				</div>
 
 				{{Form::close()}}

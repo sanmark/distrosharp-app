@@ -10,11 +10,11 @@
 		<div class="row">
 			{{Form::open()}}
 			<div class="col-md-2">Select Stock</div>
-			<div class="col-md-2">{{Form::select('stock_id', $stockSelect,$stockId,array('class'=>'form-control'));}}</div>
-			<div class="col-md-1">{{Form::submit('submit', array('class' => 'btn btn-default pull-right'))}}</div>
+			<div class="col-md-2">{{Form::select('stock_id', $stockSelect,$stockId,array('tabindex' => '1', 'class'=>'form-control'));}}</div>
+			<div class="col-md-1">{{Form::submit('submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</div>
 			{{Form::close()}}
 		</div>
-			
+
 		<div class="row">
 			<br>
 			<div class="col-md-12">

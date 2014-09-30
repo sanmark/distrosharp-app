@@ -12,12 +12,12 @@
 		<br />
 		<div class="form-group">
 			<div class="col-sm-3">
-				{{Form::select('time_zone',$all,SystemSettingButler::getValue('time_zone'), array('class' => 'form-control'))}}
+				{{Form::select('time_zone',$all,SystemSettingButler::getValue('time_zone'), array('tabindex' => '1', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 		{{Form::close()}}

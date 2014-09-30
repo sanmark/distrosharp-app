@@ -15,14 +15,14 @@
 						{{Form::label('the_date','Select Date', array('class' => 'col-sm-1 col-md-3 control-label'))}}
 						<div class="col-sm-6">
 							<!-- 1 is the default value, get it from the controller -->
-							{{Form::input('date','the_date',$today, array('class' => 'col-sm-1 col-md-3 form-control'))}}
+							{{Form::input('date','the_date',$today, array('tabindex' => '1', 'class' => 'col-sm-1 col-md-3 form-control'))}}
 
 						</div>
 					</div>
 
 					<div class="form-group">
 						<div class="col-sm-3">
-							{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}</td>
+							{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</td>
 						</div>
 					</div>
 

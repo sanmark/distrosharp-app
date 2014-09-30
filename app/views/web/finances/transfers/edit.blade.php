@@ -19,30 +19,30 @@
 		<div class="form-group">
 			{{Form::label('from',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('from_id',$accountSelectBox,null, array('class' => 'form-control'))}}			
+				{{Form::select('from_id',$accountSelectBox,null, array('tabindex' => '1', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('amount',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('number','amount',null, array('class' => 'form-control'),['step'=>'any','required'=>'required'])}}
+				{{Form::input('number','amount',null, array('tabindex' => '2', 'class' => 'form-control'),['step'=>'any','required'=>'required'])}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('to',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('to_id',$accountSelectBox,null, array('class' => 'form-control'))}}
+				{{Form::select('to_id',$accountSelectBox,null, array('tabindex' => '3', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('description',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::textarea('description',null, array('class' => 'form-control'))}}
+				{{Form::textarea('description',null, array('tabindex' => '4', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 		{{Form::close()}}

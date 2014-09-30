@@ -13,34 +13,34 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group bottom-space">
 					{{Form::label('id', 'System Invoice Number', array('class' => 'control-label'))}}
-					{{Form::text('id', $id, array('class' => 'form-control'))}}
+					{{Form::text('id', $id, array('tabindex' => '1', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('printed_invoice_number', null, array('class' => 'control-label'))}}
-					{{Form::text('printed_invoice_number', $printedInvoiceNumber, array('class' => 'form-control'))}}
+					{{Form::text('printed_invoice_number', $printedInvoiceNumber, array('tabindex' => '2', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_time_from', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_time_to', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('customer_id', null, array('class' => 'control-label'))}}
-					{{Form::select('customer_id', $customerSelectBox, $customerId, array('class' => 'form-control'))}}
+					{{Form::select('customer_id', $customerSelectBox, $customerId, array('tabindex' => '5', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('rep_id', null, array('class' => 'control-label'))}}
-					{{Form::select('rep_id', $repSelectBox, $repId, array('class' => 'form-control'))}}
+					{{Form::select('rep_id', $repSelectBox, $repId, array('tabindex' => '6', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('is_completely_paid', null, array('class' => 'control-label'))}}
-					{{Form::select('is_completely_paid', $isActiveSelectBox, $isCompletelyPaid, array('class' => 'form-control'))}}
+					{{Form::select('is_completely_paid', $isActiveSelectBox, $isCompletelyPaid, array('tabindex' => '7', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '8', 'class' => 'btn btn-default pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>

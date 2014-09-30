@@ -19,24 +19,24 @@
 		<div class="form-group">
 			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('name',null, array('class' => 'form-control','required'=>true))}}
+				{{Form::text('name',null, array('tabindex' => '1', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('bank_id', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('bank_id',$bankSelectBox,null, array('class' => 'form-control'))}}
+				{{Form::select('bank_id',$bankSelectBox,null, array('tabindex' => '2', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::checkbox('is_active',TRUE,null,array('style'=>'margin-top:10px;'))}}
+				{{Form::checkbox('is_active',TRUE,null,array('tabindex' => '3', 'style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '4', 'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 		{{Form::close()}}

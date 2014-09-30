@@ -15,24 +15,24 @@
 
 				<div class="form-group inline-form">
 					{{Form::label('code', null, array('class' => 'control-label'))}}
-					{{Form::text('code',$code, array('class' => 'form-control'))}}
+					{{Form::text('code',$code, array('tabindex' => '1', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('name', null, array('class' => 'control-label'))}}
-					{{Form::text('name',$name, array('class' => 'form-control'))}}
+					{{Form::text('name',$name, array('tabindex' => '2', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}
-					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('class' => 'form-control'))}}
+					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('tabindex' => '3', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('sort by', null, array('class' => 'control-label'))}}
-					{{Form::select('sort_by',ViewButler::htmlSelectSortItems () ,$sortBy, array('class' => 'form-control'))}}
+					{{Form::select('sort_by',ViewButler::htmlSelectSortItems () ,$sortBy, array('tabindex' => '4', 'class' => 'form-control'))}}
 					&nbsp;
-					{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('class' => 'form-control'))}}
+					{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array('tabindex' => '5', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '6', 'class' => 'btn btn-default pull-right'))}}
 				</div>
 				{{Form::close()}}
 

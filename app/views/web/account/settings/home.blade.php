@@ -21,19 +21,19 @@
 				<div class="form-group">
 					{{Form::label('first_name', null, array('class' => 'col-sm-3 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::text('first_name', null, array('class' => 'form-control'))}}
+						{{Form::text('first_name', null, array('tabindex' => '1', 'class' => 'form-control'))}}
 					</div>
 				</div>
 				<div class="form-group">
 					{{Form::label('last_name', null, array('class' => 'col-sm-3 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::text('last_name', null, array('class' => 'form-control'))}}
+						{{Form::text('last_name', null, array('tabindex' => '2', 'class' => 'form-control'))}}
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-6">
-						{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
-					</div>				
+						{{Form::submit('Submit', array('tabindex' => '3', 'class' => 'btn btn-default pull-right'))}}
+					</div>
 				</div>
 				{{Form::close()}}
 
@@ -55,24 +55,24 @@
 				<div class="form-group">
 					{{Form::label('existing_password', null, array('class' => 'col-sm-4 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::password('existing_password', array('class' => 'form-control'))}}
+						{{Form::password('existing_password', array('tabindex' => '4', 'class' => 'form-control'))}}
 					</div>
 				</div>
 				<div class="form-group">
 					{{Form::label('new_password', null, array('class' => 'col-sm-4 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::password('new_password', array('class' => 'form-control'))}}
+						{{Form::password('new_password', array('tabindex' => '5', 'class' => 'form-control'))}}
 					</div>
 				</div>
 				<div class="form-group">
 					{{Form::label('confirm_new_password', null, array('class' => 'col-sm-4 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::password('confirm_new_password', array('class' => 'form-control'))}}
+						{{Form::password('confirm_new_password', array('tabindex' => '6', 'class' => 'form-control'))}}
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-6">
-						{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+						{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-default pull-right'))}}
 					</div>
 				</div>
 				{{Form::close()}}

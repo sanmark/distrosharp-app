@@ -12,30 +12,30 @@
 		<div class="form-group">
 			{{Form::label('name', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('name', null, array('class' => 'form-control','required'=>true))}}
+				{{Form::text('name', null, array('tabindex' => '1', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('route_id','Route', array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::select('route_id',$routeSelectBox,null,array('class' => 'form-control','required'=>true))}}
+				{{Form::select('route_id',$routeSelectBox,null,array('tabindex' => '2', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('details', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::textarea('details', null, array('class' => 'form-control'))}}
+				{{Form::textarea('details', null, array('tabindex' => '3', 'class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::checkbox('is_active',TRUE,null,array('style'=>'margin-top:10px;'))}}
+				{{Form::checkbox('is_active',TRUE,null,array('tabindex' => '4', 'style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-4">
-				{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-default pull-right'))}}
 			</div>
 		</div>
 		{{Form::close()}}
