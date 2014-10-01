@@ -19,19 +19,8 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	//$rOne = \Models\FinanceTransfer::whereBetween ( 'date_time' , ["2014-09-11 00:00:00" , "2014-09-11 23:59:59" ] )
-	//-> where ( 'to_id' , '=' , '2' ) ;
-
-	$rO		 = new \Models\FinanceTransfer() ;
-	$rO		 = $rO -> whereBetween ( 'date_time' , ["2014-09-11 00:00:00" , "2014-09-11 23:59:59" ] ) ;
-	$rOne	 = $rO ;
-	$rTwo	 = $rO ;
-	$rOne	 = $rOne -> where ( 'from_id' , '=' , '2' ) ;
-	$rTwo	 = $rTwo -> where ( 'to_id' , '=' , '2' ) ;
-
-	$allRegRoute = Route::getRoutes () ;
-	dd ( $allRegRoute ) ;
-	dd ( $rTwo -> lists ( 'id' ) ) ;
+	$v = Models\Vendor::findOrFail ( 1 ) ;
+	dd ( $v -> financeAccount ) ;
 } ) ;
 
 

@@ -21,4 +21,22 @@ class FinanceAccountButler
 		return $chequeTargetAccount ;
 	}
 
+	public static function getCashSourceAccount ()
+	{
+		$cashSourceAccountId = \SystemSettingButler::getValue ( 'payment_source_cash' ) ;
+
+		$cashSourceAccount = Models\FinanceAccount::findOrFail ( $cashSourceAccountId ) ;
+
+		return $cashSourceAccount ;
+	}
+
+	public static function getChequeSourceAccount ()
+	{
+		$chequeSourceAccountId = \SystemSettingButler::getValue ( 'payment_source_cheque' ) ;
+
+		$chequeSourceAccount = Models\FinanceAccount::findOrFail ( $chequeSourceAccountId ) ;
+
+		return $chequeSourceAccount ;
+	}
+
 }

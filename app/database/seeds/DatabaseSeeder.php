@@ -12,7 +12,7 @@ class DatabaseSeeder extends Seeder
 	{
 		Eloquent::unguard () ;
 
-		$this -> call ( 'SystemSettingsSeeder' ) ;		
+		$this -> call ( 'SystemSettingsSeeder' ) ;
 		$this -> call ( 'UserSeeder' ) ;
 		$this -> call ( 'AbilityUserSeeder' ) ;
 		$this -> call ( 'ItemsSeeder' ) ;
@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
 		$this -> call ( 'CustomersSeeder' ) ;
 		$this -> call ( 'StocksSeeder' ) ;
 		$this -> call ( 'StockDetailsSeeder' ) ;
+		$this -> call ( 'PurchasesSeeder' ) ;
+		$this -> call ( 'SalesSeeder' ) ;
 	}
 
 }

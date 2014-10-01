@@ -7,6 +7,11 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 
 	public $timestamps = FALSE ;
 
+	public function financeAccount ()
+	{
+		return $this -> belongsTo ( 'Models\FinanceAccount' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;

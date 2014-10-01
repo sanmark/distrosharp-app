@@ -161,8 +161,8 @@ class SetupDb extends Migration
 			$t -> integer ( 'vendor_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_num' ) ;
 			$t -> boolean ( 'completely_paid' ) ;
-			$t -> double ( 'other_expenses_amount' ) ;
-			$t -> text ( 'other_expenses_details' ) ;
+			$t -> double ( 'other_expenses_amount' ) -> nullable () ;
+			$t -> text ( 'other_expenses_details' ) -> nullable () ;
 			$t -> string ( 'stock_id' ) ;
 
 			$t -> foreign ( 'vendor_id' )
@@ -180,8 +180,8 @@ class SetupDb extends Migration
 			$t -> double ( 'price' ) ;
 			$t -> double ( 'quantity' ) -> nullable () ;
 			$t -> double ( 'free_quantity' ) -> nullable () ;
-			$t -> date ( 'exp_date' ) ;
-			$t -> string ( 'batch_number' ) ;
+			$t -> date ( 'exp_date' ) -> nullable () ;
+			$t -> string ( 'batch_number' ) -> nullable () ;
 
 			$t -> foreign ( 'invoice_id' )
 			-> references ( 'id' )
@@ -244,7 +244,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'customer_id' ) -> unsigned () ;
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
 			$t -> string ( 'printed_invoice_number' , 100 ) ;
-			$t -> double ( 'discount' ) -> default ( 0 ) ;
+			$t -> double ( 'discount' ) -> default ( 0 ) -> nullable () ;
 			$t -> boolean ( 'is_completely_paid' ) ;
 			$t -> integer ( 'stock_id' ) -> unsigned () ;
 
@@ -259,7 +259,7 @@ class SetupDb extends Migration
 			-> on ( 'users' )
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
-			
+
 			$t -> foreign ( 'stock_id' )
 			-> references ( 'id' )
 			-> on ( 'stocks' )
