@@ -16,15 +16,16 @@ class PurchaseController extends \Controller
 			$stocks				 = \Models\Stock::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $notVehicleList , [ '' => 'Select Stock' ] ) ;
 			$activeVendors		 = \Models\Vendor::where ( 'is_active' , '=' , 1 ) -> lists ( 'id' ) ;
 			$vendorList			 = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $activeVendors , ['' => 'Select Vendor' ] ) ;
-
-			$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
+			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
+			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 			$data = compact ( [
 				'itemRows' ,
 				'itemRowsForTotal' ,
 				'stocks' ,
 				'currentDateTime' ,
-				'vendorList'
+				'vendorList' ,
+				'banksList' ,
 			] ) ;
 
 			return \View::make ( 'web.processes.purchases.add' , $data ) ;
@@ -108,7 +109,8 @@ class PurchaseController extends \Controller
 		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 		-> lists ( 'item_id' ) ;
 
-		$purchaseDateRefill = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate -> date_time ) ;
+		$purchaseDateRefill	 = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate -> date_time ) ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data[ 'purchaseInvoice' ]			 = $purchaseInvoice ;
 		$data[ 'ItemRows' ]					 = $ItemRows ;
@@ -122,6 +124,7 @@ class PurchaseController extends \Controller
 		$data[ 'batchNumber' ]				 = $batchNumber ;
 		$data[ 'purchaseDateRefill' ]		 = $purchaseDateRefill ;
 		$data[ 'itemRowsForTotal' ]			 = $itemRowsForTotal ;
+		$data[ 'banksList' ]				 = $banksList ;
 
 		return \View::make ( 'web.processes.purchases.edit' , $data ) ;
 	}
@@ -130,7 +133,6 @@ class PurchaseController extends \Controller
 	{
 		try
 		{
-
 			$purchaseItem = \Models\BuyingInvoice::findOrFail ( $id ) ;
 
 			$purchaseItem -> date_time				 = \Input::get ( 'date_time' ) ;
@@ -141,10 +143,14 @@ class PurchaseController extends \Controller
 			$purchaseItem -> other_expenses_details	 = \Input::get ( 'other_expenses_details' ) ;
 			$cashPayment							 = \Input::get ( 'new_cash_payment' ) ;
 			$chequePayment							 = \Input::get ( 'new_cheque_payment' ) ;
+			$chequePaymentBankId					 = \Input::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber				 = \Input::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate				 = \Input::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate				 = \Input::get ( 'cheque_payment_payable_date' ) ;
 
-			$this -> validateSaveNewPaymentBefore ( $cashPayment , $chequePayment ) ;
+			$this -> validateSaveNewPaymentBefore ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 			$purchaseItem -> update () ;
-			$this -> saveNewPayments ( $purchaseItem , $cashPayment , $chequePayment ) ;
+			$this -> saveNewPayments ( $purchaseItem , $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$countRows = \Models\Item::all () ;
 
@@ -307,15 +313,19 @@ class PurchaseController extends \Controller
 	{
 		try
 		{
+			$items						 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
+			$toStockId					 = \Input::get ( 'stock_id' ) ;
+			$purchaseDate				 = \Input::get ( 'date_time' ) ;
+			$vendorId					 = \Input::get ( 'vendor_id' ) ;
+			$printedInvoiceNum			 = \Input::get ( 'printed_invoice_num' ) ;
+			$isPaid						 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
+			$cashPayment				 = \Input::get ( 'cash_payment' ) ;
+			$chequePayment				 = \Input::get ( 'cheque_payment' ) ;
+			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 
-			$items				 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
-			$toStockId			 = \Input::get ( 'stock_id' ) ;
-			$purchaseDate		 = \Input::get ( 'date_time' ) ;
-			$vendorId			 = \Input::get ( 'vendor_id' ) ;
-			$printedInvoiceNum	 = \Input::get ( 'printed_invoice_num' ) ;
-			$isPaid				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
-			$cashPayment		 = \Input::get ( 'cash_payment' ) ;
-			$chequePayment		 = \Input::get ( 'cheque_payment' ) ;
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 
 			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
@@ -342,9 +352,9 @@ class PurchaseController extends \Controller
 			$buyingInvoice -> other_expenses_details = $otherExpensesDetail ;
 			$buyingInvoice -> stock_id				 = $toStockId ;
 
-			$this -> validateSavePaymentBefore ( $cashPayment , $chequePayment ) ;
+			$this -> validateSavePaymentBefore ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 			$buyingInvoice -> save () ;
-			$this -> savePayments ( $buyingInvoice , $cashPayment , $chequePayment ) ;
+			$this -> savePayments ( $buyingInvoice , $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$countRows = \Models\Item::all () ;
 
@@ -442,7 +452,7 @@ class PurchaseController extends \Controller
 		}
 	}
 
-	private function savePayments ( $buyingInvoice , $cashPayment , $chequePayment )
+	private function savePayments ( $buyingInvoice , $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$vendorId	 = $buyingInvoice -> vendor_id ;
 		$dateTime	 = $buyingInvoice -> date_time ;
@@ -479,11 +489,13 @@ class PurchaseController extends \Controller
 
 			$financeTransfer -> save () ;
 
+			$this -> saveChequeDetail ( $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
+
 			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
 		}
 	}
 
-	private function saveNewPayments ( $buyingInvoice , $cashPayment , $chequePayment )
+	private function saveNewPayments ( $buyingInvoice , $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$vendorId	 = $buyingInvoice -> vendor_id ;
 		$dateTime	 = $buyingInvoice -> date_time ;
@@ -519,6 +531,8 @@ class PurchaseController extends \Controller
 			$financeTransfer -> amount		 = $chequePayment ;
 
 			$financeTransfer -> save () ;
+
+			$this -> saveChequeDetail ( $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
 		}
@@ -604,21 +618,42 @@ class PurchaseController extends \Controller
 		}
 	}
 
-	private function validateSavePaymentBefore ( $cashPayment , $chequePayment )
+	private function validateSavePaymentBefore ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$data = compact ( [
 			'cashPayment' ,
-			'chequePayment'
+			'chequePayment' ,
+			'chequePaymentBankId' ,
+			'chequePaymentChequeNumber' ,
+			'chequePaymentIssuedDate' ,
+			'chequePaymentPayableDate'
 		] ) ;
 
 		$rules = [
-			'cashPayment'	 => [
+			'cashPayment'				 => [
 				'required_without:chequePayment' ,
 				'numeric'
 			] ,
-			'chequePayment'	 => [
+			'chequePayment'				 => [
 				'required_without:cashPayment' ,
 				'numeric'
+			] ,
+			'chequePaymentBankId'		 => [
+				'required_with:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePaymentChequeNumber'	 => [
+				'required_with:chequePayment'
+			] ,
+			'chequePaymentIssuedDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
+			] ,
+			'chequePaymentPayableDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
 			]
 		] ;
 
@@ -633,19 +668,40 @@ class PurchaseController extends \Controller
 		}
 	}
 
-	private function validateSaveNewPaymentBefore ( $cashPayment , $chequePayment )
+	private function validateSaveNewPaymentBefore ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$data = compact ( [
 			'cashPayment' ,
-			'chequePayment'
+			'chequePayment' ,
+			'chequePaymentBankId' ,
+			'chequePaymentChequeNumber' ,
+			'chequePaymentIssuedDate' ,
+			'chequePaymentPayableDate'
 		] ) ;
 
 		$rules = [
-			'cashPayment'	 => [
+			'cashPayment'				 => [
 				'numeric'
 			] ,
-			'chequePayment'	 => [
+			'chequePayment'				 => [
 				'numeric'
+			] ,
+			'chequePaymentBankId'		 => [
+				'required_with:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePaymentChequeNumber'	 => [
+				'required_with:chequePayment'
+			] ,
+			'chequePaymentIssuedDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
+			] ,
+			'chequePaymentPayableDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
 			]
 		] ;
 
@@ -694,6 +750,22 @@ class PurchaseController extends \Controller
 
 			throw $iie ;
 		}
+	}
+
+	private function saveChequeDetail ( \Models\FinanceTransfer $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
+	{
+		$chequePaymentIssuedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePaymentIssuedDate , 'Y-m-d' ) ;
+		$chequePaymentPayableDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePaymentPayableDate , 'Y-m-d' ) ;
+
+		$chequeDetail = new \Models\ChequeDetail() ;
+
+		$chequeDetail -> finance_transfer_id = $financeTransfer -> id ;
+		$chequeDetail -> bank_id			 = $chequePaymentBankId ;
+		$chequeDetail -> cheque_number		 = $chequePaymentChequeNumber ;
+		$chequeDetail -> issued_date		 = $chequePaymentIssuedDate ;
+		$chequeDetail -> payable_date		 = $chequePaymentPayableDate ;
+
+		return $chequeDetail -> save () ;
 	}
 
 }

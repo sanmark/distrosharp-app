@@ -40,6 +40,29 @@
 				{{Form::textarea('description',null, array('tabindex' => '4', 'class' => 'form-control'))}}
 			</div>
 		</div>
+		@if($financeTransfer->isCheque())
+		<table border="1">
+			<tr>
+				<td colspan="2">Cheque Details</td>
+			</tr>
+			<tr>
+				<td>Bank</td>
+				<td>{{Form::select('cheque_bank_id', $banksList, $financeTransfer->chequeDetail->bank_id, ['required'=>TRUE])}}</td>
+			</tr>
+			<tr>
+				<td>Cheque Number</td>
+				<td>{{Form::text('cheque_number', $financeTransfer->chequeDetail->cheque_number, ['required'=>TRUE])}}</td>
+			</tr>
+			<tr>
+				<td>Issued Date</td>
+				<td>{{Form::input('date', 'cheque_issued_date', $financeTransfer->chequeDetail->issued_date, ['required'=>TRUE])}}</td>
+			</tr>
+			<tr>
+				<td>Payable Date</td>
+				<td>{{Form::input('date', 'cheque_payable_date', $financeTransfer->chequeDetail->payable_date, ['required'=>TRUE])}}</td>
+			</tr>
+		</table>
+		@endif
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
 				{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-default pull-right'))}}

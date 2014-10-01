@@ -164,14 +164,17 @@ class TransfersController extends \Controller
 
 	public function edit ( $transferId )
 	{
-		$financeTransfer	 = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
+		$financeTransfer	 = \Models\FinanceTransfer::with ( 'chequeDetail.bank' )
+		-> findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
 		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time ) ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,
 			'accountSelectBox' ,
-			'dateTime'
+			'dateTime' ,
+			'banksList'
 		] ) ;
 
 		return \View::make ( 'web.finances.transfers.edit' , $data ) ;
@@ -181,13 +184,20 @@ class TransfersController extends \Controller
 	{
 		try
 		{
-			$financeTransferUpdateRow = \Models\FinanceTransfer::findOrFail ( $transferId ) ;
+			$financeTransferUpdateRow = \Models\FinanceTransfer::with ( 'chequeDetail' )
+			-> findOrFail ( $transferId ) ;
 
-			$dateTime	 = \Input::get ( 'date_time' ) ;
-			$amount		 = \Input::get ( 'amount' ) ;
-			$description = \Input::get ( 'description' ) ;
-			$fromId		 = \Input::get ( 'from_id' ) ;
-			$toId		 = \Input::get ( 'to_id' ) ;
+			$dateTime			 = \Input::get ( 'date_time' ) ;
+			$amount				 = \Input::get ( 'amount' ) ;
+			$description		 = \Input::get ( 'description' ) ;
+			$fromId				 = \Input::get ( 'from_id' ) ;
+			$toId				 = \Input::get ( 'to_id' ) ;
+			$chequeBankId		 = \Input::get ( 'cheque_bank_id' ) ;
+			$chequeNumber		 = \Input::get ( 'cheque_number' ) ;
+			$chequeIssuedDate	 = \Input::get ( 'cheque_issued_date' ) ;
+			$chequePayableDate	 = \Input::get ( 'cheque_payable_date' ) ;
+
+			$this -> validateChequeDetails ( $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 
 			$financeTransferUpdateRow -> date_time	 = $dateTime ;
 			$financeTransferUpdateRow -> amount		 = $amount ;
@@ -197,17 +207,13 @@ class TransfersController extends \Controller
 
 			$financeTransferUpdateRow -> update () ;
 
-			$financeAccountFrom	 = \Models\FinanceAccount::findOrFail ( $fromId ) ;
-			$financeAccountTo	 = \Models\FinanceAccount::findOrFail ( $toId ) ;
+			$chequeDetail					 = $financeTransferUpdateRow -> chequeDetail ;
+			$chequeDetail -> bank_id		 = $chequeBankId ;
+			$chequeDetail -> cheque_number	 = $chequeNumber ;
+			$chequeDetail -> issued_date	 = $chequeIssuedDate ;
+			$chequeDetail -> payable_date	 = $chequePayableDate ;
 
-			$fromAccountBalance	 = ($preFromAccountBalance - $amount) ;
-			$toAccountBalance	 = ($preToAccountBalance + $amount) ;
-
-			$financeAccountFrom -> account_balance	 = $fromAccountBalance ;
-			$financeAccountTo -> account_balance	 = $toAccountBalance ;
-
-			$financeAccountFrom -> update () ;
-			$financeAccountTo -> update () ;
+			$chequeDetail -> update () ;
 
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -232,6 +238,48 @@ class TransfersController extends \Controller
 			] ,
 			'to'	 => [
 				'required'
+			]
+		] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	public function validateChequeDetails ( $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate )
+	{
+		$chequeIssuedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequeIssuedDate , 'Y-m-d' ) ;
+		$chequePayableDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePayableDate , 'Y-m-d' ) ;
+
+		$data = compact ( [
+			'chequeBankId' ,
+			'chequeNumber' ,
+			'chequeIssuedDate' ,
+			'chequePayableDate'
+		] ) ;
+
+		$rules = [
+			'chequeBankId'		 => [
+				'required'
+			] ,
+			'chequeNumber'		 => [
+				'required'
+			] ,
+			'chequeIssuedDate'	 => [
+				'required' ,
+				'date' ,
+				'date_format:Y-m-d'
+			] ,
+			'chequePayableDate'	 => [
+				'required' ,
+				'date' ,
+				'date_format:Y-m-d'
 			]
 		] ;
 

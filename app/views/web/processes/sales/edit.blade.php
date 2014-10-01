@@ -118,7 +118,8 @@
 					<table class="table table-bordered" style="width: 50%">
 						<tr>
 							<th>ID</th>
-							<th>From</th>
+							<th>Type</th>
+							<th>To</th>
 							<th>Date</th>
 							<th class="text-right">Amount</th>
 							<th>&nbsp;</th>
@@ -126,7 +127,14 @@
 						@foreach($sellingInvoice->financeTransfers as $financeTransfer)
 						<tr>
 							<td>{{$financeTransfer->id}}</td>
-							<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->from_id]),$financeTransfer->fromAccount->name)}}</td>
+							<td>
+								@if($financeTransfer->isCheque())
+								Cheque
+								@elseif($financeTransfer->isCash())
+								Cash
+								@endif
+							</td>
+							<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->to_id]),$financeTransfer->toAccount->name)}}</td>
 							<td>{{$financeTransfer->date_time}}</td>
 							<td class="text-right">{{number_format($financeTransfer->amount,2)}}</td>
 							<td class="text-center">{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
@@ -151,6 +159,10 @@
 			{{Form::label('new_cheque_payment', null, array('class'=>'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
+				{{Form::select('cheque_payment_bank_id', $banksList)}}
+				{{Form::text('cheque_payment_cheque_number')}}
+				{{Form::input('date', 'cheque_payment_issued_date')}}
+				{{Form::input('date', 'cheque_payment_payable_date')}}
 			</div>
 		</div>
 		<div class="form-group">

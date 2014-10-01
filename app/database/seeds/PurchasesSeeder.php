@@ -62,10 +62,18 @@ class PurchasesSeeder extends Seeder
 					[
 						'amount'		 => 500 ,
 						'description'	 => NULL ,
+						'bank_id'		 => 1 ,
+						'cheque_number'	 => '123' ,
+						'issued_date'	 => '2014-10-01' ,
+						'payable_date'	 => '2014-10-08'
 					] ,
 //					[
 //						'amount'		 => NULL ,
 //						'description'	 => NULL ,
+//						'bank_id'		 => NULL ,
+//						'cheque_number'	 => NULL ,
+//						'issued_date'	 => NULL ,
+//						'payable_date'	 => NULL
 //					] ,
 				]
 			] ,
@@ -123,12 +131,20 @@ class PurchasesSeeder extends Seeder
 				] ,
 				'cheque_payments'		 => [
 					[
-						'amount'		 => 8000 ,
+						'amount'		 => 800 ,
 						'description'	 => NULL ,
+						'bank_id'		 => 2 ,
+						'cheque_number'	 => '456' ,
+						'issued_date'	 => '2014-10-02' ,
+						'payable_date'	 => '2014-10-09'
 					] ,
 //					[
 //						'amount'		 => NULL ,
 //						'description'	 => NULL ,
+//						'bank_id'		 => NULL ,
+//						'cheque_number'	 => NULL ,
+//						'issued_date'	 => NULL ,
+//						'payable_date'	 => NULL
 //					] ,
 				]
 			] ,
@@ -176,10 +192,18 @@ class PurchasesSeeder extends Seeder
 					[
 						'amount'		 => 47000 ,
 						'description'	 => NULL ,
+						'bank_id'		 => 3 ,
+						'cheque_number'	 => '789' ,
+						'issued_date'	 => '2014-10-03' ,
+						'payable_date'	 => '2014-10-10'
 					] ,
 //					[
 //						'amount'		 => NULL ,
 //						'description'	 => NULL ,
+//						'bank_id'		 => NULL ,
+//						'cheque_number'	 => NULL ,
+//						'issued_date'	 => NULL ,
+//						'payable_date'	 => NULL
 //					] ,
 				]
 			] ,
@@ -223,10 +247,18 @@ class PurchasesSeeder extends Seeder
 //					[
 //						'amount'		 => NULL ,
 //						'description'	 => NULL ,
+//						'bank_id'		 => NULL ,
+//						'cheque_number'	 => NULL ,
+//						'issued_date'	 => NULL ,
+//						'payable_date'	 => NULL
 //					] ,
 ////					[
 ////						'amount'		 => NULL ,
 ////						'description'	 => NULL ,
+////						'bank_id'		 => NULL ,
+////						'cheque_number'	 => NULL ,
+////						'issued_date'	 => NULL ,
+////						'payable_date'	 => NULL
 ////					] ,
 //				]
 //			] ,
@@ -313,6 +345,16 @@ class PurchasesSeeder extends Seeder
 			$financeTransfer -> save () ;
 
 			$buyingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+
+			$chequeDetail = new Models\ChequeDetail() ;
+
+			$chequeDetail -> finance_transfer_id = $financeTransfer -> id ;
+			$chequeDetail -> bank_id			 = $chequePayment[ 'bank_id' ] ;
+			$chequeDetail -> cheque_number		 = $chequePayment[ 'cheque_number' ] ;
+			$chequeDetail -> issued_date		 = $chequePayment[ 'issued_date' ] ;
+			$chequeDetail -> payable_date		 = $chequePayment[ 'payable_date' ] ;
+
+			$chequeDetail -> save () ;
 		}
 	}
 

@@ -158,6 +158,10 @@
 			<div class="col-sm-2">
 				<?php $tab ++ ?>
 				{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab, 'class' => 'form-control'))}}
+				{{Form::select('cheque_payment_bank_id', $banksList)}}
+				{{Form::text('cheque_payment_cheque_number')}}
+				{{Form::input('date', 'cheque_payment_issued_date')}}
+				{{Form::input('date', 'cheque_payment_payable_date')}}
 			</div>
 		</div>
 		<div class="form-group">

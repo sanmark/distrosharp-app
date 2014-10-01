@@ -17,6 +17,7 @@ class SaleController extends \Controller
 		$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
 		$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
 		$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'customers' ,
@@ -24,7 +25,8 @@ class SaleController extends \Controller
 			'items' ,
 			'stockDetails' ,
 			'guessedInvoiceId' ,
-			'currentDateTime'
+			'currentDateTime' ,
+			'banksList' ,
 		] ) ;
 
 		return \View::make ( 'web.processes.sales.add' , $data ) ;
@@ -34,21 +36,25 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items					 = \Input::get ( 'items' ) ;
-			$dateTime				 = \Input::get ( 'date_time' ) ;
-			$customerId				 = \Input::get ( 'customer_id' ) ;
-			$printedInvoiceNumber	 = \Input::get ( 'printed_invoice_number' ) ;
-			$discount				 = \Input::get ( 'discount' ) ;
-			$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
-			$cashPaymentAmount		 = \Input::get ( 'cash_payment' ) ;
-			$chequePaymentAmount	 = \Input::get ( 'cheque_payment' ) ;
-			$stockId				 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
+			$items						 = \Input::get ( 'items' ) ;
+			$dateTime					 = \Input::get ( 'date_time' ) ;
+			$customerId					 = \Input::get ( 'customer_id' ) ;
+			$printedInvoiceNumber		 = \Input::get ( 'printed_invoice_number' ) ;
+			$discount					 = \Input::get ( 'discount' ) ;
+			$isCompletelyPaid			 = \Input::get ( 'is_completely_paid' ) ;
+			$cashPaymentAmount			 = \Input::get ( 'cash_payment' ) ;
+			$chequePaymentAmount		 = \Input::get ( 'cheque_payment' ) ;
+			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
+			$stockId					 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
 			-> firstOrFail ()
 			-> lists ( 'id' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
-			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount ) ;
+			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$sellingInvoice = new \Models\SellingInvoice() ;
 
@@ -61,7 +67,7 @@ class SaleController extends \Controller
 			$sellingInvoice -> stock_id					 = $stockId[ 0 ] ;
 
 			$sellingInvoice -> save () ;
-			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount ) ;
+			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$sellingInvoiceId = $sellingInvoice -> id ;
 
@@ -175,11 +181,13 @@ class SaleController extends \Controller
 		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
 		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'sellingInvoice' ,
 			'customerDropDown' ,
-			'items'
+			'items' ,
+			'banksList'
 		] ) ;
 
 		return \View::make ( 'web.processes.sales.edit' , $data ) ;
@@ -189,12 +197,16 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items				 = \Input::get ( 'items' ) ;
-			$cashPaymentAmount	 = \Input::get ( 'new_cash_payment' ) ;
-			$chequePaymentAmount = \Input::get ( 'new_cheque_payment' ) ;
+			$items						 = \Input::get ( 'items' ) ;
+			$cashPaymentAmount			 = \Input::get ( 'new_cash_payment' ) ;
+			$chequePaymentAmount		 = \Input::get ( 'new_cheque_payment' ) ;
+			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItemsForUpdate ( $items ) ;
-			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount ) ;
+			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$sellingInvoice = \Models\SellingInvoice::findOrFail ( $id ) ;
 
@@ -205,7 +217,7 @@ class SaleController extends \Controller
 			$sellingInvoice -> is_completely_paid		 = \Input::get ( 'is_completely_paid' ) ;
 
 			$sellingInvoice -> update () ;
-			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount ) ;
+			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$this -> updateSellingItems ( $id ) ;
 
@@ -495,7 +507,7 @@ class SaleController extends \Controller
 		}
 	}
 
-	private function savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount )
+	private function savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$customerId	 = $sellingInvoice -> customer_id ;
 		$dateTime	 = $sellingInvoice -> date_time ;
@@ -530,25 +542,48 @@ class SaleController extends \Controller
 
 			$financeTransfer -> save () ;
 
+			$this -> saveChequeDetail ( $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
+
 			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
 		}
 	}
 
-	private function validateSavePayments ( $cashPayment , $chequePayment )
+	private function validateSavePayments ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$data = compact ( [
 			'cashPayment' ,
-			'chequePayment'
+			'chequePayment' ,
+			'chequePaymentBankId' ,
+			'chequePaymentChequeNumber' ,
+			'chequePaymentIssuedDate' ,
+			'chequePaymentPayableDate' ,
 		] ) ;
 
 		$rules = [
-			'cashPayment'	 => [
+			'cashPayment'				 => [
 				'required_without:chequePayment' ,
 				'numeric'
 			] ,
-			'chequePayment'	 => [
+			'chequePayment'				 => [
 				'required_without:cashPayment' ,
 				'numeric'
+			] ,
+			'chequePaymentBankId'		 => [
+				'required_with:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePaymentChequeNumber'	 => [
+				'required_with:chequePayment'
+			] ,
+			'chequePaymentIssuedDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
+			] ,
+			'chequePaymentPayableDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
 			]
 		] ;
 
@@ -563,19 +598,40 @@ class SaleController extends \Controller
 		}
 	}
 
-	private function validateSaveNewPayments ( $cashPayment , $chequePayment )
+	private function validateSaveNewPayments ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
 	{
 		$data = compact ( [
 			'cashPayment' ,
-			'chequePayment'
+			'chequePayment' ,
+			'chequePaymentBankId' ,
+			'chequePaymentChequeNumber' ,
+			'chequePaymentIssuedDate' ,
+			'chequePaymentPayableDate' ,
 		] ) ;
 
 		$rules = [
-			'cashPayment'	 => [
+			'cashPayment'				 => [
 				'numeric'
 			] ,
-			'chequePayment'	 => [
+			'chequePayment'				 => [
 				'numeric'
+			] ,
+			'chequePaymentBankId'		 => [
+				'required_with:chequePayment' ,
+				'numeric'
+			] ,
+			'chequePaymentChequeNumber'	 => [
+				'required_with:chequePayment'
+			] ,
+			'chequePaymentIssuedDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
+			] ,
+			'chequePaymentPayableDate'	 => [
+				'required_with:chequePayment' ,
+				'date' ,
+				'date_format:Y-m-d'
 			]
 		] ;
 
@@ -588,6 +644,22 @@ class SaleController extends \Controller
 
 			throw $iie ;
 		}
+	}
+
+	private function saveChequeDetail ( \Models\FinanceTransfer $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate )
+	{
+		$chequePaymentIssuedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePaymentIssuedDate , 'Y-m-d' ) ;
+		$chequePaymentPayableDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePaymentPayableDate , 'Y-m-d' ) ;
+
+		$chequeDetail = new \Models\ChequeDetail() ;
+
+		$chequeDetail -> finance_transfer_id = $financeTransfer -> id ;
+		$chequeDetail -> bank_id			 = $chequePaymentBankId ;
+		$chequeDetail -> cheque_number		 = $chequePaymentChequeNumber ;
+		$chequeDetail -> issued_date		 = $chequePaymentIssuedDate ;
+		$chequeDetail -> payable_date		 = $chequePaymentPayableDate ;
+
+		return $chequeDetail -> save () ;
 	}
 
 }

@@ -357,10 +357,33 @@ class SetupDb extends Migration
 			-> onUpdate ( 'cascade' )
 			-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'cheque_details' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'finance_transfer_id' ) -> unsigned () ;
+			$t -> integer ( 'bank_id' ) -> unsigned () ;
+			$t -> string ( 'cheque_number' , 12 ) ;
+			$t -> date ( 'issued_date' ) ;
+			$t -> date ( 'payable_date' ) ;
+
+			$t -> foreign ( 'finance_transfer_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_transfers' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'bank_id' )
+			-> references ( 'id' )
+			-> on ( 'banks' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'cheque_details' ) ;
 		Schema::dropIfExists ( 'finance_transfer_selling_invoice' ) ;
 		Schema::dropIfExists ( 'buying_invoice_finance_transfer' ) ;
 		Schema::dropIfExists ( 'system_settings' ) ;

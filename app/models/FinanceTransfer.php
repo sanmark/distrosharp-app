@@ -17,6 +17,31 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\FinanceAccount' , 'from_id' ) ;
 	}
 
+	public function chequeDetail ()
+	{
+		return $this -> hasOne ( 'Models\ChequeDetail' ) ;
+	}
+
+	public function isCheque ()
+	{
+		if ( count ( $this -> chequeDetail ) > 0 )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
+	}
+
+	public function isCash ()
+	{
+		if ( $this -> isCheque () )
+		{
+			return FALSE ;
+		}
+
+		return TRUE ;
+	}
+
 	public static function viewAllFilter ( $filterValues )
 	{
 		$requestObject = new FinanceTransfer () ;
