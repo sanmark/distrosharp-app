@@ -24,19 +24,19 @@
 		<div class="form-group">
 			{{Form::label('route_id', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('route_id',$routes, null, array('tabindex'=>'1', 'class' => 'form-control'))}}
+				{{Form::select('route_id',$routes, null, array('tabindex'=>'1', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('customer_id', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('customer_id',$customers, null, array('tabindex'=>'2', 'class' => 'form-control'))}}
+				{{Form::select('customer_id',$customers, null,array('tabindex'=>'2', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('printed_invoice_number', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('printed_invoice_number', null, array('tabindex'=>'3', 'class' => 'form-control'))}}
+				{{Form::text('printed_invoice_number', null, array('tabindex'=>'3', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -216,7 +216,7 @@
 	routeId = $('#route_id').val();
 			$('#customer_id').find('option').remove();
 			$('#customer_id').append(
-			$('<option></option>').
+			$('<option value=""></option>').
 			text('Select')
 			);
 			$.post(

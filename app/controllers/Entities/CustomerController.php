@@ -92,7 +92,8 @@ class CustomerController extends \Controller
 	public function aForRouteId ()
 	{
 		$routeId	 = \Input::get ( 'routeId' ) ;
-		$customers	 = \Models\Customer::where( 'route_id' , '=' , $routeId ) -> get () ;
+		$customers	 = \Models\Customer::where( 'route_id' , '=' , $routeId )
+		->get () ;
 
 		return \Response::json ( $customers ) ;
 	}
