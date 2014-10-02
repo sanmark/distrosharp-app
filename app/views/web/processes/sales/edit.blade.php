@@ -145,24 +145,49 @@
 		</div>
 		<div class="form-group">
 			{{Form::label('is_completely_paid', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-10">
+			<div class="col-sm-2">
 				{{Form::checkbox('is_completely_paid', TRUE, $sellingInvoice->is_completely_paid,array('style'=>'margin-top:10px;'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('new_cash_payment', null, array('class'=>'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
+			<div class="col-sm-2">
 				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control'))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('new_cheque_payment', null, array('class'=>'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
-				{{Form::select('cheque_payment_bank_id', $banksList)}}
-				{{Form::text('cheque_payment_cheque_number')}}
-				{{Form::input('date', 'cheque_payment_issued_date')}}
-				{{Form::input('date', 'cheque_payment_payable_date')}}
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-2 text-right"><b>New Cheque Payment</b></div>
+					<div class="col-sm-10">
+						<div class="row">
+							<div class="col-sm-2">Amount</div>
+							<div class="col-sm-2">Bank</div>
+							<div class="col-sm-2">Cheque Number</div>
+							<div class="col-sm-2">Issued Date</div>
+							<div class="col-sm-2">Payable Date</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-2">
+						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control'))}}
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">

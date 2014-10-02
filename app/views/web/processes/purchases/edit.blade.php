@@ -158,25 +158,50 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('new_cheque_payment', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-2">
-				{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
-				{{Form::select('cheque_payment_bank_id', $banksList)}}
-				{{Form::text('cheque_payment_cheque_number')}}
-				{{Form::input('date', 'cheque_payment_issued_date')}}
-				{{Form::input('date', 'cheque_payment_payable_date')}}
+			<div class="col-sm-12">
+				<div class="row">
+					<div class="col-sm-2 text-right"><b>New Cheque Payment</b></div>
+					<div class="col-sm-10">
+						<div class="row">
+							<div class="col-sm-2">Amount</div>
+							<div class="col-sm-2">Bank</div>
+							<div class="col-sm-2">Cheque Number</div>
+							<div class="col-sm-2">Issued Date</div>
+							<div class="col-sm-2">Payable Date</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-2">
+						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control'))}}
+					</div>
+					<div class="col-sm-2">
+						{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control'))}}
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
+			<div class="col-sm-2">
 				<?php $tabCount ++ ; ?>
 				{{Form::input('number','other_expenses_amount',number_format($purchaseInvoice->other_expenses_amount,2), array('tabindex' => $tabCount, 'class' => 'form-control','step'=>'any'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('other_expense_details', null, array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
+			<div class="col-sm-2">
 				<?php $tabCount ++ ; ?>
 				{{Form::text('other_expenses_details',$purchaseInvoice->other_expenses_details, array('tabindex' => $tabCount, 'class' => 'form-control'))}}
 			</div>
