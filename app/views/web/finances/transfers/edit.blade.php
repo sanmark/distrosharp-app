@@ -40,29 +40,43 @@
 				{{Form::textarea('description',null, array('tabindex' => '4', 'class' => 'form-control'))}}
 			</div>
 		</div>
+
 		@if($financeTransfer->isCheque())
-		<table border="1">
-			<tr>
-				<td colspan="2">Cheque Details</td>
-			</tr>
-			<tr>
-				<td>Bank</td>
-				<td>{{Form::select('cheque_bank_id', $banksList, $financeTransfer->chequeDetail->bank_id, ['required'=>TRUE])}}</td>
-			</tr>
-			<tr>
-				<td>Cheque Number</td>
-				<td>{{Form::text('cheque_number', $financeTransfer->chequeDetail->cheque_number, ['required'=>TRUE])}}</td>
-			</tr>
-			<tr>
-				<td>Issued Date</td>
-				<td>{{Form::input('date', 'cheque_issued_date', $financeTransfer->chequeDetail->issued_date, ['required'=>TRUE])}}</td>
-			</tr>
-			<tr>
-				<td>Payable Date</td>
-				<td>{{Form::input('date', 'cheque_payable_date', $financeTransfer->chequeDetail->payable_date, ['required'=>TRUE])}}</td>
-			</tr>
-		</table>
+
+		<div class="row">
+			<div class="col-sm-2 text-left">
+				<b><u>Cheque Details</u></b>
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			{{Form::label('cheque_bank_id','Bank', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::select('cheque_bank_id', $banksList, $financeTransfer->chequeDetail->bank_id, ['required'=>TRUE, 'class' => 'form-control'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('cheque_number','Cheque Number', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::text('cheque_number', $financeTransfer->chequeDetail->cheque_number, ['required'=>TRUE, 'class' => 'form-control'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('cheque_issued_date','Issued Date', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('date', 'cheque_issued_date', $financeTransfer->chequeDetail->issued_date, ['required'=>TRUE, 'class' => 'form-control'])}}
+			</div>
+		</div>
+		<div class="form-group">
+			{{Form::label('cheque_payable_date','Payable Date', array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-2">
+				{{Form::input('date', 'cheque_payable_date', $financeTransfer->chequeDetail->payable_date, ['required'=>TRUE, 'class' => 'form-control'])}}
+			</div>
+		</div>
+
 		@endif
+
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
 				{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-default pull-right'))}}
