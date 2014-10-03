@@ -6,21 +6,34 @@ class HomeController extends BaseController
 	public function showHome ()
 	{
 		$data = $this -> updateDailyWorkFlow () ;
-		return \View::make ( 'web.home' , $data ) ;
+		$stockSummery = $this->stockSummery();
+		$lastThirtyDaysPurchase = $this->lastThirtyDaysPurchase();
+		$lastThirtyDaysSales = $this->lastThirtyDaysSalses();
+		
+		return \View::make ( 'web.home' , $data )
+		->with ( 'stockSummery', $stockSummery)
+		->with ('lastThirtyDaysPurchase', $lastThirtyDaysPurchase)
+		->with ('lastThirtyDaysSales', $lastThirtyDaysSales);
 	}
 
 	public function refreshHome ()
 	{
+		$stockSummery = $this->stockSummery();
+		$lastThirtyDaysPurchase = $this->lastThirtyDaysPurchase();
+		$lastThirtyDaysSales = $this->lastThirtyDaysSalses();
+		
 		$theSubmitedForm = \Input::get ( 'submitedForm' ) ;
 		if ( $theSubmitedForm == 'dailyWorkFlow' )
 		{
 			$data = $this -> updateDailyWorkFlow () ;
-			return \View::make ( 'web.home' , $data ) ;
+			return \View::make ( 'web.home' , $data )
+			->with ( 'stockSummery' , $stockSummery )
+			->with ('lastThirtyDaysPurchase', $lastThirtyDaysPurchase)
+			->with ('lastThirtyDaysSales', $lastThirtyDaysSales);
 		}
 	}
 
-	private function updateDailyWorkFlow ()
-	{
+	private function updateDailyWorkFlow (){
 		if ( \Input::get ( 'the_date' ) !== NULL )
 		{
 			$theDate = DateTimeHelper::convertTextToFormattedDateTime ( \Input::get ( 'the_date' ) , 'Y-m-d' ) ;
@@ -56,5 +69,117 @@ class HomeController extends BaseController
 			return $data ;
 		}
 	}
+	
+	private function stockSummery(){
+		$objStockDetail = \Models\StockDetail::all();
+		$goodQntVal = 0;
+		$returnQntVal = 0;
+		$totalStockVal = 0;
+		foreach ($objStockDetail as $stockItem){
+			$goodQntVal = $goodQntVal + ($stockItem->good_quantity * $stockItem->item->current_buying_price);
+			$returnQntVal = $returnQntVal + ($stockItem->return_quantity * $stockItem->item->current_buying_price);
+			
+		}
+		$totalStockVal = $goodQntVal + $returnQntVal;
+		$returnArr = [];
+		$returnArr ['goodQntVal'] =  $goodQntVal;
+		$returnArr ['returnQntVal'] =  $returnQntVal;
+		$returnArr ['totalStockVal'] =  $totalStockVal;
+		return  $returnArr;
+	}
+	
+	private function lastThirtyDaysPurchase(){
+		$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-dTH:i:s' ) ) ;
+		$startDate		 = date('Y-m-d', strtotime('today - 30 days'));
+		
+		$purchaseTotalCost = $this->  getTotalPurchaseCostByDateRange($startDate.' 00:00:00' , $currentDateTime);
+		
+		$totalPaid = 0;
+		$totalOfIncompletePayments = $this->totalOfIncompleteBillPaymentsByDateRange($startDate.' 00:00:00' , $currentDateTime);
+		$totalOfCompleatePayments = $this->totalOfCompleateBillPaymentsByDateRange($startDate.' 00:00:00' , $currentDateTime);
+		
+		$totalPaid = $totalOfIncompletePayments + $totalOfCompleatePayments;
+		
+		$balanceToBePay = $purchaseTotalCost - $totalPaid;
 
+		$returnArr = [];
+		$returnArr['totalCost'] = $purchaseTotalCost;
+		$returnArr['totalPaid'] = $totalPaid;
+		$returnArr['balanceToBePay'] = $balanceToBePay;
+		
+		return $returnArr;	
+	}
+	
+	private function getTotalPurchaseCostByDateRange($startDate, $endDate){
+		$objBuyingInvoices = \Models\BuyingInvoice::whereBetween('date_time', [$startDate , $endDate])
+		->  get();
+		$totalCost = 0;		
+		foreach ($objBuyingInvoices as $buyingInvoice){
+			foreach ($buyingInvoice->buyingItems as $item){
+				$totalCost = $totalCost + ($item->price*$item->quantity);				
+			}
+		}
+		return $totalCost;
+	}
+
+	private function totalOfIncompleteBillPaymentsByDateRange($startDate, $endDate){
+		$buyingInvoiceWithBalance = \Models\BuyingInvoice::whereBetween('date_time' , [$startDate, $endDate])
+		->  where ( 'completely_paid', '=', 0 )
+		->get();
+		$totalOfIncompleatePayments = 0;
+		foreach ($buyingInvoiceWithBalance as $invoice){
+			foreach ($invoice->financeTransfers as $payment){
+				$totalOfIncompleatePayments = $totalOfIncompleatePayments + $payment->amount;
+			}
+		}
+		return $totalOfIncompleatePayments;
+	}
+	
+	private function totalOfCompleateBillPaymentsByDateRange($startDate, $endDate){
+		$buyingInvoiceWithBalance = \Models\BuyingInvoice::whereBetween('date_time' , [$startDate, $endDate])
+		->  where ( 'completely_paid', '=', 1 )
+		->get();
+		$totalOfCompleatePayments = 0;
+		foreach ($buyingInvoiceWithBalance as $invoice){
+			foreach ($invoice->financeTransfers as $payment){
+				$totalOfCompleatePayments = $totalOfCompleatePayments + $payment->amount;
+			}
+		}
+		return $totalOfCompleatePayments;
+	}
+	
+	private function lastThirtyDaysSalses(){
+		$currentDateTime = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+		$startDate		 = date('Y-m-d', strtotime('today - 30 days')) . ' 00:00:00';
+		
+		$sellingInvoices = \Models\SellingInvoice::whereBetween('date_time', [$startDate, $currentDateTime])
+		->  get();
+		
+		
+		$creditBalance		 = [ ] ;
+		$totalPayment		 = [ ] ;
+		$invoiceTotalSum	 = [ ] ;
+		$totalOfTotalPaid	 = 0 ;
+		$totalOfTotalCredit	 = 0 ;
+		$totalOfInvoiceSum	 = 0 ;
+		$totalOfDiscountSum	 = 0 ;
+		for ( $i = 0 ; $i < count ( $sellingInvoices ) ; $i ++ )
+		{
+			$creditBalance[ $sellingInvoices[ $i ][ 'id' ] ]	 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getInvoiceBalance () ;
+			$totalPayment[ $sellingInvoices[ $i ][ 'id' ] ]		 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getTotalPaymentValue () ;
+			$invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ]	 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getInvoiceTotal () ;
+
+
+			$totalOfDiscountSum	 = $totalOfDiscountSum + $sellingInvoices[ $i ][ 'discount' ];
+			$totalOfTotalPaid	 = $totalOfTotalPaid + $totalPayment[ $sellingInvoices[ $i ][ 'id' ] ] ;
+			$totalOfTotalCredit	 = $totalOfTotalCredit + $creditBalance[ $sellingInvoices[ $i ][ 'id' ] ] ;
+			$totalOfInvoiceSum	 = $totalOfInvoiceSum + $invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ] ;	
+		}
+		$returnArr = [];
+		$returnArr ['totalOfDiscountSum']	= $totalOfDiscountSum;
+		$returnArr ['totalOfTotalPaid']		= $totalOfTotalPaid;
+		$returnArr ['totalOfTotalCredit']	= $totalOfTotalCredit;
+		$returnArr ['totalOfInvoiceSum']	= $totalOfInvoiceSum;
+		return $returnArr;
+	}
 }

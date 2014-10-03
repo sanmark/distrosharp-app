@@ -17,6 +17,11 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\Vendor' ) ;
 	}
 
+	public function buyingItems ()
+	{
+		return $this -> hasMany ( 'Models\BuyingItem' , 'invoice_id' ) ;
+	}
+
 	public function financeTransfers ()
 	{
 		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) ;
@@ -31,7 +36,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 	private function validateForSave ()
 	{
 		$data = $this -> toArray () ;
-		 
+
 		$rules = [
 			'date_time'				 => [
 				'required'
@@ -42,7 +47,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 			'printed_invoice_num'	 => [
 				'required' ,
 			] ,
-			'other_expenses_amount'	 => [  
+			'other_expenses_amount'	 => [
 				'numeric' ,
 			] ,
 			'stock_id'				 => [

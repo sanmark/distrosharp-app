@@ -14,6 +14,7 @@
             <word>foreach</word>
             <word>isNot</word>
             <word>itemRowsAscSellingInvoice</word>
+            <word>Purechese</word>
         </spellchecker-wordlist>
     </configuration>
 </project>
