@@ -110,6 +110,7 @@ class SaleController extends \Controller
 		$filterValues			 = \Input::all () ;
 		$sellingInvoices		 = \Models\SellingInvoice::filter ( $filterValues ) ;
 		$customerSelectBox		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
+		$routeSelectBox			 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 		$repSelectBox			 = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 		$isActiveSelectBox		 = \ViewButler::htmlSelectAnyYesNo () ;
 		$id						 = \Input::get ( 'id' ) ;
@@ -119,6 +120,7 @@ class SaleController extends \Controller
 		$customerId				 = \Input::get ( 'customer_id' ) ;
 		$repId					 = \Input::get ( 'rep_id' ) ;
 		$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
+		$routeId				 = \Input::get ( 'route_id' ) ;
 
 
 		$creditBalance		 = [ ] ;
@@ -135,7 +137,7 @@ class SaleController extends \Controller
 			$invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ]	 = \Models\SellingInvoice::find ( $sellingInvoices[ $i ][ 'id' ] ) -> getInvoiceTotal () ;
 
 
-			$totalOfDiscountSum	 = $totalOfDiscountSum + $sellingInvoices[ $i ][ 'discount' ];
+			$totalOfDiscountSum	 = $totalOfDiscountSum + $sellingInvoices[ $i ][ 'discount' ] ;
 			$totalOfTotalPaid	 = $totalOfTotalPaid + $totalPayment[ $sellingInvoices[ $i ][ 'id' ] ] ;
 			$totalOfTotalCredit	 = $totalOfTotalCredit + $creditBalance[ $sellingInvoices[ $i ][ 'id' ] ] ;
 			$totalOfInvoiceSum	 = $totalOfInvoiceSum + $invoiceTotalSum[ $sellingInvoices[ $i ][ 'id' ] ] ;
@@ -151,7 +153,7 @@ class SaleController extends \Controller
 			$dateTimeTo = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( 'today 23:59:59' ) ) ) ;
 		}
 
-
+		//var_dump($customerId);
 
 		$data = compact ( [
 			'sellingInvoices' ,
@@ -169,8 +171,10 @@ class SaleController extends \Controller
 			'totalPayment' ,
 			'totalOfTotalPaid' ,
 			'totalOfTotalCredit' ,
-			'totalOfInvoiceSum',
-			'totalOfDiscountSum'
+			'totalOfInvoiceSum' ,
+			'totalOfDiscountSum' ,
+			'routeSelectBox' ,
+			'routeId'
 		] ) ;
 		return \View::make ( 'web.processes.sales.all' , $data ) ;
 	}

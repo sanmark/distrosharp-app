@@ -20,19 +20,23 @@
 					{{Form::text('printed_invoice_number', $printedInvoiceNumber, array('tabindex' => '2', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::label('date_time_from', null, array('class' => 'control-label'))}}
+					{{Form::label('date_time_from','From', array('class' => 'control-label'))}}
 					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::label('date_time_to', null, array('class' => 'control-label'))}}
+					{{Form::label('date_time_to','To', array('class' => 'control-label'))}}
 					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::label('customer_id', null, array('class' => 'control-label'))}}
-					{{Form::select('customer_id', $customerSelectBox, $customerId, array('tabindex' => '5', 'class' => 'form-control'))}}
+					{{Form::label('route_id','Route', array('class' => 'control-label'))}}
+					{{Form::select('route_id', $routeSelectBox, $routeId, array('tabindex' => '5', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::label('rep_id', null, array('class' => 'control-label'))}}
+					{{Form::label('customer_id','Customer', array('class' => 'control-label'))}}
+					{{Form::select('customer_id', $customerSelectBox, null, array('tabindex' => '5', 'class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('rep_id','Rep', array('class' => 'control-label'))}}
 					{{Form::select('rep_id', $repSelectBox, $repId, array('tabindex' => '6', 'class' => 'form-control'))}}
 				</div>
 				<div class="form-group bottom-space">
@@ -94,5 +98,43 @@
 		@endif
 	</div>
 </div>
+
+@stop
+
+@section('file-footer')
+<script>
+	$(document).ready(function() {
+	$('#route_id').change();
+			setTimeout(function() {
+			$("#customer_id").val({{$customerId}});
+			}, 1500);
+	});</script>
+
+<script>
+			$(document).on('change', '#route_id', function() {
+	routeId = $('#route_id').val();
+			$('#customer_id').find('option').remove();
+			$('#customer_id').append(
+			$('<option value=""></option>').
+			text('Select')
+			
+			);
+			$.post(
+					"{{URL::action('entities.customers.ajax.forRouteId')}}",
+			{
+			_token: "{{csrf_token()}}",
+					routeId: routeId
+			},
+					function(data) {
+					$.each(data, function(index, customer) {
+					$('#customer_id').append(
+							$('<option></option>')
+							.attr('value', customer.id)
+							.text(customer.name)
+							);
+					});
+					}
+			);
+	});</script>
 
 @stop

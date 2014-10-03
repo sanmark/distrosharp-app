@@ -233,6 +233,13 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$requestObject	 = $requestObject -> with ( 'customer' ) ;
 		$requestObject	 = $requestObject -> with ( 'rep' ) ;
 
+		$requestObject -> get () ;
+
+		//$queries	 = \DB::getQueryLog () ;
+		//$last_query	 = end ( $queries ) ;
+
+		//dd ( $last_query ) ;
+
 		return $requestObject -> get () ;
 	}
 
@@ -247,7 +254,6 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			$repId					 = $filterValues[ 'rep_id' ] ;
 			$printedInvoiceNumber	 = $filterValues[ 'printed_invoice_number' ] ;
 			$isCompletelyPaid		 = $filterValues[ 'is_completely_paid' ] ;
-
 
 			if ( strlen ( $id ) > 0 )
 			{
@@ -292,7 +298,6 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				$requestObject = $requestObject -> where ( 'is_completely_paid' , '=' , $isCompletelyPaid ) ;
 			}
 		}
-
 		return $requestObject ;
 	}
 
