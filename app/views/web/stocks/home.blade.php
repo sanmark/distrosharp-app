@@ -27,7 +27,7 @@
 					<td>{{HTML::link ( URL::action ( 'stocks.view', [$stock->id]), $stock->name)}}</td>
 					<td>{{$stock->incharge->username}}</td>
 					<td>{{$stock->stockType->label}}</td>
-					<td>{{HTML::link ( URL::action ( 'stocks.edit', [$stock->id]), 'Edit...')}}</td>
+					<td class="text-right">{{HTML::link ( URL::action ( 'stocks.edit', [$stock->id]), 'Edit...')}}</td>
 				</tr>
 				@endforeach
 			</tbody>
