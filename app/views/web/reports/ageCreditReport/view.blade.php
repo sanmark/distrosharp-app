@@ -2,64 +2,77 @@
 
 @section('body')
 
-<h2>View Age Credit Report</h2>
-{{Form::open()}}
-<table border="1">
-	<tr>
-		<td>{{Form::label('rep',null)}}</td>
-		<td>{{Form::select('rep',$repSelectBox,$repId)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('route_id',null)}}</td>
-		<td>{{Form::select('route_id',$routeSelectBox,$routeId)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('customer',null)}}</td>
-		<td>{{Form::select('customer',$customerSelectBox,null)}}</td>
-	</tr>
-	<tr>
-		<td>{{Form::label('age_by_days','Days More Than')}}</td>
-		<td>{{Form::text('age_by_days',$ageDays)}}</td>
-	</tr>
-	<tr>
-		<td colspan="2">{{Form::submit('Submit')}}</td>
-	</tr>
-</table>
-{{Form::close()}}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">View Age Credit Report</h3>
+	</div>
+	<div class="panel-body">
 
-@if(count($sellingData)==0)
-<br>
-<div class="no-records-message text-center">
-	There are no records to display
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group inline-form">
+					{{Form::label('rep',null, array('class' => 'control-label'))}}
+					{{Form::select('rep',$repSelectBox,$repId, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('route_id',null, array('class' => 'control-label'))}}
+					{{Form::select('route_id',$routeSelectBox,$routeId, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('customer',null, array('class' => 'control-label'))}}
+					{{Form::select('customer',$customerSelectBox,null, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('age_by_days','Days More Than', array('class' => 'control-label'))}}
+					{{Form::text('age_by_days',$ageDays, array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
+
+			</div>
+		</div>
+
+		@if(count($sellingData)==0)
+		<br>
+		<div class="no-records-message text-center">
+			There are no records to display
+		</div>
+		<br>
+		@else
+		<table class="table table-striped" style="width:80%;">
+			<tr>
+				<th>Date</th>
+				<th>Rep</th>
+				<th>Customer</th>
+				<th>Printed Invoice Number</th>
+				<th>Age(Days)</th>
+				<th class="text-right">Amount</th>
+			</tr>
+			@foreach($sellingData as $sellingRow)
+			<tr>
+				<td>{{$sellingRow->date_time}}</td>
+				<td>{{$sellingRow->rep['username']}}</td>
+				<td>{{$sellingRow->customer['name']}}</td>
+				<td>{{HTML::link (URL::action ( 'processes.sales.edit',[$sellingRow->id] ), $sellingRow->printed_invoice_number )}}</td>
+				<td>{{number_format((strtotime(date('Y-m-d H:i:s'))-strtotime($sellingRow->date_time))/86400,0)}}</td>
+				<td class="text-right">{{$invoiceBalanceTotal[$sellingRow->id]}}</td>
+			</tr>
+			@endforeach
+			@if(count($sellingData)==0)
+			<?php $customerId	 = 0 ; ?>
+			@else
+			<?php $customerId	 = $sellingRow -> customer_id ; ?>
+			@endif
+		</table>
+		@endif
+
+	</div>
 </div>
-<br>
-@else
-<table class="table table-striped">
-	<tr>
-		<th>Date</th>
-		<th>Rep</th>
-		<th>Customer</th>
-		<th>Printed Invoice Number</th>
-		<th>Age(Days)</th>
-		<th>Amount</th>
-	</tr>
-	@foreach($sellingData as $sellingRow)
-	<tr>
-		<td>{{$sellingRow->date_time}}</td>
-		<td>{{$sellingRow->rep['username']}}</td>
-		<td>{{$sellingRow->customer['name']}}</td>
-		<td>{{HTML::link (URL::action ( 'processes.sales.edit',[$sellingRow->id] ), $sellingRow->printed_invoice_number )}}</td>
-		<td>{{number_format((strtotime(date('Y-m-d H:i:s'))-strtotime($sellingRow->date_time))/86400,0)}}</td>
-		<td>{{$invoiceBalanceTotal[$sellingRow->id]}}</td>
-	</tr>
-	@endforeach
-	@if(count($sellingData)==0)
-	<?php $customerId = 0; ?>
-	@else
-	<?php $customerId = $sellingRow -> customer_id ; ?>
-	@endif
-</table>
-@endif
+
 @stop
 @section('file-footer')
 <script>
@@ -67,7 +80,7 @@
 	$('#route_id').change();
 			setTimeout(function() {
 			$("#customer").val({{$customerId}});
-			},1000);
+			}, 1000);
 	});</script>
 
 <script>
