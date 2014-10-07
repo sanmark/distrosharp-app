@@ -6,7 +6,6 @@
 		<h3 class="panel-title">Stock Report</h3>
 	</div>
 	<div class="panel-body">
-
 		<div class="row">
 			{{Form::open()}}
 			<div class="col-md-2">Select Stock</div>
