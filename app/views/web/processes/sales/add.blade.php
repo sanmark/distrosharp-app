@@ -189,6 +189,8 @@
 				</div>
 			</div>
 		</div>
+		<div id="creditPayments" class="form-group">
+		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ?>
@@ -208,6 +210,7 @@
 	$('#route_id').change();
 			setTimeout(function() {
 			$("#customer_id").val({{Input::old('customer_id')}});
+					$("#customer_id").change();
 			}, 2000);
 	});</script>
 
@@ -260,5 +263,109 @@
 			});
 					$("input[name='subTotal']").val(subTotal);
 			}
+</script>
+
+<script>
+	var oldCreditPayments = jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}');
+			function getOldCreditPaymentDetails(index, property){
+			if (oldCreditPayments){
+			if (oldCreditPayments[index]){
+			if (oldCreditPayments[index][property]){
+			return oldCreditPayments[index][property];
+			}
+			}
+			} else if (property == "cheque_issued_date"){
+			return "{{date('Y-m-d')}}";
+			}
+			return null;
+			}
+	$(document).on('change', '#customer_id', function(){
+	$('#creditPayments').html('');
+			var customerId = $(this).val();
+			$.post(
+					"{{URL::action('entities.customers.ajax.creditInvoices')}}",
+			{
+			_token:"{{csrf_token()}}",
+					customerId:customerId
+			},
+					function(data){
+					$.each(data, function(index, sellingInvoice){
+					var newDiv = $('<div></div>');
+							newDiv.append(
+									$('<div></div>')
+									.append(sellingInvoice.id)
+									);
+							newDiv.append(
+									$('<div></div>')
+									.append(sellingInvoice.date_time)
+									);
+							newDiv.append(
+									$('<div></div>')
+									.append(sellingInvoice.balance)
+									);
+							newDiv.append(
+									$('<div></div>')
+									.append(
+											$('<label></label>')
+											.attr('for', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+											.text('Cash Amount')
+											)
+									.append(
+											$('<input/>')
+											.attr('type', 'number')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
+											)
+									);
+							newDiv.append(
+									$('<div></div>')
+									.append(
+											$('<label></label>')
+											.attr('for', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+											.text('Cheque Amount')
+											)
+									.append(
+											$('<input/>')
+											.attr('type', 'number')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_amount'))
+											)
+									.append(
+											$('{{Form::select(null, $banksList, null, array("class" => ""))}}')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
+											.val(getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_bank_id'))
+											)
+									.append(
+											$('<input/>')
+											.attr('type', 'text')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
+											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_number'))
+											)
+									.append(
+											$('<input/>')
+											.attr('type', 'date')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
+											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_issued_date'))
+											)
+									.append(
+											$('<input/>')
+											.attr('type', 'date')
+											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
+											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
+											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_payable_date'))
+											)
+									);
+							$('#creditPayments').append(
+							newDiv
+							);
+					});
+					}
+			);
+	});
 </script>
 @stop

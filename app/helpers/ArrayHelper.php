@@ -87,6 +87,9 @@ class ArrayHelper
 		if ( ! is_null ( $except ) )
 		{
 			$arrayWithoutExceptElements = self::without ( $array , $except ) ;
+		} else
+		{
+			$arrayWithoutExceptElements = $array ;
 		}
 
 		foreach ( $arrayWithoutExceptElements as $key => $value )

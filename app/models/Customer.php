@@ -22,6 +22,12 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\SellingInvoice' ) ;
 	}
 
+	public function creditInvoices ()
+	{
+		return $this -> hasMany ( 'Models\SellingInvoice' )
+		-> where ( 'is_completely_paid' , '=' , '0' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;

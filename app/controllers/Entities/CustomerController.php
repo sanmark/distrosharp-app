@@ -98,6 +98,26 @@ class CustomerController extends \Controller
 		return \Response::json ( $customers ) ;
 	}
 
+	public function aCreditInvoices ()
+	{
+		$customerId = \Input::get ( 'customerId' ) ;
+
+		$customer = \Models\Customer::findOrFail ( $customerId ) ;
+
+		$creditInvoices = $customer -> creditInvoices ;
+
+		$creditInvoicesWithBalance = [ ] ;
+
+		foreach ( $creditInvoices as $creditInvoice )
+		{
+			$creditInvoice -> balance = $creditInvoice -> getInvoiceBalance () ;
+
+			$creditInvoicesWithBalance[] = $creditInvoice ;
+		}
+
+		return \Response::json ( $creditInvoicesWithBalance ) ;
+	}
+
 	private function getFilterValues ()
 	{
 		$fieldsToRequest = [

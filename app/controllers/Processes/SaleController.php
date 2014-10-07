@@ -51,10 +51,12 @@ class SaleController extends \Controller
 			$stockId					 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
 			-> firstOrFail ()
 			-> lists ( 'id' ) ;
+			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
 			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
+			$this -> validateCreditPayments ( $creditPayments ) ;
 
 			$sellingInvoice = new \Models\SellingInvoice() ;
 
@@ -67,33 +69,9 @@ class SaleController extends \Controller
 			$sellingInvoice -> stock_id					 = $stockId[ 0 ] ;
 
 			$sellingInvoice -> save () ;
+			$this -> saveItems ( $sellingInvoice , $items ) ;
 			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
-
-			$sellingInvoiceId = $sellingInvoice -> id ;
-
-			foreach ( $items as $itemId => $item )
-			{
-				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
-				{
-					$sellingItem = new \Models\SellingItem() ;
-
-					$sellingItem -> selling_invoice_id		 = $sellingInvoiceId ;
-					$sellingItem -> item_id					 = $itemId ;
-					$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
-					$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
-					$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
-					$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
-					$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
-					$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
-					$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
-
-					$sellingItem -> save () ;
-
-					$stockId = \Auth::user () -> stock -> id ;
-
-					$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
-				}
-			}
+			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
 
 			\MessageButler::setSuccess ( 'Selling Invoice was saved successfully.' ) ;
 			return \Redirect::action ( 'processes.sales.add' ) ;
@@ -290,6 +268,47 @@ class SaleController extends \Controller
 				] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
+
+				if ( $validator -> fails () )
+				{
+					$iie				 = new \Exceptions\InvalidInputException() ;
+					$iie -> validator	 = $validator ;
+
+					throw $iie ;
+				}
+			}
+		}
+	}
+
+	private function validateCreditPayments ( $creditPayments )
+	{
+		if ( count ( $creditPayments ) > 0 )
+		{
+			foreach ( $creditPayments as $creditPayment )
+			{
+				$rules = [
+					'cash_amount'			 => [
+						'numeric'
+					] ,
+					'cheque_amount'			 => [
+						'required_with:cheque_bank_id,cheque_number,cheque_issued_date,cheque_payable_date' ,
+						'numeric'
+					] ,
+					'cheque_bank_id'		 => [
+						'required_with:cheque_amount'
+					] ,
+					'cheque_number'			 => [
+						'required_with:cheque_amount'
+					] ,
+					'cheque_issued_date'	 => [
+						'required_with:cheque_amount'
+					] ,
+					'cheque_payable_date'	 => [
+						'required_with:cheque_amount'
+					]
+				] ;
+
+				$validator = \Validator::make ( $creditPayment , $rules ) ;
 
 				if ( $validator -> fails () )
 				{
@@ -664,6 +683,88 @@ class SaleController extends \Controller
 		$chequeDetail -> payable_date		 = $chequePaymentPayableDate ;
 
 		return $chequeDetail -> save () ;
+	}
+
+	private function saveItems ( $sellingInvoice , $items )
+	{
+		$sellingInvoiceId = $sellingInvoice -> id ;
+
+		foreach ( $items as $itemId => $item )
+		{
+			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
+			{
+				$sellingItem = new \Models\SellingItem() ;
+
+				$sellingItem -> selling_invoice_id		 = $sellingInvoiceId ;
+				$sellingItem -> item_id					 = $itemId ;
+				$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
+				$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
+				$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
+				$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
+				$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
+				$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
+				$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
+
+				$sellingItem -> save () ;
+
+				$stockId = \Auth::user () -> stock -> id ;
+
+				$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
+			}
+		}
+	}
+
+	private function saveCreditPayments ( \Models\SellingInvoice $sellingInvoice , $creditPayments )
+	{
+		if ( count ( $creditPayments ) > 0 )
+		{
+			foreach ( $creditPayments as $sellingInvoiceId => $creditPayment )
+			{
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $creditPayment ) )
+				{
+					$sellingInvoiceBeingPaid = \Models\SellingInvoice::with ( 'customer' )
+					-> findOrFail ( $sellingInvoiceId ) ;
+
+					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cash_amount' ] ) )
+					{
+						$cashTargetAccount = \FinanceAccountButler::getCashTargetAccount () ;
+
+						$financeTransfer				 = new \Models\FinanceTransfer() ;
+						$financeTransfer -> from_id		 = $sellingInvoiceBeingPaid -> customer -> finance_account_id ;
+						$financeTransfer -> to_id		 = $cashTargetAccount -> id ;
+						$financeTransfer -> date_time	 = $sellingInvoice -> date_time ;
+						$financeTransfer -> amount		 = $creditPayment[ 'cash_amount' ] ;
+
+						$financeTransfer -> save () ;
+
+						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+					}
+
+					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cheque_amount' ] ) )
+					{
+						$chequeAmount		 = $creditPayment[ 'cheque_amount' ] ;
+						$chequeBankId		 = $creditPayment[ 'cheque_bank_id' ] ;
+						$chequeNumber		 = $creditPayment[ 'cheque_number' ] ;
+						$chequeIssuedDate	 = $creditPayment[ 'cheque_issued_date' ] ;
+						$chequePayableDate	 = $creditPayment[ 'cheque_payable_date' ] ;
+
+						$chequeTargetAccount = \FinanceAccountButler::getChequeTargetAccount () ;
+
+						$financeTransfer				 = new \Models\FinanceTransfer() ;
+						$financeTransfer -> from_id		 = $sellingInvoiceBeingPaid -> customer -> finance_account_id ;
+						$financeTransfer -> to_id		 = $chequeTargetAccount -> id ;
+						$financeTransfer -> date_time	 = $sellingInvoice -> date_time ;
+						$financeTransfer -> amount		 = $creditPayment[ 'cheque_amount' ] ;
+
+						$financeTransfer -> save () ;
+
+						$this -> saveChequeDetail ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
+
+						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+					}
+				}
+			}
+		}
 	}
 
 }

@@ -50,5 +50,10 @@ Route::group ( [
 			'as'	 => 'entities.customers.ajax.forRouteId' ,
 			'uses'	 => 'Controllers\Entities\CustomerController@aForRouteId'
 		] ) ;
+
+		Route::post ( 'creditInvoices' , [
+			'as'	 => 'entities.customers.ajax.creditInvoices' ,
+			'uses'	 => 'Controllers\Entities\CustomerController@aCreditInvoices'
+		] ) ;
 	} ) ;
 } ) ;

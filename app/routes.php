@@ -19,8 +19,8 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	$ft = \Models\FinanceTransfer::findOrFail ( 2 ) ;
-	var_dump ( $ft -> isCheque () ) ;
+	$c = Models\Customer::findOrFail ( 3 ) ;
+	var_dump ( $c -> creditInvoices ) ;
 	dd ( ':D' ) ;
 } ) ;
 
