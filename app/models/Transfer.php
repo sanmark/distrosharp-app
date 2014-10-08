@@ -17,6 +17,11 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\Stock' , 'to_stock_id' ) ;
 	}
 
+	public function transferDetails ()
+	{
+		return $this -> hasMany ( 'Models\TransferDetail' ) ;
+	}
+
 	public function save ( array $options = array () )
 	{
 		$this -> date_time = \DateTimeHelper::convertTextToFormattedDateTime ( $this -> date_time ) ;
@@ -66,7 +71,6 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		return $requestObject -> whereIn ( 'from_stock_id' , $vehicleIds )
 		-> whereNotIn ( 'to_stock_id' , $vehicleIds )
 		-> get () ;
-		
 	}
 
 	public static function filter ( $filterValues )
