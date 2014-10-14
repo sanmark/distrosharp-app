@@ -7,7 +7,7 @@
 	</div>
 	<div class="panel-body">
 
-		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form', 'id' => 'sales-form'])}}
 		<br />
 		<div class="form-group">
 			{{Form::label('id', 'Guessed ID', array('class' => 'col-sm-2 control-label'))}}
@@ -124,13 +124,14 @@
 		</div>
 		@endforeach
 		<div class="form-group">
-			<div class="col-sm-4 col-sm-offset-8">
+			<div class="col-sm-4">
 				<div class="row">
 					<div class="col-sm-4 col-sm-offset-8">
-						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
+						{{Form::text ( 'subTotal', NULL, ['id' => 'sales-total', 'class'=>'form-control text-right', 'readonly'=>TRUE])}}
 					</div>
 				</div>
 			</div>
+			
 		</div>
 		<div class="form-group">
 			{{Form::label('discount', null, array('class' => 'col-sm-2 control-label'))}}
@@ -172,19 +173,20 @@
 				<?php $tab ++ ; ?>
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control'))}}
+						{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control', 'id'=> 'cheque_payment', 'oninput' => 'checkValidit(this)'))}}
+					</div>
+					<div class="col-sm-2">					
+						
+						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control', 'id' => 'cheque_payment_bank_id', 'oninput' => 'checkValidit(this)'))}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
+						{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control', 'id' => 'cheque_payment_cheque_number', 'oninput' => 'checkValidit(this)'))}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control'))}}
+						{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control', 'id' => 'cheque_payment_issued_date', 'oninput' => 'checkValidit(this)'))}}
 					</div>
 					<div class="col-sm-2">
-						{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control'))}}
-					</div>
-					<div class="col-sm-2">
-						{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control'))}}
+						{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control', 'id' => 'cheque_payment_payable_date', 'oninput' => 'checkValidit(this)'))}}
 					</div>
 				</div>
 			</div>
@@ -194,7 +196,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ?>
-				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn-submit btn btn-default pull-right', 'id'=> 'submit'))}}
 			</div>
 		</div>
 
@@ -367,5 +369,37 @@
 					}
 			);
 	});
+
+		function checkValidit(input) {
+			if($('#cheque_payment').val().length !== 0){
+				
+				
+				if($('#cheque_payment_bank_id').val().length === 0){
+					document.getElementById('cheque_payment_bank_id').setCustomValidity("Select the bank.");
+				}else{
+					document.getElementById('cheque_payment_bank_id').setCustomValidity("");
+				}
+				
+				if($('#cheque_payment_cheque_number').val().length === 0){
+					document.getElementById('cheque_payment_cheque_number').setCustomValidity("Ente cheque number.");
+				}else{
+					document.getElementById('cheque_payment_cheque_number').setCustomValidity("");
+				}
+				
+				if($('#cheque_payment_issued_date').val().length === 0){
+					document.getElementById('cheque_payment_issued_date').setCustomValidity("Select the issue date.");
+				}else{
+					document.getElementById('cheque_payment_issued_date').setCustomValidity("");
+				}
+				
+				if($('#cheque_payment_payable_date').val().length === 0){
+					document.getElementById('cheque_payment_payable_date').setCustomValidity("Select the payable date");
+				}else{
+					document.getElementById('cheque_payment_payable_date').setCustomValidity("");
+				}
+			}else{
+				return;
+			}
+		};
 </script>
 @stop

@@ -382,3 +382,6 @@ body{
 .home-panel-overflow{
 	overflow-y: scroll;
 }
+.form_messages{
+	color: red;
+}
