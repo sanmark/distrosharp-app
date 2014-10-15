@@ -157,18 +157,48 @@ function calculateLineTotal()
 	});
 }
 
+function displayNetTotal()
+{
+	$(document).on('change keyup', '.saleDetail', function () {
+		var netTotal = null;
+		$('.lineTotal').each(function () {
+			var value = parseFloat($(this).val());
+			if (!isNaN(value)) {
+				netTotal += value;
+			}
+		});
+		$("input[name='netTotal']").val(netTotal);
+	});
+}
+
 function displaySubTotal()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var subTotal = null;
-		$('.lineTotal').each(function () {
-			console.log($(this).val());
-			var value = parseFloat($(this).val());
-			if (!isNaN(value)) {
-				subTotal += value;
-			}
-		});
-		$("input[name='subTotal']").val(subTotal);
+		var net = $('#netTotal').val();
+		var disc = $('#discount').val();
+		$('#subTotal').val((net - disc ? net - disc : 0));
+	});
+}
+
+function displayBalance()
+{
+	$(document).on('change keyup', '.saleDetail', function () {
+		var sub = $('#subTotal').val();
+		var cash = $('#cash_payment').val();
+		var cheque = $('#cheque_payment').val();
+		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0));
+	});
+}
+
+function displayIsCompletelyPaid()
+{
+	$(document).on('change keyup', '.saleDetail', function () {
+		var balance = $('#balance').val();
+		if (balance <= 0) {
+			$('.myCheckbox').attr('checked', 'checked');
+		} else {
+			$('.myCheckbox').removeAttr('checked');
+		}
 	});
 }
 
