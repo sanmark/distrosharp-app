@@ -131,7 +131,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 		</div>
 		<div class="form-group">
 			{{Form::label('discount', null, array('class' => 'col-sm-2 control-label'))}}
@@ -175,8 +175,8 @@
 					<div class="col-sm-2">
 						{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control', 'id'=> 'cheque_payment', 'oninput' => 'checkValidit(this)'))}}
 					</div>
-					<div class="col-sm-2">					
-						
+					<div class="col-sm-2">
+
 						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control', 'id' => 'cheque_payment_bank_id', 'oninput' => 'checkValidit(this)'))}}
 					</div>
 					<div class="col-sm-2">
@@ -207,199 +207,12 @@
 @stop
 
 @section('file-footer')
+<script src="/js/processes/sales/add.js"></script>
 <script>
-	$(document).ready(function() {
-	$('#route_id').change();
-			setTimeout(function() {
-			$("#customer_id").val({{Input::old('customer_id')}});
-					$("#customer_id").change();
-			}, 2000);
-	});</script>
-
-<script>
-			$(document).on('change', '#route_id', function() {
-	routeId = $('#route_id').val();
-			$('#customer_id').find('option').remove();
-			$('#customer_id').append(
-			$('<option value=""></option>').
-			text('Select')
-			);
-			$.post(
-					"{{URL::action('entities.customers.ajax.forRouteId')}}",
-			{
-			_token: "{{csrf_token()}}",
-					routeId: routeId
-			},
-					function(data) {
-					$.each(data, function(index, customer) {
-					$('#customer_id').append(
-							$('<option></option>')
-							.attr('value', customer.id)
-							.text(customer.name)
-							);
-					});
-					}
-			);
-	});</script>
-
-<script>
-			$(document).on('change keyup', '.saleDetail', function() {
-	var itemId = $(this).attr('data-item-id');
-			var price = $("input[name='items[" + itemId + "][price]']").val();
-			var paid_quantity = $("input[name='items[" + itemId + "][paid_quantity]']").val();
-			var good_return_price = $("input[name='items[" + itemId + "][good_return_price]']").val();
-			var good_return_quantity = $("input[name='items[" + itemId + "][good_return_quantity]']").val();
-			var company_return_price = $("input[name='items[" + itemId + "][company_return_price]']").val();
-			var company_return_quantity = $("input[name='items[" + itemId + "][company_return_quantity]']").val();
-			var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
-			$("input[name='items[" + itemId + "][line_total]']").val(lineTotal);
-			displaySubTotal();
-	});
-			function displaySubTotal() {
-			var subTotal = null;
-					$('.lineTotal').each(function() {
-			var value = parseFloat($(this).val());
-					if (!isNaN(value)) {
-			subTotal += value;
-			}
-			});
-					$("input[name='subTotal']").val(subTotal);
-			}
-</script>
-
-<script>
-	var oldCreditPayments = jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}');
-			function getOldCreditPaymentDetails(index, property){
-			if (oldCreditPayments){
-			if (oldCreditPayments[index]){
-			if (oldCreditPayments[index][property]){
-			return oldCreditPayments[index][property];
-			}
-			}
-			} else if (property == "cheque_issued_date"){
-			return "{{date('Y-m-d')}}";
-			}
-			return null;
-			}
-	$(document).on('change', '#customer_id', function(){
-	$('#creditPayments').html('');
-			var customerId = $(this).val();
-			$.post(
-					"{{URL::action('entities.customers.ajax.creditInvoices')}}",
-			{
-			_token:"{{csrf_token()}}",
-					customerId:customerId
-			},
-					function(data){
-					$.each(data, function(index, sellingInvoice){
-					var newDiv = $('<div></div>');
-							newDiv.append(
-									$('<div></div>')
-									.append(sellingInvoice.id)
-									);
-							newDiv.append(
-									$('<div></div>')
-									.append(sellingInvoice.date_time)
-									);
-							newDiv.append(
-									$('<div></div>')
-									.append(sellingInvoice.balance)
-									);
-							newDiv.append(
-									$('<div></div>')
-									.append(
-											$('<label></label>')
-											.attr('for', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-											.text('Cash Amount')
-											)
-									.append(
-											$('<input/>')
-											.attr('type', 'number')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
-											)
-									);
-							newDiv.append(
-									$('<div></div>')
-									.append(
-											$('<label></label>')
-											.attr('for', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-											.text('Cheque Amount')
-											)
-									.append(
-											$('<input/>')
-											.attr('type', 'number')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_amount'))
-											)
-									.append(
-											$('{{Form::select(null, $banksList, null, array("class" => ""))}}')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
-											.val(getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_bank_id'))
-											)
-									.append(
-											$('<input/>')
-											.attr('type', 'text')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
-											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_number'))
-											)
-									.append(
-											$('<input/>')
-											.attr('type', 'date')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
-											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_issued_date'))
-											)
-									.append(
-											$('<input/>')
-											.attr('type', 'date')
-											.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
-											.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
-											.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_payable_date'))
-											)
-									);
-							$('#creditPayments').append(
-							newDiv
-							);
-					});
-					}
-			);
-	});
-
-		function checkValidit(input) {
-			if($('#cheque_payment').val().length !== 0){
-				
-				
-				if($('#cheque_payment_bank_id').val().length === 0){
-					document.getElementById('cheque_payment_bank_id').setCustomValidity("Select the bank.");
-				}else{
-					document.getElementById('cheque_payment_bank_id').setCustomValidity("");
-				}
-				
-				if($('#cheque_payment_cheque_number').val().length === 0){
-					document.getElementById('cheque_payment_cheque_number').setCustomValidity("Ente cheque number.");
-				}else{
-					document.getElementById('cheque_payment_cheque_number').setCustomValidity("");
-				}
-				
-				if($('#cheque_payment_issued_date').val().length === 0){
-					document.getElementById('cheque_payment_issued_date').setCustomValidity("Select the issue date.");
-				}else{
-					document.getElementById('cheque_payment_issued_date').setCustomValidity("");
-				}
-				
-				if($('#cheque_payment_payable_date').val().length === 0){
-					document.getElementById('cheque_payment_payable_date').setCustomValidity("Select the payable date");
-				}else{
-					document.getElementById('cheque_payment_payable_date').setCustomValidity("");
-				}
-			}else{
-				return;
-			}
-		};
+loadPreviousValuesOnUnsuccessfulRedirectBack("{{Input::old('customer_id')}}");
+populateCustomersForRoute("{{csrf_token()}}");
+loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
+calculateLineTotal();
+displaySubTotal();
 </script>
 @stop
