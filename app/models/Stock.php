@@ -22,6 +22,16 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\StockType' ) ;
 	}
 
+	public function loadings ()
+	{
+		return $this -> hasMany ( 'Models\Transfer' , 'to_stock_id' ) ;
+	}
+
+	public function unloadings ()
+	{
+		return $this -> hasMany ( 'Models\Transfer' , 'from_stock_id' ) ;
+	}
+
 	public function totalItemQuantities ()
 	{
 		$goodQuantity	 = $this -> goodQuantities () ;
@@ -50,6 +60,32 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$returnQuantity = $stockDetails -> lists ( 'return_quantity' , 'item_id' ) ;
 
 		return $returnQuantity ;
+	}
+
+	public function isUnloaded ()
+	{
+		$lastLoadTime	 = $this -> loadings -> last ()[ 'date_time' ] ;
+		$lastUnloadTime	 = $this -> unloadings -> last ()[ 'date_time' ] ;
+
+		if ( $lastLoadTime != NULL && $lastUnloadTime != NULL && $lastUnloadTime > $lastLoadTime )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
+	}
+
+	public function isLoaded ()
+	{
+		$lastLoadTime	 = $this -> loadings -> last ()[ 'date_time' ] ;
+		$lastUnloadTime	 = $this -> unloadings -> last ()[ 'date_time' ] ;
+
+		if ( $lastLoadTime != NULL && $lastLoadTime > $lastUnloadTime )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
 	}
 
 	public function update ( array $attributes = array () )

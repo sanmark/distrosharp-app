@@ -204,3 +204,35 @@ function checkValidit(input)
 		return;
 	}
 }
+function checkPaidAndFreeSum()
+{
+	var itemAmount = document.getElementsByName('item_list_amount')[0].value;
+	var trueFalse = [];
+	for (var i = 1; i <= itemAmount; i++)
+	{
+		var freeQuantity = document.getElementsByName('items[' + i + '][free_quantity]')[0].value;
+		var availableQuantity = document.getElementsByName('items[' + i + '][available_quantity]')[0].value;
+		var paidQuantity = document.getElementsByName('items[' + i + '][paid_quantity]')[0].value;
+		var sumOfFreeAndPaid = Number(paidQuantity) + Number(freeQuantity);
+		var input = document.getElementsByName('items[' + i + '][free_quantity]')[0];
+		if (sumOfFreeAndPaid > availableQuantity)
+		{
+			input.setCustomValidity("Sum of free and paid is higher than " + availableQuantity + "");
+			trueFalse.push("1");
+		}
+		else
+		{
+			input.setCustomValidity("");
+			trueFalse.push("0");
+		}
+	}
+	var resultArray = trueFalse.indexOf("1");
+	if (resultArray !== (-1))
+	{
+		return true;
+	}
+	else if (resultArray == (-1))
+	{
+		return false;
+	}
+}

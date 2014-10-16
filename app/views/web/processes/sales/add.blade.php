@@ -6,8 +6,7 @@
 		<h3 class="panel-title">Add Sale</h3>
 	</div>
 	<div class="panel-body">
-
-		{{Form::open(['class'=>'form-horizontal', 'role'=>'form', 'id' => 'sales-form'])}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'checkPaidAndFreeSum()'])}}
 		<br />
 		<div class="form-group">
 			{{Form::label('id', 'Guessed ID', array('class' => 'col-sm-2 control-label'))}}
@@ -87,16 +86,16 @@
 								{{Form::hidden('items['.$item->id.'][available_quantity]', $stockDetails[$item->id]['good_quantity'])}}
 							</div>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+								{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail paid_quantity', 'data-item-id'=>$item->id, 'step'=>0.01))}}
 							</div>
 
 							<div class="col-sm-2">
 								<?php $tab ++ ; ?>
-								{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+								{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity']))}}
 							</div>
 							<?php $tab ++ ; ?>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+								{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity']))}}
 							</div>
 							<div class="col-sm-2">
 								{{Form::input('number','items['.$item->id.'][good_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
@@ -196,10 +195,10 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ?>
-				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn-submit btn btn-default pull-right', 'id'=> 'submit'))}}
+				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn btn-default pull-right','onclick'=>'checkPaidAndFreeSum()'))}}
 			</div>
 		</div>
-
+		{{Form::hidden('item_list_amount',count($items))}}
 		{{Form::close()}}
 
 	</div>
@@ -214,5 +213,6 @@ populateCustomersForRoute("{{csrf_token()}}");
 loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
 calculateLineTotal();
 displaySubTotal();
+checkPaidAndFreeSum();
 </script>
 @stop

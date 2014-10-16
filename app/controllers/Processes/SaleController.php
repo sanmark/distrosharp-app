@@ -7,29 +7,35 @@ class SaleController extends \Controller
 
 	public function add ()
 	{
-		$customers			 = [ NULL => 'Select Route First' ] ;
-		$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
-		$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
-		-> orderBy ( 'selling_invoice_order' , 'ASC' )
-		-> get () ;
-		$user				 = \Auth::user () ;
-		$user				 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
-		$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
-		$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
-		$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
-		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		if ( \Auth::user () -> stock -> isLoaded () )
+		{
+			$customers			 = [ NULL => 'Select Route First' ] ;
+			$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
+			-> orderBy ( 'selling_invoice_order' , 'ASC' )
+			-> get () ;
+			$user				 = \Auth::user () ;
+			$user				 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
+			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
+			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
+			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+			$data				 = compact ( [
+				'customers' ,
+				'routes' ,
+				'items' ,
+				'stockDetails' ,
+				'guessedInvoiceId' ,
+				'currentDateTime' ,
+				'banksList'
+			] ) ;
 
-		$data = compact ( [
-			'customers' ,
-			'routes' ,
-			'items' ,
-			'stockDetails' ,
-			'guessedInvoiceId' ,
-			'currentDateTime' ,
-			'banksList' ,
-		] ) ;
-
-		return \View::make ( 'web.processes.sales.add' , $data ) ;
+			return \View::make ( 'web.processes.sales.add' , $data ) ;
+		} else
+		{
+			\MessageButler::setError ( 'Please load your stock before sale.' ) ;
+			return \View::make ( 'web.processes.sales.not-loaded' ) ;
+		}
 	}
 
 	public function save ()
@@ -85,6 +91,7 @@ class SaleController extends \Controller
 
 	public function all ()
 	{
+
 		$filterValues			 = \Input::all () ;
 		$sellingInvoices		 = \Models\SellingInvoice::filter ( $filterValues ) ;
 		$customerSelectBox		 = \Models\Customer::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
