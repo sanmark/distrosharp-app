@@ -101,6 +101,68 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $totalPaymentValue ;
 	}
 
+	public function getPaymentValueByCash ()
+	{
+		$paymentValueByCash = 0 ;
+
+		$this -> load ( 'financeTransfers' ) ;
+
+		$financeTransfers = $this -> financeTransfers ;
+
+		foreach ( $financeTransfers as $financeTransfer )
+		{
+			if ( $financeTransfer -> isCash () )
+			{
+				$paymentValueByCash += $financeTransfer -> amount ;
+			} else
+			{
+				$paymentValueByCash += 0 ;
+			}
+		}
+
+		return $paymentValueByCash ;
+	}
+
+	public function getPaymentValueByCheque ()
+	{
+		$paymentValueByCheque = 0 ;
+
+		$this -> load ( 'financeTransfers' ) ;
+
+		$financeTransfers = $this -> financeTransfers ;
+
+		foreach ( $financeTransfers as $financeTransfer )
+		{
+			if ( $financeTransfer -> isCheque () )
+			{
+				$paymentValueByCheque += $financeTransfer -> amount ;
+			} else
+			{
+				$paymentValueByCheque += 0 ;
+			}
+		}
+
+		return $paymentValueByCheque ;
+	}
+
+	public function getInvoiceCredit ()
+	{
+		$ByCash	 = $this -> getPaymentValueByCash () ;
+		$Cheque	 = $this -> getPaymentValueByCheque () ;
+
+		$paidAmount = $ByCash + $Cheque ;
+
+		$Credit = $this -> getInvoiceTotal () - $paidAmount ;
+ 
+		return $Credit ;
+	}
+
+	public function getGrossAmount ()
+	{
+		$grossAmount = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () ;
+		return $grossAmount ;
+	}
+
 	public function getInvoiceBalance ()
 	{
 		$invoiceTotal		 = $this -> getInvoiceTotal () ;
@@ -110,8 +172,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$invoiceBalance = $invoiceTotal - $totalPaymentValue - $discount ;
 
 		return $invoiceBalance ;
-	}
-
+	} 
+	
 	public function isInvoiceBalanceZero ()
 	{
 		$invoiceBalance = $this -> getInvoiceBalance () ;
@@ -234,12 +296,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$requestObject	 = $requestObject -> with ( 'rep' ) ;
 
 		$requestObject -> get () ;
-
-		//$queries	 = \DB::getQueryLog () ;
-		//$last_query	 = end ( $queries ) ;
-
-		//dd ( $last_query ) ;
-
+ 
 		return $requestObject -> get () ;
 	}
 
@@ -298,6 +355,75 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				$requestObject = $requestObject -> where ( 'is_completely_paid' , '=' , $isCompletelyPaid ) ;
 			}
 		}
+		return $requestObject ;
+	}
+
+	public static function filterForSalesSummary ( $filterValues )
+	{
+		$requestObject = new SellingInvoice() ;
+
+		$requestObject = self::prepareRequestObjectForfilterForSalesSummary ( $requestObject , $filterValues ) ;
+
+		$requestObject	 = $requestObject -> with ( 'customer' ) ;
+		$requestObject	 = $requestObject -> with ( 'rep' ) ;
+
+		return $requestObject -> get () ;
+	}
+
+	private static function prepareRequestObjectForfilterForSalesSummary ( SellingInvoice $requestObject , array $filterValues )
+	{
+
+		if ( count ( $filterValues ) > 0 )
+		{
+
+			$route_id		 = $filterValues[ 'route_id' ] ;
+			$customer_id	 = $filterValues[ 'customer_id' ] ;
+			$rep_id			 = $filterValues[ 'rep_id' ] ;
+			$date_from		 = $filterValues[ 'date_from' ] ;
+			$date_to		 = $filterValues[ 'date_to' ] ;
+			$invoice_number	 = $filterValues[ 'invoice_number' ] ;
+ 
+			if ( strlen ( $customer_id ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'customer_id' , '=' , $customer_id ) ;
+			}
+			if ( strlen ( $route_id ) > 0 )
+			{
+				$customers = \Models\Customer::where ( 'route_id' , '=' , $route_id ) -> lists ( 'id' ) ;
+				if ( !$customers )
+				{
+					$customers [0] = NULL;
+				}
+				$requestObject = $requestObject -> whereIn ( 'customer_id' , $customers ) ;
+			}
+			if ( strlen ( $rep_id ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $rep_id ) ;
+			}
+
+			if ( strlen ( $date_from ) > 0 && strlen ( $date_to ) > 0 )
+			{
+				$date_from	 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_from ) ;
+				$date_to	 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_to ) ;
+
+				$datesAndTimes = [$date_from , $date_to ] ;
+
+				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
+			} elseif ( strlen ( $date_from ) > 0 )
+			{
+				$date_from		 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_from ) ;
+				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_from ) ;
+			} elseif ( strlen ( $date_to ) > 0 )
+			{
+				$date_to		 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_to ) ;
+				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_to ) ;
+			}
+			if ( strlen ( $invoice_number ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;
+			}
+		} 
+		
 		return $requestObject ;
 	}
 

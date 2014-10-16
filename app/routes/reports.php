@@ -52,4 +52,14 @@ Route::group ( [
 		'before' => ['hasAbilities:view_age_credit_report' ] ,
 		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
 	] ) ;
+	Route::get ( 'salesSummary' , [
+		'as'	 => 'reports.salesSummary' ,
+		'before' => ['hasAbilities:view_sales_summary_report' ] ,
+		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
+	] ) ; 
+	Route::post( 'salesSummary' , [
+		'as'	 => 'reports.salesSummary' ,
+		'before' => ['hasAbilities:view_sales_summary_report' ] ,
+		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
+	] ) ;
 } ) ;
