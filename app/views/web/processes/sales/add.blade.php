@@ -23,7 +23,7 @@
 		<div class="form-group">
 			{{Form::label('route_id', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('route_id',$routes, null, array('tabindex'=>'1', 'class' => 'form-control','required'=>true))}}
+				{{Form::select('route_id',$routes, Session::get('oldRouteId'), array('tabindex'=>'1', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">

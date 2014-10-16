@@ -54,10 +54,12 @@ class SaleController extends \Controller
 			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
 			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
 			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
-			$stockId					 = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
+			$oldRouteId					 = \Input::get ( 'route_id' ) ;
+			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
+
+			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
 			-> firstOrFail ()
 			-> lists ( 'id' ) ;
-			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
 
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
@@ -80,7 +82,8 @@ class SaleController extends \Controller
 			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
 
 			\MessageButler::setSuccess ( 'Selling Invoice was saved successfully.' ) ;
-			return \Redirect::action ( 'processes.sales.add' ) ;
+			return \Redirect::action ( 'processes.sales.add' )
+			-> with ( 'oldRouteId' , $oldRouteId ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
