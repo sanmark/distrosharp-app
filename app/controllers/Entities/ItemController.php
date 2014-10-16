@@ -28,8 +28,14 @@ class ItemController extends \Controller
 	}
 
 	public function add ()
-	{
-		return \View::make ( 'web.entities.items.add' ) ;
+	{ 
+		$minimumAvailableItemCode = \ItemButler::getMinimumAvailableItemCode () ;
+
+		$data = compact ( [
+			'minimumAvailableItemCode' ,
+		] ) ;
+
+		return \View::make ( 'web.entities.items.add' , $data ) ; 
 	}
 
 	public function save ()

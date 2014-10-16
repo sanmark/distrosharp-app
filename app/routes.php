@@ -19,9 +19,7 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	$c = Models\Customer::findOrFail ( 3 ) ;
-	var_dump ( $c -> creditInvoices ) ;
-	dd ( ':D' ) ;
+	var_dump(ItemButler::getMinimumAvailableItemCode());
 } ) ;
 
 

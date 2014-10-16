@@ -12,7 +12,7 @@
 		<div class="form-group">
 			{{Form::label('code','Item Code', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::text('code', null, array('tabindex' => '1', 'class' => 'form-control', 'required'=>true,'pattern'=>'[^\s]+','title'=>'Empty spaces not allowed'))}}
+				{{Form::text('code', $minimumAvailableItemCode, array('tabindex' => '1', 'class' => 'form-control', 'required'=>true,'pattern'=>'[^\s]+','title'=>'Empty spaces not allowed'))}}
 			</div>
 		</div>
 		<div class="form-group">
