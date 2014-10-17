@@ -238,7 +238,7 @@
 			</div>
 		</div>
 
-		<div id="creditPayments" class="form-group">
+		<div id="creditPayments" class="">
 		</div>
 
 		<div class="form-group">

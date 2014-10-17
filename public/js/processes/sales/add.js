@@ -47,82 +47,251 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 			_token: csrfToken,
 			customerId: customerId
 		}, function (data) {
+
+			if (data.length > 0) {
+				var formGroupTitle = $('<div></div>');
+				formGroupTitle
+					.attr('class', 'row');
+				formGroupTitle.append(
+					$('<div></div>')
+					.attr('class', 'col -sm-10 col-sm-offset-2')
+					.attr('style', 'padding-left: 0; border-top: 1px solid #000; margin-bottom: 20px;')
+					.append($('<h4></h4>')
+						.attr('class', 'mainTitle')
+						.attr('style', 'font-weight: bold;')
+						.append('Late Credit Payments')
+						)
+					);
+				$('#creditPayments').append(formGroupTitle);
+			}
+
 			$.each(data, function (index, sellingInvoice) {
 				var newDiv = $('<div></div>');
 
-				newDiv.append(
-					$('<div></div>')
-					.append(sellingInvoice.id)
-					);
+				newDiv
+					.attr('style', 'padding-bottom: 15px;');
 
-				newDiv.append(
-					$('<div></div>')
-					.append(sellingInvoice.date_time)
-					);
+				var formGroupOne = $('<div></div>');
+				var formGroupTwo = $('<div></div>');
+				var formGroupThree = $('<div></div>');
 
-				newDiv.append(
-					$('<div></div>')
-					.append(sellingInvoice.balance)
-					);
+				formGroupOne
+					.attr('class', 'form-group');
+				formGroupTwo
+					.attr('class', 'form-group');
+				formGroupThree
+					.attr('class', 'form-group');
 
-				newDiv.append(
-					$('<div></div>')
-					.append(
-						$('<label></label>')
-						.attr('for', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-						.text('Cash Amount')
-						)
-					.append(
-						$('<input/>')
-						.attr('type', 'number')
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
-						.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
-						)
-					);
 
-				newDiv.append(
-					$('<div></div>')
+				var formGroupOne_Seven = $('<div></div>')
+					.attr('class', 'col-sm-7 col-sm-offset-2')
 					.append(
-						$('<label></label>')
-						.attr('for', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-						.text('Cheque Amount')
-						)
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'padding-top: 15px; border-top-left-radius: 4px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3 text-right')
+							.append('Invoice Number :')
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-2')
+							.append(sellingInvoice.id)
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-2 text-right')
+							.append('Date :')
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.append(sellingInvoice.date_time)
+							)
+						);
+
+				var formGroupOne_Three = $('<div></div>')
+					.attr('class', 'col-sm-3')
 					.append(
-						$('<input/>')
-						.attr('type', 'number')
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
-						.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_amount'))
-						)
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'padding-top: 15px; border-top-right-radius: 4px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6 text-right')
+							.append($('<div></div>')
+								.append('Credit Amount :')
+								)
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6')
+							.append($('<div></div>')
+								.append(sellingInvoice.balance)
+								)
+							)
+						);
+
+
+				var formGroupTwo_Seven = $('<div></div>')
+					.attr('class', 'col-sm-7 col-sm-offset-2')
 					.append(
-						$(bankSelect)
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
-						.val(getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_bank_id'))
-						)
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'padding-bottom: 2px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.attr('style', 'padding-top: 37px;')
+							.append('Bank')
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.attr('style', 'padding-top: 37px;')
+							.append('Cheque Number')
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.attr('style', 'padding-top: 37px;')
+							.append('Issued Date')
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.attr('style', 'padding-top: 37px;')
+							.append('Payable Date')
+							)
+						);
+
+
+				var formGroupTwo_Three = $('<div></div>')
+					.attr('class', 'col-sm-3')
 					.append(
-						$('<input/>')
-						.attr('type', 'text')
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
-						.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_number'))
-						)
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'padding-top: 2px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6 text-right')
+							.append($('<label></label>')
+								.attr('class', 'control-label')
+								.attr('for', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+								.text('Cash Amount')
+								)
+							)
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6')
+							.append($('<input/>')
+								.attr('type', 'number')
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
+								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
+								)
+							)
+						);
+
+
+				var formGroupThree_Seven = $('<div></div>')
+					.attr('class', 'col-sm-7 col-sm-offset-2')
 					.append(
-						$('<input/>')
-						.attr('type', 'date')
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
-						.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_issued_date'))
-						)
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'border-bottom-left-radius: 4px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.append($(bankSelect)
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_bank_id]')
+								.val(getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_bank_id'))
+								)
+							)
+
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.append($('<input/>')
+								.attr('type', 'text')
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_number]')
+								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_number'))
+								)
+							)
+
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.append($('<input/>')
+								.attr('type', 'date')
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_issued_date]')
+								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_issued_date'))
+								)
+							)
+
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-3')
+							.append($('<input/>')
+								.attr('type', 'date')
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
+								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_payable_date'))
+								)
+							)
+
+						);
+
+
+				var formGroupThree_Three = $('<div></div>')
+					.attr('class', 'col-sm-3')
 					.append(
-						$('<input/>')
-						.attr('type', 'date')
-						.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
-						.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_payable_date]')
-						.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_payable_date'))
-						)
-					);
+						$('<div></div>')
+						.attr('class', 'row bgcolor')
+						.attr('style', 'border-bottom-right-radius: 4px;')
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6 text-right')
+							.append($('<label></label>')
+								.attr('class', 'control-label')
+								.attr('for', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+								.text('Cheque Amount')
+								)
+							)
+
+						.append(
+							$('<div></div>')
+							.attr('class', 'col-sm-6')
+							.append($('<input/>')
+								.attr('type', 'number')
+								.attr('class', 'form-control')
+								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
+								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_amount'))
+								)
+							)
+						);
+
+
+				formGroupOne.append(formGroupOne_Seven);
+				formGroupOne.append(formGroupOne_Three);
+				formGroupTwo.append(formGroupTwo_Seven);
+				formGroupTwo.append(formGroupTwo_Three);
+				formGroupThree.append(formGroupThree_Seven);
+				formGroupThree.append(formGroupThree_Three);
+
+				newDiv.append(formGroupOne);
+				newDiv.append(formGroupTwo);
+				newDiv.append(formGroupThree);
 
 				$('#creditPayments').append(newDiv);
 			});
@@ -234,6 +403,7 @@ function checkValidit(input)
 		return;
 	}
 }
+
 function checkPaidAndFreeSum()
 {
 	var itemAmount = document.getElementsByName('item_list_amount')[0].value;

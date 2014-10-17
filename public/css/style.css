@@ -129,6 +129,9 @@ body{
 	margin-top: 10px;
 }
 
+#creditPayments .bgcolor{background-color: #ECECEC; padding-bottom: 15px;}
+#creditPayments .form-group{margin-bottom: 0;}
+
 /* ================== fix to show file extention on rename ============ */
 .elfinder-button {
 	width: 25px !important;

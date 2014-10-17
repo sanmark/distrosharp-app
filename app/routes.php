@@ -1,7 +1,7 @@
 <?php
 
-//$currentTimeZone = \SystemSettingButler::getValue ( 'time_zone' ) ;
-//date_default_timezone_set ( $currentTimeZone ) ;
+$currentTimeZone = \SystemSettingButler::getValue ( 'time_zone' ) ;
+date_default_timezone_set ( $currentTimeZone ) ;
 /*
   |--------------------------------------------------------------------------
   | Application Routes
@@ -19,7 +19,7 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	var_dump(ItemButler::getMinimumAvailableItemCode());
+	dd ( date ( 'Y-m-d H:i:s' ) ) ;
 } ) ;
 
 
