@@ -12,6 +12,7 @@
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.paymentSourceAccounts'),'Payment Source Accounts')}}</li>
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.paymentTargetAccounts'),'Payment Target Accounts')}}</li>
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.timezone'),'Time Zone')}}</li>
+			<li class="list-group-item">{{HTML::link(URL::action('system.settings.imbalanceStock'),'Imbalance Stock')}}</li>
 		</ul>
 
 	</div>

@@ -42,4 +42,14 @@ Route::group ( [
 		'as'	 => 'system.settings.paymentTargetAccounts' ,
 		'uses'	 => 'Controllers\System\SettingsController@updatePaymentTargetAccounts'
 	] ) ;
+
+	Route::get ( 'imbalance-stock' , [
+		'as'	 => 'system.settings.imbalanceStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@showImbalanceStock'
+	] ) ;
+	
+	Route::post ( 'imbalance-stock' , [
+		'as'	 => 'system.settings.imbalanceStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateImbalanceStock'
+	] ) ;
 } ) ;

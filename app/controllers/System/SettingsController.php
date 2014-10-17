@@ -117,4 +117,37 @@ class SettingsController extends \Controller
 		}
 	}
 
+	public function showImbalanceStock ()
+	{
+		$stocksForHtmlSelect = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+
+		$imbalanceStockId = \SystemSettingButler::getValue ( 'imbalance_stock' ) ;
+
+		$data = compact ( [
+			'stocksForHtmlSelect' ,
+			'imbalanceStockId'
+		] ) ;
+
+		return \View::make ( 'web.system.settings.imbalanceStock' , $data ) ;
+	}
+
+	public function updateImbalanceStock ()
+	{
+		try
+		{
+			$imbalanceStockId = \Input::get ( 'imbalance_stock' ) ;
+
+			\SystemSettingButler::setValue ( 'imbalance_stock' , $imbalanceStockId ) ;
+
+			\MessageButler::setSuccess ( 'Imbalance Stock was updated successfully.' ) ;
+
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
 }

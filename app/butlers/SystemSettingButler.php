@@ -26,9 +26,10 @@ class SystemSettingButler
 		$requestObject	 = new \Models\SystemSettable() ;
 		$requestObject	 = $requestObject -> where ( 'name' , '=' , $systemSettingName ) ;
 
-		$systemSettable			 = $requestObject -> firstOrFail () ;
-		$systemSetting			 = $systemSettable -> systemSetting ;
-		$systemSetting -> value	 = $value ;
+		$systemSettable	 = $requestObject -> firstOrFail () ;
+		$systemSetting	 = $systemSettable -> getSystemSettingOrNew () ;
+
+		$systemSetting -> value = $value ;
 
 		return $systemSetting -> update () ;
 	}
