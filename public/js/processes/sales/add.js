@@ -187,7 +187,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 							.attr('class', 'col-sm-6')
 							.append($('<input/>')
 								.attr('type', 'number')
-								.attr('class', 'form-control')
+								.attr('class', 'form-control text-right')
 								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
@@ -273,10 +273,11 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 							.attr('class', 'col-sm-6')
 							.append($('<input/>')
 								.attr('type', 'number')
-								.attr('class', 'form-control')
+								.attr('class', 'form-control late_cheque_payment text-right')
 								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
 								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cheque_amount]')
 								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cheque_amount'))
+								.attr('data-selling-invoice-id', sellingInvoice.id)
 								)
 							)
 						);
@@ -435,4 +436,23 @@ function checkPaidAndFreeSum()
 	{
 		return false;
 	}
+}
+
+function validateChequeDetails()
+{
+	$(document).on('change keyup', '#cheque_payment', function () {
+		var cheqPay = $('#cheque_payment').val();
+
+		if (cheqPay.length > 0) {
+			$("#cheque_payment_bank_id").prop('required', true);
+			$("#cheque_payment_cheque_number").prop('required', true);
+			$("#cheque_payment_issued_date").prop('required', true);
+			$("#cheque_payment_payable_date").prop('required', true);
+		} else {
+			$("#cheque_payment_bank_id").prop('required', false);
+			$("#cheque_payment_cheque_number").prop('required', false);
+			$("#cheque_payment_issued_date").prop('required', false);
+			$("#cheque_payment_payable_date").prop('required', false);
+		}
+	});
 }

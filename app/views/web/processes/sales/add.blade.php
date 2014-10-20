@@ -9,7 +9,7 @@
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form','onsubmit'=>'checkPaidAndFreeSum()'])}}
 		<br />
 		<div class="form-group">
-			{{Form::label('id', 'Guessed ID', array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('id', 'System Inv. Id', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::label('id', $guessedInvoiceId, array('class' => 'form-control','required'=>true, 'disabled'=>TRUE))}}
 			</div>
@@ -21,13 +21,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('route_id', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('route_id', 'Route', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::select('route_id',$routes, Session::get('oldRouteId'), array('tabindex'=>'1', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
-			{{Form::label('customer_id', null, array('class' => 'col-sm-2 control-label'))}}
+			{{Form::label('customer_id', 'Customer', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::select('customer_id',$customers, null,array('tabindex'=>'2', 'class' => 'form-control','required'=>true))}}
 			</div>
@@ -45,16 +45,16 @@
 						<div class="row">
 							<div class="col-sm-2"><b>Available</b></div>
 							<div class="col-sm-2"><b>Price</b></div>
-							<div class="col-sm-2"><b>Paid Q</b></div>
-							<div class="col-sm-2"><b>Free Q</b></div>
+							<div class="col-sm-2"><b>Paid Qty</b></div>
+							<div class="col-sm-2"><b>Free Qty</b></div>
 							<div class="col-sm-2"><b>GR Price</b></div>
-							<div class="col-sm-2"><b>GR Q</b></div>
+							<div class="col-sm-2"><b>GR Qty</b></div>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="row">
 							<div class="col-sm-4"><b>CR Price</b></div>
-							<div class="col-sm-4"><b>CR Q</b></div>
+							<div class="col-sm-4"><b>CR Qty</b></div>
 							<div class="col-sm-4"><b>Line Total</b></div>
 						</div>
 					</div>
@@ -192,16 +192,16 @@
 						<?php $tab ++ ; ?>
 						<div class="row" style="background-color: #ECECEC; padding: 5px 0; border-radius: 4px 0 0 4px;">
 							<div class="col-sm-3">
-								{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
+								{{Form::select('cheque_payment_bank_id', $banksList, null, array('id' => 'cheque_payment_bank_id', 'class' => 'form-control'))}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control'))}}
+								{{Form::text('cheque_payment_cheque_number', null, array('id' => 'cheque_payment_cheque_number', 'class' => 'form-control'))}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control'))}}
+								{{Form::input('date', 'cheque_payment_issued_date', date('Y-m-d'), array('id' => 'cheque_payment_issued_date', 'class' => 'form-control'))}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control'))}}
+								{{Form::input('date', 'cheque_payment_payable_date', null, array('id' => 'cheque_payment_payable_date', 'class' => 'form-control'))}}
 							</div>
 						</div>
 					</div>
@@ -266,5 +266,6 @@ displaySubTotal();
 displayBalance();
 checkPaidAndFreeSum();
 displayIsCompletelyPaid();
+validateChequeDetails();
 </script>
 @stop

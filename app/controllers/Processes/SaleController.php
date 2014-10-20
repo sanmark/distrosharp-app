@@ -61,7 +61,6 @@ class SaleController extends \Controller
 			-> firstOrFail ()
 			-> lists ( 'id' ) ;
 
-			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItems ( $items ) ;
 			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 			$this -> validateCreditPayments ( $creditPayments ) ;
@@ -301,7 +300,6 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'cheque_amount'			 => [
-						'required_with:cheque_bank_id,cheque_number,cheque_issued_date,cheque_payable_date' ,
 						'numeric'
 					] ,
 					'cheque_bank_id'		 => [
@@ -594,11 +592,9 @@ class SaleController extends \Controller
 
 		$rules = [
 			'cashPayment'				 => [
-				'required_without:chequePayment' ,
 				'numeric'
 			] ,
 			'chequePayment'				 => [
-				'required_without:cashPayment' ,
 				'numeric'
 			] ,
 			'chequePaymentBankId'		 => [
