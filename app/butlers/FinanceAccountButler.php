@@ -39,4 +39,20 @@ class FinanceAccountButler
 		return $chequeSourceAccount ;
 	}
 
+	public static function getBankAccountsInvolvedForTransfer ()
+	{
+		$bankAccountListFromId	 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
+		$bankAccountListToId	 = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
+
+		$bankAccountListFromTransfers = array_unique ( array_merge ( $bankAccountListFromId , $bankAccountListToId ) ) ;
+
+		$bankAccountList = \Models\FinanceAccount::where ( 'bank_id' , '!=' , '' ) -> lists ( 'id' ) ;
+
+		$bankAccountList = array_intersect ( $bankAccountListFromTransfers , $bankAccountList ) ;
+
+		$bankAccountSelectBox = \Models\FinanceAccount::getArrayForHtmlSelectByIds ( 'id' , 'name' , $bankAccountList , ['' => 'Select Account' ] ) ;
+
+		return $bankAccountSelectBox ;
+	}
+
 }

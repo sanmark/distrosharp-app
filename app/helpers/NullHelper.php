@@ -52,4 +52,14 @@ class NullHelper
 		return $value ;
 	}
 
+	public static function ifNullEmptyOrWhitespace ( $valueOne , $valueTwo )
+	{
+		if ( self::isNullEmptyOrWhitespace ( $valueOne ) )
+		{
+			return $valueTwo ;
+		}
+
+		return $valueOne ;
+	}
+
 }

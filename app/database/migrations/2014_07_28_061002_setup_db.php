@@ -388,10 +388,25 @@ class SetupDb extends Migration
 				-> onUpdate ( 'cascade' )
 				-> onDelete ( 'cascade' ) ;
 		} ) ;
+
+		Schema::create ( 'finance_account_verifications' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'finance_account_id' ) -> unsigned () ;
+			$t -> dateTime ( 'date_time' ) ;
+			$t -> double ( 'amount' ) ;
+
+			$t -> foreign ( 'finance_account_id' )
+			-> references ( 'id' )
+			-> on ( 'finance_accounts' )
+			-> onUpdate ( 'cascade' )
+			-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'finance_account_verifications' ) ;
 		Schema::dropIfExists ( 'cheque_details' ) ;
 		Schema::dropIfExists ( 'finance_transfer_selling_invoice' ) ;
 		Schema::dropIfExists ( 'buying_invoice_finance_transfer' ) ;

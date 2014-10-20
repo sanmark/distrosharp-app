@@ -9,7 +9,7 @@ class FinanceAccountsSeeder extends Seeder
 			[
 				'id'				 => 1 ,
 				'name'				 => 'Cash' ,
-				'bank_id'			 => NULL ,
+				'bank_id'			 => 1 ,
 				'is_active'			 => TRUE ,
 				'account_balance'	 => 0 ,
 				'is_in_house'		 => TRUE ,
@@ -17,7 +17,7 @@ class FinanceAccountsSeeder extends Seeder
 			[
 				'id'				 => 2 ,
 				'name'				 => 'Cheque' ,
-				'bank_id'			 => NULL ,
+				'bank_id'			 => 2 ,
 				'is_active'			 => TRUE ,
 				'account_balance'	 => 0 ,
 				'is_in_house'		 => TRUE ,
@@ -25,7 +25,7 @@ class FinanceAccountsSeeder extends Seeder
 			[
 				'id'				 => 3 ,
 				'name'				 => 'Imbalance' ,
-				'bank_id'			 => NULL ,
+				'bank_id'			 => 3 ,
 				'is_active'			 => TRUE ,
 				'account_balance'	 => 0 ,
 				'is_in_house'		 => TRUE ,

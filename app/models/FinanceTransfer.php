@@ -358,5 +358,4 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		$originalFinanceAccountFrom -> update () ;
 		$originalFinanceAccountTo -> update () ;
 	}
-
 }

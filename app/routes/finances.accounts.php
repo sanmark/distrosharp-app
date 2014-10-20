@@ -36,5 +36,15 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_finance_account' ] ,
 		'uses'	 => 'Controllers\Finances\AccountsController@update'
 	] ) ;
+	Route::get ( 'bank-account' , [
+		'as'	 => 'finances.accounts.confirmBankAccount' ,
+		'before' => ['hasAbilities:confirm_bank_account_balance' ] ,
+		'uses'	 => 'Controllers\Finances\BankAccountController@home'
+	] ) ;
+	Route::post ( 'bank-account' , [
+		'as'	 => 'finances.accounts.confirmBankAccount' ,
+		'before' => ['hasAbilities:confirm_bank_account_balance' ] ,
+		'uses'	 => 'Controllers\Finances\BankAccountController@filter'
+	] ) ;
 } ) ;
 
