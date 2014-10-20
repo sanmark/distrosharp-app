@@ -56,10 +56,20 @@ Route::group ( [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
-	] ) ; 
-	Route::post( 'salesSummary' , [
+	] ) ;
+	Route::post ( 'salesSummary' , [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
+	] ) ;
+	Route::get ( 'profitAndLossReport' , [
+		'as'	 => 'report.profitAndLossReport' ,
+		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
+		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@home'
+	] ) ;
+	Route::post ( 'profitAndLossReport' , [
+		'as'	 => 'report.profitAndLossReport' ,
+		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
+		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@filter'
 	] ) ;
 } ) ;

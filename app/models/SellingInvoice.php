@@ -85,6 +85,26 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $invoiceTotal ;
 	}
 
+	public function getCostofSoldGoods ()
+	{
+		$this -> load ( 'sellingItems' ) ;
+		$sellingItems	 = $this -> sellingItems ;
+		$costOfSoldGoods = 0 ;
+
+		foreach ( $sellingItems as $sellingItem )
+		{
+			$item					 = $sellingItem -> item ;
+			$current_buying_price	 = $item -> current_buying_price ;
+			$paidQuantity			 = $sellingItem -> paid_quantity ;
+			$freeQuantity			 = $sellingItem -> free_quantity ;
+			$allQuantity			 = $paidQuantity + $freeQuantity ;
+
+			$costOfSoldGoods += $current_buying_price * $allQuantity ;
+		}
+
+		return $costOfSoldGoods ;
+	}
+
 	public function getTotalPaymentValue ()
 	{
 		$totalPaymentValue = 0 ;
@@ -153,7 +173,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$paidAmount = $ByCash + $Cheque ;
 
 		$Credit = $this -> getInvoiceTotal () - $paidAmount ;
- 
+
 		return $Credit ;
 	}
 
@@ -172,8 +192,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$invoiceBalance = $invoiceTotal - $totalPaymentValue - $discount ;
 
 		return $invoiceBalance ;
-	} 
-	
+	}
+
 	public function isInvoiceBalanceZero ()
 	{
 		$invoiceBalance = $this -> getInvoiceBalance () ;
@@ -296,7 +316,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$requestObject	 = $requestObject -> with ( 'rep' ) ;
 
 		$requestObject -> get () ;
- 
+
 		return $requestObject -> get () ;
 	}
 
@@ -382,7 +402,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			$date_from		 = $filterValues[ 'date_from' ] ;
 			$date_to		 = $filterValues[ 'date_to' ] ;
 			$invoice_number	 = $filterValues[ 'invoice_number' ] ;
- 
+
 			if ( strlen ( $customer_id ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'customer_id' , '=' , $customer_id ) ;
@@ -390,9 +410,9 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			if ( strlen ( $route_id ) > 0 )
 			{
 				$customers = \Models\Customer::where ( 'route_id' , '=' , $route_id ) -> lists ( 'id' ) ;
-				if ( !$customers )
+				if ( ! $customers )
 				{
-					$customers [0] = NULL;
+					$customers [ 0 ] = NULL ;
 				}
 				$requestObject = $requestObject -> whereIn ( 'customer_id' , $customers ) ;
 			}
@@ -422,8 +442,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;
 			}
-		} 
-		
+		}
+
 		return $requestObject ;
 	}
 
