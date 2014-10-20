@@ -47,9 +47,19 @@ Route::group ( [
 		'as'	 => 'system.settings.imbalanceStock' ,
 		'uses'	 => 'Controllers\System\SettingsController@showImbalanceStock'
 	] ) ;
-	
+
 	Route::post ( 'imbalance-stock' , [
 		'as'	 => 'system.settings.imbalanceStock' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateImbalanceStock'
+	] ) ;
+
+	Route::get ( 'finance-accounts' , [
+		'as'	 => 'system.settings.financeAccounts' ,
+		'uses'	 => 'Controllers\System\SettingsController@showFinanceAccounts'
+	] ) ;
+
+	Route::post ( 'finance-accounts' , [
+		'as'	 => 'system.settings.financeAccounts' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateFinanceAccounts'
 	] ) ;
 } ) ;

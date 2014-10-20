@@ -30,6 +30,22 @@ class FinanceAccountsSeeder extends Seeder
 				'account_balance'	 => 0 ,
 				'is_in_house'		 => TRUE ,
 			] ,
+			[
+				'id'				 => 4 ,
+				'name'				 => 'Income' ,
+				'bank_id'			 => NULL ,
+				'is_active'			 => TRUE ,
+				'account_balance'	 => 0 ,
+				'is_in_house'		 => TRUE ,
+			] ,
+			[
+				'id'				 => 5 ,
+				'name'				 => 'Expense' ,
+				'bank_id'			 => NULL ,
+				'is_active'			 => TRUE ,
+				'account_balance'	 => 0 ,
+				'is_in_house'		 => TRUE ,
+			] ,
 //			[
 //				'id'				 =>  ,
 //				'name'				 =>  ,

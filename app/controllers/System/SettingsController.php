@@ -150,4 +150,42 @@ class SettingsController extends \Controller
 		}
 	}
 
+	public function showFinanceAccounts ()
+	{
+		$inHouseAccounts = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE )
+		-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+
+		$incomeAccount	 = \SystemSettingButler::getValue ( 'income_account' ) ;
+		$expenseAccount	 = \SystemSettingButler::getValue ( 'expense_account' ) ;
+
+		$data = compact ( [
+			'inHouseAccounts' ,
+			'incomeAccount' ,
+			'expenseAccount' ,
+		] ) ;
+
+		return \View::make ( 'web.system.settings.financeAccounts' , $data ) ;
+	}
+
+	public function updateFinanceAccounts ()
+	{
+		try
+		{
+			$incomeAccount	 = \Input::get ( 'income_account' ) ;
+			$expenseAccount	 = \Input::get ( 'expense_account' ) ;
+
+			\SystemSettingButler::setValue ( 'income_account' , $incomeAccount ) ;
+			\SystemSettingButler::setValue ( 'expense_account' , $expenseAccount ) ;
+
+			\MessageButler::setSuccess ( 'Finance Accounts were updated successfully.' ) ;
+
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+			-> withErrors ( $ex -> validator )
+			-> withInput () ;
+		}
+	}
+
 }
