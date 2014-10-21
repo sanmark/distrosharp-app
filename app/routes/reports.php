@@ -72,13 +72,13 @@ Route::group ( [
 	] ) ;
 
 	Route::get ( 'profitAndLossReport' , [
-		'as'	 => 'report.profitAndLossReport' ,
+		'as'	 => 'reports.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@home'
 	] ) ;
 
 	Route::post ( 'profitAndLossReport' , [
-		'as'	 => 'report.profitAndLossReport' ,
+		'as'	 => 'reports.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@filter'
 	] ) ;
@@ -105,5 +105,17 @@ Route::group ( [
 		'as'	 => 'report.itemSalesSummary' ,
 		'before' => ['hasAbilities:view_item_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesSummaryController@filter'
+	] ) ;
+	
+	Route::get ( 'itemSalesDetails' , [
+		'as'	 => 'reports.itemSalesDetails' ,
+		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@home'
+	] ) ;
+	
+	Route::post ( 'itemSalesDetails' , [
+		'as'	 => 'reports.itemSalesDetails' ,
+		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@view'
 	] ) ;
 } ) ;
