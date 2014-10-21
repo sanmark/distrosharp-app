@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'reports' ,
 	'before' => 'auth'
-] , function ()
+	] , function ()
 {
 	Route::get ( 'stocks' , [
 		'as'	 => 'reports.stocks' ,
@@ -62,14 +62,27 @@ Route::group ( [
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
 	] ) ;
+
 	Route::get ( 'profitAndLossReport' , [
 		'as'	 => 'report.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@home'
 	] ) ;
+
 	Route::post ( 'profitAndLossReport' , [
 		'as'	 => 'report.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@filter'
+	] ) ;
+	Route::get ( 'incomingChequesReport' , [
+		'as'	 => 'reports.incomingChequesReport' ,
+		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
+		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@home'
+	] ) ;
+
+	Route::post ( 'incomingChequesReport' , [
+		'as'	 => 'reports.incomingChequesReport' ,
+		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
+		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@view'
 	] ) ;
 } ) ;

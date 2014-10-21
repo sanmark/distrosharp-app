@@ -85,10 +85,11 @@ class MenuButler
 		['Reports' , [
 				['Stock Report' , 'reports.stocks' , [ 'view_stock_report' ] ] ,
 				['Debtor Summary' , 'reports.debtorSummary' , ['view_debtor_summary_report' ] ] ,
-				['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] ,
+				['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] , 
 				['Sales Summary Report' , 'reports.salesSummary' , ['view_sales_summary_report' ] ] ,
-				['Profit and Loss Report', 'report.profitAndLossReport',['view_profit_and_loss_report'] ],
-				['Age Credit Report' , 'reports.ageCreditReport' , ['view_age_credit_report' ] ]
+				['Profit and Loss Report', 'report.profitAndLossReport',['view_profit_and_loss_report'] ],  
+				['Age Credit Report' , 'reports.ageCreditReport' , ['view_age_credit_report' ] ] , 
+				['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] 
 			] ,
 		] ,
 		['Account' , [

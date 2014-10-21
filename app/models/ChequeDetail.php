@@ -12,4 +12,9 @@ class ChequeDetail extends BaseEntity implements \Interfaces\iEntity
 		return $this -> belongsTo ( 'Models\Bank' ) ;
 	}
 
+	public function financeTransfer ()
+	{
+		return $this -> belongsTo ( 'Models\FinanceTransfer' ) ;
+	} 
+
 }

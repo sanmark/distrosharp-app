@@ -18,8 +18,8 @@ App::missing ( function($exception)
 } ) ;
 
 Route::get ( '/test' , function()
-{
-	dd ( date ( 'Y-m-d H:i:s' ) ) ;
+{ 
+	dd ( date ( 'Y-m-d H:i:s' ) ) ; 
 } ) ;
 
 

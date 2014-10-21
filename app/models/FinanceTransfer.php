@@ -24,8 +24,7 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 
 	public function sellingInvoices ()
 	{
-		return $this -> belongsToMany ( 'Models\SellingInvoice' )
-				-> withPivot ( 'paid_invoice_id' ) ;
+		return $this -> belongsToMany ( 'Models\SellingInvoice' ) -> withPivot ( 'paid_invoice_id' ) ;
 	}
 
 	public function isCheque ()
@@ -52,9 +51,7 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 	{
 		$this -> load ( 'sellingInvoices' ) ;
 
-		return
-				$this -> sellingInvoices
-				-> first () ;
+		return $this -> sellingInvoices -> first () ;
 	}
 
 	public static function viewAllFilter ( $filterValues )
@@ -358,4 +355,5 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		$originalFinanceAccountFrom -> update () ;
 		$originalFinanceAccountTo -> update () ;
 	}
+
 }

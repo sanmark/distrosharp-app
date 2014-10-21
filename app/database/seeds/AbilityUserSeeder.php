@@ -173,32 +173,40 @@ class AbilityUserSeeder extends Seeder
 			[
 				'ability_id' => 44 ,
 				'user_id'	 => 1
-			],
+			] ,
 			[
 				'ability_id' => 45 ,
 				'user_id'	 => 1
-			],
+			] ,
 			[
 				'ability_id' => 46 ,
 				'user_id'	 => 1
-			],
+			] ,
 			[
 				'ability_id' => 47 ,
 				'user_id'	 => 1
-			], 
+			] ,
 			[
 				'ability_id' => 48 ,
 				'user_id'	 => 1
-			],
+			] ,
+			[
+				'ability_id' => 49 ,
+				'user_id'	 => 1
+			] ,
 			[
 				'ability_id' => 50 ,
 				'user_id'	 => 1
-			] 
+			] ,
+			[
+				'ability_id' => 51 ,
+				'user_id'	 => 1
+			]
 //			[
 //				'ability_id' =>  ,
 //				'user_id'	 =>
 //			] ,
-		] ;
+			] ;
 
 
 		foreach ( $abilityUsers as $abilityUser )
