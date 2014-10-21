@@ -6,59 +6,52 @@
 		<h3 class="panel-title">Profit and Loss Report</h3>
 	</div>
 	<div class="panel-body">
+
 		<div class="panel panel-default">
-			{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
-			<br/>
-			<div class="form-group inline-form">
-				{{Form::label('from_date',null,array('class' => 'control-label'))}}
-				{{Form::input('date', 'from_date', $date_from,array('class' => 'form-control','required'=>true))}}
+			<div class="panel-body">
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group inline-form">
+					{{Form::label('from_date',null,array('class' => 'control-label'))}}
+					{{Form::input('date', 'from_date', $date_from,array('class' => 'form-control','required'=>true))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::label('to_date',null,array('class' => 'control-label'))}}
+					{{Form::input('date', 'to_date', $date_to,array('class' => 'form-control','required'=>true))}}
+				</div>
+				<div class="form-group inline-form">
+					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
 			</div>
-			<div class="form-group inline-form">
-				{{Form::label('to_date',null,array('class' => 'control-label'))}}
-				{{Form::input('date', 'to_date', $date_to,array('class' => 'form-control','required'=>true))}}
-			</div>
-			<div class="form-group inline-form">
-				{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
-			</div>
-			{{Form::close()}}
-			<br/>
 		</div>
+
 	</div>
 </div>
-
+@if($viwe_data) 
 
 <table class="table table-striped" style="width: 50%">
 	<tr>
-		<td>Sales</td>
-		<td>:</td>
-		<td align="right">{{ number_format( $sales, 2) }}</td>
+		<td><b>Sales :</b></td>
+		<td class="text-right"><b>{{ number_format( $sales, 2) }}</b></td>
 	</tr>
 	<tr>
-		<td>Discounts</td>
-		<td>:</td>
-		<td align="right">{{ number_format( $discounts, 2) }}</td>
+		<td><b>Discounts :</b></td>
+		<td class="text-right"><b>{{ number_format( $discounts, 2) }}</b></td>
 	</tr>
 	<tr>
-		<td>Net Sales</td>
-		<td>:</td>
-		<td align="right">{{ number_format( $netSales, 2) }}</td>
+		<td><b>Net Sales :</b></td>
+		<td class="text-right"><b>{{ number_format( $netSales, 2) }}</b></td>
 	</tr>
 	<tr>
-		<td>Cost of Sold Goods</td>
-		<td>:</td>
-		<td align="right">{{ number_format( $costOfSoldGoods, 2) }}</td>
+		<td><b>Cost of Sold Goods :</b></td>
+		<td class="text-right"><b>{{ number_format( $costOfSoldGoods, 2) }}</b></td>
 	</tr>
 	<tr>
-		<td>Gross Profit</td>
-		<td>:</td>
-		<td align="right">{{ number_format( $netSales - $costOfSoldGoods, 2) }}</td>
+		<td><b>Gross Profit :</b></td>
+		<td class="text-right"><b>{{ number_format( $netSales - $costOfSoldGoods, 2) }}</b></td>
 	</tr>
 </table>
-
-
-
-@stop
-
-@section('file-footer')
-
+@else 
+Please define a criteria and press "Submit".
+@endif
 @stop

@@ -8,7 +8,17 @@ class ProfitAndLossReportController extends \Controller
 	public function home ()
 	{
 
-		return \View::make ( 'web.reports.profitAndLoss.home' ) ;
+		$date_from	 = NULL ;
+		$date_to	 = NULL ;
+		$viwe_data	 = FALSE ;
+
+		$data = compact ( [
+			'date_from' ,
+			'date_to' ,
+			'viwe_data'
+			] ) ;
+
+		return \View::make ( 'web.reports.profitAndLoss.view' , $data ) ;
 	}
 
 	public function filter ()
@@ -37,21 +47,24 @@ class ProfitAndLossReportController extends \Controller
 			}
 			$netSales = $sales - $discounts ;
 
+			$viwe_data = TRUE ;
+
 			$data = compact ( [
 				'date_from' ,
 				'date_to' ,
 				'sales' ,
 				'discounts' ,
 				'netSales' ,
-				'costOfSoldGoods'
-			] ) ;
+				'costOfSoldGoods' ,
+				'viwe_data'
+				] ) ;
 
 			return \View::make ( 'web.reports.profitAndLoss.view' , $data ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -66,7 +79,7 @@ class ProfitAndLossReportController extends \Controller
 				'required' ,
 				'date'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
