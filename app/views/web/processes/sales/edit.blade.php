@@ -69,12 +69,12 @@
 		<div class="form-group">
 			<?php
 			$sellingItem = $sellingInvoice -> sellingItems -> filter ( function($sellingItem) use($item)
-			{
-				if ( $sellingItem -> item_id == $item -> id )
 				{
-					return TRUE ;
-				}
-			} ) -> first () ;
+					if ( $sellingItem -> item_id == $item -> id )
+					{
+						return TRUE ;
+					}
+				} ) -> first () ;
 			?>
 			{{Form::label(null, $item->name, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-10">
@@ -122,6 +122,7 @@
 							<th>To</th>
 							<th>Date</th>
 							<th class="text-right">Amount</th>
+							<th>Paid Invoice</th>
 							<th>&nbsp;</th>
 						</tr>
 						@foreach($sellingInvoice->financeTransfers as $financeTransfer)
@@ -137,6 +138,13 @@
 							<td>{{HTML::link(URL::action('finances.transfers.view', [$financeTransfer->to_id]),$financeTransfer->toAccount->name)}}</td>
 							<td>{{$financeTransfer->date_time}}</td>
 							<td class="text-right">{{number_format($financeTransfer->amount,2)}}</td>
+							<td>
+								@if($financeTransfer->getSellingInvoice()->pivot->paid_invoice_id == $sellingInvoice->id)
+								This
+								@else
+								{{HTML::link(URL::action('processes.sales.edit', [$financeTransfer->getSellingInvoice()->pivot->paid_invoice_id]), $financeTransfer->getSellingInvoice()->pivot->paid_invoice_id)}}
+								@endif
+							</td>
 							<td class="text-center">{{HTML::link(URL::action('finances.transfers.edit', [$financeTransfer->id]), 'Edit...')}}</td>
 						</tr>
 						@endforeach

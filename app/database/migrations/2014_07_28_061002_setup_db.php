@@ -26,10 +26,10 @@ class SetupDb extends Migration
 			$t -> integer ( 'ability_id' ) -> unsigned () ;
 			$t -> integer ( 'user_id' ) -> unsigned () ;
 			$t -> foreign ( 'user_id' )
-			-> references ( 'id' )
-			-> on ( 'users' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'users' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'items' , function($t)
@@ -62,10 +62,10 @@ class SetupDb extends Migration
 			$t -> boolean ( 'is_in_house' ) ;
 
 			$t -> foreign ( 'bank_id' )
-			-> references ( 'id' )
-			-> on ( 'banks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'banks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'vendors' , function ($t)
@@ -77,10 +77,10 @@ class SetupDb extends Migration
 			$t -> integer ( 'finance_account_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'finance_account_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_accounts' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_accounts' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'routes' , function($t)
@@ -91,10 +91,10 @@ class SetupDb extends Migration
 			$t -> integer ( 'rep_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'rep_id' )
-			-> references ( 'id' )
-			-> on ( 'users' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'users' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'customers' , function ($t)
@@ -107,16 +107,16 @@ class SetupDb extends Migration
 			$t -> integer ( 'finance_account_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'route_id' )
-			-> references ( 'id' )
-			-> on ( 'routes' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'routes' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'finance_account_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_accounts' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_accounts' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'stocks' , function ($t)
@@ -127,10 +127,10 @@ class SetupDb extends Migration
 			$t -> string ( 'stock_type_id' ) ;
 
 			$t -> foreign ( 'incharge_id' )
-			-> references ( 'id' )
-			-> on ( 'users' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'users' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'stock_details' , function ($t)
@@ -142,16 +142,16 @@ class SetupDb extends Migration
 			$t -> double ( 'return_quantity' ) ;
 
 			$t -> foreign ( 'stock_id' )
-			-> references ( 'id' )
-			-> on ( 'stocks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'stocks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'item_id' )
-			-> references ( 'id' )
-			-> on ( 'items' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'items' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'buying_invoices' , function ($t)
@@ -166,10 +166,10 @@ class SetupDb extends Migration
 			$t -> string ( 'stock_id' ) ;
 
 			$t -> foreign ( 'vendor_id' )
-			-> references ( 'id' )
-			-> on ( 'vendors' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'vendors' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'buying_items' , function ($t)
@@ -184,16 +184,16 @@ class SetupDb extends Migration
 			$t -> string ( 'batch_number' ) -> nullable () ;
 
 			$t -> foreign ( 'invoice_id' )
-			-> references ( 'id' )
-			-> on ( 'buying_invoices' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'buying_invoices' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'item_id' )
-			-> references ( 'id' )
-			-> on ( 'items' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'items' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'transfers' , function($t)
@@ -205,16 +205,16 @@ class SetupDb extends Migration
 			$t -> text ( 'description' ) -> nullable () ;
 
 			$t -> foreign ( 'from_stock_id' )
-			-> references ( 'id' )
-			-> on ( 'stocks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'stocks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'to_stock_id' )
-			-> references ( 'id' )
-			-> on ( 'stocks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'stocks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'transfer_details' , function($t)
@@ -225,16 +225,16 @@ class SetupDb extends Migration
 			$t -> double ( 'quantity' ) ;
 
 			$t -> foreign ( 'transfer_id' )
-			-> references ( 'id' )
-			-> on ( 'transfers' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'transfers' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'item_id' )
-			-> references ( 'id' )
-			-> on ( 'items' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'items' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'selling_invoices' , function($t)
@@ -249,22 +249,22 @@ class SetupDb extends Migration
 			$t -> integer ( 'stock_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'customer_id' )
-			-> references ( 'id' )
-			-> on ( 'customers' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'customers' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'rep_id' )
-			-> references ( 'id' )
-			-> on ( 'users' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'users' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'stock_id' )
-			-> references ( 'id' )
-			-> on ( 'stocks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'stocks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'selling_items' , function($t)
@@ -281,16 +281,16 @@ class SetupDb extends Migration
 			$t -> double ( 'company_return_quantity' ) -> nullable () ;
 
 			$t -> foreign ( 'selling_invoice_id' )
-			-> references ( 'id' )
-			-> on ( 'selling_invoices' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'selling_invoices' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'item_id' )
-			-> references ( 'id' )
-			-> on ( 'items' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'items' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'finance_transfers' , function ($t)
@@ -303,16 +303,16 @@ class SetupDb extends Migration
 			$t -> text ( 'description' ) -> nullable () ;
 
 			$t -> foreign ( 'from_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_accounts' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_accounts' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'to_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_accounts' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_accounts' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'system_settings' , function($t)
@@ -328,34 +328,43 @@ class SetupDb extends Migration
 			$t -> integer ( 'finance_transfer_id' ) -> unsigned () ;
 
 			$t -> foreign ( 'buying_invoice_id' )
-			-> references ( 'id' )
-			-> on ( 'buying_invoices' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'buying_invoices' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'finance_transfer_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_transfers' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_transfers' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'finance_transfer_selling_invoice' , function($t)
 		{
 			$t -> integer ( 'finance_transfer_id' ) -> unsigned () ;
 			$t -> integer ( 'selling_invoice_id' ) -> unsigned () ;
+			$t -> integer ( 'paid_invoice_id' )
+				-> unsigned ()
+				-> nullable () ;
 
 			$t -> foreign ( 'finance_transfer_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_transfers' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_transfers' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'selling_invoice_id' )
-			-> references ( 'id' )
-			-> on ( 'selling_invoices' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'selling_invoices' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'paid_invoice_id' )
+				-> references ( 'id' )
+				-> on ( 'selling_invoices' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 
 		Schema::create ( 'cheque_details' , function($t)
@@ -368,16 +377,16 @@ class SetupDb extends Migration
 			$t -> date ( 'payable_date' ) ;
 
 			$t -> foreign ( 'finance_transfer_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_transfers' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_transfers' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 
 			$t -> foreign ( 'bank_id' )
-			-> references ( 'id' )
-			-> on ( 'banks' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'banks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 	}
 

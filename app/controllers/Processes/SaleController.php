@@ -12,8 +12,8 @@ class SaleController extends \Controller
 			$customers			 = [ NULL => 'Select Route First' ] ;
 			$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
-			-> orderBy ( 'selling_invoice_order' , 'ASC' )
-			-> get () ;
+				-> orderBy ( 'selling_invoice_order' , 'ASC' )
+				-> get () ;
 			$user				 = \Auth::user () ;
 			$user				 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
 			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
@@ -28,7 +28,7 @@ class SaleController extends \Controller
 				'guessedInvoiceId' ,
 				'currentDateTime' ,
 				'banksList'
-			] ) ;
+				] ) ;
 
 			return \View::make ( 'web.processes.sales.add' , $data ) ;
 		} else
@@ -58,8 +58,8 @@ class SaleController extends \Controller
 			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
 
 			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
-			-> firstOrFail ()
-			-> lists ( 'id' ) ;
+				-> firstOrFail ()
+				-> lists ( 'id' ) ;
 
 			$this -> validateSaleItems ( $items ) ;
 			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
@@ -82,12 +82,12 @@ class SaleController extends \Controller
 
 			\MessageButler::setSuccess ( 'Selling Invoice was saved successfully.' ) ;
 			return \Redirect::action ( 'processes.sales.add' )
-			-> with ( 'oldRouteId' , $oldRouteId ) ;
+					-> with ( 'oldRouteId' , $oldRouteId ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -162,7 +162,7 @@ class SaleController extends \Controller
 			'totalOfDiscountSum' ,
 			'routeSelectBox' ,
 			'routeId'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.processes.sales.all' , $data ) ;
 	}
 
@@ -179,7 +179,7 @@ class SaleController extends \Controller
 			'customerDropDown' ,
 			'items' ,
 			'banksList'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.processes.sales.edit' , $data ) ;
 	}
@@ -217,8 +217,8 @@ class SaleController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -263,7 +263,7 @@ class SaleController extends \Controller
 						'required_with_all:paid_quantity,free_quantity,good_return_quantity' ,
 						'numeric'
 					]
-				] ;
+					] ;
 
 				$messages = [
 					'price.required_with'							 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
@@ -274,7 +274,7 @@ class SaleController extends \Controller
 					'good_return_quantity.required_with_all'		 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity, Free Quantity, or Company Return Quantity are present.' ,
 					'company_return_price.required_with'			 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
 					'company_return_quantity.required_with_all'		 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity, Free Quantity, or Good Return Quantity are present.'
-				] ;
+					] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
 
@@ -314,7 +314,7 @@ class SaleController extends \Controller
 					'cheque_payable_date'	 => [
 						'required_with:cheque_amount'
 					]
-				] ;
+					] ;
 
 				$validator = \Validator::make ( $creditPayment , $rules ) ;
 
@@ -366,7 +366,7 @@ class SaleController extends \Controller
 						'required_with_all:paid_quantity,free_quantity,good_return_quantity' ,
 						'numeric'
 					]
-				] ;
+					] ;
 
 				$messages = [
 					'price.required_with'						 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
@@ -376,7 +376,7 @@ class SaleController extends \Controller
 					'good_return_quantity.required_with_all'	 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity, Free Quantity, or Company Return Quantity are present.' ,
 					'company_return_price.required_with'		 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
 					'company_return_quantity.required_with_all'	 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity, Free Quantity, or Good Return Quantity are present.'
-				] ;
+					] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
 
@@ -397,17 +397,17 @@ class SaleController extends \Controller
 
 		$data = [
 			'field' => $itemsWithoutPriceAndAvailableQuantity
-		] ;
+			] ;
 
 		$rules = [
 			'field' => [
 				'at_least_one_element_of_one_array_has_value'
 			]
-		] ;
+			] ;
 
 		$messages = [
 			'field.at_least_one_element_of_one_array_has_value' => 'Please enter sales data.'
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules , $messages ) ;
 
@@ -459,8 +459,8 @@ class SaleController extends \Controller
 			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' ] ) )
 			{
 				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId )
-				-> where ( 'item_id' , '=' , $itemId )
-				-> first () ;
+					-> where ( 'item_id' , '=' , $itemId )
+					-> first () ;
 
 				if ( is_null ( $sellingItem ) )
 				{
@@ -560,7 +560,7 @@ class SaleController extends \Controller
 
 			$financeTransfer -> save () ;
 
-			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 		}
 
 		if ( ! \NullHelper::isNullEmptyOrWhitespace ( $chequePaymentAmount ) )
@@ -575,7 +575,7 @@ class SaleController extends \Controller
 
 			$this -> saveChequeDetail ( $financeTransfer , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
-			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 		}
 	}
 
@@ -588,7 +588,7 @@ class SaleController extends \Controller
 			'chequePaymentChequeNumber' ,
 			'chequePaymentIssuedDate' ,
 			'chequePaymentPayableDate' ,
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'cashPayment'				 => [
@@ -614,7 +614,7 @@ class SaleController extends \Controller
 				'date' ,
 				'date_format:Y-m-d'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -636,7 +636,7 @@ class SaleController extends \Controller
 			'chequePaymentChequeNumber' ,
 			'chequePaymentIssuedDate' ,
 			'chequePaymentPayableDate' ,
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'cashPayment'				 => [
@@ -662,7 +662,7 @@ class SaleController extends \Controller
 				'date' ,
 				'date_format:Y-m-d'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -729,7 +729,7 @@ class SaleController extends \Controller
 				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $creditPayment ) )
 				{
 					$sellingInvoiceBeingPaid = \Models\SellingInvoice::with ( 'customer' )
-					-> findOrFail ( $sellingInvoiceId ) ;
+						-> findOrFail ( $sellingInvoiceId ) ;
 
 					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cash_amount' ] ) )
 					{
@@ -743,7 +743,7 @@ class SaleController extends \Controller
 
 						$financeTransfer -> save () ;
 
-						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 					}
 
 					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cheque_amount' ] ) )
@@ -766,7 +766,7 @@ class SaleController extends \Controller
 
 						$this -> saveChequeDetail ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 
-						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+						$sellingInvoiceBeingPaid -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 					}
 				}
 			}

@@ -22,6 +22,12 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasOne ( 'Models\ChequeDetail' ) ;
 	}
 
+	public function sellingInvoices ()
+	{
+		return $this -> belongsToMany ( 'Models\SellingInvoice' )
+				-> withPivot ( 'paid_invoice_id' ) ;
+	}
+
 	public function isCheque ()
 	{
 		if ( count ( $this -> chequeDetail ) > 0 )
@@ -40,6 +46,15 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 		}
 
 		return TRUE ;
+	}
+
+	public function getSellingInvoice ()
+	{
+		$this -> load ( 'sellingInvoices' ) ;
+
+		return
+				$this -> sellingInvoices
+				-> first () ;
 	}
 
 	public static function viewAllFilter ( $filterValues )
@@ -276,7 +291,7 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -304,7 +319,7 @@ class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 			'from_id'	 => [
 				'different:to_id'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

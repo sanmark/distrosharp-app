@@ -278,7 +278,7 @@ class SalesSeeder extends Seeder
 ////					] ,
 //				]
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $sales as $sale )
 		{
@@ -287,7 +287,7 @@ class SalesSeeder extends Seeder
 			$sale[ 'date_time' ] = DateTimeHelper::convertTextToFormattedDateTime ( $sale[ 'date_time' ] ) ;
 
 			$sourceStock = \Models\Stock::where ( 'incharge_id' , '=' , $sale[ 'rep_id' ] )
-			-> firstOrFail () ;
+				-> firstOrFail () ;
 
 			$sellingInvoice -> date_time				 = $sale[ 'date_time' ] ;
 			$sellingInvoice -> customer_id				 = $sale[ 'customer_id' ] ;
@@ -343,7 +343,7 @@ class SalesSeeder extends Seeder
 
 			$financeTransfer -> save () ;
 
-			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 		}
 	}
 
@@ -364,7 +364,7 @@ class SalesSeeder extends Seeder
 
 			$financeTransfer -> save () ;
 
-			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+			$sellingInvoice -> financeTransfers () -> attach ( $financeTransfer -> id , ['paid_invoice_id' => $sellingInvoice -> id ] ) ;
 
 			$chequeDetail = new Models\ChequeDetail() ;
 
