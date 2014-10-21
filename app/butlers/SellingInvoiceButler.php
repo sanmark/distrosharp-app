@@ -3,12 +3,12 @@
 class SellingInvoiceButler
 {
 
-	public static function getAllRepsForHtmlSelect ()
+	public static function getAllRepsForHtmlSelect ( array $firstElements = [NULL => 'Any' ] )
 	{
 		$repIds = \Models\SellingInvoice::distinct ()
-		-> lists ( 'rep_id' ) ;
+			-> lists ( 'rep_id' ) ;
 
-		$reps = User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $repIds , [NULL => 'Any' ] ) ;
+		$reps = User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $repIds , $firstElements ) ;
 
 		return $reps ;
 	}
@@ -27,11 +27,10 @@ class SellingInvoiceButler
 
 		return $nextId ;
 	}
-	
-	
+
 	public static function profitAndLossFilter ( $filterValues )
 	{
-		$requestObject = new Models\SellingInvoice();
+		$requestObject = new Models\SellingInvoice() ;
 
 		if ( count ( $filterValues ) > 0 )
 		{
@@ -54,6 +53,20 @@ class SellingInvoiceButler
 		}
 
 		return $requestObject -> get () ;
+	}
+
+	public static function getFirstSellingInvoiceDate ()
+	{
+		$firstDateTime = self::getFirstSellingInvoiceDateTime () ;
+
+		$firstDate = DateTimeHelper::convertTextToFormattedDateTime ( $firstDateTime , 'Y-m-d' ) ;
+
+		return $firstDate ;
+	}
+
+	public static function getFirstSellingInvoiceDateTime ()
+	{
+		return Models\SellingInvoice::min ( 'date_time' ) ;
 	}
 
 }

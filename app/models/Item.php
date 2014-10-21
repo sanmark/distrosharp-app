@@ -11,7 +11,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 	{
 		return $this -> hasOne ( 'Models\StockDetail' ) ;
 	}
-	
+
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;
@@ -62,7 +62,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 				'numeric' ,
 				'unique:items'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -110,9 +110,9 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 			'selling_invoice_order'	 => [
 				'required' ,
 				'numeric' ,
-				'unique:items,selling_invoice_order,'. $this -> id
+				'unique:items,selling_invoice_order,' . $this -> id
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -180,6 +180,16 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
+	public function getTotalFreeAmountSoldForRepAndTimeRange ( $repId , $fromDate , $toDate )
+	{
+		return $this -> getTotalPaidOrFreeAmountSoldForRepAndTimeRange ( 'free_quantity' , $repId , $fromDate , $toDate ) ;
+	}
+
+	public function getTotalPaidAmountSoldForRepAndTimeRange ( $repId , $fromDate , $toDate )
+	{
+		return $this -> getTotalPaidOrFreeAmountSoldForRepAndTimeRange ( 'paid_quantity' , $repId , $fromDate , $toDate ) ;
+	}
+
 	public static function getMinBuyingInvoiceOrder ()
 	{
 		$buying_invoice_id	 = 0 ;
@@ -222,6 +232,46 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 			}
 		}
 		return $selling_invoice_id ;
+	}
+
+	private function getTotalPaidOrFreeAmountSoldForRepAndTimeRange ( $columnName , $repId , $fromDate , $toDate )
+	{
+		$firstDate	 = \SellingInvoiceButler::getFirstSellingInvoiceDate () ;
+		$today		 = date ( 'Y-m-d' ) ;
+
+		$fromDate	 = \NullHelper::ifNullEmptyOrWhitespace ( $fromDate , $firstDate ) ;
+		$toDate		 = \NullHelper::ifNullEmptyOrWhitespace ( $toDate , $today ) ;
+
+		$fromDateTime	 = \DateTimeHelper::convertTextToFormattedDateTime ( $fromDate . ' 00:00:00' ) ;
+		$toDateTime		 = \DateTimeHelper::convertTextToFormattedDateTime ( $toDate . ' 23:59:59' ) ;
+		$repIds			 = [ $repId ] ;
+
+		if ( \NullHelper::isNullEmptyOrWhitespace ( $repId ) )
+		{
+			$repIds = \Models\SellingInvoice::distinct ()
+				-> lists ( 'rep_id' ) ;
+		}
+
+		$sellingInvoices = SellingInvoice::whereIn ( 'rep_id' , $repIds )
+			-> whereBetween ( 'date_time' , [$fromDateTime , $toDateTime ] )
+			-> get () ;
+
+		$totalAmountSold = 0 ;
+
+		foreach ( $sellingInvoices as $sellingInvoice )
+		{
+			$sellingInvoice -> load ( 'sellingItems' ) ;
+
+			foreach ( $sellingInvoice -> sellingItems as $sellingItem )
+			{
+				if ( $sellingItem -> item_id == $this -> id )
+				{
+					$totalAmountSold += $sellingItem[ $columnName ] ;
+				}
+			}
+		}
+
+		return $totalAmountSold ;
 	}
 
 }

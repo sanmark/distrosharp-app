@@ -16,6 +16,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockController@update'
 	] ) ;
+
 	Route::get ( 'debtor-summary' , [
 		'as'	 => 'reports.debtorSummary' ,
 		'before' => ['hasAbilities:view_debtor_summary_report' ] ,
@@ -27,36 +28,43 @@ Route::group ( [
 		'before' => ['hasAbilities:view_debtor_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\DebtorSummaryController@filter'
 	] ) ;
+
 	Route::get ( 'unload-comparison' , [
 		'as'	 => 'reports.unloadComparison' ,
 		'before' => ['hasAbilities:view_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\UnloadComparisonController@show'
 	] ) ;
+
 	Route::post ( 'unload-comparison' , [
 		'as'	 => 'reports.unloadComparison' ,
 		'before' => ['hasAbilities:view_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\UnloadComparisonController@show'
 	] ) ;
+
 	Route::get ( 'unload-comparison/{id}/view' , [
 		'as'	 => 'reports.unloadComparison.view' ,
 		'before' => ['hasAbilities:view_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\UnloadComparisonController@view'
 	] ) ;
+
 	Route::get ( 'age-credit-report' , [
 		'as'	 => 'reports.ageCreditReport' ,
 		'before' => ['hasAbilities:view_age_credit_report' ] ,
 		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
 	] ) ;
+
 	Route::post ( 'age-credit-report' , [
 		'as'	 => 'reports.ageCreditReport' ,
 		'before' => ['hasAbilities:view_age_credit_report' ] ,
 		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
 	] ) ;
+
 	Route::get ( 'salesSummary' , [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
 	] ) ;
+
 	Route::post ( 'salesSummary' , [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
@@ -74,6 +82,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@filter'
 	] ) ;
+
 	Route::get ( 'incomingChequesReport' , [
 		'as'	 => 'reports.incomingChequesReport' ,
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
@@ -84,5 +93,17 @@ Route::group ( [
 		'as'	 => 'reports.incomingChequesReport' ,
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
 		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@view'
+	] ) ;
+
+	Route::get ( 'item-sales-summary' , [
+		'as'	 => 'report.itemSalesSummary' ,
+		'before' => ['hasAbilities:view_item_sales_summary_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemSalesSummaryController@home'
+	] ) ;
+
+	Route::post ( 'item-sales-summary' , [
+		'as'	 => 'report.itemSalesSummary' ,
+		'before' => ['hasAbilities:view_item_sales_summary_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemSalesSummaryController@filter'
 	] ) ;
 } ) ;
