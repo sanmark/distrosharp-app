@@ -326,8 +326,6 @@ class PurchaseController extends \Controller
 			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
 			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 
-			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
-
 			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
 			{
 				$otherExpensesAmount = 0 ;
@@ -559,11 +557,9 @@ class PurchaseController extends \Controller
 				'date_format:Y-m-d H:i:s'
 			] ,
 			'cashPayment'	 => [
-				'required_without:chequePayment' ,
 				'numeric'
 			] ,
 			'chequePayment'	 => [
-				'required_without:cashPayment' ,
 				'numeric'
 			]
 		] ;
@@ -631,11 +627,9 @@ class PurchaseController extends \Controller
 
 		$rules = [
 			'cashPayment'				 => [
-				'required_without:chequePayment' ,
 				'numeric'
 			] ,
 			'chequePayment'				 => [
-				'required_without:cashPayment' ,
 				'numeric'
 			] ,
 			'chequePaymentBankId'		 => [
@@ -706,42 +700,6 @@ class PurchaseController extends \Controller
 		] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
-
-		if ( $validator -> fails () )
-		{
-			$iie				 = new \Exceptions\InvalidInputException() ;
-			$iie -> validator	 = $validator ;
-
-			throw $iie ;
-		}
-	}
-
-	private function validateAtLeastOneItemIsFilled ( $items )
-	{
-		$itemQuantityData		 = [ ] ;
-		$itemFreeQuantityData	 = [ ] ;
-		foreach ( $items as $row )
-		{
-			$itemQuantityData[ $row -> id ]		 = \Input::get ( 'quantity_' . $row -> id ) ;
-			$itemFreeQuantityData[ $row -> id ]	 = \Input::get ( 'free_quantity_' . $row -> id ) ;
-		}
-		$allItems = array_merge ( $itemFreeQuantityData , $itemQuantityData ) ;
-
-		$data = [
-			'field' => $allItems
-		] ;
-
-		$rules = [
-			'field' => [
-				'at_least_one_element_of_one_array_has_value'
-			]
-		] ;
-
-		$messages = [
-			'field.at_least_one_element_of_one_array_has_value' => 'Please enter purchase data.'
-		] ;
-
-		$validator = \Validator::make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{

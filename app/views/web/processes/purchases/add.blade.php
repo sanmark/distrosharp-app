@@ -89,76 +89,121 @@
 			</div>
 			@endforeach
 		</div>
+
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
-					<div class="col-sm-offset-10 col-sm-2">{{Form::text('full_total',null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}</div>
+					{{Form::label('netTotal', 'Sub Total', array('class' => 'col-sm-offset-8 col-sm-2 control-label'))}}
+					<div class="col-sm-2">
+						{{Form::text('full_total',null, array('id' => 'subTotal', 'class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'))}}
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="form-group">
-			{{Form::label(null, 'Completely Paid', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-3">
-				{{Form::checkbox('is_paid',TRUE,TRUE,array('style'=>'margin-top:10px;'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-2">
-				<?php $tab ++ ; ?>
-				{{Form::input('number', 'cash_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control'))}}
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-12">
-				<div class="row">
-					<div class="col-sm-2 text-right"><b>Cheque Payment</b></div>
-					<div class="col-sm-10">
+
+		<div class="form-group" style="margin-bottom: 3px;">
+			<div class="col-sm-10 col-sm-offset-2">
+				<div class="row">					
+					<div class="col-sm-8">
+						<div style="margin-bottom: 12px;"><b>Cheque Details</b></div>
 						<div class="row">
-							<div class="col-sm-2">Amount</div>
-							<div class="col-sm-2">Bank</div>
-							<div class="col-sm-2">Cheque Number</div>
-							<div class="col-sm-2">Issued Date</div>
-							<div class="col-sm-2">Payable Date</div>
+							<div class="col-sm-3">Bank</div>
+							<div class="col-sm-3">Cheque Number</div>
+							<div class="col-sm-3">Issued Date</div>
+							<div class="col-sm-3">Payable Date</div>
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<div class="row">
+							{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-6 control-label'))}}
+							<div class="col-sm-6">
+								<?php $tab ++ ; ?>
+								{{Form::input('text', 'cash_payment', NULL, array('id' => 'cash_payment', 'tabindex'=> $tab,'class' => 'form-control text-right saleDetail'))}}
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-offset-2 col-sm-10">
-				<?php $tab ++ ; ?>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-10 col-sm-offset-2">
 				<div class="row">
-					<div class="col-sm-2">
-						{{Form::input('number', 'cheque_payment', NULL, array('tabindex'=> $tab,'class' => 'form-control'))}}
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-3">
+								{{Form::select('cheque_payment_bank_id', $banksList, null, array('id' => 'cheque_payment_bank_id','class' => 'form-control'))}}
+							</div>
+							<div class="col-sm-3">
+								{{Form::text('cheque_payment_cheque_number', null, array('id' => 'cheque_payment_cheque_number','class' => 'form-control'))}}
+							</div>
+							<div class="col-sm-3">
+								{{Form::input('date', 'cheque_payment_issued_date', date('Y-m-d'), array('id' => 'cheque_payment_issued_date','class' => 'form-control'))}}
+							</div>
+							<div class="col-sm-3">
+								{{Form::input('date', 'cheque_payment_payable_date', null, array('id' => 'cheque_payment_payable_date','class' => 'form-control'))}}
+							</div>
+						</div>						
 					</div>
-					<div class="col-sm-2">
-						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
-					</div>
-					<div class="col-sm-2">
-						{{Form::text('cheque_payment_cheque_number', null, array('class' => 'form-control'))}}
-					</div>
-					<div class="col-sm-2">
-						{{Form::input('date', 'cheque_payment_issued_date', null, array('class' => 'form-control'))}}
-					</div>
-					<div class="col-sm-2">
-						{{Form::input('date', 'cheque_payment_payable_date', null, array('class' => 'form-control'))}}
+
+					<div class="col-sm-4">
+						<div class="row">
+							{{Form::label('cheque_payment', 'Cheque Payment', array('class' => 'col-sm-6 control-label'))}}
+							<div class="col-sm-6">
+								{{Form::input('text', 'cheque_payment', NULL, array('id' => 'cheque_payment','tabindex'=> $tab,'class' => 'form-control text-right saleDetail'))}}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-2">
-				<?php $tab ++ ; ?>
-				{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => 'any'))}}
+			<div class="col-sm-10 col-sm-offset-2">
+				<div class="row">
+					<div class="col-sm-8">
+						{{Form::checkbox('is_paid',TRUE,null,array('class' => 'myCheckbox', 'style'=>'margin-top:10px;'))}}&nbsp;&nbsp;
+						{{Form::label(null, 'Completely Paid', array('class' => 'control-label'))}}
+
+					</div>
+					<div class="col-sm-4">
+						<div class="row">
+							{{Form::label('balance', 'Credit', array('class' => 'col-sm-6 control-label'))}}
+							<div class="col-sm-6">
+								{{Form::input('text', 'balance', NULL, array('tabindex'=> $tab,'class' => 'form-control text-right','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+
 		<div class="form-group">
-			{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-2 control-label'))}}
-			<div class="col-sm-2">
-				<?php $tab ++ ; ?>
-				{{Form::text('other_expenses_details',null, array('tabindex'=> $tab,'class' => 'form-control'))}}
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="row">
+					<div class="col-sm-8">
+						<div class="row">
+							{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-3 control-label'))}}
+							<div class="col-sm-9">
+								<?php $tab ++ ; ?>
+								{{Form::text('other_expenses_details',null, array('tabindex'=> $tab,'class' => 'form-control'))}}
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="row">
+							{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-6 control-label', 'style' => 'padding-top: 0;'))}}
+							<div class="col-sm-6">
+								<?php $tab ++ ; ?>
+								{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => 'any'))}}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
+
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ; ?>
@@ -170,6 +215,7 @@
 
 	</div>
 </div>
+
 <script type="text/javascript">
 	function changeOnQuantity(name, quantity)
 	{
@@ -199,5 +245,12 @@
 		}
 		document.getElementsByName('full_total')[0].value = finalTotal.toFixed(2);
 	}
+</script>
+
+<script src="/js/processes/purchases/add.js"></script>
+<script>
+	displayBalance();
+	displayIsCompletelyPaid();
+	validateChequeDetails();
 </script>
 @stop
