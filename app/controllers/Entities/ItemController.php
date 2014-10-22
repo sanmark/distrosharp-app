@@ -28,14 +28,18 @@ class ItemController extends \Controller
 	}
 
 	public function add ()
-	{ 
-		$minimumAvailableItemCode = \ItemButler::getMinimumAvailableItemCode () ;
+	{
+		$minimumAvailableItemCode	 = \ItemButler::getMinimumAvailableItemCode () ;
+		$minBuyingInvoiceOrder		 = \ItemButler::getMinBuyingInvoiceOrder () ;
+		$minSellingInvoiceOrder		 = \ItemButler::getMinSellingInvoiceOrder () ;
 
 		$data = compact ( [
 			'minimumAvailableItemCode' ,
-		] ) ;
+			'minBuyingInvoiceOrder' ,
+			'minSellingInvoiceOrder'
+			] ) ;
 
-		return \View::make ( 'web.entities.items.add' , $data ) ; 
+		return \View::make ( 'web.entities.items.add' , $data ) ;
 	}
 
 	public function save ()
@@ -61,8 +65,8 @@ class ItemController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -97,8 +101,8 @@ class ItemController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 

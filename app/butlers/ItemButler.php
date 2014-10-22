@@ -74,14 +74,14 @@ class ItemButler
 			$itemDetails = $new_result ;
 		}
 
-		if ( strlen ( $from_date ) > 0 &&  strlen ( $to_date ) > 0 )
+		if ( strlen ( $from_date ) > 0 && strlen ( $to_date ) > 0 )
 		{
 			$from_time	 = $from_date . " 00:00:00" ;
 			$to_time	 = $to_date . " 23:59:59" ;
 
-			$new_result = $itemDetails -> filter ( function($collection)use($from_time,$to_time)
+			$new_result = $itemDetails -> filter ( function($collection)use($from_time , $to_time)
 			{
-				if ( strtotime($collection ->sellingInvoice->date_time) > strtotime($from_time) &&  strtotime($collection ->sellingInvoice->date_time) < strtotime($to_time) )
+				if ( strtotime ( $collection -> sellingInvoice -> date_time ) > strtotime ( $from_time ) && strtotime ( $collection -> sellingInvoice -> date_time ) < strtotime ( $to_time ) )
 				{
 					return true ;
 				}
@@ -91,6 +91,50 @@ class ItemButler
 		}
 
 		return $itemDetails ;
+	}
+
+	public static function getMinBuyingInvoiceOrder ()
+	{
+		$buying_invoice_id	 = 0 ;
+		$requestObject		 = new Models\Item();
+
+		$counter = 1 ;
+		while ( $counter != 0 )
+		{
+			$result = $requestObject -> where ( 'buying_invoice_order' , '=' , $counter ) -> get () ;
+
+			if ( count ( $result ) == 0 )
+			{
+				$buying_invoice_id	 = $counter ;
+				$counter			 = 0 ;
+			} else
+			{
+				$counter ++ ;
+			}
+		}
+		return $buying_invoice_id ;
+	}
+
+	public static function getMinSellingInvoiceOrder ()
+	{
+		$selling_invoice_id	 = 0 ;
+		$requestObject		 = new Models\Item();
+
+		$counter = 1 ;
+		while ( $counter != 0 )
+		{
+			$result = $requestObject -> where ( 'selling_invoice_order' , '=' , $counter ) -> get () ;
+
+			if ( count ( $result ) == 0 )
+			{
+				$selling_invoice_id	 = $counter ;
+				$counter			 = 0 ;
+			} else
+			{
+				$counter ++ ;
+			}
+		}
+		return $selling_invoice_id ;
 	}
 
 }

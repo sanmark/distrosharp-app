@@ -190,50 +190,6 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 		return $this -> getTotalPaidOrFreeAmountSoldForRepAndTimeRange ( 'paid_quantity' , $repId , $fromDate , $toDate ) ;
 	}
 
-	public static function getMinBuyingInvoiceOrder ()
-	{
-		$buying_invoice_id	 = 0 ;
-		$requestObject		 = new Item() ;
-
-		$counter = 1 ;
-		while ( $counter != 0 )
-		{
-			$result = $requestObject -> where ( 'buying_invoice_order' , '=' , $counter ) -> get () ;
-
-			if ( count ( $result ) == 0 )
-			{
-				$buying_invoice_id	 = $counter ;
-				$counter			 = 0 ;
-			} else
-			{
-				$counter ++ ;
-			}
-		}
-		return $buying_invoice_id ;
-	}
-
-	public static function getMinSellingInvoiceOrder ()
-	{
-		$selling_invoice_id	 = 0 ;
-		$requestObject		 = new Item() ;
-
-		$counter = 1 ;
-		while ( $counter != 0 )
-		{
-			$result = $requestObject -> where ( 'selling_invoice_order' , '=' , $counter ) -> get () ;
-
-			if ( count ( $result ) == 0 )
-			{
-				$selling_invoice_id	 = $counter ;
-				$counter			 = 0 ;
-			} else
-			{
-				$counter ++ ;
-			}
-		}
-		return $selling_invoice_id ;
-	}
-
 	private function getTotalPaidOrFreeAmountSoldForRepAndTimeRange ( $columnName , $repId , $fromDate , $toDate )
 	{
 		$firstDate	 = \SellingInvoiceButler::getFirstSellingInvoiceDate () ;

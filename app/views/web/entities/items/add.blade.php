@@ -42,13 +42,13 @@
 		<div class="form-group">
 			{{Form::label('buying_invoice_order', null, array('tabindex' => '6', 'class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','buying_invoice_order', \Models\Item::getMinBuyingInvoiceOrder(), array('tabindex' => '7', 'class' => 'form-control','required'=>true))}}
+				{{Form::input('number','buying_invoice_order', $minBuyingInvoiceOrder, array('tabindex' => '7', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('selling_invoice_order', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','selling_invoice_order', \Models\Item::getMinSellingInvoiceOrder(), array('tabindex' => '8', 'class' => 'form-control', 'required'=>true))}}
+				{{Form::input('number','selling_invoice_order', $minSellingInvoiceOrder, array('tabindex' => '8', 'class' => 'form-control', 'required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
