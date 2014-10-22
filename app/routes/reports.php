@@ -106,16 +106,28 @@ Route::group ( [
 		'before' => ['hasAbilities:view_item_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesSummaryController@filter'
 	] ) ;
-	
+
 	Route::get ( 'itemSalesDetails' , [
 		'as'	 => 'reports.itemSalesDetails' ,
 		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@home'
 	] ) ;
-	
+
 	Route::post ( 'itemSalesDetails' , [
 		'as'	 => 'reports.itemSalesDetails' ,
 		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@view'
+	] ) ;
+
+	Route::get ( 'itemReturnReport' , [
+		'as'	 => 'reports.itemReturnReport' ,
+		'before' => ['hasAbilities:view_item_return_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemReturnReportController@home'
+	] ) ;
+
+	Route::post ( 'itemReturnReport' , [
+		'as'	 => 'reports.itemReturnReport' ,
+		'before' => ['hasAbilities:view_item_return_report' ] ,
+		'uses'	 => 'Controllers\Reports\ItemReturnReportController@view'
 	] ) ;
 } ) ;

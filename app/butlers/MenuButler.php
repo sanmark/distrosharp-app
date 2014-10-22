@@ -92,6 +92,7 @@ class MenuButler
 				['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
 				['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] ,
 				['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
+				['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ]
 			] ,
 		] ,
 		['Account' , [
