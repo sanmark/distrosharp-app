@@ -6,7 +6,6 @@
 		<h3 class="panel-title">Confirm Bank Account Balance</h3>
 	</div>
 	<div class="panel-body">
-
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
@@ -23,46 +22,42 @@
 				</div>
 			</div>
 		</div>
-		<br/>
-		<table class="table table-striped" style="width: 80%;">
+
+		@if(count($transferData)==0)
+		<h4><b>There are no records to display...</b></h4>
+		@else	
+
+		<table class="table table-striped" style="width: 70%;">		
 			<tr>
-				<td>Date/Time</td>
-				<td>From Account</td>
-				<td>To Account</td>
-				<td>Amount</td>
+				<th colspan="4">
+			<h5><b>Starting Balance = {{number_format($startingTotal,2)}}</b></h5>
+			</th>
 			</tr>
-			@if(count($transferData)==0)
 			<tr>
-				<td>There are no records to display</td>
-			</tr>
-			@else
-			<tr>
-				<td colspan="4">
-					Starting Balance = {{number_format($startingTotal,2)}}
-				</td>
+				<th>Date / Time</th>
+				<th>From Account</th>
+				<th>To Account</th>
+				<th class="text-right">Amount</th>
 			</tr>
 			@foreach($transferData as $transfer)
 			<tr>
 				<td>{{$transfer->date_time}}</td>
 				<td>{{$transfer->fromAccount['name']}}</td>
 				<td>{{$transfer->toAccount['name']}}</td>
-				<td>{{$transfer->amount}}</td>
+				<td class="text-right">{{$transfer->amount}}</td>
 			</tr>
 			@endforeach
 			<tr>
-				<td colspan="4">
-					Ending Balance = {{number_format($endingTotal,2)}}
-					{{Form::hidden('endBalance',$endingTotal)}}
-				</td>
+				<th colspan="4">
+			<h5><b>Ending Balance = {{number_format($endingTotal,2)}}
+					{{Form::hidden('endBalance',$endingTotal)}}</b></h5>
+			</th>
 			</tr>
 			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td>{{Form::input('submit',null,'Confirm',array('class' => 'btn btn-default','name'=>'confirm'))}}</td>
-			</tr>
-			@endif
+				<td colspan="5">{{Form::input('submit',null,'Confirm',array('class' => 'btn btn-default pull-right','name'=>'confirm'))}}</td>
+			</tr>			
 		</table>
+		@endif
 		{{Form::close()}}
 	</div>
 </div>
