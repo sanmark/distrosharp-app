@@ -144,4 +144,17 @@ class ArrayHelper
 		return FALSE ;
 	}
 
+	public static function areAllElementsFilled ( $array )
+	{
+		foreach ( $array as $element )
+		{
+			if ( \NullHelper::isNullEmptyOrWhitespace ( $element ) )
+			{
+				return FALSE ;
+			}
+		}
+
+		return TRUE ;
+	}
+
 }

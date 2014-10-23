@@ -31,6 +31,11 @@ class SystemSettingsSeeder extends Seeder
 				'system_settable_id' => 5 ,
 				'value'				 => 2
 			] ,
+			[
+				'id'				 => 6 ,
+				'system_settable_id' => 6 ,
+				'value'				 => 2
+			] ,
 //			[
 //				'id'				 =>  ,
 //				'system_settable_id' =>  ,

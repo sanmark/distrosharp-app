@@ -23,6 +23,12 @@
 			</div>
 		</div>
 		<div class="form-group">
+			{{Form::label('is_unload','Is Unload', array('class' => 'col-sm-1 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::checkbox('is_unload',TRUE,null,array('style'=>'margin-top:10px'))}}
+			</div>
+		</div>
+		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
 				{{Form::submit('Submit', array('tabindex'=>'3','class' => 'btn btn-default pull-right'))}}
 			</div>

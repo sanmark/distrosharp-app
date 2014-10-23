@@ -36,9 +36,14 @@ class CustomValidationRules extends \Validator
 		return $value >= $againstValue ;
 	}
 
-	public function noSpacesInString( $attribute , $value )
+	public function noSpacesInString ( $attribute , $value )
 	{
 		return ! preg_match ( '/ /' , $value ) ;
+	}
+
+	public function allFieldsFilled ( $field , $value , $parameters )
+	{
+		return \ArrayHelper::areAllElementsFilled($value);
 	}
 
 }

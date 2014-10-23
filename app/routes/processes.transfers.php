@@ -29,13 +29,13 @@ Route::group ( [
 		'uses'	 => 'Controllers\Processes\TransferController@pSelectStocksInvolved'
 	] ) ;
 
-	Route::get ( 'add/{fromStockId}/{toStockId}' , [
+	Route::get ( 'add/{fromStockId}/{toStockId}/{isUnload}' , [
 		'as'	 => 'processes.transfers.add' ,
 		'before' => ['hasAbilities:add_transfer' ] ,
 		'uses'	 => 'Controllers\Processes\TransferController@add'
 	] ) ;
 
-	Route::post ( 'add/{fromStockId}/{toStockId}' , [
+	Route::post ( 'add/{fromStockId}/{toStockId}/{isUnload}' , [
 		'as'	 => 'processes.transfers.add' ,
 		'before' => ['hasAbilities:add_transfer' ] ,
 		'uses'	 => 'Controllers\Processes\TransferController@save'

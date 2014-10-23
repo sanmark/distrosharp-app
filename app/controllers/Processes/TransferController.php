@@ -32,7 +32,7 @@ class TransferController extends \Controller
 			'toStockId' ,
 			'dateTimeFrom' ,
 			'dateTimeTo'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.processes.transfers.all' , $data ) ;
 	}
@@ -44,7 +44,7 @@ class TransferController extends \Controller
 		$data				 = compact ( [
 			'basicStockDetails' ,
 			'transferData'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.processes.transfers.view' , $data ) ;
 	}
 
@@ -63,31 +63,44 @@ class TransferController extends \Controller
 	{
 		try
 		{
-			$from	 = \Input::get ( 'from' ) ;
-			$to		 = \Input::get ( 'to' ) ;
+			$from		 = \Input::get ( 'from' ) ;
+			$to			 = \Input::get ( 'to' ) ;
+			$isUnloaded	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
 
 			$this -> validateSelectedTransfers ( $from , $to ) ;
 
-			return \Redirect::action ( 'processes.transfers.add' , [$from , $to ] ) ;
+			return \Redirect::action ( 'processes.transfers.add' , [$from , $to , $isUnloaded ] ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
-	public function add ( $fromStockId , $toStockId )
+	public function add ( $fromStockId , $toStockId , $isUnloaded )
 	{
 		try
 		{
+			if ( $isUnloaded == TRUE )
+			{
+				$stockObj		 = \Models\Stock::findOrFail ( $fromStockId ) ;
+				$isUnloadable	 = $stockObj -> isUnloadable () ;
+
+				if ( $isUnloadable == FALSE )
+				{
+					\MessageButler::setError ( 'Please load stock/make at least one sale before unload' ) ;
+					return \Redirect::back ()
+							-> withInput () ;
+				}
+			}
 			$this -> validateSelectedTransfers ( $fromStockId , $toStockId ) ;
 
 			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
 			$items		 = \Models\Item::where ( 'is_active' , '=' , '1' )
-			-> orderBy ( 'buying_invoice_order' , 'ASC' )
-			-> get () ;
+				-> orderBy ( 'buying_invoice_order' , 'ASC' )
+				-> get () ;
 			$dateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 
 			$fromStockDetails	 = $fromStock -> goodQuantities () ;
@@ -99,15 +112,16 @@ class TransferController extends \Controller
 				'items' ,
 				'dateTime' ,
 				'fromStockDetails' ,
-				'toStockDetails'
-			] ) ;
+				'toStockDetails' ,
+				'isUnloaded'
+				] ) ;
 
 			return \View::make ( 'web.processes.transfers.add' , $data ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::action ( 'processes.transfers.selectStocksInvolved' )
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -119,45 +133,28 @@ class TransferController extends \Controller
 			$availableAmounts	 = \Input::get ( 'availale_amounts' ) ;
 			$transferAmounts	 = \Input::get ( 'transfer_amounts' ) ;
 			$description		 = \Input::get ( 'description' ) ;
-
-			$this -> validateItemTransfers ( $transferAmounts ) ;
-
-			$transfer = new \Models\Transfer() ;
-
-			$transfer -> from_stock_id	 = $fromStockId ;
-			$transfer -> to_stock_id	 = $toStockId ;
-			$transfer -> date_time		 = $dateTime ;
-			$transfer -> description	 = $description ;
-
-			$transfer -> save () ;
-
-			$transferId = $transfer -> id ;
-
-			foreach ( $transferAmounts as $itemId => $transferAmount )
+			$unload				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
+			$fromStockObj		 = \Models\Stock::findOrFail ( $fromStockId ) ;
+			if ( $unload == TRUE )
 			{
-				if ( ! \NullHelper::isNullEmptyOrWhitespace ( $transferAmount ) )
-				{
-					$transferDetail = new \Models\TransferDetail() ;
+				$this -> validateUnloadTransfer ( $transferAmounts ) ;
+				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
+				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
 
-					$transferDetail -> transfer_id	 = $transferId ;
-					$transferDetail -> item_id		 = $itemId ;
-					$transferDetail -> quantity		 = $transferAmount ;
+				return \Redirect::action ( 'processes.transfers.selectStocksInvolved' ) ;
+			} else
+			{
+				$this -> validateItemTransfers ( $transferAmounts ) ;
+				$fromStockObj -> saveNonUnload ( $toStockId , $dateTime , $transferAmounts , $description ) ;
+				\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
 
-					$transferDetail -> save () ;
-
-					\StockDetailButler::decreaseGoodQuantity ( $fromStockId , $itemId , $transferAmount ) ;
-					\StockDetailButler::increaseGoodQuantity ( $toStockId , $itemId , $transferAmount ) ;
-				}
+				return \Redirect::back () ;
 			}
-
-			\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
-
-			return \Redirect::back () ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -166,7 +163,7 @@ class TransferController extends \Controller
 		$data = [
 			'from'	 => $from ,
 			'to'	 => $to
-		] ;
+			] ;
 
 		$rules = [
 			'from'	 => [
@@ -176,7 +173,7 @@ class TransferController extends \Controller
 			'to'	 => [
 				'required'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -193,17 +190,17 @@ class TransferController extends \Controller
 	{
 		$data = [
 			'transfer_amounts' => $transferAmounts
-		] ;
+			] ;
 
 		$rules = [
 			'transfer_amounts' => [
 				'at_least_one_array_element_has_value'
 			]
-		] ;
+			] ;
 
 		$messages = [
 			'transfer_amounts.at_least_one_array_element_has_value' => 'Please enter at least one Item transfer amount.'
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules , $messages ) ;
 
@@ -216,4 +213,30 @@ class TransferController extends \Controller
 		}
 	}
 
+	private function validateUnloadTransfer ( $transferAmounts )
+	{
+		$data = [
+			'transfer_amounts' => $transferAmounts
+			] ;
+
+		$rules = [
+			'transfer_amounts' => [
+				'all_fields_filled'
+			]
+			] ;
+
+		$messages = [
+			'transfer_amounts.all_fields_filled' => 'Please unload all items in stock'
+			] ;
+
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
 }
