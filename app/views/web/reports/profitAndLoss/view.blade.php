@@ -24,34 +24,34 @@
 				{{Form::close()}}
 			</div>
 		</div>
+		<br/>
+		@if($viwe_data) 
 
+		<table class="table table-striped" style="width: 50%">
+			<tr>
+				<td><b>Sales :</b></td>
+				<td class="text-right"><b>{{ number_format( $sales, 2) }}</b></td>
+			</tr>
+			<tr>
+				<td><b>Discounts :</b></td>
+				<td class="text-right"><b>{{ number_format( $discounts, 2) }}</b></td>
+			</tr>
+			<tr>
+				<td><b>Net Sales :</b></td>
+				<td class="text-right"><b>{{ number_format( $netSales, 2) }}</b></td>
+			</tr>
+			<tr>
+				<td><b>Cost of Sold Goods :</b></td>
+				<td class="text-right"><b>{{ number_format( $costOfSoldGoods, 2) }}</b></td>
+			</tr>
+			<tr>
+				<td><b>Gross Profit :</b></td>
+				<td class="text-right"><b>{{ number_format( $netSales - $costOfSoldGoods, 2) }}</b></td>
+			</tr>
+		</table>
+		@else 
+		<h4 class="text-center">Please define a criteria and press "Submit".</h4>
+		@endif
 	</div>
 </div>
-@if($viwe_data) 
-
-<table class="table table-striped" style="width: 50%">
-	<tr>
-		<td><b>Sales :</b></td>
-		<td class="text-right"><b>{{ number_format( $sales, 2) }}</b></td>
-	</tr>
-	<tr>
-		<td><b>Discounts :</b></td>
-		<td class="text-right"><b>{{ number_format( $discounts, 2) }}</b></td>
-	</tr>
-	<tr>
-		<td><b>Net Sales :</b></td>
-		<td class="text-right"><b>{{ number_format( $netSales, 2) }}</b></td>
-	</tr>
-	<tr>
-		<td><b>Cost of Sold Goods :</b></td>
-		<td class="text-right"><b>{{ number_format( $costOfSoldGoods, 2) }}</b></td>
-	</tr>
-	<tr>
-		<td><b>Gross Profit :</b></td>
-		<td class="text-right"><b>{{ number_format( $netSales - $costOfSoldGoods, 2) }}</b></td>
-	</tr>
-</table>
-@else 
-Please define a criteria and press "Submit".
-@endif
 @stop

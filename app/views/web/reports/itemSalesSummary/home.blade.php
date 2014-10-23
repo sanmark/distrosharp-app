@@ -51,7 +51,7 @@
 			</tbody>
 		</table>
 		@else
-		<h4>Please define a criteria and press "Submit".</h4>
+		<h4 class="text-center">Please define a criteria and press "Submit".</h4>
 		@endif
 	</div>
 </div>

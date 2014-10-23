@@ -38,9 +38,7 @@
 
 		@if(count($sellingData)==0)
 		<br>
-		<div class="no-records-message text-center">
-			There are no records to display
-		</div>
+		<h4 class="text-center">There are no records to display...</h4>
 		<br>
 		@else
 		<table class="table table-striped" style="width:80%;">

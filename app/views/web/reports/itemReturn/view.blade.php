@@ -6,44 +6,48 @@
 		<h3 class="panel-title">Return Items Details Report</h3>
 	</div>
 	<div class="panel-body">
+
 		<div class="panel panel-default">
-			{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
-			<div class="form-group inline-form">
-				{{Form::label('item',null,array('class' => 'control-label'))}} 
-				{{Form::select('item',$items,$item, array('class' => 'form-control'))}}
-			</div> 
-			<div class="form-group inline-form">
-				{{Form::label('rep',null,array('class' => 'control-label'))}} 
-				{{Form::select('rep',$reps,$rep, array('class' => 'form-control'))}}
-			</div> 
-			<div class="form-group inline-form">
-				{{Form::label('route',null,array('class' => 'control-label'))}} 
-				{{Form::select('route',$routes,$route, array('class' => 'form-control'))}}
-			</div> 
-			<div class="form-group inline-form">
-				{{Form::label('customer',null,array('class' => 'control-label'))}} 
-				{{Form::select('customer',$customers,$customer, array('class' => 'form-control'))}}
-			</div> 
-			<div class="form-group inline-form">
-				{{Form::label('from_date',null,array('class' => 'control-label'))}}
-				{{Form::input('date', 'from_date', $from_date,array('class' => 'form-control'))}}
+			<div class="panel-body">
+				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				<div class="form-group bottom-space">
+					{{Form::label('item',null,array('class' => 'control-label'))}}
+					{{Form::select('item',$items,$item, array('class' => 'form-control'))}}
+				</div> 
+				<div class="form-group bottom-space">
+					{{Form::label('rep',null,array('class' => 'control-label'))}} 
+					{{Form::select('rep',$reps,$rep, array('class' => 'form-control'))}}
+				</div> 
+				<div class="form-group bottom-space">
+					{{Form::label('route',null,array('class' => 'control-label'))}} 
+					{{Form::select('route',$routes,$route, array('class' => 'form-control'))}}
+				</div> 
+				<div class="form-group bottom-space">
+					{{Form::label('customer',null,array('class' => 'control-label'))}} 
+					{{Form::select('customer',$customers,$customer, array('class' => 'form-control'))}}
+				</div> 
+				<div class="form-group bottom-space">
+					{{Form::label('from_date',null,array('class' => 'control-label'))}}
+					{{Form::input('date', 'from_date', $from_date,array('class' => 'form-control'))}}
+				</div>
+				<div class="form-group bottom-space">
+					{{Form::label('to_date',null,array('class' => 'control-label'))}}
+					{{Form::input('date', 'to_date', $to_date,array('class' => 'form-control'))}}
+				</div> 
+				<div class="form-group bottom-space">
+					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+				</div>
+				{{Form::close()}}
 			</div>
-			<div class="form-group inline-form">
-				{{Form::label('to_date',null,array('class' => 'control-label'))}}
-				{{Form::input('date', 'to_date', $to_date,array('class' => 'form-control'))}}
-			</div> 
-			<div class="form-group inline-form">
-				{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
-			</div>
-			{{Form::close()}}
-			<br/>
-		</div> 
+		</div>
+
+		<br/>
 		@if($view_data)   
 
 		@if($itemDetails->isEmpty())
-		<div class="no-records-message text-center">
-			There are no records to display
-		</div>
+
+		<h4 class="text-center">There are no records to display...</h4>
+
 		@else 
 		<table class="table table-striped">
 			<tr>
@@ -68,9 +72,9 @@
 			@endforeach  
 		</table>
 		@endif
-		
+
 		@else
-		Please define a criteria and press "Submit".
+		<h4 class="text-center">Please define a criteria and press "Submit".</h4>
 		@endif
 	</div>
 </div>
