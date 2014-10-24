@@ -95,45 +95,17 @@ class ItemButler
 
 	public static function getMinBuyingInvoiceOrder ()
 	{
-		$buying_invoice_id	 = 0 ;
-		$requestObject		 = new Models\Item();
+		$allOrder			 = \Models\Item::lists ( 'buying_invoice_order' ) ;
+		$buying_invoice_id	 = \NumberHelper::getMinimumAvailableNumberFromArray ( $allOrder ) ;
 
-		$counter = 1 ;
-		while ( $counter != 0 )
-		{
-			$result = $requestObject -> where ( 'buying_invoice_order' , '=' , $counter ) -> get () ;
-
-			if ( count ( $result ) == 0 )
-			{
-				$buying_invoice_id	 = $counter ;
-				$counter			 = 0 ;
-			} else
-			{
-				$counter ++ ;
-			}
-		}
 		return $buying_invoice_id ;
 	}
 
 	public static function getMinSellingInvoiceOrder ()
 	{
-		$selling_invoice_id	 = 0 ;
-		$requestObject		 = new Models\Item();
+		$allOrder			 = \Models\Item::lists ( 'selling_invoice_order' ) ;
+		$selling_invoice_id	 = \NumberHelper::getMinimumAvailableNumberFromArray ( $allOrder ) ;
 
-		$counter = 1 ;
-		while ( $counter != 0 )
-		{
-			$result = $requestObject -> where ( 'selling_invoice_order' , '=' , $counter ) -> get () ;
-
-			if ( count ( $result ) == 0 )
-			{
-				$selling_invoice_id	 = $counter ;
-				$counter			 = 0 ;
-			} else
-			{
-				$counter ++ ;
-			}
-		}
 		return $selling_invoice_id ;
 	}
 

@@ -29,14 +29,10 @@ class ItemController extends \Controller
 
 	public function add ()
 	{
-		$minimumAvailableItemCode	 = \ItemButler::getMinimumAvailableItemCode () ;
-		$minBuyingInvoiceOrder		 = \ItemButler::getMinBuyingInvoiceOrder () ;
-		$minSellingInvoiceOrder		 = \ItemButler::getMinSellingInvoiceOrder () ;
-
+		$minimumAvailableItemCode	 = \ItemButler::getMinimumAvailableItemCode () ; 
+		
 		$data = compact ( [
-			'minimumAvailableItemCode' ,
-			'minBuyingInvoiceOrder' ,
-			'minSellingInvoiceOrder'
+			'minimumAvailableItemCode' 
 			] ) ;
 
 		return \View::make ( 'web.entities.items.add' , $data ) ;
@@ -46,7 +42,7 @@ class ItemController extends \Controller
 	{
 
 		try
-		{
+		{ 
 			$item = new \Models\Item() ;
 
 			$item -> code					 = \Input::get ( 'code' ) ;
@@ -54,8 +50,8 @@ class ItemController extends \Controller
 			$item -> reorder_level			 = \Input::get ( 'reorder_level' ) ;
 			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
 			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ;
-			$item -> buying_invoice_order	 = \Input::get ( 'buying_invoice_order' ) ;
-			$item -> selling_invoice_order	 = \Input::get ( 'selling_invoice_order' ) ;
+			$item -> buying_invoice_order	 = \ItemButler::getMinBuyingInvoiceOrder () ;
+			$item -> selling_invoice_order	 = \ItemButler::getMinSellingInvoiceOrder () ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$item -> save () ;
 
@@ -90,9 +86,7 @@ class ItemController extends \Controller
 			$item -> name					 = \Input::get ( 'name' ) ;
 			$item -> reorder_level			 = \Input::get ( 'reorder_level' ) ;
 			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
-			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ;
-			$item -> buying_invoice_order	 = \Input::get ( 'buying_invoice_order' ) ;
-			$item -> selling_invoice_order	 = \Input::get ( 'selling_invoice_order' ) ;
+			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ; 
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 
 			$item -> update () ;

@@ -101,17 +101,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 			'current_selling_price'	 => [
 				'numeric' ,
 				'required'
-			] ,
-			'buying_invoice_order'	 => [
-				'required' ,
-				'numeric' ,
-				'unique:items,buying_invoice_order,' . $this -> id
-			] ,
-			'selling_invoice_order'	 => [
-				'required' ,
-				'numeric' ,
-				'unique:items,selling_invoice_order,' . $this -> id
-			]
+			] 
 			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
