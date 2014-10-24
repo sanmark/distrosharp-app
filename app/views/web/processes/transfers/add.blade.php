@@ -49,7 +49,7 @@
 					</div>
 					@if($isUnloaded==1)
 					<div class="col-sm-2 text-right"> 
-						{{Form::input('number','imbalance_amount['.$item->id.']', null, array('class' => 'form-control','step' => 'any','readonly'))}}
+						{{Form::input('number','imbalance_amount['.$item->id.']', null, array('class' => 'form-control','step' => 'any','readonly','disabled'=>'true'))}}
 					</div>
 					@endif
 					<div class="col-sm-1 text-right">

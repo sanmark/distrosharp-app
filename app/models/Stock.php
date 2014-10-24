@@ -140,7 +140,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 	public function isUnloadable ()
 	{
 		$imbalanceStock = \SystemSettingButler::getValue ( 'imbalance_stock' ) ;
-
+		
 		$lastLoadDate = \Models\Transfer::where ( 'to_stock_id' , '=' , $this -> id )
 			-> where ( 'from_stock_id' , '!=' , $imbalanceStock )
 			-> max ( 'date_time' ) ;
@@ -163,16 +163,17 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	public function saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description )
 	{
-		$transferAmountHigherArray	 = [ ] ;
-		$transferAmountSmallerArray	 = [ ] ;
-		$transferAmountEqualArray	 = [ ] ;
-		$transferId					 = $this -> saveBasicTransferDetails ( $this -> id , $toStockId , $dateTime , $description ) ;
+		$transferId = $this -> saveBasicTransferDetails ( $this -> id , $toStockId , $dateTime , $description ) ;
 
 		$this -> saveTransfersByDifferentTransferAmounts ( $transferAmounts , $availableAmounts , $toStockId , $dateTime , $description , $transferId ) ;
 	}
 
 	public function saveTransfersByDifferentTransferAmounts ( $transferAmounts , $availableAmounts , $toStockId , $dateTime , $description , $transferId )
 	{
+		$transferAmountHigherArray	 = [ ] ;
+		$transferAmountSmallerArray	 = [ ] ;
+		$transferAmountEqualArray	 = [ ] ;
+		
 		foreach ( $transferAmounts as $item => $transferAmount )
 		{
 			if ( $availableAmounts[ $item ] < $transferAmount )

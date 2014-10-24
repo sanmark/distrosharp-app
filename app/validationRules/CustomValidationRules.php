@@ -43,7 +43,29 @@ class CustomValidationRules extends \Validator
 
 	public function allFieldsFilled ( $field , $value , $parameters )
 	{
-		return \ArrayHelper::areAllElementsFilled($value);
+		return \ArrayHelper::areAllElementsFilled ( $value ) ;
+	}
+
+	public function aVehicleStock ( $field , $value , $parameters )
+	{
+		$fromStock			 = \Models\Stock::findOrFail ( $value ) ;
+		$vehicleStockType	 = \StockTypeButler::getVehicleStockType () ;
+		if ( $fromStock -> stock_type_id == $vehicleStockType -> id )
+		{
+			return TRUE ;
+		}
+		return FALSE ;
+	}
+
+	public function aNormalStock ( $field , $value , $parameters )
+	{
+		$toStock		 = \Models\Stock::findOrFail ( $value ) ;
+		$normalStockType = \StockTypeButler::getNormalStockType () ;
+		if ( $toStock -> stock_type_id == $normalStockType -> id )
+		{
+			return TRUE ;
+		}
+		return FALSE ;
 	}
 
 }

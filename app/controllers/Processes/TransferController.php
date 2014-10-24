@@ -9,7 +9,7 @@ class TransferController extends \Controller
 	{
 		$filterValues	 = \Input::all () ;
 		$transfers		 = \Models\Transfer::filter ( $filterValues ) ;
-		$stocks			 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Any' ] ) ;
+		$stocks			 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 
 		$fromStockId	 = \Input::get ( 'from_stock_id' ) ;
 		$toStockId		 = \Input::get ( 'to_stock_id' ) ;
@@ -52,7 +52,7 @@ class TransferController extends \Controller
 	{
 		$data = [ ] ;
 
-		$stocksHtmlSelect = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Any' ] ) ;
+		$stocksHtmlSelect = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 
 		$data[ 'stocksHtmlSelect' ] = $stocksHtmlSelect ;
 
@@ -67,9 +67,9 @@ class TransferController extends \Controller
 			$to			 = \Input::get ( 'to' ) ;
 			$isUnloaded	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
 
-			$this -> validateSelectedTransfers ( $from , $to ) ;
+			$this -> validateSelectedTransfers ( $from , $to , $isUnloaded ) ;
 
-			return \Redirect::action ( 'processes.transfers.add' , [$from , $to , $isUnloaded ] ) ;
+			return \Redirect::action ( 'processes.transfers.add' , [ $from , $to , $isUnloaded ] ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -94,7 +94,7 @@ class TransferController extends \Controller
 							-> withInput () ;
 				}
 			}
-			$this -> validateSelectedTransfers ( $fromStockId , $toStockId ) ;
+			$this -> validateSelectedTransfers ( $fromStockId , $toStockId , $isUnloaded ) ;
 
 			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
@@ -158,8 +158,10 @@ class TransferController extends \Controller
 		}
 	}
 
-	private function validateSelectedTransfers ( $from , $to )
+	private function validateSelectedTransfers ( $from , $to , $isUnloaded )
 	{
+		$messages = [ ] ;
+
 		$data = [
 			'from'	 => $from ,
 			'to'	 => $to
@@ -175,7 +177,25 @@ class TransferController extends \Controller
 			]
 			] ;
 
-		$validator = \Validator::make ( $data , $rules ) ;
+		if ( $isUnloaded == TRUE )
+		{
+			$rulesIfUnload	 = [
+				'from'	 => [
+					'a_vehicle_stock'
+				] ,
+				'to'	 => [
+					'a_normal_stock'
+				]
+				] ;
+			
+			$rules			 = array_merge_recursive ( $rules , $rulesIfUnload ) ;
+			
+			$messages		 = [
+				'a_vehicle_stock'	 => 'Can not unload from non vehicle stock .' ,
+				'a_normal_stock'	 => 'Can not unload to vehicle stock.' ,
+				] ;
+		}
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{
@@ -239,4 +259,5 @@ class TransferController extends \Controller
 			throw $iie ;
 		}
 	}
+
 }

@@ -11,3 +11,7 @@ Validator::extend ( 'greater_than_or_equal_to' , 'ValidationRules\CustomValidati
 Validator::extend ( 'no_spaces_in_string' , 'ValidationRules\CustomValidationRules@noSpacesInString' ) ;
 
 Validator::extend ( 'all_fields_filled' , 'ValidationRules\CustomValidationRules@allFieldsFilled' ) ;
+
+Validator::extend ( 'a_vehicle_stock' , 'ValidationRules\CustomValidationRules@aVehicleStock' ) ;
+
+Validator::extend ( 'a_normal_stock' , 'ValidationRules\CustomValidationRules@aNormalStock' ) ;
