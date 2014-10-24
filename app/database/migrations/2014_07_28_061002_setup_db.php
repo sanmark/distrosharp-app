@@ -43,6 +43,7 @@ class SetupDb extends Migration
 			$t -> integer ( 'buying_invoice_order' ) ;
 			$t -> integer ( 'selling_invoice_order' ) ;
 			$t -> boolean ( 'is_active' ) ;
+			$t -> double ( 'weight' ) ;
 		} ) ;
 
 		Schema::create ( 'banks' , function ($t)
@@ -397,10 +398,10 @@ class SetupDb extends Migration
 			$t -> double ( 'amount' ) ;
 
 			$t -> foreign ( 'finance_account_id' )
-			-> references ( 'id' )
-			-> on ( 'finance_accounts' )
-			-> onUpdate ( 'cascade' )
-			-> onDelete ( 'cascade' ) ;
+				-> references ( 'id' )
+				-> on ( 'finance_accounts' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
 		} ) ;
 	}
 

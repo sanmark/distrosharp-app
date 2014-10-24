@@ -38,6 +38,12 @@
 			<div class="col-sm-4">
 				{{Form::input('number','current_selling_price', null, array('tabindex' => '5', 'class' => 'form-control','step' => 'any','required'=>true))}}
 			</div>
+		</div>  
+		<div class="form-group">
+			{{Form::label('weight (g)', null, array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-4">
+				{{Form::input('number','weight', null, array('tabindex' => '8', 'class' => 'form-control', 'step'=>'any'))}}
+			</div>
 		</div> 
 		<div class="form-group">
 			{{Form::label('is_active', null, array('class' => 'col-sm-2 control-label'))}}

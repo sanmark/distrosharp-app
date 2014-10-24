@@ -53,6 +53,7 @@
 					<th class="text-right">Reorder Level</th>
 					<th class="text-right">Buying Price</th>
 					<th class="text-right">Selling Price</th>
+					<th class="text-right">Weight (g)</th>
 					<th class="text-right">Buying Invoice Order</th>
 					<th class="text-right">Selling Invoice Order</th>
 					<th class="text-center">Is Active</th>
@@ -66,6 +67,7 @@
 					<td class="text-right">{{$item->reorder_level}}</td>
 					<td class="text-right">{{number_format($item->current_buying_price,2)}}</td>
 					<td class="text-right">{{number_format($item->current_selling_price,2)}}</td>
+					<td class="text-right">{{ $item->weight}}</td>
 					<td class="text-right">{{$item->buying_invoice_order}}</td>
 					<td class="text-right">{{$item->selling_invoice_order}}</td>
 					<td class="text-center">{{ViewButler::getYesNoFromBoolean ( $item->is_active)}}</td>

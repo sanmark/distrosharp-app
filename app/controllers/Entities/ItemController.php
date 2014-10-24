@@ -53,6 +53,7 @@ class ItemController extends \Controller
 			$item -> buying_invoice_order	 = \ItemButler::getMinBuyingInvoiceOrder () ;
 			$item -> selling_invoice_order	 = \ItemButler::getMinSellingInvoiceOrder () ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$item -> weight			 = \Input::get ( 'weight' ) ;
 			$item -> save () ;
 
 			$this -> createStockDetailsByItem ( $item -> id ) ;
@@ -88,6 +89,7 @@ class ItemController extends \Controller
 			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
 			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ; 
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$item -> weight			 = \Input::get ( 'weight' ) ;
 
 			$item -> update () ;
 

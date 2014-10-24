@@ -61,6 +61,9 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'numeric' ,
 				'unique:items'
+			] ,
+			'weight'			 => [
+				'numeric'
 			]
 			] ;
 
@@ -101,7 +104,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 			'current_selling_price'	 => [
 				'numeric' ,
 				'required'
-			] 
+			]
 			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
