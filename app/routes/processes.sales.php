@@ -3,14 +3,14 @@
 Route::group ( [
 	'prefix' => 'processes/sales' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'processes.sales.all' ,
 		'before' => ['hasAbilities:view_sales' ] ,
 		'uses'	 => 'Controllers\Processes\SaleController@all'
 	] ) ;
-	
+
 	Route::post ( '' , [
 		'as'	 => 'processes.sales.all' ,
 		'before' => ['hasAbilities:view_sales' ] ,
@@ -39,5 +39,17 @@ Route::group ( [
 		'as'	 => 'processes.sales.edit' ,
 		'before' => ['hasAbilities:edit_sale' ] ,
 		'uses'	 => 'Controllers\Processes\SaleController@update'
+	] ) ;
+
+	Route::get ( 'set-rep' , [
+		'as'	 => 'processes.sales.setRep' ,
+		'before' => ['hasAbilities:add_sale' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@selectRep'
+	] ) ;
+
+	Route::post ( 'set-rep' , [
+		'as'	 => 'processes.sales.setRep' ,
+		'before' => ['hasAbilities:add_sale' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@setRep'
 	] ) ;
 } ) ;

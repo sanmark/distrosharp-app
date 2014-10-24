@@ -21,6 +21,15 @@
 			</div>
 		</div>
 		<div class="form-group">
+			{{Form::label('rep',null,array('class' => 'col-sm-2 control-label'))}}
+			<div class="col-sm-3">
+				{{Form::label('rep',$rep->username,array('class' => 'form-control'))}}
+			</div>
+			<div class="col-sm-1">
+				{{HTML::link ( URL::action ( 'processes.sales.setRep' ) , 'Change Rep...' , ['class' => 'btn btn-default', 'style'=>'position: relative; left: -25px;' ] )}}
+			</div>
+		</div>
+		<div class="form-group">
 			{{Form::label('route_id', 'Route', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::select('route_id',$routes, Session::get('oldRouteId'), array('tabindex'=>'1', 'class' => 'form-control','required'=>true))}}

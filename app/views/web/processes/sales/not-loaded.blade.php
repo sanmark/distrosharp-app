@@ -9,7 +9,7 @@
 	<div class="panel-body">
 		<p>The stock is empty. You need to transfer items to start selling.</p>
 		<p>{{ HTML::linkRoute('processes.transfers.selectStocksInvolved','Load now?') }}</p>
-		
+		<p>Or you can {{HTML::link ( URL::action ( 'processes.sales.setRep' ) , 'choose another Rep' )}}.</p>
 	</div>
 </div>
 

@@ -5,6 +5,7 @@
  */
 define ( 'SESSION_ORGANIZATION' , 'organization' ) ;
 define ( 'SESSION_MENU' , 'menu' ) ;
+define ( 'SESSION_REP' , 'rep' ) ;
 
 /**
  * Config

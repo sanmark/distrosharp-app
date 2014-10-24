@@ -18,4 +18,14 @@ class SessionButler
 		return Session::set ( SESSION_MENU , $menu ) ;
 	}
 
+	public static function setRepId ( $repId )
+	{
+		return Session::set ( SESSION_REP , $repId ) ;
+	}
+
+	public static function getRepId ()
+	{
+		return Session::get ( SESSION_REP ) ;
+	}
+
 }

@@ -17,7 +17,7 @@ class MenuButler
 				[ 'Items' , [
 						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
 						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ] ,
-						[ 'Order Items','entities.items.order',[ 'order_items' ] ]
+						[ 'Order Items' , 'entities.items.order' , [ 'order_items' ] ]
 					]
 				] ,
 				[ 'Vendors' , [
@@ -55,7 +55,7 @@ class MenuButler
 				] ,
 				['Sales' , [
 						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
-						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ]
+						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ] ,
 					]
 				]
 			]

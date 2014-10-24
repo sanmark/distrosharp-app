@@ -7,27 +7,38 @@ class SaleController extends \Controller
 
 	public function add ()
 	{
-		if ( \Auth::user () -> stock -> isLoaded () )
+		if ( \NullHelper::isNullEmptyOrWhitespace ( \SessionButler::getRepId () ) )
+		{
+			\MessageButler::setInfo ( 'Please select a rep before adding Selling Invoices.' ) ;
+
+			return \Redirect::action ( 'processes.sales.setRep' ) ;
+		}
+
+		$rep = \User::with ( 'stock' )
+			-> findOrFail ( \SessionButler::getRepId () ) ;
+
+		if ( $rep -> stock -> isLoaded () )
 		{
 			$customers			 = [ NULL => 'Select Route First' ] ;
-			$routes				 = \Models\Route::where ( 'rep_id' , '=' , \Auth::user () -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+			$routes				 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
 				-> orderBy ( 'selling_invoice_order' , 'ASC' )
 				-> get () ;
-			$user				 = \Auth::user () ;
-			$user				 = $user -> load ( 'abilities' , 'stock.stockDetails' ) ;
-			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $user -> stock -> stockDetails , 'item_id' ) ;
+			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
+			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
 			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
 			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
-			$data				 = compact ( [
+
+			$data = compact ( [
 				'customers' ,
 				'routes' ,
 				'items' ,
 				'stockDetails' ,
 				'guessedInvoiceId' ,
 				'currentDateTime' ,
-				'banksList'
+				'banksList' ,
+				'rep'
 				] ) ;
 
 			return \View::make ( 'web.processes.sales.add' , $data ) ;
@@ -56,8 +67,9 @@ class SaleController extends \Controller
 			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 			$oldRouteId					 = \Input::get ( 'route_id' ) ;
 			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
+			$rep						 = \User::findOrFail ( \SessionButler::getRepId () ) ;
 
-			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , \Auth::user () -> id )
+			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , $rep -> id )
 				-> firstOrFail ()
 				-> lists ( 'id' ) ;
 
@@ -69,7 +81,7 @@ class SaleController extends \Controller
 
 			$sellingInvoice -> date_time				 = $dateTime ;
 			$sellingInvoice -> customer_id				 = $customerId ;
-			$sellingInvoice -> rep_id					 = \Auth::user () -> id ;
+			$sellingInvoice -> rep_id					 = $rep -> id ;
 			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
 			$sellingInvoice -> discount					 = \NullHelper::zeroIfEmptyString ( $discount ) ;
 			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
@@ -214,6 +226,40 @@ class SaleController extends \Controller
 
 			\MessageButler::setSuccess ( 'Selling invoice was updated successfully.' ) ;
 			return \Redirect::action ( 'processes.sales.all' ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
+	public function selectRep ()
+	{
+		$repSelectBox	 = \SellingInvoiceButler::getAllRepsForHtmlSelect ( [NULL => 'Select' ] ) ;
+		$currentRepId	 = \SessionButler::getRepId () ;
+
+		$data = compact ( [
+			'repSelectBox' ,
+			'currentRepId'
+			] ) ;
+
+		return \View::make ( 'web.processes.sales.selectRep' , $data ) ;
+	}
+
+	public function setRep ()
+	{
+		try
+		{
+			$this -> validateSetRep () ;
+
+			$repId = \Input::get ( 'rep_id' ) ;
+
+			\SessionButler::setRepId ( $repId ) ;
+
+			\MessageButler::setSuccess ( 'Rep was set successfully.' ) ;
+
+			return \Redirect::action ( 'processes.sales.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -699,6 +745,9 @@ class SaleController extends \Controller
 		{
 			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
 			{
+				$rep = \User::with ( 'stock' )
+					-> findOrFail ( \SessionButler::getRepId () ) ;
+
 				$sellingItem = new \Models\SellingItem() ;
 
 				$sellingItem -> selling_invoice_id		 = $sellingInvoiceId ;
@@ -713,7 +762,7 @@ class SaleController extends \Controller
 
 				$sellingItem -> save () ;
 
-				$stockId = \Auth::user () -> stock -> id ;
+				$stockId = $rep -> stock -> id ;
 
 				$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
 			}
@@ -770,6 +819,32 @@ class SaleController extends \Controller
 					}
 				}
 			}
+		}
+	}
+
+	private function validateSetRep ()
+	{
+		$data = \Input::all () ;
+
+		$rules = [
+			'rep_id' => [
+				'required' ,
+				'numeric'
+			]
+			] ;
+
+		$messages = [
+			'rep_id.required' => 'Please select rep'
+			] ;
+
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
 		}
 	}
 

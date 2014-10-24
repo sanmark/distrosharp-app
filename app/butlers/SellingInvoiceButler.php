@@ -5,8 +5,8 @@ class SellingInvoiceButler
 
 	public static function getAllRepsForHtmlSelect ( array $firstElements = [NULL => 'Any' ] )
 	{
-		$repIds = \Models\SellingInvoice::distinct ()
-			-> lists ( 'rep_id' ) ;
+		$repIds = \Models\Stock::distinct ()
+			-> lists ( 'incharge_id' ) ;
 
 		$reps = User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $repIds , $firstElements ) ;
 
