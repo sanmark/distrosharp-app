@@ -18,14 +18,15 @@ App::missing ( function($exception)
 } ) ;
 
 Route::get ( '/test' , function()
-{ 
-	dd ( date ( 'Y-m-d H:i:s' ) ) ; 
+{
+	$array = array ( "1", "2", "3", "4", "6") ;
+	dd(array_unique($array) == $array) ;
 } ) ;
 
 
 Route::group ( [
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , function()
 	{

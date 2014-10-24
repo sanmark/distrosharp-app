@@ -16,7 +16,8 @@ class MenuButler
 		[ 'Entities' , [
 				[ 'Items' , [
 						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
-						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ]
+						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ] ,
+						[ 'Order Items','entities.items.order',[ 'order_items' ] ]
 					]
 				] ,
 				[ 'Vendors' , [

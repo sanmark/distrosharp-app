@@ -121,4 +121,60 @@ class ItemController extends \Controller
 		}
 	}
 
+	public function order ()
+	{
+		$items	 = \Models\Item::all () ;
+		$data	 = compact ( [ 'items' ] ) ;
+
+		return \View::make ( 'web.entities.items.order' , $data ) ;
+	}
+
+	public function updateOrder ()
+	{
+		$items = \Input::all () ;
+
+		$result = $this -> validateForSaveOrder ( $items ) ;
+
+		if ( ! $result )
+		{
+			foreach ( $items[ 'sellingOrder' ] as $key => $sellingOrder )
+			{ 
+				$item							 = \Models\Item::findOrFail ( $items[ 'itemId' ][ $key ] ) ;				
+				$item -> buying_invoice_order	 = $items[ 'buyingOrder' ][ $key ] ;
+				$item -> selling_invoice_order	 = $sellingOrder ;
+				$item -> update () ;
+			}
+
+			\MessageButler::setSuccess ( 'Item Ordered successfully.' ) ;
+			return \Redirect::back () ;
+		} else
+		{
+			return \Redirect::back () ;
+		}
+	}
+
+	public function validateForSaveOrder ( $items )
+	{
+		$result = TRUE ;
+
+		if ( array_unique ( $items[ 'sellingOrder' ] ) != $items[ 'sellingOrder' ] )
+		{
+			\MessageButler::setError ( 'The Selling Invoice Order can not be duplicated.' ) ;
+		} elseif ( array_unique ( $items[ 'buyingOrder' ] ) != $items[ 'buyingOrder' ] )
+		{
+			\MessageButler::setError ( 'The Buying Invoice Order can not be duplicated.' ) ;
+		} elseif ( ! \ArrayHelper::areAllElementsFilled ( $items[ 'sellingOrder' ] ) )
+		{
+			\MessageButler::setError ( 'The Selling Invoice Order can not be empty.' ) ;
+		} elseif ( ! \ArrayHelper::areAllElementsFilled ( $items[ 'buyingOrder' ] ) )
+		{
+			\MessageButler::setError ( 'The Buying Invoice Order can not be empty.' ) ;
+		} else
+		{
+			$result = FALSE ;
+		}
+
+		return $result ;
+	}
+
 }

@@ -39,4 +39,17 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_item' ] ,
 		'uses'	 => 'Controllers\Entities\ItemController@update'
 	] ) ;
+	 
+	Route::get ( 'order' , [
+		'as'	 => 'entities.items.order' ,
+		'before' => ['hasAbilities:order_items' ] ,
+		'uses'	 => 'Controllers\Entities\ItemController@order'
+	] ) ;
+
+	Route::post ( 'order' , [
+		'as'	 => 'entities.items.order' ,
+		'before' => ['hasAbilities:order_items' ] ,
+		'uses'	 => 'Controllers\Entities\ItemController@updateOrder'
+	] ) ;
+
 } ) ;

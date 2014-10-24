@@ -82,6 +82,19 @@ class ArrayHelper
 		return TRUE ;
 	}
 
+	public static function areAllElementsFilled ( $array )
+	{
+		foreach ( $array as $element )
+		{
+			if ( \NullHelper::isNullEmptyOrWhitespace ( $element ) )
+			{
+				return FALSE ;
+			}
+		}
+
+		return TRUE ;
+	}
+
 	public static function hasAtLeastOneElementWithValue ( array $array , array $except = NULL )
 	{
 		if ( ! is_null ( $except ) )
@@ -143,18 +156,6 @@ class ArrayHelper
 
 		return FALSE ;
 	}
-
-	public static function areAllElementsFilled ( $array )
-	{
-		foreach ( $array as $element )
-		{
-			if ( \NullHelper::isNullEmptyOrWhitespace ( $element ) )
-			{
-				return FALSE ;
-			}
-		}
-
-		return TRUE ;
-	}
+ 
 
 }
