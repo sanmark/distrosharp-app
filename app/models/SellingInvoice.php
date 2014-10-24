@@ -56,8 +56,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 	public function sellingItemById ( $sellingItemId )
 	{
 		return $this -> hasOne ( 'Models\SellingItem' )
-		-> where ( 'id' , '=' , $sellingItemId )
-		-> first () ;
+				-> where ( 'id' , '=' , $sellingItemId )
+				-> first () ;
 	}
 
 	public function getInvoiceTotal ()
@@ -167,10 +167,11 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 	public function getInvoiceCredit ()
 	{
-		$ByCash	 = $this -> getPaymentValueByCash () ;
-		$Cheque	 = $this -> getPaymentValueByCheque () ;
+		$ByCash		 = $this -> getPaymentValueByCash () ;
+		$Cheque		 = $this -> getPaymentValueByCheque () ;
+		$discount	 = $this -> discount ;
 
-		$paidAmount = $ByCash + $Cheque ;
+		$paidAmount = $ByCash + $Cheque + $discount ;
 
 		$Credit = $this -> getInvoiceTotal () - $paidAmount ;
 
@@ -253,7 +254,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -293,7 +294,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

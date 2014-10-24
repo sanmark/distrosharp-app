@@ -25,7 +25,7 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 	public function creditInvoices ()
 	{
 		return $this -> hasMany ( 'Models\SellingInvoice' )
-		-> where ( 'is_completely_paid' , '=' , '0' ) ;
+				-> where ( 'is_completely_paid' , '=' , '0' ) ;
 	}
 
 	public function save ( array $options = array () )
@@ -90,9 +90,9 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		$time = \DateTimeHelper:: convertTextToFormattedDateTime ( $time ) ;
 
 		$sellingInvoices = SellingInvoice::where ( 'customer_id' , '=' , $this -> id )
-		-> where ( 'date_time' , '<' , $time )
-		-> where ( 'is_completely_paid' , '=' , FALSE )
-		-> get () ;
+			-> where ( 'date_time' , '<' , $time )
+			-> where ( 'is_completely_paid' , '=' , FALSE )
+			-> get () ;
 
 		$invoiceBalanceBefore = 0 ;
 
@@ -114,7 +114,7 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 			] ,
 			'route_id'	 => [ 'required' ] ,
 			'is_active'	 => [ 'required' ] ,
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
@@ -138,7 +138,7 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 			] ,
 			'route_id'	 => [ 'required' ] ,
 			'is_active'	 => [ 'required' ] ,
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -149,6 +149,26 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
+	}
+
+	public function getSumOfInvoiceCreditBalances ()
+	{
+		$this -> load ( 'creditInvoices' ) ;
+
+		$creditInvoices = $this -> creditInvoices ;
+
+		$customerCredit = 0 ;
+
+		foreach ( $creditInvoices as $creditInvoice )
+		{
+			$creditInvoiceBalance = $creditInvoice -> getInvoiceCredit () ;
+
+			$customerCredit = $customerCredit + $creditInvoiceBalance ;
+		}
+
+		$creditBalanceWithCustomerId = $customerCredit ;
+
+		return $creditBalanceWithCustomerId ;
 	}
 
 }

@@ -59,7 +59,7 @@ class Route extends BaseEntity implements \Interfaces\iEntity
 				'unique:routes'
 			] ,
 			'rep_id' => [ 'required' ]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -82,7 +82,7 @@ class Route extends BaseEntity implements \Interfaces\iEntity
 				'unique:routes,name,' . $this -> id
 			] ,
 			'rep_id' => ['required' ]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -93,6 +93,13 @@ class Route extends BaseEntity implements \Interfaces\iEntity
 
 			throw $iie ;
 		}
+	}
+
+	public function getCustomersIds ()
+	{
+		$customersInRoute = \Models\Customer::where ( 'route_id' , '=' , $this -> id ) -> lists ( 'id' ) ;
+
+		return $customersInRoute ;
 	}
 
 }

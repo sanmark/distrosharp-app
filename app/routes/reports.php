@@ -88,13 +88,11 @@ Route::group ( [
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
 		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@home'
 	] ) ;
-
 	Route::post ( 'incomingChequesReport' , [
 		'as'	 => 'reports.incomingChequesReport' ,
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
 		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@view'
 	] ) ;
-
 	Route::get ( 'item-sales-summary' , [
 		'as'	 => 'report.itemSalesSummary' ,
 		'before' => ['hasAbilities:view_item_sales_summary_report' ] ,
@@ -129,5 +127,20 @@ Route::group ( [
 		'as'	 => 'reports.itemReturnReport' ,
 		'before' => ['hasAbilities:view_item_return_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemReturnReportController@view'
+	] ) ;
+	Route::get ( 'credit-summary-report' , [
+		'as'	 => 'reports.creditSummary' ,
+		'before' => ['hasAbilities:view_credit_summery_report' ] ,
+		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
+	] ) ;
+	Route::post ( 'credit-summary-report' , [
+		'as'	 => 'reports.creditSummary' ,
+		'before' => ['hasAbilities:view_credit_summery_report' ] ,
+		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
+	] ) ;
+	Route::get ( 'credit-summary-report/{id}' , [
+		'as'	 => 'reports.creditSummary.view' ,
+		'before' => [ 'hasAbilities:view_credit_summery_report' ] ,
+		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@view'
 	] ) ;
 } ) ;
