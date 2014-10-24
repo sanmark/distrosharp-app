@@ -12,6 +12,11 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\StockDetail' ) ;
 	}
 
+	public function stockConfirmations ()
+	{
+		return $this -> hasMany ( 'Models\StockConfirmation' ) ;
+	}
+
 	public function incharge ()
 	{
 		return $this -> belongsTo ( 'User' , 'incharge_id' ) ;
@@ -281,6 +286,18 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 				$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemId , $transferAmount , $transferId ) ;
 			}
 		}
+	}
+
+	public function getLastConfirmDate ()
+	{
+		$this -> load ( 'stockConfirmations' ) ;
+		$stockConfirmations	 = $this -> stockConfirmations ;
+		$lastConfirmDate	 = $stockConfirmations -> last () ;
+		if ( count ( $lastConfirmDate ) == 0 )
+		{
+			return NULL ;
+		}
+		return $lastConfirmDate -> date_time ;
 	}
 
 }

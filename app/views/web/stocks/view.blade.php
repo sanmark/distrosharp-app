@@ -7,8 +7,9 @@
 		<h3 class="panel-title">View Stock &nbsp;<b>{{$stock->name}}</b></h3>
 	</div>
 	<div class="panel-body">
-
-		<p>In-charge: <b>{{$stock->incharge->username}}.</b> &nbsp; Stock Type: <b>{{$stock->stockType->label}}.</b> &nbsp;{{HTML::link(URL::action('stocks.edit', [$stock->id]), 'Edit...')}}</p><br/>
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
+		<p>In-charge: <b>{{$stock->incharge->username}}.</b> &nbsp; Stock Type: <b>{{$stock->stockType->label}}.</b> &nbsp;{{HTML::link(URL::action('stocks.edit', [$stock->id]), 'Edit...')}}</p>
+		<p>Stock Confirmed date :<b>{{$lastConfirmedDate}}</b></p><br/>
 
 		<table class="table table-striped" style="width: 50%;">
 			<tr>
@@ -24,9 +25,12 @@
 					<td>{{$stockDetail->return_quantity}}</td>
 				</tr>
 				@endforeach
+				<tr>
+					<td colspan="3" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-default pull-right'])}}</td>
+				</tr>
 			</tbody>
 		</table>
-
+		{{Form::close()}}
 	</div>
 </div>
 

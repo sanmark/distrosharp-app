@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'stocks' ,
 	'before' => 'auth'
-] , function ()
+	] , function ()
 {
 	Route::get ( '' , [
 		'as'	 => 'stocks.all' ,
@@ -15,6 +15,11 @@ Route::group ( [
 		'as'	 => 'stocks.view' ,
 		'before' => ['hasAbilities:view_stocks' ] ,
 		'uses'	 => 'Controllers\StockController@view'
+	] ) ;
+	Route::post ( '{stockId}' , [
+		'as'	 => 'stocks.view' ,
+		'before' => ['hasAbilities:confirm_stock' ] ,
+		'uses'	 => 'Controllers\StockController@confirmStock'
 	] ) ;
 
 	Route::get ( '{stockId}/edit' , [

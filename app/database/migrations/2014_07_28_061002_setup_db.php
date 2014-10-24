@@ -403,10 +403,44 @@ class SetupDb extends Migration
 				-> onUpdate ( 'cascade' )
 				-> onDelete ( 'cascade' ) ;
 		} ) ;
+		Schema::create ( 'stock_confirmations' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'stock_id' ) -> unsigned () ;
+			$t -> dateTime ( 'date_time' ) ;
+
+			$t -> foreign ( 'stock_id' )
+				-> references ( 'id' )
+				-> on ( 'stocks' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
+		} ) ;
+		Schema::create ( 'stock_confirmation_details' , function($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> integer ( 'stock_confirmation_id' ) -> unsigned () ;
+			$t -> integer ( 'item_id' ) -> unsigned () ;
+			$t -> double ( 'good_item_quantity' ) ;
+			$t -> double ( 'return_item_quantity' ) ;
+
+			$t -> foreign ( 'stock_confirmation_id' )
+				-> references ( 'id' )
+				-> on ( 'stock_confirmations' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
+
+			$t -> foreign ( 'item_id' )
+				-> references ( 'id' )
+				-> on ( 'items' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'stock_confirmation_details' ) ;
+		Schema::dropIfExists ( 'stock_confirmations' ) ;
 		Schema::dropIfExists ( 'finance_account_verifications' ) ;
 		Schema::dropIfExists ( 'cheque_details' ) ;
 		Schema::dropIfExists ( 'finance_transfer_selling_invoice' ) ;
