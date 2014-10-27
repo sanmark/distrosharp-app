@@ -69,4 +69,33 @@ class SellingInvoiceButler
 		return Models\SellingInvoice::min ( 'date_time' ) ;
 	}
 
+	public static function getLastSellingInvoiceDate ()
+	{
+		$lastDateTime = self::getLastSellingInvoiceDateTime () ;
+
+		$lastDate = DateTimeHelper::convertTextToFormattedDateTime ( $lastDateTime , 'Y-m-d' ) ;
+
+		return $lastDate ;
+	}
+
+	public static function getLastSellingInvoiceDateTime ()
+	{
+		return Models\SellingInvoice::max ( 'date_time' ) ;
+	}
+
+	public static function getSellingInvoicesForDates ( $filterValues )
+	{
+		$sellingInvoices = \Models\SellingInvoice::filter ( $filterValues )
+			-> sortBy ( 'date_time' ) ;
+
+		$sellingInvoicesForDates = [ ] ;
+
+		foreach ( $sellingInvoices as $sellingInvoice )
+		{
+			$sellingInvoicesForDates[ DateTimeHelper::convertTextToFormattedDateTime ( $sellingInvoice -> date_time , 'Y-m-d' ) ][] = $sellingInvoice ;
+		}
+
+		return $sellingInvoicesForDates ;
+	}
+
 }

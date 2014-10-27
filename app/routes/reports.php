@@ -128,19 +128,34 @@ Route::group ( [
 		'before' => ['hasAbilities:view_item_return_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemReturnReportController@view'
 	] ) ;
+
 	Route::get ( 'credit-summary-report' , [
 		'as'	 => 'reports.creditSummary' ,
 		'before' => ['hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
 	] ) ;
+
 	Route::post ( 'credit-summary-report' , [
 		'as'	 => 'reports.creditSummary' ,
 		'before' => ['hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
 	] ) ;
+
 	Route::get ( 'credit-summary-report/{id}' , [
 		'as'	 => 'reports.creditSummary.view' ,
 		'before' => [ 'hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@view'
+	] ) ;
+
+	Route::get ( 'rep-finance' , [
+		'as'	 => 'reports.repFinanceReport' ,
+		'before' => ['hasAbilities:view_rep_finance_report' ] ,
+		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
+	] ) ;
+	
+	Route::post ( 'rep-finance' , [
+		'as'	 => 'reports.repFinanceReport' ,
+		'before' => ['hasAbilities:view_rep_finance_report' ] ,
+		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
 	] ) ;
 } ) ;

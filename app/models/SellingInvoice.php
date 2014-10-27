@@ -325,13 +325,13 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 	{
 		if ( count ( $filterValues ) > 0 )
 		{
-			$id						 = $filterValues[ 'id' ] ;
-			$dateTimeFrom			 = $filterValues[ 'date_time_from' ] ;
-			$dateTimeTo				 = $filterValues[ 'date_time_to' ] ;
-			$customerId				 = $filterValues[ 'customer_id' ] ;
-			$repId					 = $filterValues[ 'rep_id' ] ;
-			$printedInvoiceNumber	 = $filterValues[ 'printed_invoice_number' ] ;
-			$isCompletelyPaid		 = $filterValues[ 'is_completely_paid' ] ;
+			$id						 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'id' ) ;
+			$dateTimeFrom			 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'date_time_from' ) ;
+			$dateTimeTo				 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'date_time_to' ) ;
+			$customerId				 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'customer_id' ) ;
+			$repId					 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'rep_id' ) ;
+			$printedInvoiceNumber	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'printed_invoice_number' ) ;
+			$isCompletelyPaid		 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'is_completely_paid' ) ;
 
 			if ( strlen ( $id ) > 0 )
 			{
