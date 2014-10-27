@@ -14,15 +14,18 @@
 		<table class="table table-striped" style="width: 50%;">
 			<tr>
 				<th>Item</th>
-				<th>Good Quantity</th>
-				<th>Return Quantity</th>
+				<th class="text-right">Good Qnt</th>
+				<th class="text-right">Return Qnt</th>
+				<th class="text-right">Good Qnt. Weight (Kg)</th>
 			</tr>
 			<tbody>
 				@foreach($stockDetails as $stockDetail)
 				<tr>
 					<td>{{$stockDetail->item->name}}</td>
-					<td>{{$stockDetail->good_quantity}}</td>
-					<td>{{$stockDetail->return_quantity}}</td>
+					<td class="text-right">{{$stockDetail->good_quantity}}</td>
+					<td class="text-right">{{$stockDetail->return_quantity}}</td>
+					<?php $total_weight = ($stockDetail->item->weight*$stockDetail->good_quantity)/1000; ?>
+					<td class="text-right">{{number_format($total_weight,2)}}</td>
 				</tr>
 				@endforeach
 				<tr>

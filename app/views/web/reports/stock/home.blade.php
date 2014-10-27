@@ -19,42 +19,45 @@
 				{{Form::close()}}
 			</div>
 		</div>
+		@if( $viewData)
 		<br/>
-
-		<table class="table table-striped" style="width: 80%;">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Item</th>
-					<th>Good Quantity</th>
-					<th>Return Quantity</th>
-					<th class="text-right">Good Quantity Value</th>
-					<th class="text-right">Return Quantity Value</th>
+					<th class="text-right">Good Qnt</th>
+					<th class="text-right">Return Qnt</th>
+					<th class='text-right'>Good Qnt. Weight(Kg)</th>
+					<th class="text-right">Good Qnt Value</th>
+					<th class="text-right">Return Qnt Value</th>
 					<th class="text-right">Total Value</th>
 				</tr>
 			</thead>
-			<tbody>
-				@if(isset($calculatedStockValues))
-				@foreach ($calculatedStockValues as $item)
+			<tbody> 
+				@foreach ($stockDetails as $stock)
 				<tr>
-					<td>{{$item->item->name}}</td>
-					<td>{{$item->good_quantity}}</td>
-					<td>{{$item->return_quantity}}</td>
-					<td class="text-right">{{number_format($item->good_quantity_value,2)}}</td>
-					<td class="text-right">{{number_format($item->return_quantity_value,2)}}</td>
-					<td class="text-right">{{number_format($item->total_value,2)}}</td>
+					<td>{{$stock['item']['name']}}</td>
+					<td class="text-right">{{number_format($stock['good_quantity'],2)}}</td>
+					<td class="text-right">{{number_format($stock['return_quantity'],2)}}</td> 
+					<td class="text-right">{{number_format($stock['total_weight'],2)}}</td>
+					<td class="text-right">{{number_format($stock['good_quantity_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['return_quantity_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['total_value'],2)}}</td>
 				</tr>
-				@endforeach
-				@endif
-				<tr>
-					@if(isset($good_quantity_value_total))
-					<td colspan="3">&nbsp;</td>
-					<td class="text-right"><b>{{number_format($good_quantity_value_total,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($return_quantity_value_total,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($grandTotal,2)}}</b></td>
-					@endif
+				@endforeach 
+				<tr> 
+					<td colspan="4">&nbsp;</td>
+					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_value_total' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_value_total' ],2)}}</b></td>
+
+					<td class="text-right"><b>{{number_format($totals[ 'grandTotal' ],2)}}</b></td>
+
 				</tr>
 			</tbody>
 		</table>
+		@else
+		<h4 class="text-center">Please define a criteria and press "Submit".</h4>
+		@endif
 	</div>
 </div>
 

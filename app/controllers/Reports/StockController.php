@@ -7,128 +7,107 @@ class StockController extends \Controller
 
 	public function show ()
 	{
-		$data		 = [ ] ;
-		$stockSelect = \Models\Stock::getArrayForHtmlSelect(  'id', 'name',[0 => 'All']  ) ;
-
-		$data [ 'stockSelect' ]	 = $stockSelect ;
-		$item					 = \Models\Item::all();
-		$calculatedStockValues	 = $this -> calculateDerivedValuesByProduct ( $item ) ;
-
-		$data [ 'calculatedStockValues' ] = $calculatedStockValues ;			
-
-		$totals = $this -> getTotals ( $calculatedStockValues ) ;
-
-		$data [ 'good_quantity_value_total' ]	 = $totals[ 'good_quantity_value_total' ] ;
-		$data [ 'return_quantity_value_total' ]	 = $totals[ 'return_quantity_value_total' ] ;
-		$data [ 'grandTotal' ]					 = $totals[ 'grandTotal' ] ;
-		$data [ 'stockId' ]						 = 0 ;
+		
+		$stockSelect	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'All' ] ) ;
+		$stockId		 = NULL;
+		$stockDetails	 = $this -> filterStock ( $stockId ) ;
+		$totals			 = $this -> getTotal ( $stockDetails ) ;
+		$viewData		 = TRUE ;
+		$data			 = compact ( [
+			'stockSelect' ,
+			'stockId' ,
+			'stockDetails' ,
+			'viewData' ,
+			'totals'
+			] ) ;
 
 		return \View::make ( 'web.reports.stock.home' , $data ) ;
 	}
 
-	public function update ()
+	public function view ()
 	{
-		$data					 = [ ] ;
-		$stockSelect = \Models\Stock::getArrayForHtmlSelect(  'id', 'name',[0 => 'All']  ) ;
-		
-		$data [ 'stockSelect' ]	 = $stockSelect ;
-
-		$stockId = \Input::get ( 'stock_id' ) ;
-		if ( isset ( $stockId )&& $stockId != 0 )
-		{
-			$item					 = \Models\StockDetail::where ( 'stock_id' , '=' , $stockId ) -> get () ;
-			$calculatedStockValues	 = $this -> calculateDerivedValues ( $item ) ;
-
-			$data [ 'calculatedStockValues' ] = $calculatedStockValues ;
-
-			$totals = $this -> getTotals ( $calculatedStockValues ) ;
-
-			$data [ 'good_quantity_value_total' ]	 = $totals[ 'good_quantity_value_total' ] ;
-			$data [ 'return_quantity_value_total' ]	 = $totals[ 'return_quantity_value_total' ] ;
-			$data [ 'grandTotal' ]					 = $totals[ 'grandTotal' ] ;
-			$data [ 'stockId' ]						 = $stockId ;
-		}elseif ( $stockId == 0 )
-		{	
-			$item					 = \Models\Item::all();
-			$calculatedStockValues	 = $this -> calculateDerivedValuesByProduct ( $item ) ;
-
-			$data [ 'calculatedStockValues' ] = $calculatedStockValues ;			
-
-			$totals = $this -> getTotals ( $calculatedStockValues ) ;
-
-			$data [ 'good_quantity_value_total' ]	 = $totals[ 'good_quantity_value_total' ] ;
-			$data [ 'return_quantity_value_total' ]	 = $totals[ 'return_quantity_value_total' ] ;
-			$data [ 'grandTotal' ]					 = $totals[ 'grandTotal' ] ;
-			$data [ 'stockId' ]						 = $stockId ;
-			
-		}
-
+		$stockSelect	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'All' ] ) ;
+		$stockId		 = \Input::get ( 'stock_id' ) ;
+		$stockDetails	 = $this -> filterStock ( $stockId ) ;
+		$totals			 = $this -> getTotal ( $stockDetails ) ;
+		$viewData		 = TRUE ;
+		$data			 = compact ( [
+			'stockSelect' ,
+			'stockId' ,
+			'stockDetails' ,
+			'viewData' ,
+			'totals'
+			] ) ;
 
 		return \View::make ( 'web.reports.stock.home' , $data ) ;
 	}
 
-	public function calculateDerivedValues ( $stock )
+	public function filterStock ( $stockId )
 	{
-		$calculatedStock = [ ] ;
+		$allStock	 = [ ] ;
+		$items		 = \Models\Item::all () ;
 
-		foreach ( $stock as $item )
+		foreach ( $items as $key => $item )
 		{
-			$item -> good_quantity_value	 = $item -> good_quantity * $item -> item -> current_buying_price ;
-			$item -> return_quantity_value	 = $item -> return_quantity * $item -> item -> current_buying_price ;
-			$item -> total_value			 = $item -> good_quantity_value + $item -> return_quantity_value ;
-			$calculatedStock[ $item -> id ]	 = $item ;
-			
+			$good_quantity			 = 0 ;
+			$return_quantity		 = 0 ;
+			$current_buying_price	 = 0 ;
+			$total_weight			 = 0 ;
+
+			$stockDetails = \Models\StockDetail::where ( 'item_id' , '=' , $item -> id ) ;
+
+			if ( $stockId != 0 )
+			{
+				$stockDetails = $stockDetails -> where ( 'stock_id' , '=' , $stockId ) ;
+			}
+
+			foreach ( $stockDetails -> get () as $stock )
+			{
+				$item					 = $stock -> item ;
+				$good_quantity += $stock -> good_quantity ;
+				$return_quantity += $stock -> return_quantity ;
+				$current_buying_price	 = $stock -> item -> current_buying_price ;
+				$total_weight			 = $stock -> item -> weight ;
+			}
+
+			$item_array								 = [ ] ;
+			$item_array[ 'item' ]					 = $item ;
+			$item_array[ 'good_quantity' ]			 = $good_quantity ;
+			$item_array[ 'return_quantity' ]		 = $return_quantity ;
+			$item_array[ 'total_weight' ]			 = ($total_weight * $good_quantity) / 1000 ;
+			$good_quantity_value					 = $good_quantity * $current_buying_price ;
+			$item_array[ 'good_quantity_value' ]	 = $good_quantity_value ;
+			$return_quantity_value					 = $return_quantity * $current_buying_price ;
+			$item_array[ 'return_quantity_value' ]	 = $return_quantity_value ;
+			$item_array[ 'total_value' ]			 = $good_quantity_value + $return_quantity_value ;
+
+			$allStock[ $key ] = $item_array ;
 		}
-		
-		
-		$calculatedStockValues = new \Illuminate\Support\Collection ( $calculatedStock ) ;
-		return $calculatedStockValues ;
+
+		$result = new \Illuminate\Support\Collection ( $allStock ) ;
+
+		return $result ;
 	}
 
-	private function getTotals ( $calculatedStockValues )
+	public function getTotal ( $stockDetails )
 	{
-		$totals						 = [ ] ;
 		$good_quantity_value_total	 = 0 ;
 		$return_quantity_value_total = 0 ;
 		$grandTotal					 = 0 ;
-		foreach ( $calculatedStockValues as $item )
+		$totals						 = [ ] ;
+
+		foreach ( $stockDetails as $stock )
 		{
-			$good_quantity_value_total	 = $good_quantity_value_total + $item -> good_quantity_value ;
-			$return_quantity_value_total = $return_quantity_value_total + $item -> return_quantity_value ;
-			$grandTotal					 = $grandTotal + $item -> total_value ;
+			$good_quantity_value_total += $stock[ 'good_quantity_value' ] ;
+			$return_quantity_value_total += $stock[ 'return_quantity_value' ] ;
+			$grandTotal +=$stock[ 'total_value' ] ;
 		}
+
 		$totals[ 'good_quantity_value_total' ]	 = $good_quantity_value_total ;
 		$totals[ 'return_quantity_value_total' ] = $return_quantity_value_total ;
 		$totals[ 'grandTotal' ]					 = $grandTotal ;
-		
+
 		return $totals ;
 	}
 
-	public function calculateDerivedValuesByProduct ( $items )
-	{
-		$calculatedStock = [ ] ;
-		
-		foreach ( $items as $item )
-		{
-			$good_quantity = 0;
-			$return_quantity = 0;
-			
-			$stocks = \Models\StockDetail::where ( 'item_id', '=', $item->id )->  get ();
-			foreach ($stocks as $stock){
-				$good_quantity = $stock -> good_quantity + $good_quantity;
-				$return_quantity = $stock -> return_quantity + $return_quantity;
-				$current_buying_price = $stock -> item -> current_buying_price;
-				$calculatedStock[ $item -> id ]	 = $stock ;
-			}
-			$stock-> good_quantity = $good_quantity;
-			$stock -> return_quantity = $return_quantity;
-			$stock -> good_quantity_value = $good_quantity * $current_buying_price;
-			$stock -> return_quantity_value = $return_quantity * $current_buying_price;
-			$stock -> total_value = $stock -> good_quantity_value + $stock -> return_quantity_value;
-		}
-		$calculatedStockValues = new \Illuminate\Support\Collection ( $calculatedStock ) ;
-		return $calculatedStockValues ;
-	}
-	
-	
 }

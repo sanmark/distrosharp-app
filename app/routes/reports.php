@@ -14,7 +14,7 @@ Route::group ( [
 	Route::post ( 'stocks' , [
 		'as'	 => 'reports.stocks' ,
 		'before' => ['hasAbilities:view_stock_report' ] ,
-		'uses'	 => 'Controllers\Reports\StockController@update'
+		'uses'	 => 'Controllers\Reports\StockController@view'
 	] ) ;
 
 	Route::get ( 'debtor-summary' , [

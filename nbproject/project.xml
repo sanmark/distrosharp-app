@@ -15,6 +15,7 @@
             <word>isNot</word>
             <word>itemRowsAscSellingInvoice</word>
             <word>Purechese</word>
+            <word>requestObject</word>
         </spellchecker-wordlist>
     </configuration>
 </project>
