@@ -31,8 +31,8 @@ $opts = array (
 	'roots' => array (
 		array (
 			'driver'		 => 'LocalFileSystem' , // driver for accessing file system (REQUIRED)
-			'path'			 => '../../../images/product-images' , // path to files (REQUIRED)
-			'URL'			 => dirname ( $_SERVER[ 'PHP_SELF' ] ) . '/../../../images/product-images/' , // URL to files (REQUIRED)
+			'path'			 => '../../../tenants/'.$_GET['organization'].'/product-images' , // path to files (REQUIRED)
+			'URL'			 => dirname ( $_SERVER[ 'PHP_SELF' ] ) . '/../../../tenants/'.$_GET['organization'].'/product-images/' , // URL to files (REQUIRED)
 			'accessControl'	 => 'access' // disable and hide dot starting files (OPTIONAL)
 		)
 	) ,

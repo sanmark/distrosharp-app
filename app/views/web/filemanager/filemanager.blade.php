@@ -22,7 +22,7 @@
 <script type="text/javascript" charset="utf-8">
 	$().ready(function() {
 		var elf = $('#elfinder').elfinder({
-			url: 'packages/elfinder-2.0-rc1/php/connector.php'  // connector URL (REQUIRED)
+			url: 'packages/elfinder-2.0-rc1/php/connector.php?organization={{Session::get("organization")}}'  // connector URL (REQUIRED)
 					// lang: 'ru',             // language (OPTIONAL)
 		}).elfinder('instance');
 	});

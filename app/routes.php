@@ -19,8 +19,7 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	$array = array ( "1", "2", "3", "4", "6") ;
-	dd(array_unique($array) == $array) ;
+	dd ( Session::get ('organization') ) ;
 } ) ;
 
 

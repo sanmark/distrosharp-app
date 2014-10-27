@@ -62,7 +62,7 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 				'numeric' ,
 				'unique:items'
 			] ,
-			'weight'			 => [
+			'weight'				 => [
 				'numeric'
 			]
 			] ;
@@ -162,11 +162,11 @@ class Item extends BaseEntity implements \Interfaces\iEntity
 	{
 		$baseUrl	 = \URL::to ( '/' ) ;
 		$code		 = $this -> code ;
-		$filePath	 = \public_path () . '\images\product-images\/' ;
+		$filePath	 = \public_path () . '/tenants/' . \SessionButler::getOrganization () . '/product-images/' ;
 
 		if ( file_exists ( $filePath . $code ) )
 		{
-			return $baseUrl . '/images/product-images/' . $code ;
+			return $baseUrl . '/tenants/' . \SessionButler::getOrganization () . '/product-images/' . $code ;
 		} else
 		{
 			return FALSE ;
