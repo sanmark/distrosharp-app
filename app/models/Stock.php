@@ -119,7 +119,6 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 				'unique:stocks,name,' . $this -> id
 			] ,
 			'incharge_id'	 => [
-				'required' ,
 				'unique:stocks,incharge_id,' . $this -> id
 			] ,
 			'stock_type_id'	 => [

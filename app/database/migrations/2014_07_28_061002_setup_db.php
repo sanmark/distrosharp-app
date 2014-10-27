@@ -124,7 +124,7 @@ class SetupDb extends Migration
 		{
 			$t -> increments ( 'id' ) ;
 			$t -> string ( 'name' ) ;
-			$t -> integer ( 'incharge_id' ) -> unsigned () ;
+			$t -> integer ( 'incharge_id' ) -> unsigned () -> nullable () ;
 			$t -> string ( 'stock_type_id' ) ;
 
 			$t -> foreign ( 'incharge_id' )

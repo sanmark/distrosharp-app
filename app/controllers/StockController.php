@@ -24,9 +24,9 @@ class StockController extends \Controller
 		$stock = \Models\Stock::with ( 'incharge' , 'stockType' )
 			-> findOrFail ( $stockId ) ;
 
-		$lastConfirmedDate	 = $stock->  getLastConfirmDate();
-		
-		$lastConfirmedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $lastConfirmedDate , "Y-m-d h:i A" ) ;
+		$lastConfirmedDate = $stock -> getLastConfirmDate () ;
+
+		$lastConfirmedDate = \DateTimeHelper::convertTextToFormattedDateTime ( $lastConfirmedDate , "Y-m-d h:i A" ) ;
 
 		$stockDetails = $stock -> stockDetails () -> activeItems () -> get () ;
 
@@ -75,7 +75,7 @@ class StockController extends \Controller
 
 		$stock		 = \Models\Stock::with ( ['incharge' , 'stockType' ] )
 			-> findOrFail ( $stockId ) ;
-		$users		 = \User::getArrayForHtmlSelect ( 'id' , 'username' ) ;
+		$users		 = \User::getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'None' ] ) ;
 		$stockTypes	 = \Models\StockType::getArrayForHtmlSelect ( 'id' , 'label' ) ;
 
 		$data[ 'stock' ]		 = $stock ;
@@ -91,7 +91,7 @@ class StockController extends \Controller
 		{
 			$stock = \Models\Stock::findOrFail ( $stockId ) ;
 
-			$stock -> incharge_id	 = \Input::get ( 'incharge_id' ) ;
+			$stock -> incharge_id	 = \NullHelper::ifNullEmptyOrWhitespace ( \Input::get ( 'incharge_id' ) , NULL ) ;
 			$stock -> stock_type_id	 = \Input::get ( 'stock_type_id' ) ;
 
 			$stock -> update () ;
