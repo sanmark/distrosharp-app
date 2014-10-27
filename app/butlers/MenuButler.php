@@ -79,7 +79,8 @@ class MenuButler
 			] ,
 		] ,
 		['System' , [
-				['Settings' , 'system.settings' , ['edit_system_settings' ] ]
+				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
+				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ]
 			]
 		] ,
 		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,

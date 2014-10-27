@@ -6,6 +6,7 @@ Route::filter ( 'hasAbilities' , function($route , $request , $varString , $deli
 
 	if ( ! AbilityButler::checkAbilities ( $allowedAbilities ) )
 	{
+		\MessageButler::setError ( "You dont have permissions to access that page." ) ;
 		return Redirect::to ( '/' ) ;
 	}
 } ) ;
