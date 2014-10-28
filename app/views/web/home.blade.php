@@ -2,67 +2,7 @@
 
 @section('body')
 <div class="row">
-	<div class="col-sm-4 home-panels">
-		<div class="panel panel-default home-panel-height home-panel-overflow">
-			<div class="panel-heading">
-				<h3 class="panel-title">Daily Work Flow</h3>
-			</div>
-			<div class="panel-body">
-				<div class="row">
-					{{ Form::open() }}
-					{{Form::hidden('submitedForm','dailyWorkFlow')}}
-					<div class="form-group">
-						{{Form::label('the_date','Select Date', array('class' => 'col-sm-1 col-md-3 control-label'))}}
-						<div class="col-sm-6">
-							<!-- 1 is the default value, get it from the controller -->
-							{{Form::input('date','the_date',$today, array('tabindex' => '1', 'class' => 'col-sm-1 col-md-3 form-control'))}}
 
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="col-sm-3">
-							{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</td>
-						</div>
-					</div>
-
-					{{ Form::close() }}
-				</div>
-				<br>
-
-				<table class="table table-bordered">
-					<tr>
-						<th>Process</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>Purchase/s</td><td>{{$buyingInvoices}}</td>
-					</tr>
-					@foreach($transferDetails as $transfer)
-					<tr>
-						<td>Transfer</td><td>{{$transfer->fromStock->name}} ({{$transfer->fromStock->incharge->username}}) to {{$transfer->toStock->name}} ({{$transfer->toStock->incharge->username}}) </td>
-
-					</tr>
-					@endforeach
-					@if(!empty($reps))
-					@foreach($reps as $rep)
-					<tr>
-						<td>Sales ({{$rep->first_name}})</td>
-						<td>{{$rep->sellingInvoices->count()}}</td>
-					</tr>
-					@endforeach
-					@endif
-					<tr>
-						<td>Vehicle Summery Verified</td><td>Yes</td>
-					</tr>
-					<tr>
-						<td>Daily Summery Verified</td><td>No</td>
-					</tr>
-				</table>
-
-			</div>
-		</div>
-
-	</div>
 	<div class="col-sm-4 home-panels">
 		<div class="panel panel-default home-panel-height">
 			<div class="panel-heading">
@@ -86,7 +26,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="col-sm-4 home-panels">
 		<div class="panel panel-default home-panel-height">
 			<div class="panel-heading">
@@ -105,16 +45,12 @@
 					<tr>
 						<td><b>Total Stock Value</b></td>
 						<td class="text-right"><b>{{number_format($stockSummery['totalStockVal'], 2)}}</b></td>
-						
-						
 					</tr>
 				</table>
-		
 			</div>
 		</div>
 	</div>
-	
-	
+
 	<div class="col-sm-4 home-panels">
 		<div class="panel panel-default home-panel-height">
 			<div class="panel-heading">
@@ -142,6 +78,64 @@
 			</div>
 		</div>
 	</div>
-	
+
+	<div class="col-sm-4 home-panels">
+		<div class="panel panel-default home-panel-height home-panel-overflow">
+			<div class="panel-heading">
+				<h3 class="panel-title">Daily Workflow</h3>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					{{ Form::open() }}
+					{{Form::hidden('submitedForm','dailyWorkFlow')}}
+					<div class="form-group">
+						{{Form::label('the_date','Select Date', array('class' => 'col-sm-1 col-md-3 control-label'))}}
+						<div class="col-sm-6">
+							{{Form::input('date','the_date',$dailyWorkflow['today'], array('tabindex' => '1', 'class' => 'col-sm-1 col-md-3 form-control'))}}
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-3">
+							{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</td>
+						</div>
+					</div>
+
+					{{ Form::close() }}
+				</div>
+				<br>
+
+				<table class="table table-bordered">
+					<tr>
+						<th>Process</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>Purchases</td>
+						<td>{{HTML::link(URL::action('processes.purchases.view'), $dailyWorkflow['buyingInvoiceCount'])}}</td>
+					</tr>
+					<tr>
+						<td>Stock Transfers</td>
+						<td>{{HTML::link(URL::action('processes.transfers.all'), $dailyWorkflow['stockTransferCount'])}}</td>
+					</tr>
+					<tr>
+						<td>Sales</td>
+						<td>{{HTML::link(URL::action('processes.sales.all'), $dailyWorkflow['salesCount'])}}</td>
+					</tr>
+					<tr>
+						<td>Finance Account Verifications</td>
+						<td>{{HTML::link(URL::action('finances.accounts.view'), $dailyWorkflow['financeAccountVerificationCount'])}}</td>
+					</tr>
+					<tr>
+						<td>Stock Confirmations</td>
+						<td>{{HTML::link(URL::action('stocks.all'), $dailyWorkflow['stockVerificationCount'])}}</td>
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+
 </div>
 @stop
