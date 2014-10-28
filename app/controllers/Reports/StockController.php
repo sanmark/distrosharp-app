@@ -7,9 +7,9 @@ class StockController extends \Controller
 
 	public function show ()
 	{
-		
+
 		$stockSelect	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'All' ] ) ;
-		$stockId		 = NULL;
+		$stockId		 = NULL ;
 		$stockDetails	 = $this -> filterStock ( $stockId ) ;
 		$totals			 = $this -> getTotal ( $stockDetails ) ;
 		$viewData		 = TRUE ;
@@ -94,6 +94,7 @@ class StockController extends \Controller
 		$good_quantity_value_total	 = 0 ;
 		$return_quantity_value_total = 0 ;
 		$grandTotal					 = 0 ;
+		$totalWeight				 = 0 ;
 		$totals						 = [ ] ;
 
 		foreach ( $stockDetails as $stock )
@@ -101,11 +102,13 @@ class StockController extends \Controller
 			$good_quantity_value_total += $stock[ 'good_quantity_value' ] ;
 			$return_quantity_value_total += $stock[ 'return_quantity_value' ] ;
 			$grandTotal +=$stock[ 'total_value' ] ;
+			$totalWeight += $stock[ 'total_weight' ] ;
 		}
 
 		$totals[ 'good_quantity_value_total' ]	 = $good_quantity_value_total ;
 		$totals[ 'return_quantity_value_total' ] = $return_quantity_value_total ;
 		$totals[ 'grandTotal' ]					 = $grandTotal ;
+		$totals[ 'totalWeight' ]					 = $totalWeight ;
 
 		return $totals ;
 	}

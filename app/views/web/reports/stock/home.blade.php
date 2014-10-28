@@ -46,7 +46,8 @@
 				</tr>
 				@endforeach 
 				<tr> 
-					<td colspan="4">&nbsp;</td>
+					<td colspan="3"><b>Total</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'totalWeight' ],2)}}</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_value_total' ],2)}}</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_value_total' ],2)}}</b></td>
 
