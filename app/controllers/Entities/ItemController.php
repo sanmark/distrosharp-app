@@ -29,10 +29,10 @@ class ItemController extends \Controller
 
 	public function add ()
 	{
-		$minimumAvailableItemCode	 = \ItemButler::getMinimumAvailableItemCode () ; 
-		
+		$minimumAvailableItemCode = \ItemButler::getMinimumAvailableItemCode () ;
+
 		$data = compact ( [
-			'minimumAvailableItemCode' 
+			'minimumAvailableItemCode'
 			] ) ;
 
 		return \View::make ( 'web.entities.items.add' , $data ) ;
@@ -42,7 +42,7 @@ class ItemController extends \Controller
 	{
 
 		try
-		{ 
+		{
 			$item = new \Models\Item() ;
 
 			$item -> code					 = \Input::get ( 'code' ) ;
@@ -53,10 +53,12 @@ class ItemController extends \Controller
 			$item -> buying_invoice_order	 = \ItemButler::getMinBuyingInvoiceOrder () ;
 			$item -> selling_invoice_order	 = \ItemButler::getMinSellingInvoiceOrder () ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$item -> weight			 = \Input::get ( 'weight' ) ;
+			$item -> weight					 = \Input::get ( 'weight' ) ;
 			$item -> save () ;
 
 			$this -> createStockDetailsByItem ( $item -> id ) ;
+
+			\ActivityLogButler::add ( "Add Item " . $item -> id . " (" . $item -> name . ") " ) ;
 
 			return \Redirect::action ( 'entities.items.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -87,11 +89,13 @@ class ItemController extends \Controller
 			$item -> name					 = \Input::get ( 'name' ) ;
 			$item -> reorder_level			 = \Input::get ( 'reorder_level' ) ;
 			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
-			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ; 
+			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$item -> weight			 = \Input::get ( 'weight' ) ;
+			$item -> weight					 = \Input::get ( 'weight' ) ;
 
 			$item -> update () ;
+
+			\ActivityLogButler::add ( "Edit Item " . $item -> id . " (" . $item -> name . ") " ) ;
 
 			return \Redirect::action ( 'entities.items.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -134,14 +138,17 @@ class ItemController extends \Controller
 		if ( ! $result )
 		{
 			foreach ( $items[ 'sellingOrder' ] as $key => $sellingOrder )
-			{ 
-				$item							 = \Models\Item::findOrFail ( $items[ 'itemId' ][ $key ] ) ;				
+			{
+				$item							 = \Models\Item::findOrFail ( $items[ 'itemId' ][ $key ] ) ;
 				$item -> buying_invoice_order	 = $items[ 'buyingOrder' ][ $key ] ;
 				$item -> selling_invoice_order	 = $sellingOrder ;
 				$item -> update () ;
 			}
 
 			\MessageButler::setSuccess ( 'Item Ordered successfully.' ) ;
+
+			\ActivityLogButler::add ( "Ordere Item" ) ;
+
 			return \Redirect::back () ;
 		} else
 		{

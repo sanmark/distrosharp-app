@@ -36,6 +36,8 @@ class VendorController extends \Controller
 			$vendor -> details	 = \Input::get ( 'details' ) ;
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> save () ;
+			
+			\ActivityLogButler::add ("Add Vendor ". $vendor->id) ;
 
 			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $exc )
@@ -68,6 +70,8 @@ class VendorController extends \Controller
 			$vendor -> details	 = \Input::get ( 'details' ) ;
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> update () ;
+
+			\ActivityLogButler::add ("Edit Vendor ". $vendor->id) ;
 
 			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )

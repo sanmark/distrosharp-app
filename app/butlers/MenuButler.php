@@ -79,8 +79,9 @@ class MenuButler
 			] ,
 		] ,
 		['System' , [
-				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
-				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ]
+				['Settings' , 'system.settings' , ['edit_system_settings' ] ] , 
+				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ],
+				['Activity Log' , 'system.activityLog' , ['view_activity_log' ] ]
 			]
 		] ,
 		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,
@@ -95,8 +96,8 @@ class MenuButler
 				['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] ,
 				['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
 				['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ] ,
-				['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] ,
-				[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] ,
+				['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] , 
+				[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] 
 			] ,
 		] ,
 		['Account' , [

@@ -44,12 +44,14 @@ class RouteController extends \Controller
 
 			$route -> save () ;
 
+			\ActivityLogButler::add ( "Add Route " . $route -> id ) ;
+
 			return \Redirect::action ( 'entities.routes.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -77,12 +79,14 @@ class RouteController extends \Controller
 
 			$route -> update () ;
 
+			\ActivityLogButler::add ("Edit Route ". $route->id) ;
+
 			return \Redirect::action ( 'entities.routes.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -90,7 +94,7 @@ class RouteController extends \Controller
 	{
 		$fieldsToRequest = [
 			'name'
-		] ;
+			] ;
 
 		$filterValues = \Input::all () ;
 

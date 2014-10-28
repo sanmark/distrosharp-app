@@ -29,12 +29,14 @@ class SettingsController extends \Controller
 
 			\MessageButler::setSuccess ( 'Basic settings updated successfully.' ) ;
 
+			\ActivityLogButler::add ( "Update basic settings. User: " . $user -> id ) ;
+
 			return \Redirect::back () ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -51,12 +53,14 @@ class SettingsController extends \Controller
 			$user -> updatePassword ( $existingPassword , $newPassword , $confirmNewPassword ) ;
 
 			\MessageButler::setSuccess ( 'Password changed successfully.' ) ;
+			
+			\ActivityLogButler::add ( "Change Password. User: " . $user -> id ) ;
 
 			return \Redirect::back () ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator ) ;
+					-> withErrors ( $ex -> validator ) ;
 		}
 	}
 

@@ -18,8 +18,8 @@ App::missing ( function($exception)
 } ) ;
 
 Route::get ( '/test' , function()
-{
-	dd ( Models\FinanceAccountVerification::whereBetween ( 'date_time' , ['2014-10-09 00:00:00' , '2014-10-09 23:59:59' ] ) -> count () ) ;
+{    
+	dd(ActivityLogButler::add("test"));
 } ) ;
 
 

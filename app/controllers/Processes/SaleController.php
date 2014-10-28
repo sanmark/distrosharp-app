@@ -93,6 +93,9 @@ class SaleController extends \Controller
 			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
 
 			\MessageButler::setSuccess ( 'Selling Invoice was saved successfully.' ) ;
+
+			\ActivityLogButler::add ( "Add Selling Invoice " . $sellingInvoice -> id ) ;
+
 			return \Redirect::action ( 'processes.sales.add' )
 					-> with ( 'oldRouteId' , $oldRouteId ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
@@ -225,6 +228,9 @@ class SaleController extends \Controller
 			$this -> updateSellingItems ( $id ) ;
 
 			\MessageButler::setSuccess ( 'Selling invoice was updated successfully.' ) ;
+
+			\ActivityLogButler::add ( "Edit Selling Invoice " . $sellingInvoice -> id ) ;
+
 			return \Redirect::action ( 'processes.sales.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

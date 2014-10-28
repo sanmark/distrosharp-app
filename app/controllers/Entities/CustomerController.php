@@ -43,12 +43,14 @@ class CustomerController extends \Controller
 
 			$customer -> save () ;
 
+			\ActivityLogButler::add ( "Add Customer " . $customer -> id ) ;
+
 			return \Redirect::action ( 'entities.customers.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -80,20 +82,22 @@ class CustomerController extends \Controller
 
 			$customer -> update () ;
 
+			\ActivityLogButler::add ( "Edit Customer " . $customer -> id ) ;
+
 			return \Redirect::action ( 'entities.customers.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
 	public function aForRouteId ()
 	{
 		$routeId	 = \Input::get ( 'routeId' ) ;
-		$customers	 = \Models\Customer::where( 'route_id' , '=' , $routeId )
-		->get () ;
+		$customers	 = \Models\Customer::where ( 'route_id' , '=' , $routeId )
+			-> get () ;
 
 		return \Response::json ( $customers ) ;
 	}
@@ -122,7 +126,7 @@ class CustomerController extends \Controller
 	{
 		$fieldsToRequest = [
 			'name'
-		] ;
+			] ;
 
 		$filterValues = \Input::all () ;
 

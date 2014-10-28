@@ -62,4 +62,14 @@ Route::group ( [
 		'as'	 => 'system.settings.financeAccounts' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateFinanceAccounts'
 	] ) ;
+	
+	Route::get ( 'activityLog' , [
+		'as'	 => 'system.activityLog' ,
+		'uses'	 => 'Controllers\System\ActivityLogController@home'
+	] ) ;
+
+	Route::post ( 'activityLog' , [
+		'as'	 => 'system.activityLog' ,
+		'uses'	 => 'Controllers\System\ActivityLogController@view'
+	] ) ;
 } ) ;

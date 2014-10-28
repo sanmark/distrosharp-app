@@ -435,10 +435,24 @@ class SetupDb extends Migration
 				-> onUpdate ( 'cascade' )
 				-> onDelete ( 'cascade' ) ;
 		} ) ;
+		Schema::create ( 'activity_logs' , function ($t)
+		{
+			$t -> increments ( 'id' ) ;
+			$t -> dateTime ( 'date_time' ) ;
+			$t -> integer ( 'user_id' ) -> unsigned () ;
+			$t -> string ( 'message' ) ;
+			$t -> string ( 'url' ) ;
+			$t -> foreign ( 'user_id' )
+				-> references ( 'id' )
+				-> on ( 'users' )
+				-> onUpdate ( 'cascade' )
+				-> onDelete ( 'cascade' ) ;
+		} ) ;
 	}
 
 	public function down ()
 	{
+		Schema::dropIfExists ( 'activity_logs' ) ;
 		Schema::dropIfExists ( 'stock_confirmation_details' ) ;
 		Schema::dropIfExists ( 'stock_confirmations' ) ;
 		Schema::dropIfExists ( 'finance_account_verifications' ) ;

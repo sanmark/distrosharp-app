@@ -39,12 +39,14 @@ class BankController extends \Controller
 
 			$bank -> save () ;
 
+			\ActivityLogButler::add ( "Add Bank " . $bank -> id ) ;
+
 			return \Redirect::action ( 'entities.banks.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -55,7 +57,7 @@ class BankController extends \Controller
 		$bank = \Models\Bank::findOrFail ( $id ) ;
 
 		$data[ 'bank' ] = $bank ;
-
+ 
 		return \View::make ( 'web.entities.banks.edit' , $data ) ;
 	}
 
@@ -71,12 +73,15 @@ class BankController extends \Controller
 
 			$bank -> update () ;
 
+			\ActivityLogButler::add ( "Edit Bank " . $bank -> id ) ;
+
 			return \Redirect::action ( 'entities.banks.view' ) ;
-		} catch ( \Exceptions\InvalidInputException $ex )
+		}
+		catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 

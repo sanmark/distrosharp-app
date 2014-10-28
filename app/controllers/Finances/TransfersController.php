@@ -24,7 +24,7 @@ class TransfersController extends \Controller
 		} else
 		{
 			$fromAccountsIds = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $fromAccountsId )
-			-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
+					-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
 		}
 
 		$toAccountsId = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
@@ -34,7 +34,7 @@ class TransfersController extends \Controller
 		} else
 		{
 			$toAccountsIds = [NULL => 'Select Account' ] + \Models\FinanceAccount::whereIn ( 'id' , $toAccountsId )
-			-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
+					-> getArrayForHtmlSelect ( 'id' , 'name' ) ;
 		}
 
 		$data = compact ( [
@@ -48,18 +48,18 @@ class TransfersController extends \Controller
 			'fromDate' ,
 			'toDate' ,
 			'amount'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.finances.transfers.viewAll' , $data ) ;
 	}
 
 	public function selectAccountsInvolved ()
 	{
 		$requestObject		 = \Models\FinanceAccount::where ( 'is_active' , '=' , TRUE )
-		-> where ( 'is_in_house' , '=' , TRUE ) ;
+			-> where ( 'is_in_house' , '=' , TRUE ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $requestObject , [NULL => 'Select Account' ] ) ;
 		$data				 = compact ( [
 			'accountSelectBox'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.transfers.selectAccountsInvolved' , $data ) ;
 	}
@@ -74,7 +74,7 @@ class TransfersController extends \Controller
 			$data = compact ( [
 				'from' ,
 				'to'
-			] ) ;
+				] ) ;
 
 			$this -> validateSelectedTransfers ( $from , $to ) ;
 
@@ -82,8 +82,8 @@ class TransfersController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -97,7 +97,7 @@ class TransfersController extends \Controller
 			'fromAccount' ,
 			'toAccount' ,
 			'currentDate'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.finances.transfers.add' , $data ) ;
 	}
 
@@ -117,12 +117,15 @@ class TransfersController extends \Controller
 			$financeTransfer -> description	 = $description ;
 
 			$financeTransfer -> save () ;
+
+			\ActivityLogButler::add ( "Add Finance Transfer " . $financeTransfer -> id ) ;
+
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -157,7 +160,7 @@ class TransfersController extends \Controller
 			'amount' ,
 			'accountName' ,
 			'accountRefill'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.transfers.home' , $data ) ;
 	}
@@ -165,7 +168,7 @@ class TransfersController extends \Controller
 	public function edit ( $transferId )
 	{
 		$financeTransfer	 = \Models\FinanceTransfer::with ( 'chequeDetail.bank' )
-		-> findOrFail ( $transferId ) ;
+			-> findOrFail ( $transferId ) ;
 		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
 		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time ) ;
 		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
@@ -175,7 +178,7 @@ class TransfersController extends \Controller
 			'accountSelectBox' ,
 			'dateTime' ,
 			'banksList'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.transfers.edit' , $data ) ;
 	}
@@ -185,7 +188,7 @@ class TransfersController extends \Controller
 		try
 		{
 			$financeTransferUpdateRow = \Models\FinanceTransfer::with ( 'chequeDetail' )
-			-> findOrFail ( $transferId ) ;
+				-> findOrFail ( $transferId ) ;
 
 			$dateTime			 = \Input::get ( 'date_time' ) ;
 			$amount				 = \Input::get ( 'amount' ) ;
@@ -215,12 +218,14 @@ class TransfersController extends \Controller
 
 			$chequeDetail -> update () ;
 
+			\ActivityLogButler::add ( "Edit Finance Transfer " . $financeTransfer -> id ) ;
+
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -229,7 +234,7 @@ class TransfersController extends \Controller
 		$data = [
 			'from'	 => $from ,
 			'to'	 => $to
-		] ;
+			] ;
 
 		$rules = [
 			'from'	 => [
@@ -239,7 +244,7 @@ class TransfersController extends \Controller
 			'to'	 => [
 				'required'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -262,7 +267,7 @@ class TransfersController extends \Controller
 			'chequeNumber' ,
 			'chequeIssuedDate' ,
 			'chequePayableDate'
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'chequeBankId'		 => [
@@ -281,7 +286,7 @@ class TransfersController extends \Controller
 				'date' ,
 				'date_format:Y-m-d'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

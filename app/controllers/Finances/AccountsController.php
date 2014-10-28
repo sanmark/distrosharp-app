@@ -12,7 +12,7 @@ class AccountsController extends \Controller
 
 		$data = compact ( [
 			'bankSelectBox'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.accounts.add' , $data ) ;
 	}
@@ -33,7 +33,7 @@ class AccountsController extends \Controller
 			'financeAccount' ,
 			'id' ,
 			'bankSelectBox'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.finances.accounts.edit' , $data ) ;
 	}
 
@@ -54,12 +54,14 @@ class AccountsController extends \Controller
 
 			$financeAccounts -> update () ;
 
+			\ActivityLogButler::add ( "Update finance Account " . $financeAccounts->id) ;
+			
 			return \Redirect::action ( 'finances.accounts.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -81,13 +83,15 @@ class AccountsController extends \Controller
 			$financeAccounts -> is_active		 = \NullHelper::zeroIfNull ( $isActive ) ;
 
 			$financeAccounts -> save () ;
-
+			
+			\ActivityLogButler::add ( "Add Finance Account ". $financeAccounts->id ) ;
+			
 			return \Redirect::action ( 'finances.accounts.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -103,9 +107,9 @@ class AccountsController extends \Controller
 		$financeAccountsDetails	 = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE ) -> get () ;
 		$banks					 = \Models\FinanceAccount::distinct () -> lists ( 'bank_id' ) ;
 		$bankSelectBox			 = \Models\Bank::getArrayForHtmlSelectByIds ( 'id' , 'name' , $banks , [
-			''		 => 'Any' ,
-			'none'	 => 'None'
-		] ) ;
+				''		 => 'Any' ,
+				'none'	 => 'None'
+			] ) ;
 		$data					 = compact ( [
 			'financeAccounts' ,
 			'name' ,
@@ -114,7 +118,7 @@ class AccountsController extends \Controller
 			'isActive' ,
 			'financeAccountsDetails' ,
 			'bankSelectBox'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.accounts.home' , $data ) ;
 	}

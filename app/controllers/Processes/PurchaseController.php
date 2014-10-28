@@ -300,6 +300,9 @@ class PurchaseController extends \Controller
 				}
 			}
 			\MessageButler::setSuccess ( 'Purchase invoice was updated successfully.' ) ;
+			
+			\ActivityLogButler::add ( "Edit Purchase invoice " . $purchaseItem -> id ) ;
+
 			return \Redirect::action ( 'processes.purchases.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -424,6 +427,8 @@ class PurchaseController extends \Controller
 					}
 				}
 			}
+
+			\ActivityLogButler::add ( "Add Purchase invoice " . $buyingInvoice -> id ) ;
 
 			return \Redirect::action ( 'processes.purchases.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
