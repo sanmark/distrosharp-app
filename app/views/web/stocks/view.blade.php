@@ -9,7 +9,7 @@
 	<div class="panel-body">
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<p>In-charge: <b>{{$stock['incharge']['username']}}.</b> &nbsp; Stock Type: <b>{{$stock->stockType->label}}.</b> &nbsp;{{HTML::link(URL::action('stocks.edit', [$stock->id]), 'Edit...')}}</p>
-		<p>Stock Confirmed date :<b>{{$lastConfirmedDate}}</b></p><br/>
+		<p>Last Confirmed Date :<b>{{$lastConfirmedDate}}</b></p><br/>
 
 		<table class="table table-striped" style="width: 50%;">
 			<tr>

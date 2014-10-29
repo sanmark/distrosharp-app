@@ -95,9 +95,10 @@ class MenuButler
 				['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
 				['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] ,
 				['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
-				['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ] ,
-				['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] , 
-				[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] 
+				['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] ,
+				[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] ,
+				['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ],
+				['Timely Stock Report' , 'reports.timelyStockReport' , ['view_timely_stock_report' ] ]
 			] ,
 		] ,
 		['Account' , [

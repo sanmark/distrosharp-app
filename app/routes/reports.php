@@ -128,7 +128,6 @@ Route::group ( [
 		'before' => ['hasAbilities:view_item_return_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemReturnReportController@view'
 	] ) ;
-
 	Route::get ( 'credit-summary-report' , [
 		'as'	 => 'reports.creditSummary' ,
 		'before' => ['hasAbilities:view_credit_summery_report' ] ,
@@ -157,5 +156,16 @@ Route::group ( [
 		'as'	 => 'reports.repFinanceReport' ,
 		'before' => ['hasAbilities:view_rep_finance_report' ] ,
 		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
+	]);
+	Route::get ( 'timelyStockReport' , [
+		'as'	 => 'reports.timelyStockReport' ,
+		'before' => ['hasAbilities:view_timely_stock_report' ] ,
+		'uses'	 => 'Controllers\Reports\TimelyStockReportController@home'
+	] ) ;
+
+	Route::post ( 'timelyStockReport' , [
+		'as'	 => 'reports.timelyStockReport' ,
+		'before' => ['hasAbilities:view_timely_stock_report' ] ,
+		'uses'	 => 'Controllers\Reports\TimelyStockReportController@filter'
 	] ) ;
 } ) ;
