@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.php.project</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/php-project/1">
+            <name>d-071-1-v2-app</name>
+        </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>buyingItemRow</word>
+            <word>dd</word>
+            <word>elseif</word>
+            <word>endforeach</word>
+            <word>endif</word>
+            <word>foreach</word>
+            <word>isNot</word>
+            <word>itemRowsAscSellingInvoice</word>
+            <word>Purechese</word>
+            <word>requestObject</word>
+        </spellchecker-wordlist>
+    </configuration>
+</project>

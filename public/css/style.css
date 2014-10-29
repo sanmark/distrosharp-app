@@ -1,0 +1,384 @@
+body{
+	margin: 0 !important;
+	padding: 0 !important;
+	font-weight: 400;
+	background-color: #d1c4e9;
+}
+
+/* ================ Navigation ================ */
+
+.main-nav{
+	width: 100%;
+}
+.navbar-default{
+	background-color: #6f02b5;
+	color: #fff;
+}
+.main-menu ul{
+	position: relative;
+	padding: 0;
+	margin: 0;
+}
+.main-menu ul li{
+	list-style: none;
+}
+.main-menu ul li:hover{
+	background-color: #8800de;
+}
+.main-menu ul li a{
+	display: block;
+	color: #fff;
+}
+.main-menu ul li a:hover{
+	text-decoration: none;
+}
+.main-menu>ul>li{
+	float: left;
+	position: relative;
+	line-height: 20px;
+	padding: 15px 20px;
+	margin: 0 2px;
+	display: block;
+}
+.main-menu>ul>li:hover>ul{
+	display: block;
+}
+.main-menu>ul>li>span{
+	font-size: 10px;
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	margin-left: 3px;
+	color: #fff;
+}
+.main-menu>ul>li>ul{
+	left: 0 !important;
+	top: 100% !important;
+}
+.main-menu>ul>li ul{
+	position: absolute;
+	display: none;
+	width: 200px;
+	top: 0;
+    left: 100%;
+	background-color: #6f02b5;
+    z-index: 50;
+}
+.main-menu>ul>li ul li{
+	position: relative;
+	padding: 15px;
+}
+.main-menu>ul>li ul li:hover>ul{
+	display: block;
+}
+.main-menu>ul>li ul li span{
+	font-size: 10px;
+	float: right;
+	margin-top: 4px;
+	color: #fff;
+}
+
+/* ================ Navigation End ================ */
+
+.main-content{
+	width: 100%;
+	min-height: 500px;
+}
+.inline-form{
+	margin-right: 10px;
+}
+.bottom-space{
+	margin: 5px 10px 5px 0 !important;
+}
+.img-label{
+	position: relative;
+	display: inline-block;
+	padding-top: 7px !important;
+	color: #333 !important;
+	font-weight: bold;
+}
+
+
+.footer{
+	width: 100%;
+	min-height: 50px;
+	padding: 15px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+.footer a{
+	color: #fff;
+}
+.footer p{
+	margin: 0;
+}
+
+
+/* =================== Others ===================== */
+
+.no-bg:hover{background-color: transparent !important;}
+
+.navbar{
+	margin-top: 10px;
+}
+
+#creditPayments .bgcolor{background-color: #ECECEC; padding-bottom: 15px;}
+#creditPayments .form-group{margin-bottom: 0;}
+
+/* ================== fix to show file extention on rename ============ */
+.elfinder-button {
+	width: 25px !important;
+	height: 25px !important;
+}
+
+.elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover{
+	color: #000 !important;
+}
+
+
+/* tooltip */
+
+
+.tool-tip{
+	color: #fff;
+	/*background-color: rgba( 0, 0, 0, .7);*/
+	text-shadow: none;
+	font-size: .8em;
+	visibility: hidden;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	border-radius: 7px;
+	text-align: center;
+	opacity: 0;
+	z-index: 999;
+	padding: 3px 8px;
+	position: absolute;
+	cursor: default;
+	-webkit-transition: all 240ms ease-in-out;
+	-moz-transition: all 240ms ease-in-out;
+	-ms-transition: all 240ms ease-in-out;
+	-o-transition: all 240ms ease-in-out;
+	transition: all 240ms ease-in-out;
+}
+
+.tool-tip,
+.tool-tip.top{
+	top: auto;
+	bottom: 114%;
+	left: 50%;
+}
+
+.tool-tip.top:after,
+.tool-tip:after{
+	position: absolute;
+	bottom: -12px;
+	left: 50%;
+	margin-left: -7px;
+	content: ' ';
+	height: 0px;
+	width: 0px;
+	border: 6px solid transparent;
+    border-top-color: rgba( 0, 0, 0, .7);
+}
+
+/* default heights, width and margin w/o Javscript */
+
+.tool-tip,
+.tool-tip.top{
+	width: 80px;
+	height: 22px;
+	margin-left: -43px;
+}
+
+/* tool tip position right */
+
+.tool-tip.right{
+	top: 50%;
+	right: auto;
+	left: 106%;
+	margin-top: -15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.tool-tip.right:after{
+	left: -5px;
+	top: 50%;
+	margin-top: -6px;
+	bottom: auto;
+	border-top-color: transparent;
+    border-right-color: rgba( 0, 0, 0, .7);
+}
+
+/* tool tip position left */
+
+.tool-tip.left{
+	top: 50%;
+	left: auto;
+	right: 105%;
+	margin-top: -15px;
+	margin-left: auto;
+}
+
+.tool-tip.left:after{
+	left: auto;
+	right: -12px;
+	top: 50%;
+	margin-top: -6px;
+	bottom: auto;
+	border-top-color: transparent;
+    border-left-color: rgba( 0, 0, 0, .7);
+}
+
+/* tool tip position bottom */
+
+.tool-tip.bottom{
+	top: 115%;
+	bottom: auto;
+	left: 50%;
+	margin-bottom: auto;
+}
+
+.tool-tip.bottom:after{
+	position: absolute;
+	top: -12px;
+	left: 50%;
+	margin-left: -7px;
+	content: ' ';
+	height: 0px;
+	width: 0px;
+	border: 6px solid transparent;
+    border-top-color: transparent;
+    border-bottom-color: rgba( 0, 0, 0, .6);
+}
+
+/* tooltip on focus left and right */
+
+.on-focus .tool-tip.left,
+.on-focus .tool-tip.right{
+	margin-top: -19px;
+}
+
+/* on hover of element containing tooltip default*/
+
+*:not(.on-focus):hover > .tool-tip,
+.on-focus input:focus + .tool-tip{
+	visibility: visible;
+	opacity: 1;
+	-webkit-transition: all 240ms ease-in-out;
+	-moz-transition: all 240ms ease-in-out;
+	-ms-transition: all 240ms ease-in-out;
+	-o-transition: all 240ms ease-in-out;
+	transition: all 240ms ease-in-out;
+}
+
+
+/* tool tip slide out */
+
+*:not(.on-focus) > .tool-tip.slideIn,
+.on-focus > .tool-tip{
+	display: block;
+}
+
+.on-focus > .tool-tip.slideIn{
+	z-index: -1;
+}
+
+.on-focus > input:focus + .tool-tip.slideIn{
+	z-index: 1;
+}
+
+/* bottom slideIn */
+
+*:not(.on-focus) > .tool-tip.slideIn.bottom,
+.on-focus > .tool-tip.slideIn.bottom{
+	top: 50%;
+}
+
+*:not(.on-focus):hover > .tool-tip.slideIn.bottom,
+.on-focus > input:focus + .tool-tip.slideIn.bottom{
+	top: 115%;
+}
+
+.on-focus > input:focus + .tool-tip.slideIn.bottom{
+	top: 100%;
+}
+
+/* top slideIn */
+
+*:not(.on-focus) > .tool-tip.slideIn,
+*:not(.on-focus) > .tool-tip.slideIn.top,
+.on-focus > .tool-tip.slideIn,
+.on-focus > .tool-tip.slideIn.top{
+	bottom: 50%;
+}
+
+*:not(.on-focus):hover > .tool-tip.slideIn,
+*:not(.on-focus):hover > .tool-tip.slideIn.top,
+.on-focus > input:focus + .tool-tip.slideIn,
+.on-focus > input:focus + .tool-tip.slideIn.top{
+	bottom: 110%;
+}
+
+/* left slideIn */
+
+*:not(.on-focus) > .tool-tip.slideIn.left,
+.on-focus > .tool-tip.slideIn.left{
+	right: 50%;
+}
+
+*:not(.on-focus):hover > .tool-tip.slideIn.left,
+.on-focus > input:focus + .tool-tip.slideIn.left{
+	right: 105%;
+}
+
+/* right slideIn */
+
+*:not(.on-focus) > .tool-tip.slideIn.right,
+.on-focus > .tool-tip.slideIn.right{
+	left: 50%;
+}
+
+*:not(.on-focus):hover > .tool-tip.slideIn.right,
+.on-focus > input:focus + .tool-tip.slideIn.right{
+	left: 105%;
+}
+
+.tool-tip-img{
+	width: 200px;
+	margin-left: 12px;
+	border:1px #ccc solid;
+	padding:5px;
+}
+#login-form{
+	position: absolute;
+    top: 20%;
+}
+.no-records-message
+{
+	font-size: 30px;
+}
+.panel-body-404
+{
+	min-height: 400px;
+	padding-top: 70px;
+}
+.back-btn-margin
+{
+	margin-right: 10px;
+}
+.home-panels{
+}
+.home-panel-height{
+	max-height: 300px;
+}
+.home-panel-overflow{
+	overflow-y: scroll;
+}
+.form_messages{
+	color: red;
+} 
+.duplicate-error{
+	background-color: rgba(253, 192, 192, 0.08);
+	border-color: rgba(255, 0, 0, 0.44);
+}
