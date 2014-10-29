@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Finance Accounts</h3>
 	</div>
@@ -14,18 +14,18 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('name', null, array('class' => 'control-label'))}}
-					{{Form::text('name',$name, array('tabindex' => '1', 'class' => 'form-control'))}}
+					{{Form::text('name',$name, array('tabindex' => '1', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('bank_id', null, array('control-label'))}}
-					{{Form::select('bank_id',$bankSelectBox,$bankId, array('tabindex' => '2', 'class' => 'form-control'))}}
+					{{Form::select('bank_id',$bankSelectBox,$bankId, array('tabindex' => '2', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('is_active', null, array('class' => 'control-label'))}}
-					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('tabindex' => '3', 'class' => 'form-control'))}}
+					{{Form::select('is_active',ViewButler::htmlSelectAnyYesNo (),$isActive, array('tabindex' => '3', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('tabindex' => '4', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '4', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 

@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Debtor Summary Report</h3>
 	</div>
@@ -11,22 +11,22 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('from_date',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'from_date', $fromDate,array('class' => 'form-control'))}}
+					{{Form::input('date', 'from_date', $fromDate,array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('to_date',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'to_date', $toDate,array('class' => 'form-control'))}}
+					{{Form::input('date', 'to_date', $toDate,array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('route_id','Route',array('class' => 'control-label'))}}
-					{{Form::select('route_id', $routes,$routeId,array('class' => 'form-control'))}}
+					{{Form::select('route_id', $routes,$routeId,array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('customer_id','Customer',array('class' => 'control-label'))}}
-					{{Form::select('customer_id', $customers,null,array('class' => 'form-control'))}}
+					{{Form::select('customer_id', $customers,null,array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit',array('class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>

@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Account - {{$account->name}}</h3>
 	</div>
@@ -14,27 +14,27 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group bottom-space">
 					{{Form::label('from_date')}}
-					{{Form::input('datetime-local','from_date',$fromDate, array('tabindex' => '1', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','from_date',$fromDate, array('tabindex' => '1', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('to_date')}}
-					{{Form::input('datetime-local','to_date',$toDate, array('tabindex' => '2', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','to_date',$toDate, array('tabindex' => '2', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('transfer_account')}}
-					{{Form::select('transfer_account',$accountName,$accountRefill, array('tabindex' => '3', 'class' => 'form-control'))}}
+					{{Form::select('transfer_account',$accountName,$accountRefill, array('tabindex' => '3', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('in_or_out')}}
-					{{Form::select('in_or_out',$inOrOutSelectBox,$inOrOut, array('tabindex' => '4', 'class' => 'form-control'))}}
+					{{Form::select('in_or_out',$inOrOutSelectBox,$inOrOut, array('tabindex' => '4', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('amount')}}
-					{{Form::select('compare_sign',$compareSignSelectBox,$compareSign, array('tabindex' => '5', 'class' => 'form-control'))}}
-					{{Form::input('number','amount',$amount, array('tabindex' => '6', 'class' => 'form-control'),['step'=>'any'])}}
+					{{Form::select('compare_sign',$compareSignSelectBox,$compareSign, array('tabindex' => '5', 'class' => ''))}}
+					{{Form::input('number','amount',$amount, array('tabindex' => '6', 'class' => ''),['step'=>'any'])}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 

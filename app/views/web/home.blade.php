@@ -4,7 +4,7 @@
 <div class="row">
 
 	<div class="col-sm-4 home-panels">
-		<div class="panel panel-default home-panel-height">
+		<div class="panel panel-default home-panel-height well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Last 30-days Purchases</h3>
 			</div>
@@ -28,7 +28,7 @@
 	</div>
 
 	<div class="col-sm-4 home-panels">
-		<div class="panel panel-default home-panel-height">
+		<div class="panel panel-default home-panel-height well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Stock Summery(All Stocks)</h3>
 			</div>
@@ -52,7 +52,7 @@
 	</div>
 
 	<div class="col-sm-4 home-panels">
-		<div class="panel panel-default home-panel-height">
+		<div class="panel panel-default home-panel-height well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Last 30-days Sales</h3>
 			</div>
@@ -80,25 +80,25 @@
 	</div>
 
 	<div class="col-sm-4 home-panels">
-		<div class="panel panel-default home-panel-height home-panel-overflow">
+		<div class="panel panel-default home-panel-height home-panel-overflow well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Daily Workflow</h3>
 			</div>
 			<div class="panel-body">
-				<div class="row">
+				<div class="row" style="height: 0px;">
 					{{ Form::open() }}
 					{{Form::hidden('submitedForm','dailyWorkFlow')}}
 					<div class="form-group">
-						{{Form::label('the_date','Select Date', array('class' => 'col-sm-1 col-md-3 control-label'))}}
+						{{Form::label('the_date','Date', array('class' => 'col-sm-1 col-md-3 control-label'))}}
 						<div class="col-sm-6">
-							{{Form::input('date','the_date',$dailyWorkflow['today'], array('tabindex' => '1', 'class' => 'col-sm-1 col-md-3 form-control'))}}
+							{{Form::input('date','the_date',$dailyWorkflow['today'], array('tabindex' => '1', 'class' => 'col-sm-1 col-md-3 form-control', 'style'=>'position: relative; left: -40px; top: -5px;'))}}
 
 						</div>
 					</div>
 
 					<div class="form-group">
 						<div class="col-sm-3">
-							{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</td>
+							{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-primary pull-right', 'style'=>'position: relative; top: -20px;'))}}</td>
 						</div>
 					</div>
 

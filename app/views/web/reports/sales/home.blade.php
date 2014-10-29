@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Sales Summary Report</h3>
 	</div>
@@ -13,30 +13,30 @@
 
 				<div class="form-group bottom-space">
 					{{Form::label('route_id', null, array('class' => 'control-label'))}}
-					{{Form::select('route_id',$routes, $routesId, array('class' => 'form-control'))}}
+					{{Form::select('route_id',$routes, $routesId, array('class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('customer_id', null, array('class' => 'control-label'))}}
-					{{Form::select('customer_id',$customers, $customerId, array('class' => 'form-control'))}}
+					{{Form::select('customer_id',$customers, $customerId, array('class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('rep_id', null, array('class' => 'control-label'))}}
-					{{Form::select('rep_id',$reps, $repId, array('class' => 'form-control'))}} 
+					{{Form::select('rep_id',$reps, $repId, array('class' => ''))}} 
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_from',null, array('class' => 'control-label'))}}
-					{{Form::input('date','date_from', $dateFrom, array('class' => 'form-control'))}}
+					{{Form::input('date','date_from', $dateFrom, array('class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_to',null, array('class' => 'control-label'))}}
-					{{Form::input('date','date_to',$dateTo, array('class' => 'form-control'))}}
+					{{Form::input('date','date_to',$dateTo, array('class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('invoice_number', null, array('class' => 'control-label'))}}
-					{{Form::text('invoice_number',$invoiceNum, array('class' => 'form-control'))}} 
+					{{Form::text('invoice_number',$invoiceNum, array('class' => ''))}} 
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit', array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('class' => 'btn btn-primary pull-right'))}}
 				</div>
 
 				{{Form::close()}} 

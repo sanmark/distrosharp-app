@@ -3,10 +3,14 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>d-071-1-v2-app</title>
+		
 		{{ HTML::style('packages/bootstrap/css/bootstrap.min.css') }}
-		{{ HTML::style('packages/bootstrap/css/bootstrap-theme.min.css') }}
+		{{ HTML::style('packages/bootstrap-material-design/css/ripples.min.css') }}
+		{{ HTML::style('packages/bootstrap-material-design/css/material-wfont.min.css') }}
+		{{ HTML::style('packages/bootstrap-material-design/css/material.min.css') }}
 		{{ HTML::style('packages/jQueryUI/css/jquery-ui.css') }}
 		{{ HTML::style('css/style.css') }}
+		{{ HTML::style('css/bootstrap-override.css') }}
 
 		{{ HTML::script('packages/jQuery/jquery.min.js') }}
 		{{ HTML::script('packages/jQueryUI/js/jquery-ui.min.js') }}
@@ -56,7 +60,8 @@
 			@endif
 			 
 		</div>
-
+		{{ HTML::script('packages/bootstrap-material-design/js/ripples.min.js') }}
+		{{ HTML::script('packages/bootstrap-material-design/js/material.min.js') }}
 		@yield('file-footer')
 	</body>
 </html>

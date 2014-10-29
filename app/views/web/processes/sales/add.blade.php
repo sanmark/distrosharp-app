@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Add Sale</h3>
 	</div>
@@ -20,13 +20,13 @@
 				{{Form::input('datetime-local','date_time', $currentDateTime, array('class' => 'form-control','required'=>true,'step'=>'1'))}}
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group" style="height: 39px;">
 			{{Form::label('rep',null,array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
 				{{Form::label('rep',$rep->username,array('class' => 'form-control'))}}
 			</div>
 			<div class="col-sm-1">
-				{{HTML::link ( URL::action ( 'processes.sales.setRep' ) , 'Change Rep...' , ['class' => 'btn btn-default', 'style'=>'position: relative; left: -25px;' ] )}}
+				{{HTML::link ( URL::action ( 'processes.sales.setRep' ) , 'Change Rep...' , ['class' => 'btn btn-success btn-sm', 'style'=>'position: relative; left: -25px; top: -15px;' ] )}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -241,7 +241,7 @@
 					{{Form::label('balance', 'Credit', array('class' => 'col-sm-6 control-label'))}}
 					<div class="col-sm-6">
 						<?php $tab ++ ?>
-						{{Form::input('balance', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE])}}
+						{{Form::input('number', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE])}}
 					</div>
 				</div>
 			</div>
@@ -253,7 +253,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ?>
-				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn btn-default pull-right','onclick'=>'checkPaidAndFreeSum()'))}}
+				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn btn-primary pull-right','onclick'=>'checkPaidAndFreeSum()'))}}
 			</div>
 		</div>
 		{{Form::hidden('item_list_amount',count($items))}}

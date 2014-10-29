@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Set Default Time Zone</h3>
 	</div>
@@ -17,7 +17,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-3">
-				{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex' => '2', 'class' => 'btn btn-primary pull-right'))}}
 				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>

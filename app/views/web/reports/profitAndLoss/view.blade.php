@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Profit and Loss Report</h3>
 	</div>
@@ -12,11 +12,11 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('from_date',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'from_date', $date_from,array('class' => 'form-control','required'=>true))}}
+					{{Form::input('date', 'from_date', $date_from,array('class' => '','required'=>true))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('to_date',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'to_date', $date_to,array('class' => 'form-control','required'=>true))}}
+					{{Form::input('date', 'to_date', $date_to,array('class' => '','required'=>true))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}

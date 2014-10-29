@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Activity Log</h3>
 	</div>
@@ -11,18 +11,18 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}} 
 				<div class="form-group bottom-space">
 					{{Form::label('user',null,array('class' => 'control-label'))}} 
-					{{Form::select('user',$users,$user, array('class' => 'form-control'))}}
+					{{Form::select('user',$users,$user, array('class' => ''))}}
 				</div>     
 				<div class="form-group bottom-space">
 					{{Form::label('from_time',null,array('class' => 'control-label'))}}
-					{{Form::input('datetime-local', 'from_time', $from_time,array('class' => 'form-control','required'=>true))}}
+					{{Form::input('datetime-local', 'from_time', $from_time,array('class' => '','required'=>true))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('to_time',null,array('class' => 'control-label'))}}
-					{{Form::input('datetime-local', 'to_time', $to_time,array('class' => 'form-control','required'=>true))}}
+					{{Form::input('datetime-local', 'to_time', $to_time,array('class' => '','required'=>true))}}
 				</div> 
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit',array('class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div> 

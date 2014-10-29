@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Stock Report</h3>
 	</div>
@@ -12,10 +12,10 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('select_stock',null,array('class' => 'control-label'))}} 
-					{{Form::select('stock_id', $stockSelect,$stockId,array('tabindex' => '1', 'class'=>'form-control'));}}
+					{{Form::select('stock_id', $stockSelect,$stockId,array('tabindex' => '1', 'class'=>''));}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('submit', array('tabindex' => '2', 'class' => 'btn btn-default pull-right'))}}</div>
+					{{Form::submit('submit', array('tabindex' => '2', 'class' => 'btn btn-primary pull-right'))}}</div>
 				{{Form::close()}}
 			</div>
 		</div>

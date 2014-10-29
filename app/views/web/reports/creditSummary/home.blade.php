@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Credit Summary Report</h3>
 	</div>
@@ -12,10 +12,10 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('route_id','Route', array('class' => 'control-label'))}}
-					{{Form::select('route_id',$routeList,$routeId, array('class' => 'form-control'))}}
+					{{Form::select('route_id',$routeList,$routeId, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>

@@ -1,7 +1,7 @@
 @extends('web._templates.template')
 
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Confirm Bank Account Balance</h3>
 	</div>
@@ -11,14 +11,14 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('account','Bank Account', array('class' => 'control-label'))}}
-					{{Form::select('account',$bankAccountSelectBox,$bankAccountId, array('class' => 'form-control','required'=>'required'))}}
+					{{Form::select('account',$bankAccountSelectBox,$bankAccountId, array('class' => '','required'=>'required'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('datetime','Date/Time', array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','datetime',$viewDateTime,array('class' => 'form-control','step'=>'1'))}}
+					{{Form::input('datetime-local','datetime',$viewDateTime,array('class' => '','step'=>'1'))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 			</div>
 		</div>
@@ -54,7 +54,7 @@
 			</th>
 			</tr>
 			<tr>
-				<td colspan="5">{{Form::input('submit',null,'Confirm',array('class' => 'btn btn-default pull-right','name'=>'confirm'))}}</td>
+				<td colspan="5">{{Form::input('submit',null,'Confirm',array('class' => 'btn btn-danger pull-right','name'=>'confirm'))}}</td>
 			</tr>			
 		</table>
 		@endif

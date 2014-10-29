@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Add Transfer</h3>
 	</div>
@@ -30,7 +30,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('Submit', array('tabindex'=>'3','class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex'=>'3','class' => 'btn btn-primary pull-right'))}}
 			</div>
 		</div>
 		{{Form::close()}}

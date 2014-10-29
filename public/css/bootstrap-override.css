@@ -1,0 +1,48 @@
+.panel-default{
+	background-color: #ede7f6 !important;
+	color: #3E0367 !important;
+}
+
+.panel-heading{
+	background-color: #8800de !important;
+	color: #fff !important;
+	font-weight: 400;
+}
+
+.panel-heading h3{
+	font-weight: 400;
+}
+
+.btn-default
+{
+	background-color: #efefef !important;
+}
+
+.form-horizontal .checkbox{
+	padding-top: 0 !important;
+}
+
+input[disabled]{
+	background-color: #06c !important;
+}
+
+select{
+	background-color: #f9f9f9 !important;
+	height: 35px;
+	border: 0px;
+}
+
+input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], input[type="password"], label.form-control{
+	height: 35px;
+	background-color: #f9f9f9 !important;
+	border: 0;
+}
+
+label.form-control{
+	padding-top: 5px;
+	padding-left: 5px;
+}
+
+.control-label{
+	color: #3E0367 !important;	
+}

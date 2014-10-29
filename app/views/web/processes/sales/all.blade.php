@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Sales</h3>
 	</div>
@@ -13,38 +13,38 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group bottom-space">
 					{{Form::label('id', 'System Invoice Number', array('class' => 'control-label'))}}
-					{{Form::text('id', $id, array('tabindex' => '1', 'class' => 'form-control'))}}
+					{{Form::text('id', $id, array('tabindex' => '1', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('printed_invoice_number', null, array('class' => 'control-label'))}}
-					{{Form::text('printed_invoice_number', $printedInvoiceNumber, array('tabindex' => '2', 'class' => 'form-control'))}}
+					{{Form::text('printed_invoice_number', $printedInvoiceNumber, array('tabindex' => '2', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_time_from','From', array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('date_time_to','To', array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('route_id','Route', array('class' => 'control-label'))}}
-					{{Form::select('route_id', $routeSelectBox, $routeId, array('tabindex' => '5', 'class' => 'form-control'))}}
+					{{Form::select('route_id', $routeSelectBox, $routeId, array('tabindex' => '5', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('customer_id','Customer', array('class' => 'control-label'))}}
-					{{Form::select('customer_id', $customerSelectBox, null, array('tabindex' => '5', 'class' => 'form-control'))}}
+					{{Form::select('customer_id', $customerSelectBox, null, array('tabindex' => '5', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('rep_id','Rep', array('class' => 'control-label'))}}
-					{{Form::select('rep_id', $repSelectBox, $repId, array('tabindex' => '6', 'class' => 'form-control'))}}
+					{{Form::select('rep_id', $repSelectBox, $repId, array('tabindex' => '6', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('is_completely_paid', null, array('class' => 'control-label'))}}
-					{{Form::select('is_completely_paid', $isActiveSelectBox, $isCompletelyPaid, array('tabindex' => '7', 'class' => 'form-control'))}}
+					{{Form::select('is_completely_paid', $isActiveSelectBox, $isCompletelyPaid, array('tabindex' => '7', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit', array('tabindex' => '8', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '8', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>

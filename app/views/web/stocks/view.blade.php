@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Stock &nbsp;<b>{{$stock->name}}</b></h3>
 	</div>
@@ -29,7 +29,7 @@
 				</tr>
 				@endforeach
 				<tr>
-					<td colspan="3" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-default pull-right'])}}</td>
+					<td colspan="4" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-danger pull-right'])}}</td>
 				</tr>
 			</tbody>
 		</table>

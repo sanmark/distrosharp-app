@@ -1,6 +1,6 @@
 @extends('web._templates.template')
 @section('body')
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Add Purchase</h3>
 	</div>
@@ -207,7 +207,7 @@
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				<?php $tab ++ ; ?>
-				{{Form::submit('Submit', array('tabindex'=> $tab,'class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('Submit', array('tabindex'=> $tab,'class' => 'btn btn-primary pull-right'))}}
 			</div>
 		</div>
 

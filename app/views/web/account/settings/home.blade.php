@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-lg-6 col-md-6">
 
-		<div class="panel panel-default">
+		<div class="panel panel-default well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Basic Details</h3>
 			</div>
@@ -32,11 +32,10 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-3 col-sm-6">
-						{{Form::submit('Submit', array('tabindex' => '3', 'class' => 'btn btn-default pull-right'))}}
+						{{Form::submit('Submit', array('tabindex' => '3', 'class' => 'btn btn-primary pull-right'))}}
 					</div>
 				</div>
 				{{Form::close()}}
-
 			</div>
 		</div>
 
@@ -44,7 +43,7 @@
 
 	<div class="col-lg-6 col-md-6">
 
-		<div class="panel panel-default">
+		<div class="panel panel-default well">
 			<div class="panel-heading">
 				<h3 class="panel-title">Password</h3>
 			</div>
@@ -72,7 +71,7 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-4 col-sm-6">
-						{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-default pull-right'))}}
+						{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-primary pull-right'))}}
 					</div>
 				</div>
 				{{Form::close()}}

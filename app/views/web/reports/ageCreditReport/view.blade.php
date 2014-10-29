@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Age Credit Report</h3>
 	</div>
@@ -14,22 +14,22 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('rep',null, array('class' => 'control-label'))}}
-					{{Form::select('rep',$repSelectBox,$repId, array('class' => 'form-control'))}}
+					{{Form::select('rep',$repSelectBox,$repId, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('route_id',null, array('class' => 'control-label'))}}
-					{{Form::select('route_id',$routeSelectBox,$routeId, array('class' => 'form-control'))}}
+					{{Form::select('route_id',$routeSelectBox,$routeId, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('customer',null, array('class' => 'control-label'))}}
-					{{Form::select('customer',$customerSelectBox,null, array('class' => 'form-control'))}}
+					{{Form::select('customer',$customerSelectBox,null, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('age_by_days','Days More Than', array('class' => 'control-label'))}}
-					{{Form::text('age_by_days',$ageDays, array('class' => 'form-control'))}}
+					{{Form::text('age_by_days',$ageDays, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '10', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 

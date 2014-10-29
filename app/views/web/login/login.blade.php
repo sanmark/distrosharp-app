@@ -6,7 +6,7 @@
 <div class="row">
 	<div class="col-md-offset-4 col-md-4 col-sm-4 col-sm-offset-4 col-xs-8 col-xs-offset-2 " id="login-form">
  
-		<div class="panel panel-default ">
+		<div class="panel panel-default well">
 			<div class="panel-body offset3 span6">
 
 				<div class="row">
@@ -26,7 +26,7 @@
 							{{Form::password('password', array('class' => 'form-control'))}}
 						</div>
 						<div class="form-group">
-							{{Form::submit('Login', array('class' => 'btn btn-default pull-right'))}}
+							{{Form::submit('Login', array('class' => 'btn btn-primary pull-right'))}}
 							<span class="clearfix"></span>
 						</div>
 						{{Form::close()}}

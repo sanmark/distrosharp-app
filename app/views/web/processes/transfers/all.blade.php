@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Transfers</h3>
 	</div>
@@ -14,22 +14,22 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('from_stock_id', null, array('class' => 'control-label'))}}
-					{{Form::select('from_stock_id', $stocks, $fromStockId, array('tabindex' => '1', 'class' => 'form-control'))}}
+					{{Form::select('from_stock_id', $stocks, $fromStockId, array('tabindex' => '1', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('to_stock_id', null, array('class' => 'control-label'))}}
-					{{Form::select('to_stock_id', $stocks, $toStockId, array('tabindex' => '2', 'class' => 'form-control'))}}
+					{{Form::select('to_stock_id', $stocks, $toStockId, array('tabindex' => '2', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('date_time_from', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_from', $dateTimeFrom, array('tabindex' => '3', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('date_time_to', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','date_time_to', $dateTimeTo, array('tabindex' => '4', 'class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '5', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 

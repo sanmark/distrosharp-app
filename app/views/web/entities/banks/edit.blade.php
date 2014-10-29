@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Edit Bank &nbsp;<b>{{$bank->name}}</b></h3>
 	</div>
@@ -23,7 +23,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-1 col-sm-3">
-				{{Form::submit('submit', array('tabindex' => '3', 'class' => 'btn btn-default pull-right'))}}
+				{{Form::submit('submit', array('tabindex' => '3', 'class' => 'btn btn-primary pull-right'))}}
 				{{ link_to(URL::previous(), 'Back', ['class' => 'btn btn-default pull-right back-btn-margin']) }}
 			</div>
 		</div>

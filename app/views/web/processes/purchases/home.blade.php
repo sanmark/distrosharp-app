@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">View Purchases</h3>
 	</div>
@@ -13,34 +13,34 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group bottom-space">
 					{{Form::label('invoice_id', null, array('class' => 'control-label'))}}
-					{{Form::text('id',$id, array('tabindex' => '1', 'class' => 'form-control'))}}
+					{{Form::text('id',$id, array('tabindex' => '1', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('vendor_id', null, array('class' => 'control-label'))}}
-					{{Form::select('vendor_id',$vendorSelectBox,$vendorId, array('tabindex' => '2', 'class' => 'form-control'))}}
+					{{Form::select('vendor_id',$vendorSelectBox,$vendorId, array('tabindex' => '2', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('from_date', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','from_date_time',$fromDate, array('tabindex' => '3', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','from_date_time',$fromDate, array('tabindex' => '3', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('to_date', null, array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','to_date_time',$toDate, array('tabindex' => '4', 'class' => 'form-control'))}}
+					{{Form::input('datetime-local','to_date_time',$toDate, array('tabindex' => '4', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('is_paid', null, array('class' => 'control-label'))}}
-					{{Form::select('is_paid',ViewButler::htmlSelectAnyYesNo (),$isPaid, array('tabindex' => '5', 'class' => 'form-control'))}}
+					{{Form::select('is_paid',ViewButler::htmlSelectAnyYesNo (),$isPaid, array('tabindex' => '5', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('stock_id', null, array('class' => 'control-label'))}}
-					{{Form::select('stock_id',$stockSelectBox,$stockId, array('tabindex' => '6', 'class' => 'form-control'))}}
+					{{Form::select('stock_id',$stockSelectBox,$stockId, array('tabindex' => '6', 'class' => 'f'))}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::label('sort', null, array('class' => 'control-label'))}}
-					{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date_time'=>'Date'],$sortBy, array('class' => 'form-control', 'tabindex' => '7', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array( 'tabindex' => '8','class' => 'form-control', 'style' => 'width: 145px;'))}}
+					{{Form::select('sort_by',[NULL=>'By', 'id'=>'Invoice ID', 'date_time'=>'Date'],$sortBy, array('class' => '', 'tabindex' => '7', 'style' => 'width: 145px;'))}}&nbsp;&nbsp;{{Form::select('sort_order',ViewButler::htmlSelectSortOrder(),$sortOrder, array( 'tabindex' => '8','class' => '', 'style' => 'width: 145px;'))}}
 				</div>
 				<div class="form-group bottom-space">
-					{{Form::submit('Submit', array('tabindex' => '9', 'class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit', array('tabindex' => '9', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>

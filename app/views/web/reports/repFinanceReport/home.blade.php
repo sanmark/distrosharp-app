@@ -2,7 +2,7 @@
 
 @section('body')
 
-<div class="panel panel-default">
+<div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Rep Finance Report</h3>
 	</div>
@@ -13,18 +13,18 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('rep_id',null,array('class' => 'control-label'))}}
-					{{Form::select('rep_id', $repSelectBox, $repId, array('class' => 'form-control'))}}
+					{{Form::select('rep_id', $repSelectBox, $repId, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('date_from',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'date_from', $dateFrom, array('class' => 'form-control'))}}
+					{{Form::input('date', 'date_from', $dateFrom, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('date_to',null,array('class' => 'control-label'))}}
-					{{Form::input('date', 'date_to', $dateTo, array('class' => 'form-control'))}}
+					{{Form::input('date', 'date_to', $dateTo, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit',array('class' => 'btn btn-default'))}}
+					{{Form::submit('Submit',array('class' => 'btn btn-primary'))}}
 				</div>
 				{{Form::close()}}
 			</div>

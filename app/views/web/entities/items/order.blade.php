@@ -2,7 +2,7 @@
 
 @section('body') 
 <div id="div-error-message"></div>
-<div class="panel panel-default"> 
+<div class="panel panel-default well"> 
 	<div class="panel-heading">
 		<h3 class="panel-title">Change Item Order</h3>
 	</div>
@@ -26,7 +26,7 @@
 			</tr>
 			@endforeach
 			<tr>  
-				<td colspan="3">{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}</td>
+				<td colspan="3">{{Form::submit('Submit',array('class' => 'btn btn-primary pull-right'))}}</td>
 			</tr>
 		</table>
 		{{Form::close()}} 
