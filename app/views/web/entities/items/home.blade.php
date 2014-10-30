@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Items</h3>
+		<div class="panel-title">
+			<span>Items</span>
+			{{HTML::link ( URL::action ( 'entities.items.add') ,'Add New Item',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 
@@ -35,7 +38,6 @@
 					{{Form::submit('Submit', array('tabindex' => '6', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
-
 			</div>
 		</div>
 		@if(count($items)==0)

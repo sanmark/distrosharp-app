@@ -381,3 +381,10 @@ body{
 .duplicate-error{
 	border-bottom: 1px solid #FF0000 !important;
 }
+
+.panel-title-btn{
+	top: -15px !important;
+	background-color: #5cb85c !important;
+	color: #fff !important;
+	border: none !important;
+}

@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">View Sales</h3>
+		<div class="panel-title">
+			<span>View Sales</span>
+			{{HTML::link ( URL::action ( 'processes.sales.add') ,'Add New Sale',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 
