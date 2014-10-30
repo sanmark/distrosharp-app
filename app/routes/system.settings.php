@@ -52,6 +52,15 @@ Route::group ( [
 		'as'	 => 'system.settings.imbalanceStock' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateImbalanceStock'
 	] ) ;
+	Route::get ( 'main-stock' , [
+		'as'	 => 'system.settings.mainStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@showMainStock'
+	] ) ;
+
+	Route::post ( 'main-stock' , [
+		'as'	 => 'system.settings.mainStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateMainStock'
+	] ) ;
 
 	Route::get ( 'finance-accounts' , [
 		'as'	 => 'system.settings.financeAccounts' ,

@@ -150,6 +150,39 @@ class SettingsController extends \Controller
 		}
 	}
 
+	public function showMainStock ()
+	{
+		$stocksForHtmlSelect = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+
+		$mainStockId = \SystemSettingButler::getValue ( 'main_stock' ) ;
+
+		$data = compact ( [
+			'stocksForHtmlSelect' ,
+			'mainStockId'
+			] ) ;
+
+		return \View::make ( 'web.system.settings.mainStock' , $data ) ;
+	}
+
+	public function updateMainStock ()
+	{
+		try
+		{
+			$mainStockId = \Input::get ( 'main_stock' ) ;
+
+			\SystemSettingButler::setValue ( 'main_stock' , $mainStockId ) ;
+
+			\MessageButler::setSuccess ( 'Main Stock was updated successfully.' ) ;
+
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
 	public function showFinanceAccounts ()
 	{
 		$inHouseAccounts = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE )
