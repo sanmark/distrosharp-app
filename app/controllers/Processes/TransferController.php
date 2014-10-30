@@ -168,7 +168,7 @@ class TransferController extends \Controller
 				$fromStockObj -> saveNonUnload ( $toStockId , $dateTime , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
 
-				return \Redirect::back () ;
+				return \Redirect::action ( 'processes.transfers.selectStocksInvolved') ;
 			}
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
