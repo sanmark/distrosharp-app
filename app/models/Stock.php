@@ -141,22 +141,42 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
-	public function isUnloadable ()
+	public function getLastLoadDate ( $stockId )
 	{
 		$imbalanceStock = \SystemSettingButler::getValue ( 'imbalance_stock' ) ;
-		
-		$lastLoadDate = \Models\Transfer::where ( 'to_stock_id' , '=' , $this -> id )
+
+		$lastLoadDate = \Models\Transfer::where ( 'to_stock_id' , '=' , $stockId )
 			-> where ( 'from_stock_id' , '!=' , $imbalanceStock )
 			-> max ( 'date_time' ) ;
 
+		return $lastLoadDate ;
+	}
+
+	public function isLoadedWithItems ()
+	{
 		$loadedGoodQuantities	 = \Models\StockDetail::where ( 'stock_id' , '=' , $this -> id ) -> lists ( 'good_quantity' ) ;
 		$hasNoLoadedItems		 = \ArrayHelper::areAllElementsEmpty ( $loadedGoodQuantities ) ;
+
+		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
+
+
+		if ( $hasNoLoadedItems == TRUE || $lastLoadDate == NULL )
+		{
+			return FALSE ;
+		} else
+		{
+			return TRUE ;
+		}
+	}
+
+	public function isSellingInvoicesAdded ()
+	{
+		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
 
 		$sellingInvoices = \Models\SellingInvoice::where ( 'date_time' , '>' , $lastLoadDate )
 			-> where ( 'stock_id' , '=' , $this -> id )
 			-> get () ;
-
-		if ( $hasNoLoadedItems == TRUE || $lastLoadDate == NULL || count ( $sellingInvoices ) == 0 )
+		if ( count ( $sellingInvoices ) == 0 )
 		{
 			return FALSE ;
 		} else
@@ -177,7 +197,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$transferAmountHigherArray	 = [ ] ;
 		$transferAmountSmallerArray	 = [ ] ;
 		$transferAmountEqualArray	 = [ ] ;
-		
+
 		foreach ( $transferAmounts as $item => $transferAmount )
 		{
 			if ( $availableAmounts[ $item ] < $transferAmount )
