@@ -28,7 +28,6 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	dd ( ActivityLogButler::add ( "test" ) ) ;
 } ) ;
 
 

@@ -2,13 +2,14 @@ function validateDublicate() {
 
 
 	$("#formItemOrder").submit(function (event) {
- 
+
 		$(".alert").remove();
 		$("input").removeClass("duplicate-error")
- 
+
 		var error_status = false;
 		var htmlError = "";
 		var htmlErrorLi = "";
+		var body = $("html, body");
 
 		$("#div-error-message").empty();
 
@@ -28,12 +29,12 @@ function validateDublicate() {
 		var sellingOrderForCss = $('input[name="sellingOrder[]"]').map(function () {
 			return this.value;
 		}).get();
- 
+
 		var sortedBuyingOrder = buyingOrder.sort();
 		var resultsBuyingOrder = [];
 		var sortedSellingOrder = sellingOrder.sort();
 		var resultsSellingOrder = [];
- 
+
 		for (var i = 0; i < buyingOrder.length - 1; i++) {
 			if (sortedBuyingOrder[i + 1] === sortedBuyingOrder[i]) {
 				resultsBuyingOrder.push(sortedBuyingOrder[i]);
@@ -64,8 +65,12 @@ function validateDublicate() {
 		htmlError += "</div>";
 
 		if (error_status) {
+
+			body.animate({scrollTop: 75}, '900', 'swing', function () {
+			});
+
 			$("#div-error-message").append(htmlError);
-			event.preventDefault(); 
+			event.preventDefault();
 		}
 
 	});

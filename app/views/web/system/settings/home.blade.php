@@ -14,6 +14,7 @@
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.timezone'),'Time Zone')}}</li>
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.imbalanceStock'),'Imbalance Stock')}}</li>
 			<li class="list-group-item">{{HTML::link(URL::action('system.settings.financeAccounts'),'Finance Accounts')}}</li>
+			<li class="list-group-item">{{HTML::link(URL::action('system.settings.organizationName'),'Organization Name')}}</li>
 		</ul>
 
 	</div>

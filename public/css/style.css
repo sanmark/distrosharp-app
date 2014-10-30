@@ -379,6 +379,5 @@ body{
 	color: red;
 } 
 .duplicate-error{
-	background-color: rgba(253, 192, 192, 0.08);
-	border-color: rgba(255, 0, 0, 0.44);
+	border-bottom: 1px solid #FF0000 !important;
 }

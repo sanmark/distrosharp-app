@@ -41,12 +41,17 @@ class SystemSettingsSeeder extends Seeder
 				'system_settable_id' => 9 ,
 				'value'				 => 1
 			] ,
+			[
+				'id'				 => 8 ,
+				'system_settable_id' => 10 ,
+				'value'				 => 'Organization Name'
+			] ,
 //			[
 //				'id'				 =>  ,
 //				'system_settable_id' =>  ,
 //				'value'				 => ''
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $systemSettings as $systemSetting )
 		{

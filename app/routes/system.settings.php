@@ -72,4 +72,14 @@ Route::group ( [
 		'as'	 => 'system.activityLog' ,
 		'uses'	 => 'Controllers\System\ActivityLogController@view'
 	] ) ;
+	
+	Route::get ( 'organization-name' , [
+		'as'	 => 'system.settings.organizationName' ,
+		'uses'	 => 'Controllers\System\SettingsController@selectOrganizationName'
+	] ) ;
+
+	Route::post ( 'organization-name' , [
+		'as'	 => 'system.settings.organizationName' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateOrganizationName'
+	] ) ;
 } ) ;

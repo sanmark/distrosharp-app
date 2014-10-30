@@ -22,7 +22,7 @@ class SettingsController extends \Controller
 			'inHouseAccounts' ,
 			'paymentSourceCash' ,
 			'paymentSourceCheque'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.system.settings.paymentSourceAccounts' , $data ) ;
 	}
@@ -42,8 +42,8 @@ class SettingsController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -59,7 +59,7 @@ class SettingsController extends \Controller
 		$all	 = ['' => 'Select Time Zone' ] + $all ;
 		$data	 = compact ( [
 			'all'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.system.settings.timezone' , $data ) ;
 	}
@@ -76,15 +76,15 @@ class SettingsController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
 	public function showPaymentTargetAccounts ()
 	{
 		$inHouseAccounts	 = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE )
-		-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+			-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 		$paymentTargetCash	 = \SystemSettingButler::getValue ( 'payment_target_cash' ) ;
 		$paymentTargetCheque = \SystemSettingButler::getValue ( 'payment_target_cheque' ) ;
 
@@ -92,7 +92,7 @@ class SettingsController extends \Controller
 			'inHouseAccounts' ,
 			'paymentTargetCash' ,
 			'paymentTargetCheque'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.system.settings.paymentTargetAccounts' , $data ) ;
 	}
@@ -112,8 +112,8 @@ class SettingsController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -126,7 +126,7 @@ class SettingsController extends \Controller
 		$data = compact ( [
 			'stocksForHtmlSelect' ,
 			'imbalanceStockId'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.system.settings.imbalanceStock' , $data ) ;
 	}
@@ -145,15 +145,15 @@ class SettingsController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
 	public function showFinanceAccounts ()
 	{
 		$inHouseAccounts = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE )
-		-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+			-> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$incomeAccount	 = \SystemSettingButler::getValue ( 'income_account' ) ;
 		$expenseAccount	 = \SystemSettingButler::getValue ( 'expense_account' ) ;
@@ -162,7 +162,7 @@ class SettingsController extends \Controller
 			'inHouseAccounts' ,
 			'incomeAccount' ,
 			'expenseAccount' ,
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.system.settings.financeAccounts' , $data ) ;
 	}
@@ -183,8 +183,37 @@ class SettingsController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
+	public function selectOrganizationName ()
+	{
+		$currentOrganizationName = \SystemSettingButler::getValue ( 'organization_name' ) ;
+		$organizationName		 = NULL ;
+		$data					 = compact ( [
+			'currentOrganizationName' ,
+			'organizationName'
+			] ) ;
+
+		return \View::make ( 'web.system.settings.organizationName' , $data ) ;
+	}
+
+	public function updateOrganizationName ()
+	{
+		try
+		{
+			$organizationName = \Input::get ( 'organization_name' ) ;
+			\SystemSettingButler::setValue ( 'organization_name' , $organizationName ) ;
+
+			\MessageButler::setSuccess ( 'Organization name was saved successfully.' ) ;
+			return \Redirect::back () ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
