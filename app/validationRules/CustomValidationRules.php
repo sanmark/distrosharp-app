@@ -43,9 +43,9 @@ class CustomValidationRules extends \Validator
 
 	public function allFieldsFilled ( $field , $value , $parameters )
 	{
-		return \ArrayHelper::areAllElementsFilled ( $value ) ;
+		return \ArrayHelper::areAllElementsHasValue( $value ) ;
 	}
-
+	
 	public function aVehicleStock ( $field , $value , $parameters )
 	{
 		$fromStock			 = \Models\Stock::findOrFail ( $value ) ;

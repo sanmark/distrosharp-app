@@ -15,7 +15,7 @@
 		<div class="form-group">
 			{{Form::label('date_time', 'Date and Time', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input ( 'datetime-local', 'date_time',$dateTime, array('class' => 'form-control','required'=>true))}}
+				{{Form::input ( 'datetime-local', 'date_time',$dateTime, array('class' => 'form-control','required'=>true,'step'=>'1'))}}
 			</div>
 		</div>
 		<br/>
@@ -27,9 +27,6 @@
 					@if($isUnloaded==1)
 					<div class="col-sm-2 text-right"><b>Imbalance Transfer</b></div>
 					{{Form::hidden('is_unload',$isUnloaded)}}
-					<?php $required	 = 'required' ; ?>
-					@else
-					<?php $required	 = NULL ; ?>
 					@endif
 					<div class="col-sm-1 text-right"><b>{{$toStock->name}}</b></div>
 				</div>			
@@ -45,7 +42,7 @@
 						{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}
 					</div>
 					<div class="col-sm-2 text-right"> 
-						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control numField','step' => 'any','id'=>$item->id,$required))}}
+						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control numField','step' => 'any','id'=>$item->id))}}
 					</div>
 					@if($isUnloaded==1)
 					<div class="col-sm-2 text-right"> 

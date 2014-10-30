@@ -156,6 +156,18 @@ class ArrayHelper
 
 		return FALSE ;
 	}
- 
+
+	public static function areAllElementsHasValue ( $array )
+	{
+		foreach ( $array as $element )
+		{
+			if ( $element == '' || $element == NULL )
+			{
+				return FALSE ;
+			}
+
+			return TRUE ;
+		}
+	}
 
 }
