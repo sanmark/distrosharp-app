@@ -9,7 +9,7 @@ class UserPermissionController extends \Controller
 	{
 		$usersList		 = \User::getArrayForHtmlSelect ( 'id' , 'username' , ['' => 'Select user' ] ) ;
 		$userId			 = \Auth::user () -> id ;
-		$permissions	 = \Models\Ability::get () ;
+		$permissions	 = \Models\Ability::orderBy ( 'label','ASC' ) -> get () ;
 		$userPermissions = \Models\AbilityUser::where ( 'user_id' , '=' , $userId ) -> lists ( 'user_id' , 'ability_id' ) ;
 		$data			 = compact ( [
 			'usersList' ,
@@ -25,12 +25,12 @@ class UserPermissionController extends \Controller
 		$userId		 = \Input::get ( 'userId' ) ;
 		$update		 = \Input::get ( 'update' ) ;
 		$usersList	 = \User::getArrayForHtmlSelect ( 'id' , 'username' , ['' => 'Select user' ] ) ;
-		$permissions = \Models\Ability::get () ;
+		$permissions = \Models\Ability::orderBy ( 'label' ) -> get () ;
 
 		if ( $update != NULL )
 		{
 			$this -> updateUserPermissions ( $userId ) ;
-			\MessageButler::setSuccess("Updated user permissions successfully");
+			\MessageButler::setSuccess ( "Updated user permissions successfully" ) ;
 		}
 
 		$userPermissions = \Models\AbilityUser::where ( 'user_id' , '=' , $userId ) -> lists ( 'user_id' , 'ability_id' ) ;
