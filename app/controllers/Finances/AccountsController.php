@@ -54,8 +54,9 @@ class AccountsController extends \Controller
 
 			$financeAccounts -> update () ;
 
-			\ActivityLogButler::add ( "Update finance Account " . $financeAccounts->id) ;
-			
+			\MessageButler::setSuccess ( 'Finance account "'.$name.'"was updated successfully' ) ;
+			\ActivityLogButler::add ( "Update finance Account " . $financeAccounts -> id ) ;
+
 			return \Redirect::action ( 'finances.accounts.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -83,9 +84,10 @@ class AccountsController extends \Controller
 			$financeAccounts -> is_active		 = \NullHelper::zeroIfNull ( $isActive ) ;
 
 			$financeAccounts -> save () ;
-			
-			\ActivityLogButler::add ( "Add Finance Account ". $financeAccounts->id ) ;
-			
+
+			\ActivityLogButler::add ( "Add Finance Account " . $financeAccounts -> id ) ;
+
+			\MessageButler::setSuccess ( 'Finance account "'.$name.'" was added successfully' ) ;
 			return \Redirect::action ( 'finances.accounts.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
