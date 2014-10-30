@@ -32,10 +32,14 @@ select{
 	border: 0px;
 }
 
-input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], input[type="password"], label.form-control{
+input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], input[type="password"], label.form-control, textarea{
 	height: 35px;
 	background-color: #f9f9f9 !important;
 	border: 0;
+}
+
+input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], input[type="password"], label.form-control{
+	height: 35px;
 }
 
 label.form-control{
