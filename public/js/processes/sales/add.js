@@ -411,9 +411,10 @@ function checkPaidAndFreeSum()
 	var trueFalse = [];
 	for (var i = 1; i <= itemAmount; i++)
 	{
-		var freeQuantity = document.getElementsByName('items[' + i + '][free_quantity]')[0].value;
-		var availableQuantity = document.getElementsByName('items[' + i + '][available_quantity]')[0].value;
-		var paidQuantity = document.getElementsByName('items[' + i + '][paid_quantity]')[0].value;
+		var freeQuantity = $('[name="items[' + i + '][free_quantity]"]').val();
+		var availableQuantity = $('[name="items[' + i + '][available_quantity]"]').val();
+		var paidQuantity = $('[name="items[' + i + '][paid_quantity]"]').val();
+
 		var sumOfFreeAndPaid = Number(paidQuantity) + Number(freeQuantity);
 		var input = document.getElementsByName('items[' + i + '][free_quantity]')[0];
 		if (sumOfFreeAndPaid > availableQuantity)
@@ -423,7 +424,6 @@ function checkPaidAndFreeSum()
 		}
 		else
 		{
-			input.setCustomValidity("");
 			trueFalse.push("0");
 		}
 	}
