@@ -45,7 +45,9 @@ class CustomerController extends \Controller
 
 			\ActivityLogButler::add ( "Add Customer " . $customer -> id ) ;
 
-			return \Redirect::action ( 'entities.customers.view' ) ;
+			\MessageButler::setSuccess ( 'Customer "' . $customer -> name . '" was added successfuly.' ) ;
+
+			return \Redirect::action ( 'entities.customers.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

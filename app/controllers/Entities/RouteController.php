@@ -46,7 +46,9 @@ class RouteController extends \Controller
 
 			\ActivityLogButler::add ( "Add Route " . $route -> id ) ;
 
-			return \Redirect::action ( 'entities.routes.view' ) ;
+			\MessageButler::setSuccess ( 'Route "' . $route -> name . '" was added successfully.' ) ;
+
+			return \Redirect::action ( 'entities.routes.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -79,7 +81,7 @@ class RouteController extends \Controller
 
 			$route -> update () ;
 
-			\ActivityLogButler::add ("Edit Route ". $route->id) ;
+			\ActivityLogButler::add ( "Edit Route " . $route -> id ) ;
 
 			return \Redirect::action ( 'entities.routes.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
