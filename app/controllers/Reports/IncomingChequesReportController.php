@@ -18,7 +18,7 @@ class IncomingChequesReportController extends \Controller
 			'customers' ,
 			'routes' ,
 			'banks'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.reports.cheques.home' , $data ) ;
 	}
@@ -40,22 +40,22 @@ class IncomingChequesReportController extends \Controller
 		$date_from	 = \Input::get ( 'date_from' ) ;
 		$date_to	 = \Input::get ( 'date_to' ) ;
 		$cheque_num	 = \Input::get ( 'cheque_num' ) ;
-		$route	 = \Input::get ( 'route' ) ;
+		$route		 = \Input::get ( 'route' ) ;
 
 		$data = compact ( [
 			'reps' ,
 			'customers' ,
 			'banks' ,
 			'repId' ,
-			'routes',
-			'route',
+			'routes' ,
+			'route' ,
 			'customerId' ,
 			'bankId' ,
 			'date_from' ,
 			'date_to' ,
 			'cheque_num' ,
 			'cheques'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.reports.cheques.view' , $data ) ;
 	}

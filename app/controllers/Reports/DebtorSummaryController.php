@@ -17,7 +17,7 @@ class DebtorSummaryController extends \Controller
 			'customers' ,
 			'fromDate' ,
 			'toDate' ,
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.reports.debtorSummary.home' , $data ) ;
 	}
@@ -64,14 +64,14 @@ class DebtorSummaryController extends \Controller
 				'customerId' ,
 				'balanceBefore' ,
 				'endingBalance'
-			] ) ;
+				] ) ;
 
 			return \View::make ( 'web.reports.debtorSummary.filter' , $data ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -134,7 +134,7 @@ class DebtorSummaryController extends \Controller
 				'required' ,
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

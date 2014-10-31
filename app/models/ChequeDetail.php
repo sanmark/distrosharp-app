@@ -15,6 +15,6 @@ class ChequeDetail extends BaseEntity implements \Interfaces\iEntity
 	public function financeTransfer ()
 	{
 		return $this -> belongsTo ( 'Models\FinanceTransfer' ) ;
-	} 
+	}
 
 }

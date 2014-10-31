@@ -22,11 +22,11 @@ class SystemSetting extends \Eloquent
 			'value' => [
 				'required'
 			]
-		] ;
+			] ;
 
 		$messages = [
 			'value.required' => 'Please make sure all the values are filled.'
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules , $messages ) ;
 

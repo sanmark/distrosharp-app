@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'account/settings' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'account.settings' ,

@@ -17,7 +17,7 @@ class UserController extends Controller
 			MessageButler::setError ( 'Please enter organization code.' ) ;
 
 			return Redirect::back ()
-			-> withInput () ;
+					-> withInput () ;
 		}
 
 		SessionButler::setOrganization ( $organization ) ;
@@ -29,7 +29,7 @@ class UserController extends Controller
 			MessageButler::setError ( 'Invalid organization code.' ) ;
 
 			return Redirect::back ()
-			-> withInput () ;
+					-> withInput () ;
 		}
 
 		$credentials[ 'username' ]	 = Input::get ( 'username' ) ;
@@ -41,13 +41,13 @@ class UserController extends Controller
 			{
 				MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
 				return Redirect::back ()
-				-> withInput () ;
+						-> withInput () ;
 			}
 		} catch ( PDOException $exc )
 		{
 			MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
 			return Redirect::back ()
-			-> withInput () ;
+					-> withInput () ;
 		}
 
 		$menu = MenuButler::getMenu ( Auth::user () ) ;

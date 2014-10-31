@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'finances/transfers' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( 'select-accounts-involved' , [
 		'as'	 => 'finances.transfers.selectAccountsInvolved' ,

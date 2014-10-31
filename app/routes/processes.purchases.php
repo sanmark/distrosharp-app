@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'processes/purchases' ,
 	'before' => 'auth'
-] , function ()
+	] , function ()
 {
 	Route::get ( 'add' , [
 		'as'	 => 'processes.purchases.add' ,

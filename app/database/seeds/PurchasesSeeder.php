@@ -262,7 +262,7 @@ class PurchasesSeeder extends Seeder
 ////					] ,
 //				]
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $purchases as $purchase )
 		{

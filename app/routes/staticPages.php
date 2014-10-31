@@ -2,7 +2,7 @@
 
 Route::group ( [
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'home' ,
