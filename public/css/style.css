@@ -352,7 +352,19 @@ body{
 }
 #login-form{
 	position: absolute;
-    top: 20%;
+    top: 10%;
+}
+#login-form-logo{
+	position: relative;
+	left: 30px;
+}
+#login-form-logo-image{
+	width: 55px;
+}
+#login-form-logo-text{
+	font-size: 72px;
+	position: relative;
+	top:23px;
 }
 .no-records-message
 {
@@ -383,7 +395,7 @@ body{
 }
 
 .panel-title-btn{
-	top: -15px !important;
+	top: -16px !important;
 	background-color: #5cb85c !important;
 	color: #fff !important;
 	border: none !important;
