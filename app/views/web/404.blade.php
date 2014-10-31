@@ -9,7 +9,7 @@
 	<div class="panel-body-404">
 		<h1 class="text-center">404</h1>
 		<h2 class="text-center">The page you are looking for isn't available.<br>
-			Instead you can go to<br>{{ HTML::link('http://d-071-1-v2.loc', 'HOME',null, true)}}</h2>
+			Instead you can go to<br>{{ HTML::link(URL::to('/'), 'HOME',null, true)}}</h2>
 	</div>
 </div>
 @stop
