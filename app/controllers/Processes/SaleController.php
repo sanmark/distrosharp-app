@@ -67,11 +67,8 @@ class SaleController extends \Controller
 			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 			$oldRouteId					 = \Input::get ( 'route_id' ) ;
 			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
-			$rep						 = \User::findOrFail ( \SessionButler::getRepId () ) ;
-
-			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , $rep -> id )
-				-> firstOrFail ()
-				-> lists ( 'id' ) ;
+			$rep						 = \User::with ( 'stock' )-> findOrFail ( \SessionButler::getRepId () ) ;
+			$stockId					 = $rep -> stock -> id ;
 
 			$this -> validateSaleItems ( $items ) ;
 			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
