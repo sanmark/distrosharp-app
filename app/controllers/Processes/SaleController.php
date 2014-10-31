@@ -294,11 +294,9 @@ class SaleController extends \Controller
 						'greater_than_or_equal_to:' . ($item[ 'paid_quantity' ] + $item[ 'free_quantity' ])
 					] ,
 					'paid_quantity'				 => [
-						'required_without_all:free_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'free_quantity'				 => [
-						'required_without_all:paid_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'good_return_price'			 => [
@@ -306,7 +304,6 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'good_return_quantity'		 => [
-						'required_with_all:paid_quantity , free_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'company_return_price'		 => [
@@ -314,7 +311,6 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'company_return_quantity'	 => [
-						'required_with_all:paid_quantity , free_quantity , good_return_quantity' ,
 						'numeric'
 					]
 					] ;
@@ -322,12 +318,8 @@ class SaleController extends \Controller
 				$messages = [
 					'price.required_with'							 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
 					'available_quantity.greater_than_or_equal_to'	 => $itemO -> name . ': The sum of Paid and Free Quantities are higher than the available amount.' ,
-					'paid_quantity.required_without_all'			 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
-					'free_quantity.required_without_all'			 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
 					'good_return_price.required_with'				 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
-					'good_return_quantity.required_with_all'		 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity , Free Quantity , or Company Return Quantity are present.' ,
 					'company_return_price.required_with'			 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
-					'company_return_quantity.required_with_all'		 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity , Free Quantity , or Good Return Quantity are present.'
 					] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
