@@ -30,7 +30,13 @@
 			@foreach($transferData as $transferRow)
 			<tr>
 				<td>{{ $transferRow->item->name}}</td>
-				<td>{{$loadingItemQuantity[$transferRow->item_id]}}</td>
+				<td>
+					@if(array_key_exists($transferRow->item_id,$loadingItemQuantity))
+					{{$loadingItemQuantity[$transferRow->item_id]}}
+					@else
+					0
+					@endif
+				</td>
 				<td>
 					@if(array_key_exists($transferRow->item_id,$sellingItemQuantity))
 					{{$sellItemQuantity=$sellingItemQuantity[$transferRow->item_id]}}
