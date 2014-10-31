@@ -42,7 +42,7 @@ class RoutesSeeder extends Seeder
 //				'is_active'	 => ,
 //				'rep_id'	 => ,
 //			],
-		] ;
+			] ;
 
 		foreach ( $routes as $route )
 		{

@@ -8,8 +8,8 @@ class CustomerButler
 		$creditBalanceWithCustomerId = [ ] ;
 		foreach ( $customerIds as $customerId )
 		{
-			$customer											 = \Models\Customer::findOrFail ( $customerId -> customer_id ) ;
-			$creditBalanceWithCustomerId[ $customerId -> customer_id ] = $customer -> getSumOfInvoiceCreditBalances () ;
+			$customer													 = \Models\Customer::findOrFail ( $customerId -> customer_id ) ;
+			$creditBalanceWithCustomerId[ $customerId -> customer_id ]	 = $customer -> getSumOfInvoiceCreditBalances () ;
 		}
 		return $creditBalanceWithCustomerId ;
 	}

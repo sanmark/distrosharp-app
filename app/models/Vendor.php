@@ -69,7 +69,7 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'unique:vendors'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 		if ( $validator -> fails () )
@@ -90,7 +90,7 @@ class Vendor extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'unique:vendors,name,' . $this -> id
 			]
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 		if ( $validator -> fails () )
 		{

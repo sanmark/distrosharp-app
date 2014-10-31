@@ -24,7 +24,7 @@
 					<td>{{$stockDetail->item->name}}</td>
 					<td class="text-right">{{$stockDetail->good_quantity}}</td>
 					<td class="text-right">{{$stockDetail->return_quantity}}</td>
-					<?php $total_weight = ($stockDetail->item->weight*$stockDetail->good_quantity)/1000; ?>
+					<?php $total_weight = ($stockDetail -> item -> weight * $stockDetail -> good_quantity) / 1000 ; ?>
 					<td class="text-right">{{number_format($total_weight,2)}}</td>
 				</tr>
 				@endforeach

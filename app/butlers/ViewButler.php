@@ -46,7 +46,7 @@ class ViewButler
 			NULL => 'Any' ,
 			'1'	 => 'Yes' ,
 			'0'	 => 'No'
-		] ;
+			] ;
 
 		return $values ;
 	}
@@ -60,7 +60,7 @@ class ViewButler
 			'current_selling_price'	 => 'Selling Price' ,
 			'buying_invoice_order'	 => 'Buying Invoice Order' ,
 			'selling_invoice_order'	 => 'Selling Invoice Order' ,
-		] ;
+			] ;
 		return $values ;
 	}
 
@@ -69,7 +69,7 @@ class ViewButler
 		$values = [
 			'ASC'	 => 'Ascending' ,
 			'DESC'	 => 'Descending' ,
-		] ;
+			] ;
 		return $values ;
 	}
 

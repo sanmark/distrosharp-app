@@ -108,36 +108,36 @@
 <script>
 	$(document).ready(function() {
 	$('#route_id').change();
-			setTimeout(function() {
-			$("#customer_id").val({{$customerId}});
-			}, 1500);
+		setTimeout(function() {
+		$("#customer_id").val({{$customerId}});
+		}, 1500);
 	});</script>
 
 <script>
-			$(document).on('change', '#route_id', function() {
+		$(document).on('change', '#route_id', function() {
 	routeId = $('#route_id').val();
-			$('#customer_id').find('option').remove();
+		$('#customer_id').find('option').remove();
+		$('#customer_id').append(
+		$('<option value=""></option>').
+		text('Select')
+
+		);
+		$.post(
+			"{{URL::action('entities.customers.ajax.forRouteId')}}",
+		{
+		_token: "{{csrf_token()}}",
+			routeId: routeId
+		},
+			function(data) {
+			$.each(data, function(index, customer) {
 			$('#customer_id').append(
-			$('<option value=""></option>').
-			text('Select')
-			
-			);
-			$.post(
-					"{{URL::action('entities.customers.ajax.forRouteId')}}",
-			{
-			_token: "{{csrf_token()}}",
-					routeId: routeId
-			},
-					function(data) {
-					$.each(data, function(index, customer) {
-					$('#customer_id').append(
-							$('<option></option>')
-							.attr('value', customer.id)
-							.text(customer.name)
-							);
-					});
-					}
-			);
+				$('<option></option>')
+				.attr('value', customer.id)
+				.text(customer.name)
+				);
+			});
+			}
+		);
 	});</script>
 
 @stop

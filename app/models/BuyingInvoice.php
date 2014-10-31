@@ -53,7 +53,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 			'stock_id'				 => [
 				'required' ,
 			] ,
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -86,7 +86,7 @@ class BuyingInvoice extends BaseEntity implements \Interfaces\iEntity
 			'printed_invoice_num'	 => [
 				'required' ,
 			] ,
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

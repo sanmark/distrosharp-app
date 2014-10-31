@@ -151,12 +151,12 @@ Route::group ( [
 		'before' => ['hasAbilities:view_rep_finance_report' ] ,
 		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
 	] ) ;
-	
+
 	Route::post ( 'rep-finance' , [
 		'as'	 => 'reports.repFinanceReport' ,
 		'before' => ['hasAbilities:view_rep_finance_report' ] ,
 		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
-	]);
+	] ) ;
 	Route::get ( 'timelyStockReport' , [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,

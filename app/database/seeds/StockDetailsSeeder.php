@@ -22,7 +22,7 @@ class StockDetailsSeeder extends Seeder
 					'id'		 => $stockItemId ,
 					'stock_id'	 => $stock -> id ,
 					'item_id'	 => $item -> id
-				] ;
+					] ;
 
 				$newStockItem[ 'good_quantity' ]	 = 100 ;
 				$newStockItem[ 'return_quantity' ]	 = 0 ;

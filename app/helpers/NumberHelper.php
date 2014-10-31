@@ -18,8 +18,8 @@ class NumberHelper
 			if ( empty ( $array_diff ) )
 			{
 				$minNumber = $maxNumber + 1 ;
-			} 
-			else{
+			} else
+			{
 				$minNumber = min ( $array_diff ) ;
 			}
 		} else

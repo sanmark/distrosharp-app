@@ -34,7 +34,7 @@ class CustomersSeeder extends Seeder
 //				'is_active'=>,
 //				'details'=>''
 //			],
-		] ;
+			] ;
 
 		foreach ( $customers as $customer )
 		{

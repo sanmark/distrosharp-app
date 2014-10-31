@@ -50,7 +50,7 @@
 			@endforeach
 		</table> 
 
-	@endif
+		@endif
 	</div>
 </div>
 @stop

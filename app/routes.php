@@ -21,13 +21,20 @@ if ( Auth::check () )
   | and give it the Closure to execute when that URI is requested.
   |
  */
+
 App::missing ( function($exception)
 {
-	return View::make ( 'web/404' ) ;
+	if ( Auth::check () )
+	{
+		return View::make ( 'web/404' ) ;
+	}
+
+	return Redirect::to ( '/' ) ;
 } ) ;
 
 Route::get ( '/test' , function()
 {
+	
 } ) ;
 
 

@@ -17,7 +17,7 @@ class BankAccountController extends \Controller
 			'bankAccountId' ,
 			'viewDateTime' ,
 			'transferData'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.accounts.confirm' , $data ) ;
 	}
@@ -34,7 +34,7 @@ class BankAccountController extends \Controller
 		{
 			\MessageButler::setError ( "Please select a bank account" ) ;
 			return \Redirect::back ()
-			-> withInput () ;
+					-> withInput () ;
 		}
 
 		$financeAccount = \Models\FinanceAccount::findOrFail ( $bankAccountId ) ;
@@ -68,7 +68,7 @@ class BankAccountController extends \Controller
 			'endingTotal' ,
 			'startingTotal' ,
 			'startingConfirmDateTime'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.finances.accounts.confirm' , $data ) ;
 	}

@@ -27,15 +27,13 @@ class SaleController extends \Controller
 		if ( $rep -> stock -> isLoaded () )
 		{
 			$customers			 = [ NULL => 'Select Route First' ] ;
-			$routes				 = \Models\Route::where ( 'rep_id' , ' = ' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
-			$items				 = \Models\Item::where ( 'is_active' , ' = ' , TRUE )
-				-> orderBy ( 'selling_invoice_order' , 'ASC' )
-				-> get () ;
+			$routes				 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE ) -> orderBy ( 'selling_invoice_order' , 'ASC' ) -> get () ;
 			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
 			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
 			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
 			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
-			$banksList			 = \Models\Bank::where ( 'is_active' , ' = ' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 			$data = compact ( [
 				'customers' ,
@@ -188,10 +186,10 @@ class SaleController extends \Controller
 	public function edit ( $id )
 	{
 		$sellingInvoice		 = \Models\SellingInvoice::with ( 'rep' , 'sellingItems' ) -> findOrFail ( $id ) ;
-		$customerRO			 = \Models\Customer::where ( 'is_active' , ' = ' , TRUE ) ;
+		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
 		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
-		$banksList			 = \Models\Bank::where ( 'is_active' , ' = ' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'sellingInvoice' ,
@@ -498,7 +496,7 @@ class SaleController extends \Controller
 	{
 		$sellingItemsArray = \Input::get ( 'items' ) ;
 
-		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , ' = ' , $sellingInvoiceId ) -> get () ;
+		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
 		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;
 		$deletedItems			 = $originalSellingItems -> diff ( $filledItems ) ;
 
@@ -514,8 +512,8 @@ class SaleController extends \Controller
 		{
 			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' ] ) )
 			{
-				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , ' = ' , $sellingInvoiceId )
-					-> where ( 'item_id' , ' = ' , $itemId )
+				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId )
+					-> where ( 'item_id' , '=' , $itemId )
 					-> first () ;
 
 				if ( is_null ( $sellingItem ) )

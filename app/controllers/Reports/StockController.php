@@ -108,7 +108,7 @@ class StockController extends \Controller
 		$totals[ 'good_quantity_value_total' ]	 = $good_quantity_value_total ;
 		$totals[ 'return_quantity_value_total' ] = $return_quantity_value_total ;
 		$totals[ 'grandTotal' ]					 = $grandTotal ;
-		$totals[ 'totalWeight' ]					 = $totalWeight ;
+		$totals[ 'totalWeight' ]				 = $totalWeight ;
 
 		return $totals ;
 	}

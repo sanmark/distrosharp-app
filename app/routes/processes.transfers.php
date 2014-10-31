@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'processes/transfers' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'processes.transfers.all' ,

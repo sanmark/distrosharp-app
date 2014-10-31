@@ -15,8 +15,8 @@ class AgeCreditReportController extends \Controller
 		$ageDays	 = \Input::get ( 'age_by_days' ) ;
 		$sellingData = \Models\SellingInvoice::ageCreditFilter ( $filterValues ) ;
 		$repsList	 = \Models\SellingInvoice::distinct ( 'rep_id' )
-		-> where ( 'is_completely_paid' , '=' , FALSE )
-		-> lists ( 'rep_id' ) ;
+			-> where ( 'is_completely_paid' , '=' , FALSE )
+			-> lists ( 'rep_id' ) ;
 
 		$routeSelectBox = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 
@@ -41,7 +41,7 @@ class AgeCreditReportController extends \Controller
 			'invoiceBalanceTotal' ,
 			'routeSelectBox' ,
 			'routeId'
-		] ) ;
+			] ) ;
 		return \View::make ( 'web.reports.ageCreditReport.view' , $data ) ;
 	}
 
