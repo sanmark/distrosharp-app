@@ -176,7 +176,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$sellingInvoices = \Models\SellingInvoice::where ( 'stock_id' , '=' , $this -> id )
 			-> where ( 'date_time' , '>' , $lastLoadDate )
 			-> get () ;
-		
+
 		if ( count ( $sellingInvoices ) == 0 )
 		{
 			return FALSE ;
@@ -195,36 +195,39 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	public function saveTransfersByDifferentTransferAmounts ( $transferAmounts , $availableAmounts , $toStockId , $dateTime , $description , $transferId )
 	{
+
+		$prunedTransferAmounts		 = \ArrayHelper::pruneEmptyElements ( $transferAmounts ) ;
 		$transferAmountHigherArray	 = [ ] ;
 		$transferAmountSmallerArray	 = [ ] ;
 		$transferAmountEqualArray	 = [ ] ;
 
-		foreach ( $transferAmounts as $item => $transferAmount )
+		foreach ( $prunedTransferAmounts as $item => $transferAmount )
 		{
-			if ( $availableAmounts[ $item ] < $transferAmount )
+			if ( $availableAmounts [ $item ] < $transferAmount )
 			{
 				$transferAmountHigherArray[ $item ] = 'higher' ;
 			}
-			if ( $availableAmounts[ $item ] > $transferAmount )
+			if ( $availableAmounts [ $item ] > $transferAmount )
 			{
 				$transferAmountSmallerArray[ $item ] = 'smaller' ;
 			}
-			if ( $availableAmounts[ $item ] == $transferAmount )
+			if ( $availableAmounts [ $item ] == $transferAmount )
 			{
 				$transferAmountEqualArray[ $item ] = 'equal' ;
 			}
 		}
+		
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountHigherArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountHigherThanAvailable ( $transferAmountHigherArray , $toStockId , $dateTime , $description , $availableAmounts , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountHigherThanAvailable ( $transferAmountHigherArray , $toStockId , $dateTime , $description , $availableAmounts , $prunedTransferAmounts , $transferId ) ;
 		}
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountSmallerArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountSmallerThanAvailable ( $transferAmountSmallerArray , $toStockId , $dateTime , $description , $availableAmounts , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountSmallerThanAvailable ( $transferAmountSmallerArray , $toStockId , $dateTime , $description , $availableAmounts , $prunedTransferAmounts , $transferId ) ;
 		}
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountEqualArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountEqualToAvailable ( $transferAmountEqualArray , $toStockId , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountEqualToAvailable ( $transferAmountEqualArray , $toStockId , $prunedTransferAmounts , $transferId ) ;
 		}
 	}
 
@@ -235,9 +238,9 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		foreach ( $transferAmountHigherArray as $itemHigher => $transferAmountHigher )
 		{
-			$systemVsRealDifferrenceForHigher[ $itemHigher ] = $availableAmounts[ $itemHigher ] - $transferAmounts[ $itemHigher ] ;
+			$systemVsRealDifferrenceForHigher[ $itemHigher ] = $availableAmounts [ $itemHigher ] - $transferAmounts[ $itemHigher ] ;
 
-			$this -> saveItemWiseTransfer ( $imbalanceAccount , $this -> id , $itemHigher , -($systemVsRealDifferrenceForHigher[ $itemHigher ]) , $returnedTransferId ) ;
+			$this -> saveItemWiseTransfer ( $imbalanceAccount , $this -> id , $itemHigher , -( $systemVsRealDifferrenceForHigher[ $itemHigher ]) , $returnedTransferId ) ;
 			$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemHigher , $transferAmounts[ $itemHigher ] , $transferId ) ;
 		}
 	}
@@ -249,7 +252,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		foreach ( $transferAmountSmallerArray as $itemSmaller => $transferAmountSmaller )
 		{
-			$systemVsRealDifferrenceForSmaller[ $itemSmaller ] = $availableAmounts[ $itemSmaller ] - $transferAmounts[ $itemSmaller ] ;
+			$systemVsRealDifferrenceForSmaller[ $itemSmaller ] = $availableAmounts [ $itemSmaller ] - $transferAmounts[ $itemSmaller ] ;
 
 			$this -> saveItemWiseTransfer ( $this -> id , $imbalanceAccount , $itemSmaller , $systemVsRealDifferrenceForSmaller[ $itemSmaller ] , $returnedTransferId ) ;
 
@@ -277,7 +280,9 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$transfer -> save () ;
 
 		$transferId = $transfer -> id ;
-		return $transferId ;
+		return
+
+			$transferId ;
 	}
 
 	private function saveItemWiseTransfer ( $fromStock , $toStock , $item , $quantity , $transferId )
@@ -303,7 +308,8 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		{
 			if ( ! \NullHelper::isNullEmptyOrWhitespace ( $transferAmount ) )
 			{
-				$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemId , $transferAmount , $transferId ) ;
+				$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemId , $transferAmount , $transferId
+				) ;
 			}
 		}
 	}
