@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Vendors</h3>
+		<div class="panel-title">
+			<span>Vendors</span>
+			{{HTML::link ( URL::action ( 'entities.vendors.add') ,'Add New Vendor',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 

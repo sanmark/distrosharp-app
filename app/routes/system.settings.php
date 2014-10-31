@@ -52,6 +52,15 @@ Route::group ( [
 		'as'	 => 'system.settings.imbalanceStock' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateImbalanceStock'
 	] ) ;
+	Route::get ( 'main-stock' , [
+		'as'	 => 'system.settings.mainStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@showMainStock'
+	] ) ;
+
+	Route::post ( 'main-stock' , [
+		'as'	 => 'system.settings.mainStock' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateMainStock'
+	] ) ;
 
 	Route::get ( 'finance-accounts' , [
 		'as'	 => 'system.settings.financeAccounts' ,
@@ -62,14 +71,14 @@ Route::group ( [
 		'as'	 => 'system.settings.financeAccounts' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateFinanceAccounts'
 	] ) ;
-	
-	Route::get ( 'activityLog' , [
-		'as'	 => 'system.activityLog' ,
-		'uses'	 => 'Controllers\System\ActivityLogController@home'
+	 
+	Route::get ( 'organization-name' , [
+		'as'	 => 'system.settings.organizationName' ,
+		'uses'	 => 'Controllers\System\SettingsController@selectOrganizationName'
 	] ) ;
 
-	Route::post ( 'activityLog' , [
-		'as'	 => 'system.activityLog' ,
-		'uses'	 => 'Controllers\System\ActivityLogController@view'
+	Route::post ( 'organization-name' , [
+		'as'	 => 'system.settings.organizationName' ,
+		'uses'	 => 'Controllers\System\SettingsController@updateOrganizationName'
 	] ) ;
 } ) ;

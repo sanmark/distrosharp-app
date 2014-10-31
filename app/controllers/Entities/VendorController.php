@@ -36,16 +36,18 @@ class VendorController extends \Controller
 			$vendor -> details	 = \Input::get ( 'details' ) ;
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> save () ;
-			
-			\ActivityLogButler::add ("Add Vendor ". $vendor->id) ;
 
-			return \Redirect::action ( 'entities.vendors.view' ) ;
+			\ActivityLogButler::add ( "Add Vendor " . $vendor -> id ) ;
+
+			\MessageButler::setSuccess ( 'Vendor "' . $vendor -> name . '" was added successfully.' ) ;
+
+			return \Redirect::action ( 'entities.vendors.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $exc )
 		{
 
 			return \Redirect::back ()
-			-> withErrors ( $exc -> validator )
-			-> withInput () ;
+					-> withErrors ( $exc -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -71,14 +73,14 @@ class VendorController extends \Controller
 			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
 			$vendor -> update () ;
 
-			\ActivityLogButler::add ("Edit Vendor ". $vendor->id) ;
+			\ActivityLogButler::add ( "Edit Vendor " . $vendor -> id ) ;
 
 			return \Redirect::action ( 'entities.vendors.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 

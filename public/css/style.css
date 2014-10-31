@@ -352,7 +352,19 @@ body{
 }
 #login-form{
 	position: absolute;
-    top: 20%;
+    top: 10%;
+}
+#login-form-logo{
+	position: relative;
+	left: 30px;
+}
+#login-form-logo-image{
+	width: 55px;
+}
+#login-form-logo-text{
+	font-size: 72px;
+	position: relative;
+	top:23px;
 }
 .no-records-message
 {
@@ -379,6 +391,12 @@ body{
 	color: red;
 } 
 .duplicate-error{
-	background-color: rgba(253, 192, 192, 0.08);
-	border-color: rgba(255, 0, 0, 0.44);
+	border-bottom: 1px solid #FF0000 !important;
+}
+
+.panel-title-btn{
+	top: -16px !important;
+	background-color: #5cb85c !important;
+	color: #fff !important;
+	border: none !important;
 }

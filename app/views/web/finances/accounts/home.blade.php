@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">View Finance Accounts</h3>
+		<div class="panel-title">
+			<span>View Finance Accounts</span>
+			{{HTML::link ( URL::action ( 'finances.accounts.add') ,'Add New Finance Account',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 

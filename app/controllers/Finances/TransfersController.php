@@ -120,6 +120,8 @@ class TransfersController extends \Controller
 
 			\ActivityLogButler::add ( "Add Finance Transfer " . $financeTransfer -> id ) ;
 
+			\MessageButler::setSuccess ( "Finance transfer was added successfully" ) ;
+			
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -220,6 +222,8 @@ class TransfersController extends \Controller
 
 			\ActivityLogButler::add ( "Edit Finance Transfer " . $financeTransfer -> id ) ;
 
+			\MessageButler::setSuccess ( "Finance transfer was updated successfully" ) ;
+			
 			return \Redirect::action ( 'finances.transfers.viewAll' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

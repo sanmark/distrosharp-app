@@ -79,27 +79,36 @@ class MenuButler
 			] ,
 		] ,
 		['System' , [
-				['Settings' , 'system.settings' , ['edit_system_settings' ] ] , 
-				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ],
+				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
+				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ] ,
 				['Activity Log' , 'system.activityLog' , ['view_activity_log' ] ]
 			]
 		] ,
 		['File Manager' , 'fileManager.home' , [ 'manage_files' ] ] ,
 		['Reports' , [
-				['Stock Report' , 'reports.stocks' , [ 'view_stock_report' ] ] ,
-				['Debtor Summary' , 'reports.debtorSummary' , ['view_debtor_summary_report' ] ] ,
-				['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] ,
-				['Sales Summary Report' , 'reports.salesSummary' , ['view_sales_summary_report' ] ] ,
-				['Profit and Loss Report' , 'reports.profitAndLossReport' , ['view_profit_and_loss_report' ] ] ,
-				['Age Credit Report' , 'reports.ageCreditReport' , ['view_age_credit_report' ] ] ,
-				['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
-				['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] ,
-				['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
-				['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] ,
-				[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] ,
-				['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ],
-				['Timely Stock Report' , 'reports.timelyStockReport' , ['view_timely_stock_report' ] ]
-			] ,
+				['Stock' , [
+						['Stock Report' , 'reports.stocks' , [ 'view_stock_report' ] ] ,
+						['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] ,
+						['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ] ,
+						['Timely Stock Report' , 'reports.timelyStockReport' , ['view_timely_stock_report' ] ] ,
+					]
+				] ,
+				['Finance' , [
+						['Debtor Summary' , 'reports.debtorSummary' , ['view_debtor_summary_report' ] ] ,
+						['Profit and Loss Report' , 'reports.profitAndLossReport' , ['view_profit_and_loss_report' ] ] ,
+						['Age Credit Report' , 'reports.ageCreditReport' , ['view_age_credit_report' ] ] ,
+						['Incoming Cheques Report' , 'reports.incomingChequesReport' , ['view_incoming_cheques_report' ] ] ,
+						['Credit Summary Report' , 'reports.creditSummary' , ['view_credit_summery_report' ] ] ,
+						[ 'Rep Finance' , 'reports.repFinanceReport' , ['view_rep_finance_report' ] ] ,
+					]
+				] ,
+				['Sales' , [
+						['Sales Summary Report' , 'reports.salesSummary' , ['view_sales_summary_report' ] ] ,
+						['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
+						['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
+					]
+				]
+			]
 		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,

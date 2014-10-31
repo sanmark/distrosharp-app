@@ -141,22 +141,43 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
-	public function isUnloadable ()
+	public function getLastLoadDate ( $stockId )
 	{
 		$imbalanceStock = \SystemSettingButler::getValue ( 'imbalance_stock' ) ;
-		
-		$lastLoadDate = \Models\Transfer::where ( 'to_stock_id' , '=' , $this -> id )
+
+		$lastLoadDate = \Models\Transfer::where ( 'to_stock_id' , '=' , $stockId )
 			-> where ( 'from_stock_id' , '!=' , $imbalanceStock )
 			-> max ( 'date_time' ) ;
 
+		return $lastLoadDate ;
+	}
+
+	public function isLoadedWithItems ()
+	{
 		$loadedGoodQuantities	 = \Models\StockDetail::where ( 'stock_id' , '=' , $this -> id ) -> lists ( 'good_quantity' ) ;
 		$hasNoLoadedItems		 = \ArrayHelper::areAllElementsEmpty ( $loadedGoodQuantities ) ;
 
-		$sellingInvoices = \Models\SellingInvoice::where ( 'date_time' , '>' , $lastLoadDate )
-			-> where ( 'stock_id' , '=' , $this -> id )
+		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
+
+
+		if ( $hasNoLoadedItems == TRUE || $lastLoadDate == NULL )
+		{
+			return FALSE ;
+		} else
+		{
+			return TRUE ;
+		}
+	}
+
+	public function isSellingInvoicesAdded ()
+	{
+		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
+
+		$sellingInvoices = \Models\SellingInvoice::where ( 'stock_id' , '=' , $this -> id )
+			-> where ( 'date_time' , '>' , $lastLoadDate )
 			-> get () ;
 
-		if ( $hasNoLoadedItems == TRUE || $lastLoadDate == NULL || count ( $sellingInvoices ) == 0 )
+		if ( count ( $sellingInvoices ) == 0 )
 		{
 			return FALSE ;
 		} else
@@ -174,36 +195,39 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	public function saveTransfersByDifferentTransferAmounts ( $transferAmounts , $availableAmounts , $toStockId , $dateTime , $description , $transferId )
 	{
+
+		$prunedTransferAmounts		 = \ArrayHelper::pruneEmptyElements ( $transferAmounts ) ;
 		$transferAmountHigherArray	 = [ ] ;
 		$transferAmountSmallerArray	 = [ ] ;
 		$transferAmountEqualArray	 = [ ] ;
-		
-		foreach ( $transferAmounts as $item => $transferAmount )
+
+		foreach ( $prunedTransferAmounts as $item => $transferAmount )
 		{
-			if ( $availableAmounts[ $item ] < $transferAmount )
+			if ( $availableAmounts [ $item ] < $transferAmount )
 			{
 				$transferAmountHigherArray[ $item ] = 'higher' ;
 			}
-			if ( $availableAmounts[ $item ] > $transferAmount )
+			if ( $availableAmounts [ $item ] > $transferAmount )
 			{
 				$transferAmountSmallerArray[ $item ] = 'smaller' ;
 			}
-			if ( $availableAmounts[ $item ] == $transferAmount )
+			if ( $availableAmounts [ $item ] == $transferAmount )
 			{
 				$transferAmountEqualArray[ $item ] = 'equal' ;
 			}
 		}
+		
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountHigherArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountHigherThanAvailable ( $transferAmountHigherArray , $toStockId , $dateTime , $description , $availableAmounts , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountHigherThanAvailable ( $transferAmountHigherArray , $toStockId , $dateTime , $description , $availableAmounts , $prunedTransferAmounts , $transferId ) ;
 		}
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountSmallerArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountSmallerThanAvailable ( $transferAmountSmallerArray , $toStockId , $dateTime , $description , $availableAmounts , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountSmallerThanAvailable ( $transferAmountSmallerArray , $toStockId , $dateTime , $description , $availableAmounts , $prunedTransferAmounts , $transferId ) ;
 		}
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountEqualArray ) )
 		{
-			$this -> saveTransferWhenTransferAmountEqualToAvailable ( $transferAmountEqualArray , $toStockId , $transferAmounts , $transferId ) ;
+			$this -> saveTransferWhenTransferAmountEqualToAvailable ( $transferAmountEqualArray , $toStockId , $prunedTransferAmounts , $transferId ) ;
 		}
 	}
 
@@ -214,9 +238,9 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		foreach ( $transferAmountHigherArray as $itemHigher => $transferAmountHigher )
 		{
-			$systemVsRealDifferrenceForHigher[ $itemHigher ] = $availableAmounts[ $itemHigher ] - $transferAmounts[ $itemHigher ] ;
+			$systemVsRealDifferrenceForHigher[ $itemHigher ] = $availableAmounts [ $itemHigher ] - $transferAmounts[ $itemHigher ] ;
 
-			$this -> saveItemWiseTransfer ( $imbalanceAccount , $this -> id , $itemHigher , -($systemVsRealDifferrenceForHigher[ $itemHigher ]) , $returnedTransferId ) ;
+			$this -> saveItemWiseTransfer ( $imbalanceAccount , $this -> id , $itemHigher , -( $systemVsRealDifferrenceForHigher[ $itemHigher ]) , $returnedTransferId ) ;
 			$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemHigher , $transferAmounts[ $itemHigher ] , $transferId ) ;
 		}
 	}
@@ -228,7 +252,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		foreach ( $transferAmountSmallerArray as $itemSmaller => $transferAmountSmaller )
 		{
-			$systemVsRealDifferrenceForSmaller[ $itemSmaller ] = $availableAmounts[ $itemSmaller ] - $transferAmounts[ $itemSmaller ] ;
+			$systemVsRealDifferrenceForSmaller[ $itemSmaller ] = $availableAmounts [ $itemSmaller ] - $transferAmounts[ $itemSmaller ] ;
 
 			$this -> saveItemWiseTransfer ( $this -> id , $imbalanceAccount , $itemSmaller , $systemVsRealDifferrenceForSmaller[ $itemSmaller ] , $returnedTransferId ) ;
 
@@ -256,7 +280,9 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$transfer -> save () ;
 
 		$transferId = $transfer -> id ;
-		return $transferId ;
+		return
+
+			$transferId ;
 	}
 
 	private function saveItemWiseTransfer ( $fromStock , $toStock , $item , $quantity , $transferId )
@@ -282,7 +308,8 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		{
 			if ( ! \NullHelper::isNullEmptyOrWhitespace ( $transferAmount ) )
 			{
-				$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemId , $transferAmount , $transferId ) ;
+				$this -> saveItemWiseTransfer ( $this -> id , $toStockId , $itemId , $transferAmount , $transferId
+				) ;
 			}
 		}
 	}

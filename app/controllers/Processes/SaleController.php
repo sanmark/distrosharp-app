@@ -14,21 +14,28 @@ class SaleController extends \Controller
 			return \Redirect::action ( 'processes.sales.setRep' ) ;
 		}
 
+
 		$rep = \User::with ( 'stock' )
 			-> findOrFail ( \SessionButler::getRepId () ) ;
+		if ( \NullHelper::isNullEmptyOrWhitespace ( $rep -> stock ) )
+		{
+			\MessageButler::setError ( 'User "' . $rep -> username . '" is no longer a Rep (They don\'t have a stock assigned.). Please select another Rep.' ) ;
+
+			return \Redirect::action ( 'processes.sales.setRep' ) ;
+		}
 
 		if ( $rep -> stock -> isLoaded () )
 		{
 			$customers			 = [ NULL => 'Select Route First' ] ;
-			$routes				 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
-			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE )
+			$routes				 = \Models\Route::where ( 'rep_id' , ' = ' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+			$items				 = \Models\Item::where ( 'is_active' , ' = ' , TRUE )
 				-> orderBy ( 'selling_invoice_order' , 'ASC' )
 				-> get () ;
 			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
 			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
 			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
 			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
-			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+			$banksList			 = \Models\Bank::where ( 'is_active' , ' = ' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 			$data = compact ( [
 				'customers' ,
@@ -67,11 +74,8 @@ class SaleController extends \Controller
 			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
 			$oldRouteId					 = \Input::get ( 'route_id' ) ;
 			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
-			$rep						 = \User::findOrFail ( \SessionButler::getRepId () ) ;
-
-			$stockId = \Models\Stock::where ( 'incharge_id' , '=' , $rep -> id )
-				-> firstOrFail ()
-				-> lists ( 'id' ) ;
+			$rep						 = \User::with ( 'stock' ) -> findOrFail ( \SessionButler::getRepId () ) ;
+			$stockId					 = $rep -> stock -> id ;
 
 			$this -> validateSaleItems ( $items ) ;
 			$this -> validateSavePayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
@@ -184,10 +188,10 @@ class SaleController extends \Controller
 	public function edit ( $id )
 	{
 		$sellingInvoice		 = \Models\SellingInvoice::with ( 'rep' , 'sellingItems' ) -> findOrFail ( $id ) ;
-		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
+		$customerRO			 = \Models\Customer::where ( 'is_active' , ' = ' , TRUE ) ;
 		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
-		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , ' = ' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'sellingInvoice' ,
@@ -284,19 +288,19 @@ class SaleController extends \Controller
 			{
 				$rules = [
 					'price'						 => [
-						'required_with:paid_quantity,free_quantity' ,
+						'required_with:paid_quantity , free_quantity' ,
 						'numeric'
 					] ,
 					'available_quantity'		 => [
-						'required_with:paid_quantity,free_quantity' ,
+						'required_with:paid_quantity , free_quantity' ,
 						'greater_than_or_equal_to:' . ($item[ 'paid_quantity' ] + $item[ 'free_quantity' ])
 					] ,
 					'paid_quantity'				 => [
-						'required_without_all:free_quantity,good_return_quantity,company_return_quantity' ,
+						'required_without_all:free_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'free_quantity'				 => [
-						'required_without_all:paid_quantity,good_return_quantity,company_return_quantity' ,
+						'required_without_all:paid_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'good_return_price'			 => [
@@ -304,7 +308,7 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'good_return_quantity'		 => [
-						'required_with_all:paid_quantity,free_quantity,company_return_quantity' ,
+						'required_with_all:paid_quantity , free_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'company_return_price'		 => [
@@ -312,7 +316,7 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'company_return_quantity'	 => [
-						'required_with_all:paid_quantity,free_quantity,good_return_quantity' ,
+						'required_with_all:paid_quantity , free_quantity , good_return_quantity' ,
 						'numeric'
 					]
 					] ;
@@ -320,12 +324,12 @@ class SaleController extends \Controller
 				$messages = [
 					'price.required_with'							 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
 					'available_quantity.greater_than_or_equal_to'	 => $itemO -> name . ': The sum of Paid and Free Quantities are higher than the available amount.' ,
-					'paid_quantity.required_without_all'			 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
-					'free_quantity.required_without_all'			 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
+					'paid_quantity.required_without_all'			 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
+					'free_quantity.required_without_all'			 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
 					'good_return_price.required_with'				 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
-					'good_return_quantity.required_with_all'		 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity, Free Quantity, or Company Return Quantity are present.' ,
+					'good_return_quantity.required_with_all'		 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity , Free Quantity , or Company Return Quantity are present.' ,
 					'company_return_price.required_with'			 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
-					'company_return_quantity.required_with_all'		 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity, Free Quantity, or Good Return Quantity are present.'
+					'company_return_quantity.required_with_all'		 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity , Free Quantity , or Good Return Quantity are present.'
 					] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
@@ -391,15 +395,15 @@ class SaleController extends \Controller
 			{
 				$rules = [
 					'price'						 => [
-						'required_with:paid_quantity,free_quantity' ,
+						'required_with:paid_quantity , free_quantity' ,
 						'numeric'
 					] ,
 					'paid_quantity'				 => [
-						'required_without_all:free_quantity,good_return_quantity,company_return_quantity' ,
+						'required_without_all:free_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'free_quantity'				 => [
-						'required_without_all:paid_quantity,good_return_quantity,company_return_quantity' ,
+						'required_without_all:paid_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'good_return_price'			 => [
@@ -407,7 +411,7 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'good_return_quantity'		 => [
-						'required_with_all:paid_quantity,free_quantity,company_return_quantity' ,
+						'required_with_all:paid_quantity , free_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'company_return_price'		 => [
@@ -415,19 +419,19 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'company_return_quantity'	 => [
-						'required_with_all:paid_quantity,free_quantity,good_return_quantity' ,
+						'required_with_all:paid_quantity , free_quantity , good_return_quantity' ,
 						'numeric'
 					]
 					] ;
 
 				$messages = [
 					'price.required_with'						 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
-					'paid_quantity.required_without_all'		 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
-					'free_quantity.required_without_all'		 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity, Good Return Quantity, or Company Return Quantity are present.' ,
+					'paid_quantity.required_without_all'		 => $itemO -> name . ': Paid Quantity is required when none of Free Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
+					'free_quantity.required_without_all'		 => $itemO -> name . ': Free Quantity is required when none of Paid Quantity , Good Return Quantity , or Company Return Quantity are present.' ,
 					'good_return_price.required_with'			 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
-					'good_return_quantity.required_with_all'	 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity, Free Quantity, or Company Return Quantity are present.' ,
+					'good_return_quantity.required_with_all'	 => $itemO -> name . ': Good Return Quantity is required when none of Paid Quantity , Free Quantity , or Company Return Quantity are present.' ,
 					'company_return_price.required_with'		 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
-					'company_return_quantity.required_with_all'	 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity, Free Quantity, or Good Return Quantity are present.'
+					'company_return_quantity.required_with_all'	 => $itemO -> name . ': Company Return Quantity is required when none of Paid Quantity , Free Quantity , or Good Return Quantity are present.'
 					] ;
 
 				$validator = \Validator::make ( $item , $rules , $messages ) ;
@@ -494,7 +498,7 @@ class SaleController extends \Controller
 	{
 		$sellingItemsArray = \Input::get ( 'items' ) ;
 
-		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
+		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , ' = ' , $sellingInvoiceId ) -> get () ;
 		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;
 		$deletedItems			 = $originalSellingItems -> diff ( $filledItems ) ;
 
@@ -510,8 +514,8 @@ class SaleController extends \Controller
 		{
 			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' ] ) )
 			{
-				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId )
-					-> where ( 'item_id' , '=' , $itemId )
+				$sellingItem = \Models\SellingItem::where ( 'selling_invoice_id' , ' = ' , $sellingInvoiceId )
+					-> where ( 'item_id' , ' = ' , $itemId )
 					-> first () ;
 
 				if ( is_null ( $sellingItem ) )
@@ -840,7 +844,7 @@ class SaleController extends \Controller
 			] ;
 
 		$messages = [
-			'rep_id.required' => 'Please select rep'
+			'rep_id.required' => 'Please select rep  '
 			] ;
 
 		$validator = \Validator::make ( $data , $rules , $messages ) ;

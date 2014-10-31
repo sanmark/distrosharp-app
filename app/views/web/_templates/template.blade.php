@@ -2,8 +2,8 @@
 <html lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>d-071-1-v2-app</title>
-		
+		<title>Sanmark Distro#</title>
+
 		{{ HTML::style('packages/bootstrap/css/bootstrap.min.css') }}
 		{{ HTML::style('packages/bootstrap-material-design/css/ripples.min.css') }}
 		{{ HTML::style('packages/bootstrap-material-design/css/material-wfont.min.css') }}
@@ -51,14 +51,21 @@
 			<div class="main-content">
 				@yield('body')
 			</div>
-             
-			
+
+
 			@if(!Request::is('login'))
 			<div class="footer navbar-default">
-				<p>System developed &amp; maintenance by <a href="http://thesanmark.com/" target="_blank">Sanmark Solutions.</a></p>
+				<div class="row">
+					<div class="col-sm-6 text-left">
+						&COPY; <a href="http://thesanmark.com/" target="_blank">Sanmark</a>
+					</div> 
+					<div class="col-sm-6 text-right">
+						Organization : {{SystemSettingButler::getValue ( 'organization_name')}}
+					</div> 
+				</div>
 			</div>
 			@endif
-			 
+
 		</div>
 		{{ HTML::script('packages/bootstrap-material-design/js/ripples.min.js') }}
 		{{ HTML::script('packages/bootstrap-material-design/js/material.min.js') }}

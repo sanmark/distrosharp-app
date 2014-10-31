@@ -3,7 +3,10 @@
 @section('body')
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Routes</h3>
+		<div class="panel-title">
+			<span>Routes</span>
+			{{HTML::link ( URL::action ( 'entities.routes.add') ,'Add New Route',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 

@@ -60,7 +60,9 @@ class ItemController extends \Controller
 
 			\ActivityLogButler::add ( "Add Item " . $item -> id . " (" . $item -> name . ") " ) ;
 
-			return \Redirect::action ( 'entities.items.view' ) ;
+			\MessageButler::setSuccess ( 'Item "' . $item -> name . '" was added successfully.' ) ;
+
+			return \Redirect::action ( 'entities.items.add' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()

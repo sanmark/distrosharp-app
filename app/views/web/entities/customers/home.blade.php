@@ -3,7 +3,10 @@
 @section('body')
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Customers</h3>
+		<div class="panel-title">
+			<span>Customers</span>
+			{{HTML::link ( URL::action ( 'entities.customers.add') ,'Add New Customer',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 

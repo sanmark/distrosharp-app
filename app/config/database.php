@@ -90,4 +90,4 @@ return array (
 			'database'	 => 0 ,
 		) ,
 	) ,
-) ;
+	) ;

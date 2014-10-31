@@ -1,7 +1,16 @@
 <?php
 
-$currentTimeZone = \SystemSettingButler::getValue ( 'time_zone' ) ;
-date_default_timezone_set ( $currentTimeZone ) ;
+if ( ! NullHelper::isNullEmptyOrWhitespace ( SessionButler::getOrganization () ) )
+{
+	ConfigButler::setTenantDb ( SessionButler::getOrganization () ) ;
+}
+
+if ( Auth::check () )
+{
+	$currentTimeZone = \SystemSettingButler::getValue ( 'time_zone' ) ;
+	date_default_timezone_set ( $currentTimeZone ) ;
+}
+
 /*
   |--------------------------------------------------------------------------
   | Application Routes
@@ -18,8 +27,7 @@ App::missing ( function($exception)
 } ) ;
 
 Route::get ( '/test' , function()
-{    
-	dd(ActivityLogButler::add("test"));
+{
 } ) ;
 
 

@@ -84,12 +84,19 @@ class TransferController extends \Controller
 		{
 			if ( $isUnloaded == TRUE )
 			{
-				$stockObj		 = \Models\Stock::findOrFail ( $fromStockId ) ;
-				$isUnloadable	 = $stockObj -> isUnloadable () ;
+				$stockObj	 = \Models\Stock::findOrFail ( $fromStockId ) ;
+				$isLoaded	 = $stockObj -> isLoadedWithItems () ;
+				$isSelled	 = $stockObj -> isSellingInvoicesAdded () ;
 
-				if ( $isUnloadable == FALSE )
+				if ( $isLoaded == FALSE )
 				{
-					\MessageButler::setError ( 'Please load stock/make at least one sale before unload' ) ;
+					\MessageButler::setError ( 'Your stock is empty.Please load the stock.' ) ;
+					return \Redirect::back ()
+							-> withInput () ;
+				}
+				if ( $isSelled == FALSE )
+				{
+					\MessageButler::setError ( 'Please make at least one sale before unload' ) ;
 					return \Redirect::back ()
 							-> withInput () ;
 				}
@@ -129,15 +136,35 @@ class TransferController extends \Controller
 	{
 		try
 		{
+			$items				 = \Models\Item::where ( 'is_active' , '=' , '1' )
+				-> orderBy ( 'buying_invoice_order' , 'ASC' )
+				-> lists ( 'id' ) ;
 			$dateTime			 = \Input::get ( 'date_time' ) ;
 			$availableAmounts	 = \Input::get ( 'availale_amounts' ) ;
 			$transferAmounts	 = \Input::get ( 'transfer_amounts' ) ;
 			$description		 = \Input::get ( 'description' ) ;
 			$unload				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
 			$fromStockObj		 = \Models\Stock::findOrFail ( $fromStockId ) ;
+
 			if ( $unload == TRUE )
 			{
-				$this -> validateUnloadTransfer ( $transferAmounts ) ;
+				$itemsWithoutZero = [ ] ;
+				foreach ( $items as $item )
+				{
+					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '' )
+					{
+						
+					}
+					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] != '' )
+					{
+						$itemsWithoutZero[ $item ] = $transferAmounts[ $item ] ;
+					}
+					if ( $availableAmounts[ $item ] != 0 && $transferAmounts[ $item ] == '' )
+					{
+						$itemsWithoutZero[ $item ] = $transferAmounts[ $item ] ;
+					}
+				}
+				$this -> validateUnloadTransfer ( $itemsWithoutZero ) ;
 				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
 
@@ -148,7 +175,7 @@ class TransferController extends \Controller
 				$fromStockObj -> saveNonUnload ( $toStockId , $dateTime , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
 
-				return \Redirect::back () ;
+				return \Redirect::action ( 'processes.transfers.selectStocksInvolved') ;
 			}
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -179,7 +206,7 @@ class TransferController extends \Controller
 
 		if ( $isUnloaded == TRUE )
 		{
-			$rulesIfUnload	 = [
+			$rulesIfUnload = [
 				'from'	 => [
 					'a_vehicle_stock'
 				] ,
@@ -187,10 +214,10 @@ class TransferController extends \Controller
 					'a_normal_stock'
 				]
 				] ;
-			
-			$rules			 = array_merge_recursive ( $rules , $rulesIfUnload ) ;
-			
-			$messages		 = [
+
+			$rules = array_merge_recursive ( $rules , $rulesIfUnload ) ;
+
+			$messages = [
 				'a_vehicle_stock'	 => 'Can not unload from non vehicle stock .' ,
 				'a_normal_stock'	 => 'Can not unload to vehicle stock.' ,
 				] ;
@@ -233,10 +260,10 @@ class TransferController extends \Controller
 		}
 	}
 
-	private function validateUnloadTransfer ( $transferAmounts )
+	private function validateUnloadTransfer ( $transferAmount )
 	{
 		$data = [
-			'transfer_amounts' => $transferAmounts
+			'transfer_amounts' => $transferAmount ,
 			] ;
 
 		$rules = [

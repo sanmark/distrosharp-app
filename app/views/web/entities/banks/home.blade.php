@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Banks</h3>
+		<div class="panel-title">
+			<span>Banks</span>
+			{{HTML::link ( URL::action ( 'entities.banks.add') ,'Add New Bank',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 
@@ -24,7 +27,6 @@
 				<div class="form-group inline-form">
 					{{Form::submit('Submit', array('tabindex' => '3', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
-
 				{{Form::close()}}
 
 			</div>

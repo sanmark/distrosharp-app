@@ -4,7 +4,10 @@
 
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">View Transfers</h3>
+		<div class="panel-title">
+			<span>View Transfers</span>
+			{{HTML::link ( URL::action ( 'processes.transfers.selectStocksInvolved') ,'Add New Transfer',['class' => 'panel-title-btn btn btn-success btn-sm pull-right'] )}}
+		</div>
 	</div>
 	<div class="panel-body">
 
