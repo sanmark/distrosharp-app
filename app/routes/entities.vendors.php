@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'entities/vendors' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'entities.vendors.view' ,

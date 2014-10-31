@@ -36,7 +36,7 @@ class StocksSeeder extends Seeder
 //				'incharge_id'	 =>  ,
 //				'stock_type_id'	 =>  ,
 //			] ,
-		] ;
+			] ;
 		foreach ( $stocks as $stock )
 		{
 			$stockO					 = new \Models\Stock() ;

@@ -35,7 +35,7 @@ class VendorsSeeder extends Seeder
 //				'is_active'			 =>  ,
 //				'finance_account_id' =>  ,
 //			] ,
-		] ;
+			] ;
 
 
 		foreach ( $vendors as $vendor )

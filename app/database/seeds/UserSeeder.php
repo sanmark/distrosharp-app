@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
 //				'first_name' => '' ,
 //				'last_name'	 => '' ,
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $users as $user )
 		{

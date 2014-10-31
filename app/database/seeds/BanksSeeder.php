@@ -26,7 +26,7 @@ class BanksSeeder extends Seeder
 //				'name'		 => '' ,
 //				'is_active'	 => 
 //			] ,
-		] ;
+			] ;
 		foreach ( $banks as $bank )
 		{
 			$bankO = new \Models\Bank() ;

@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'entities/routes' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'entities.routes.view' ,

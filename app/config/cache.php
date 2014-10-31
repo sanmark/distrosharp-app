@@ -72,4 +72,4 @@ return array (
 	  |
 	 */
 	'prefix'	 => 'laravel' ,
-) ;
+	) ;

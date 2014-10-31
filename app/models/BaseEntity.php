@@ -13,7 +13,7 @@ class BaseEntity extends \Eloquent implements \Interfaces\iEntity
 	public static function getArray ( $key , $value )
 	{
 		$array = self::select ( $key , \DB::raw ( 'CONCAT (' . $value . ') as `value`' ) )
-		-> lists ( 'value' , $key ) ;
+			-> lists ( 'value' , $key ) ;
 
 		return $array ;
 	}
@@ -25,8 +25,8 @@ class BaseEntity extends \Eloquent implements \Interfaces\iEntity
 		if ( count ( $by ) > 0 )
 		{
 			$array = self::whereIn ( 'id' , $by )
-			-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
-			-> lists ( 'value' , $key ) ;
+				-> select ( $key , \DB::raw ( 'CONCAT(' . $value . ')as `value`' ) )
+				-> lists ( 'value' , $key ) ;
 			return $array ;
 		}
 

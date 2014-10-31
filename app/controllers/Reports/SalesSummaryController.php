@@ -15,7 +15,7 @@ class SalesSummaryController extends \Controller
 
 		$reps_v_routes	 = \Models\Route::lists ( 'rep_id' ) ;
 		$reps			 = \User::whereIn ( 'id' , $reps_v_routes )
-		-> getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'All Reps' ] ) ;
+			-> getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'All Reps' ] ) ;
 
 		$routesId	 = \Input::get ( 'route_id' ) ;
 		$customerId	 = \Input::get ( 'customerId' ) ;
@@ -62,7 +62,7 @@ class SalesSummaryController extends \Controller
 			'invoiceByCreditTotalSum' ,
 			'invoiceGrossAmountTotal' ,
 			'totalNetAmount'
-		] ) ;
+			] ) ;
 
 		return \View::make ( 'web.reports.sales.home' , $data ) ;
 	}

@@ -54,7 +54,7 @@ class FinanceAccountsSeeder extends Seeder
 //				'account_balance'	 =>  ,
 //				'is_in_house'		 =>  ,
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $financeAccounts as $financeAccount )
 		{

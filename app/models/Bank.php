@@ -28,7 +28,7 @@ class Bank extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'unique:banks'
 			]
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
@@ -47,7 +47,7 @@ class Bank extends BaseEntity implements \Interfaces\iEntity
 				'required' ,
 				'unique:banks,name,' . $this -> id
 			]
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )

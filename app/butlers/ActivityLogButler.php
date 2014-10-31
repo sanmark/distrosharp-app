@@ -12,7 +12,7 @@ class ActivityLogButler
 		$activityLog -> message		 = $message ;
 		$activityLog -> url			 = Request::path () ;
 
-		return $activityLog -> save () ; 
+		return $activityLog -> save () ;
 	}
 
 }

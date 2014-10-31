@@ -10,9 +10,9 @@ class ActivityLogController extends \Controller
 		$users			 = \User::getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'All Users' ] ) ;
 		$from_time		 = NULL ;
 		$to_time		 = NULL ;
-		$user			 = NULL ; 
+		$user			 = NULL ;
 		$filterValues	 = [
-			"today" => date ( "Y-m-d" ) ,
+			"today"		 => date ( "Y-m-d" ) ,
 			"from_time"	 => "" ,
 			"to_time"	 => "" ,
 			"user"		 => 0
@@ -86,13 +86,13 @@ class ActivityLogController extends \Controller
 
 		if ( ! empty ( $filterValues[ 'from_time' ] ) && ! empty ( $filterValues[ 'to_time' ] ) )
 		{
-			$time_start	 = date ( "Y-m-d H:i:s", strtotime($filterValues[ 'from_time' ] ) );
-			$time_end	 = date ( "Y-m-d H:i:s", strtotime($filterValues[ 'to_time' ] ) );
-   
+			$time_start	 = date ( "Y-m-d H:i:s" , strtotime ( $filterValues[ 'from_time' ] ) ) ;
+			$time_end	 = date ( "Y-m-d H:i:s" , strtotime ( $filterValues[ 'to_time' ] ) ) ;
+
 			$requestObject = $requestObject -> whereBetween ( 'date_time' , array ( $time_start , $time_end ) ) ;
 		}
 
-		return $requestObject->  orderBy ('date_time', 'DESC') -> get () ;
+		return $requestObject -> orderBy ( 'date_time' , 'DESC' ) -> get () ;
 	}
 
 	private function validateFilterValues ( $data )

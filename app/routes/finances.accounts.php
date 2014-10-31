@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'finances/accounts' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'finances.accounts.view' ,

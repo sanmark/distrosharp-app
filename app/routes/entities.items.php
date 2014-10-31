@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'entities/items' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'entities.items.view' ,
@@ -39,7 +39,7 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_item' ] ,
 		'uses'	 => 'Controllers\Entities\ItemController@update'
 	] ) ;
-	 
+
 	Route::get ( 'order' , [
 		'as'	 => 'entities.items.order' ,
 		'before' => ['hasAbilities:order_items' ] ,
@@ -51,5 +51,4 @@ Route::group ( [
 		'before' => ['hasAbilities:order_items' ] ,
 		'uses'	 => 'Controllers\Entities\ItemController@updateOrder'
 	] ) ;
-
 } ) ;

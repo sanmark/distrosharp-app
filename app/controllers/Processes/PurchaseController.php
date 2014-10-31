@@ -26,7 +26,7 @@ class PurchaseController extends \Controller
 				'currentDateTime' ,
 				'vendorList' ,
 				'banksList' ,
-			] ) ;
+				] ) ;
 
 			return \View::make ( 'web.processes.purchases.add' , $data ) ;
 		} catch ( \Exceptions\NotAllPaymentAccountsAreSetException $ex )
@@ -59,9 +59,9 @@ class PurchaseController extends \Controller
 		foreach ( $buyingInvoiceRows as $key )
 		{
 			$price			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $key -> id )
-			-> lists ( 'price' ) ;
+				-> lists ( 'price' ) ;
 			$quantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $key -> id )
-			-> lists ( 'quantity' ) ;
+				-> lists ( 'quantity' ) ;
 			$finalLineTotal	 = 0 ;
 			for ( $i = 0 ; $i < count ( $quantity ) ; $i ++ )
 			{
@@ -93,21 +93,21 @@ class PurchaseController extends \Controller
 		$ItemRows				 = \Models\Item::lists ( 'id' , 'name' ) ;
 		$itemRowsForTotal		 = \Models\Item::lists ( 'id' ) ;
 		$purchaseInvoiceItemRows = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> get () ;
+			-> get () ;
 		$price					 = \Models\Item::lists ( 'current_buying_price' , 'id' ) ;
 		$quantity				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'quantity' , 'item_id' ) ;
+			-> lists ( 'quantity' , 'item_id' ) ;
 		$freeQuantity			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'free_quantity' , 'item_id' ) ;
+			-> lists ( 'free_quantity' , 'item_id' ) ;
 		$expDate				 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'exp_date' , 'item_id' ) ;
+			-> lists ( 'exp_date' , 'item_id' ) ;
 		$batchNumber			 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'batch_number' , 'item_id' ) ;
+			-> lists ( 'batch_number' , 'item_id' ) ;
 
 		$vendors		 = \Models\Vendor::where ( 'is_active' , '=' , 1 ) -> lists ( 'id' ) ;
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [NULL => 'Any' ] ) ;
 		$purchaseRows	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-		-> lists ( 'item_id' ) ;
+			-> lists ( 'item_id' ) ;
 
 		$purchaseDateRefill	 = \DateTimeHelper::dateTimeRefill ( $purchaseInvoiceDate -> date_time ) ;
 		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
@@ -173,19 +173,19 @@ class PurchaseController extends \Controller
 				if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
 				{
 					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-					-> lists ( 'item_id' ) ) )
+								-> lists ( 'item_id' ) ) )
 					{
 
 						$stockDetails = new \Models\StockDetail() ;
 
 						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> lists ( 'good_quantity' ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> lists ( 'good_quantity' ) ;
 
 						$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+								-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
 						$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+								-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
 
 						$newQuantity1 = $quantity + $freeQuantity ;
 
@@ -193,12 +193,12 @@ class PurchaseController extends \Controller
 						$newQuantity	 = ($stockRow[ 0 ] - $preQuantity1) + $newQuantity1 ;
 
 						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 
 						$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-						-> where ( 'item_id' , '=' , $rows -> id )
-						-> first () ;
+							-> where ( 'item_id' , '=' , $rows -> id )
+							-> first () ;
 
 						$buyingItems -> item_id = $itemId ;
 
@@ -224,19 +224,19 @@ class PurchaseController extends \Controller
 						$stockDetails = new \Models\StockDetail() ;
 
 						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> lists ( 'good_quantity' ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> lists ( 'good_quantity' ) ;
 
 						$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
 
 						$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 					}
 				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
 				{
 					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-					-> lists ( 'item_id' ) ) )
+								-> lists ( 'item_id' ) ) )
 					{
 						if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) == 0 )
 						{
@@ -244,44 +244,44 @@ class PurchaseController extends \Controller
 							$stockDetails = new \Models\StockDetail() ;
 
 							$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-							-> where ( 'item_id' , '=' , $itemId )
-							-> lists ( 'good_quantity' ) ;
+								-> where ( 'item_id' , '=' , $itemId )
+								-> lists ( 'good_quantity' ) ;
 
 							$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+									-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
 							$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+									-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
 
 							$preQuantity = $previousPurchaseFreeQuantity[ 0 ] + $previousPurchaseQuantity[ 0 ] ;
 							$newQuantity = $stockRow[ 0 ] - $preQuantity ;
 
 							$delete = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $itemId )
-							-> delete () ;
+								-> where ( 'item_id' , '=' , $itemId )
+								-> delete () ;
 
 							$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-							-> where ( 'item_id' , '=' , $itemId )
-							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+								-> where ( 'item_id' , '=' , $itemId )
+								-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 						} elseif ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
 						{
 
 							$stockDetails = new \Models\StockDetail() ;
 
 							$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-							-> where ( 'item_id' , '=' , $itemId )
-							-> lists ( 'good_quantity' ) ;
+								-> where ( 'item_id' , '=' , $itemId )
+								-> lists ( 'good_quantity' ) ;
 
 							$previousPurchaseFreeQuantity	 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
+									-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'free_quantity' ) ;
 							$previousPurchaseQuantity		 = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
+									-> where ( 'item_id' , '=' , $itemId ) -> lists ( 'quantity' ) ;
 
 							$preQuantity = $previousPurchaseFreeQuantity[ 0 ] + $previousPurchaseQuantity[ 0 ] ;
 							$newQuantity = ($stockRow[ 0 ] - $preQuantity) + $freeQuantity ;
 
 							$buyingItems = \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
-							-> where ( 'item_id' , '=' , $rows -> id )
-							-> first () ;
+								-> where ( 'item_id' , '=' , $rows -> id )
+								-> first () ;
 
 							$buyingItems -> item_id = $itemId ;
 
@@ -293,22 +293,22 @@ class PurchaseController extends \Controller
 							$buyingItems -> update () ;
 
 							$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
-							-> where ( 'item_id' , '=' , $itemId )
-							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+								-> where ( 'item_id' , '=' , $itemId )
+								-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 						}
 					}
 				}
 			}
 			\MessageButler::setSuccess ( 'Purchase invoice was updated successfully.' ) ;
-			
+
 			\ActivityLogButler::add ( "Edit Purchase invoice " . $purchaseItem -> id ) ;
 
 			return \Redirect::action ( 'processes.purchases.view' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -390,14 +390,14 @@ class PurchaseController extends \Controller
 					$stockDetails = new \Models\StockDetail() ;
 
 					$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $toStockId )
-					-> where ( 'item_id' , '=' , $itemId )
-					-> lists ( 'good_quantity' ) ;
+						-> where ( 'item_id' , '=' , $itemId )
+						-> lists ( 'good_quantity' ) ;
 
 					$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
 
 					$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
-					-> where ( 'item_id' , '=' , $itemId )
-					-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+						-> where ( 'item_id' , '=' , $itemId )
+						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
 				{
 					if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
@@ -416,14 +416,14 @@ class PurchaseController extends \Controller
 						$stockDetails = new \Models\StockDetail() ;
 
 						$stockRow = \Models\StockDetail::where ( 'stock_id' , '=' , $toStockId )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> lists ( 'good_quantity' ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> lists ( 'good_quantity' ) ;
 
 						$newQuantity = $stockRow[ 0 ] + ($quantity + $freeQuantity) ;
 
 						$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
-						-> where ( 'item_id' , '=' , $itemId )
-						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
+							-> where ( 'item_id' , '=' , $itemId )
+							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 					}
 				}
 			}
@@ -434,8 +434,8 @@ class PurchaseController extends \Controller
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
-			-> withErrors ( $ex -> validator )
-			-> withInput () ;
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
 		}
 	}
 
@@ -550,7 +550,7 @@ class PurchaseController extends \Controller
 			'dateTime' ,
 			'cashPayment' ,
 			'chequePayment'
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'vendorId'		 => [
@@ -567,7 +567,7 @@ class PurchaseController extends \Controller
 			'chequePayment'	 => [
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -589,7 +589,7 @@ class PurchaseController extends \Controller
 			'dateTime' ,
 			'cashPayment' ,
 			'chequePayment'
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'vendorId'		 => [
@@ -606,7 +606,7 @@ class PurchaseController extends \Controller
 			'chequePayment'	 => [
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -628,7 +628,7 @@ class PurchaseController extends \Controller
 			'chequePaymentChequeNumber' ,
 			'chequePaymentIssuedDate' ,
 			'chequePaymentPayableDate'
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'cashPayment'				 => [
@@ -654,7 +654,7 @@ class PurchaseController extends \Controller
 				'date' ,
 				'date_format:Y-m-d'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 
@@ -676,7 +676,7 @@ class PurchaseController extends \Controller
 			'chequePaymentChequeNumber' ,
 			'chequePaymentIssuedDate' ,
 			'chequePaymentPayableDate'
-		] ) ;
+			] ) ;
 
 		$rules = [
 			'cashPayment'				 => [
@@ -702,7 +702,7 @@ class PurchaseController extends \Controller
 				'date' ,
 				'date_format:Y-m-d'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

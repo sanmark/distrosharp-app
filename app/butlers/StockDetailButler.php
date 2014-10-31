@@ -34,8 +34,8 @@ class StockDetailButler
 	public static function getStockDetailByStocIdkAndItemId ( $stockId , $itemId )
 	{
 		$stockDetail = Models\StockDetail::where ( 'stock_id' , '=' , $stockId )
-		-> where ( 'item_id' , '=' , $itemId )
-		-> first () ;
+			-> where ( 'item_id' , '=' , $itemId )
+			-> first () ;
 
 		return $stockDetail ;
 	}
