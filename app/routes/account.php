@@ -2,7 +2,7 @@
 
 Route::group ( [
 	'before' => 'guest'
-] , function()
+	] , function()
 {
 	Route::get ( 'login' , [
 		'as'	 => 'account.login' ,
@@ -17,7 +17,7 @@ Route::group ( [
 
 Route::group ( [
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( 'logout' , [
 		'as'	 => 'account.logout' ,

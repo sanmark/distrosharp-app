@@ -16,7 +16,7 @@ class ItemsSeeder extends Seeder
 				'buying_invoice_order'	 => 1 ,
 				'selling_invoice_order'	 => 1 ,
 				'is_active'				 => 1 ,
-				'weight'			 => 230.50 ,
+				'weight'				 => 230.50 ,
 			] ,
 			[
 				'id'					 => 2 ,
@@ -28,7 +28,7 @@ class ItemsSeeder extends Seeder
 				'buying_invoice_order'	 => 2 ,
 				'selling_invoice_order'	 => 2 ,
 				'is_active'				 => 1 ,
-				'weight'			 => 200.50 ,
+				'weight'				 => 200.50 ,
 			] ,
 			[
 				'id'					 => 3 ,
@@ -40,7 +40,7 @@ class ItemsSeeder extends Seeder
 				'buying_invoice_order'	 => 3 ,
 				'selling_invoice_order'	 => 3 ,
 				'is_active'				 => 1 ,
-				'weight'			 => 500.00 ,
+				'weight'				 => 500.00 ,
 			] ,
 //			[
 //				'id'					 =>  ,
@@ -68,7 +68,7 @@ class ItemsSeeder extends Seeder
 			$itemO -> buying_invoice_order	 = $item[ 'buying_invoice_order' ] ;
 			$itemO -> selling_invoice_order	 = $item[ 'selling_invoice_order' ] ;
 			$itemO -> is_active				 = $item[ 'is_active' ] ;
-			$itemO -> weight			 = $item[ 'weight' ] ;
+			$itemO -> weight				 = $item[ 'weight' ] ;
 
 			$itemO -> save () ;
 		}

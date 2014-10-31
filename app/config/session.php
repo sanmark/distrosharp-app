@@ -116,4 +116,4 @@ return array (
 	  |
 	 */
 	'secure'			 => false ,
-) ;
+	) ;

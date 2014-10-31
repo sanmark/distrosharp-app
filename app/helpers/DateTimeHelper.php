@@ -38,7 +38,7 @@ class DateTimeHelper
 
 		$dateDifference = date_diff ( $dateGiven , $now ) ;
 
-		return $dateDifference->days ;
+		return $dateDifference -> days ;
 	}
 
 }

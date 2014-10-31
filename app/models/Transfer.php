@@ -60,17 +60,17 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 			if ( strlen ( $fromStock ) > 0 )
 			{
 				$requestObject = $requestObject
-				-> where ( 'from_stock_id' , '=' , $fromStock ) ;
+					-> where ( 'from_stock_id' , '=' , $fromStock ) ;
 			}
 			if ( strlen ( $toStock ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'to_stock_id' , '=' , $toStock )
-				-> whereNotIn ( 'to_stock_id' , $vehicleIds ) ;
+					-> whereNotIn ( 'to_stock_id' , $vehicleIds ) ;
 			}
 		}
 		return $requestObject -> whereIn ( 'from_stock_id' , $vehicleIds )
-		-> whereNotIn ( 'to_stock_id' , $vehicleIds )
-		-> get () ;
+				-> whereNotIn ( 'to_stock_id' , $vehicleIds )
+				-> get () ;
 	}
 
 	public static function filter ( $filterValues )
@@ -80,7 +80,7 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 		$requestObject = $requestObject -> with ( [
 			'fromStock' ,
 			'toStock'
-		] ) ;
+			] ) ;
 
 		return $requestObject -> get () ;
 	}
@@ -102,7 +102,7 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 				'date' ,
 				'date_format:Y-m-d H:i:s'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

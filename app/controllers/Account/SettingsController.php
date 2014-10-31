@@ -53,7 +53,7 @@ class SettingsController extends \Controller
 			$user -> updatePassword ( $existingPassword , $newPassword , $confirmNewPassword ) ;
 
 			\MessageButler::setSuccess ( 'Password changed successfully.' ) ;
-			
+
 			\ActivityLogButler::add ( "Change Password. User: " . $user -> id ) ;
 
 			return \Redirect::back () ;

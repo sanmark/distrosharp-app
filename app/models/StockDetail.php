@@ -30,9 +30,9 @@ class StockDetail extends BaseEntity implements \Interfaces\iEntity
 	public function scopeActiveItems ( $query )
 	{
 		return $query -> whereHas ( 'item' , function($item)
-		{
-			$item -> where ( 'is_active' , '=' , TRUE ) ;
-		} ) ;
+			{
+				$item -> where ( 'is_active' , '=' , TRUE ) ;
+			} ) ;
 	}
 
 }

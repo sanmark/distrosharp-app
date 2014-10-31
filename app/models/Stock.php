@@ -216,7 +216,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 				$transferAmountEqualArray[ $item ] = 'equal' ;
 			}
 		}
-		
+
 		if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $transferAmountHigherArray ) )
 		{
 			$this -> saveTransferWhenTransferAmountHigherThanAvailable ( $transferAmountHigherArray , $toStockId , $dateTime , $description , $availableAmounts , $prunedTransferAmounts , $transferId ) ;

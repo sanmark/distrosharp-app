@@ -29,7 +29,7 @@ class FinanceAccountVerification extends BaseEntity implements \Interfaces\iEnti
 				'required' ,
 				'numeric'
 			]
-		] ;
+			] ;
 
 		$validator = \Validator::make ( $data , $rules ) ;
 

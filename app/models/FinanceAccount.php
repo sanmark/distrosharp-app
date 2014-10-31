@@ -21,15 +21,15 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 	public function financeAccountVerificationsBefore ( $dateTime )
 	{
 		return $this -> hasMany ( 'Models\FinanceAccountVerification' )
-		-> where ( 'date_time' , '<' , $dateTime )
-		-> get () ;
+				-> where ( 'date_time' , '<' , $dateTime )
+				-> get () ;
 	}
 
 	public function financeAccountVerificationAt ( $dateTime )
 	{
 		return $this -> hasMany ( 'Models\FinanceAccountVerification' )
-		-> where ( 'date_time' , '=' , $dateTime )
-		-> first () ;
+				-> where ( 'date_time' , '=' , $dateTime )
+				-> first () ;
 	}
 
 	public function incomingFinanceTransfers ()
@@ -71,7 +71,7 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 			'name' => [
 				'required'
 			]
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
@@ -90,7 +90,7 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 			'name' => [
 				'required'
 			]
-		] ;
+			] ;
 		$validator	 = \Validator::make ( $data , $rules ) ;
 
 		if ( $validator -> fails () )
@@ -236,8 +236,8 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 
 		$financeAccountVerifications	 = $this -> financeAccountVerifications ;
 		$lastFinanceAccountVerification	 = $financeAccountVerifications
-		-> sortByDesc ( 'date_time' )
-		-> first () ;
+			-> sortByDesc ( 'date_time' )
+			-> first () ;
 
 		return $lastFinanceAccountVerification ;
 	}
@@ -247,8 +247,8 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 		$financeAccountVerificationsBefore = $this -> financeAccountVerificationsBefore ( $dateTime ) ;
 
 		$lastFinanceAccountVerificationBefore = $financeAccountVerificationsBefore
-		-> sortByDesc ( 'date_time' )
-		-> first () ;
+			-> sortByDesc ( 'date_time' )
+			-> first () ;
 
 		return $lastFinanceAccountVerificationBefore ;
 	}

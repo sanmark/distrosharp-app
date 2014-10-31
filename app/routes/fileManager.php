@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'filemanager' ,
 	'before' => 'auth'
-] , function()
+	] , function()
 {
 	Route::get ( '' , [
 		'as'	 => 'fileManager.home' ,

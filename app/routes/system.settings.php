@@ -6,7 +6,7 @@ Route::group ( [
 		'auth' ,
 		'hasAbilities:edit_system_settings'
 	]
-] , function ()
+	] , function ()
 {
 	Route::get ( '' , [
 		'as'	 => 'system.settings' ,
@@ -71,7 +71,7 @@ Route::group ( [
 		'as'	 => 'system.settings.financeAccounts' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateFinanceAccounts'
 	] ) ;
-	 
+
 	Route::get ( 'organization-name' , [
 		'as'	 => 'system.settings.organizationName' ,
 		'uses'	 => 'Controllers\System\SettingsController@selectOrganizationName'

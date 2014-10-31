@@ -3,7 +3,7 @@
 Route::group ( [
 	'prefix' => 'entities/customers' ,
 	'before' => 'auth'
-] , function ()
+	] , function ()
 {
 	Route::get ( '' , [
 		'as'	 => 'entities.customers.view' ,
@@ -44,7 +44,7 @@ Route::group ( [
 	Route::group ( [
 		'prefix' => 'ajax' ,
 		'before' => 'csrf'
-	] , function()
+		] , function()
 	{
 		Route::post ( 'forRouteId' , [
 			'as'	 => 'entities.customers.ajax.forRouteId' ,

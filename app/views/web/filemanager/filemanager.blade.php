@@ -20,10 +20,10 @@
 {{ HTML::script('packages/elfinder-2.0-rc1/js/elfinder.min.js') }}
 
 <script type="text/javascript" charset="utf-8">
-	$().ready(function() {
+	$().ready(function () {
 		var elf = $('#elfinder').elfinder({
 			url: 'packages/elfinder-2.0-rc1/php/connector.php?organization={{Session::get("organization")}}'  // connector URL (REQUIRED)
-					// lang: 'ru',             // language (OPTIONAL)
+				// lang: 'ru',             // language (OPTIONAL)
 		}).elfinder('instance');
 	});
 </script>

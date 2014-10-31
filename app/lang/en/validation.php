@@ -95,6 +95,5 @@ return array (
 	  |
 	 */
 	'attributes'			 => array () ,
-	
-	"no_spaces_in_string"     => "The :attribute  can not contain spaces.",
-) ;
+	"no_spaces_in_string"	 => "The :attribute  can not contain spaces." ,
+	) ;

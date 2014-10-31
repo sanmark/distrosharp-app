@@ -71,7 +71,7 @@ class User extends \Models\BaseEntity implements UserInterface , RemindableInter
 		$rules = [
 			'first_name' => 'required' ,
 			'last_name'	 => 'required'
-		] ;
+			] ;
 
 		$validator = Validator::make ( $data , $rules ) ;
 
@@ -89,7 +89,7 @@ class User extends \Models\BaseEntity implements UserInterface , RemindableInter
 			'existing_password'		 => $existingPassword ,
 			'new_password'			 => $newPassword ,
 			'confirm_new_password'	 => $confirmNewPassword
-		] ;
+			] ;
 
 		$rules = [
 			'existing_password'		 => [
@@ -97,14 +97,14 @@ class User extends \Models\BaseEntity implements UserInterface , RemindableInter
 				'hash_match:' . Auth::user () -> password
 			] ,
 			'new_password'			 => [
-				'required',
+				'required' ,
 				'no_spaces_in_string'
 			] ,
 			'confirm_new_password'	 => [
 				'required' ,
 				'same:new_password'
 			]
-		] ;
+			] ;
 
 		$validator = Validator::make ( $data , $rules ) ;
 

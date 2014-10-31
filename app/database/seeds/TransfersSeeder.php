@@ -70,7 +70,7 @@ class TransfersSeeder extends Seeder
 ////					] ,
 //				] ,
 //			] ,
-		] ;
+			] ;
 
 		foreach ( $transfers as $transfer )
 		{
