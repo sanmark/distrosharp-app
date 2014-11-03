@@ -327,33 +327,33 @@ function calculateLineTotal()
 	});
 }
 
-function displayNetTotal()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var netTotal = null;
-		$('.lineTotal').each(function () {
-			var value = parseFloat($(this).val());
-			if (!isNaN(value)) {
-				netTotal += value;
-			}
-		});
-		$("input[name='netTotal']").val(netTotal);
-	});
-}
-
 function displaySubTotal()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var net = $('#netTotal').val();
+		var subTotal = null;
+		$('.lineTotal').each(function () {
+			var value = parseFloat($(this).val());
+			if (!isNaN(value)) {
+				subTotal += value;
+			}
+		});
+		$("input[name='subTotal']").val(subTotal);
+	});
+}
+
+function displayTotal()
+{
+	$(document).on('change keyup', '.saleDetail', function () {
+		var net = $('#subTotal').val();
 		var disc = $('#discount').val();
-		$('#subTotal').val((net - disc ? net - disc : 0));
+		$('#total').val((net - disc ? net - disc : 0));
 	});
 }
 
 function displayBalance()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var sub = $('#subTotal').val();
+		var sub = $('#total').val();
 		var cash = $('#cash_payment').val();
 		var cheque = $('#cheque_payment').val();
 		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0));

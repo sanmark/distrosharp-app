@@ -135,9 +135,9 @@
 		<div class="form-group">
 			<div class="col-sm-3 col-sm-offset-9">
 				<div class="row">
-					{{Form::label('netTotal', 'Net Total', array('class' => 'col-sm-6 control-label'))}}
+					{{Form::label('subTotal', 'Sub Total', array('class' => 'col-sm-6 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::text ( 'netTotal', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
+						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
 					</div>
 				</div>
 			</div>
@@ -158,9 +158,9 @@
 		<div class="form-group">
 			<div class="col-sm-3 col-sm-offset-9">
 				<div class="row">
-					{{Form::label('subTotal', 'Sub Total', array('class' => 'col-sm-6 control-label'))}}
+					{{Form::label('total', 'Total', array('class' => 'col-sm-6 control-label'))}}
 					<div class="col-sm-6">
-						{{Form::text ( 'subTotal', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
+						{{Form::text ( 'total', NULL, ['class'=>'form-control text-right', 'readonly'=>TRUE])}}
 					</div>
 				</div>
 			</div>
@@ -270,7 +270,7 @@ loadPreviousValuesOnUnsuccessfulRedirectBack("{{Input::old('customer_id')}}");
 populateCustomersForRoute("{{csrf_token()}}");
 loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
 calculateLineTotal();
-displayNetTotal();
+displayTotal();
 displaySubTotal();
 displayBalance();
 checkPaidAndFreeSum();
