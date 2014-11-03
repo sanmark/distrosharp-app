@@ -12,6 +12,7 @@
 
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
+		
 		<div class="form-group">
 			{{Form::label('date_time', 'Date and Time', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
@@ -32,7 +33,6 @@
 				</div>			
 			</div>			
 		</div>
-
 		@foreach($items as $item)
 		<div class="form-group">
 			{{Form::label(null, $item->name, array('class' => 'col-sm-2 control-label', 'style'=>'padding-top: 0;'))}}
