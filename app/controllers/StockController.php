@@ -106,4 +106,38 @@ class StockController extends \Controller
 		}
 	}
 
+	public function create ()
+	{
+		$usersList	 = \User::getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'None' ] ) ;
+		$stockTypes	 = \Models\StockType::getArrayForHtmlSelect ( 'id' , 'label' , ['' => 'Select Stock type' ] ) ;
+		$data		 = compact ( [
+			'usersList' ,
+			'stockTypes'
+			] ) ;
+		return \View::make ( 'web.stocks.create' , $data ) ;
+	}
+
+	public function save ()
+	{
+		try
+		{
+			$stock					 = new \Models\Stock() ;
+			$stock -> name			 = \Input::get ( 'stock_name' ) ;
+			$stock -> incharge_id	 = \NullHelper::ifNullEmptyOrWhitespace ( \Input::get ( 'incharge_id' ) , NULL ) ;
+			$stock -> stock_type_id	 = \Input::get ( 'stock_type_id' ) ;
+
+			$stock -> save () ;
+
+			\StockDetailButler::createStockItems ( $stock -> id ) ;
+
+			\MessageButler::setSuccess ( 'New stock was created successfully' ) ;
+			return \Redirect::action ( 'stocks.all' ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
 }

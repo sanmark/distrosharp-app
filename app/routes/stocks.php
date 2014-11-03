@@ -10,6 +10,16 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stocks' ] ,
 		'uses'	 => 'Controllers\StockController@all'
 	] ) ;
+	
+	Route::get ( 'add' , [
+		'as'	 => 'stocks.add' ,
+		'uses'	 => 'Controllers\StockController@create'
+	] ) ;
+	
+	Route::post ( 'add' , [
+		'as'	 => 'stocks.add' ,
+		'uses'	 => 'Controllers\StockController@save'
+	] ) ;
 
 	Route::get ( '{stockId}' , [
 		'as'	 => 'stocks.view' ,
@@ -33,4 +43,6 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_stock' ] ,
 		'uses'	 => 'Controllers\StockController@update'
 	] ) ;
+
+	
 } ) ;

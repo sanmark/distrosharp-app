@@ -93,6 +93,12 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		return FALSE ;
 	}
 
+	public function save ( array $options = array () )
+	{
+		$this -> validateForSave () ;
+		parent::save ( $options ) ;
+	}
+
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;
@@ -324,6 +330,39 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 			return NULL ;
 		}
 		return $lastConfirmDate -> date_time ;
+	}
+
+	public function validateForSave ()
+	{
+		$data = $this -> toArray () ;
+
+		$rules = [
+			
+			'name'			 => [
+				'required' ,
+				'unique:stocks,name,' . $this -> id
+			] ,
+			'incharge_id'	 => [
+				'unique:stocks,incharge_id,' . $this -> id
+			] ,
+			'stock_type_id'	 => [
+				'required'
+			]
+			] ;
+
+		$messages = [
+			'incharge_id.unique' => 'This user has already been assigned to another stock.'
+			] ;
+
+		$validator = \Validator::make ( $data , $rules , $messages ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+			
+			throw $iie ;
+		}
 	}
 
 }
