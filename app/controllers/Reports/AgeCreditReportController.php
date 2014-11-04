@@ -18,7 +18,7 @@ class AgeCreditReportController extends \Controller
 			-> where ( 'is_completely_paid' , '=' , FALSE )
 			-> lists ( 'rep_id' ) ;
 
-		$routeSelectBox = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+		$routeSelectBox = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [ '' => 'Select' ] ) ;
 
 		$repSelectBox = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $repsList , ['' => 'Select Rep' ] ) ;
 
