@@ -19,7 +19,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 	public static function ageCreditFilter ( $filterValues )
 	{
-		$requestObject = new SellingInvoice() ;
+		$requestObject = new \Models\SellingInvoice() ;
 
 		if ( count ( $filterValues ) > 0 )
 		{
