@@ -10,14 +10,16 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stocks' ] ,
 		'uses'	 => 'Controllers\StockController@all'
 	] ) ;
-	
+
 	Route::get ( 'add' , [
 		'as'	 => 'stocks.add' ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@create'
 	] ) ;
-	
+
 	Route::post ( 'add' , [
 		'as'	 => 'stocks.add' ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@save'
 	] ) ;
 
@@ -43,6 +45,4 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_stock' ] ,
 		'uses'	 => 'Controllers\StockController@update'
 	] ) ;
-
-	
 } ) ;
