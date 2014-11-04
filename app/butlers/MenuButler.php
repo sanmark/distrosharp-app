@@ -174,7 +174,7 @@ class MenuButler
 						$hasPermissions = array_intersect ( $userPermissions , $menuItem[ 2 ] ) ;
 					}
 
-					if ( count ( $hasPermissions ) > 0 )
+					if ( SessionButler::isSuperAdminLoggedIn () || count ( $hasPermissions ) > 0 )
 					{
 						$newItem		 = [ ] ;
 						$newItem[ 0 ]	 = $menuItem[ 0 ] ;

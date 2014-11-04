@@ -10,3 +10,4 @@ Thumbs.db
 /error.log
 /access.log
 /public/tenants/
+/app/config/superAdminLogin.php

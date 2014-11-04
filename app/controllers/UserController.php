@@ -3,12 +3,17 @@
 class UserController extends Controller
 {
 
-	public function login ()
+	public function login ( $superAdminLoginToken = NULL )
 	{
+		if ( ( ! NullHelper::isNullEmptyOrWhitespace ( $superAdminLoginToken )) && ($superAdminLoginToken != Config::get ( 'superAdminLogin.token' ) ) )
+		{
+			return View::make ( 'web.404' ) ;
+		}
+
 		return View::make ( 'web.login.login' ) ;
 	}
 
-	public function pLogin ()
+	public function pLogin ( $superAdminLoginToken = NULL )
 	{
 		$organization = Input::get ( 'organization' ) ;
 
@@ -37,11 +42,22 @@ class UserController extends Controller
 
 		try
 		{
-			if ( ! Auth::attempt ( $credentials ) )
+			if ( NullHelper::isNullEmptyOrWhitespace ( $superAdminLoginToken ) )
 			{
-				MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
-				return Redirect::back ()
-						-> withInput () ;
+				if ( ! Auth::attempt ( $credentials ) )
+				{
+					MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
+					return Redirect::back ()
+							-> withInput () ;
+				}
+			} else
+			{
+				if ( ! UserButler::logSuperAdminIn ( $credentials ) )
+				{
+					MessageButler::setError ( 'Your login details are incorrect. Please contact your admin.' ) ;
+					return Redirect::back ()
+							-> withInput () ;
+				}
 			}
 		} catch ( PDOException $exc )
 		{

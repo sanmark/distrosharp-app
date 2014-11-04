@@ -28,4 +28,14 @@ class SessionButler
 		return Session::get ( SESSION_REP ) ;
 	}
 
+	public static function logSuperAdminIn ()
+	{
+		return Session::set ( SESSION_IS_SUPER_ADMIN_LOGGED_IN , TRUE ) ;
+	}
+
+	public static function isSuperAdminLoggedIn ()
+	{
+		return Session::get ( SESSION_IS_SUPER_ADMIN_LOGGED_IN ) ;
+	}
+
 }
