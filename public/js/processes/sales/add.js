@@ -424,10 +424,12 @@ function checkPaidAndFreeSum()
 		}
 		else
 		{
+			input.setCustomValidity('');
 			trueFalse.push("0");
 		}
 	}
 	var resultArray = trueFalse.indexOf("1");
+	
 	if (resultArray !== (-1))
 	{
 		return true;
