@@ -82,6 +82,7 @@ class MenuButler
 		['System' , [
 				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
 				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ] ,
+				[ 'Add New User' , 'system.addNewUser' , ['super_admin' ] ] ,
 				['Activity Log' , 'system.activityLog' , ['view_activity_log' ] ]
 			]
 		] ,

@@ -81,4 +81,12 @@ Route::group ( [
 		'as'	 => 'system.settings.organizationName' ,
 		'uses'	 => 'Controllers\System\SettingsController@updateOrganizationName'
 	] ) ;
+	Route::get ( 'add-new-user' , [
+		'as'	 => 'system.addNewUser' ,
+		'uses'	 => 'Controllers\System\SettingsController@addUser'
+	] ) ;
+	Route::post ( 'add-new-user' , [
+		'as'	 => 'system.addNewUser' ,
+		'uses'	 => 'Controllers\System\SettingsController@saveUser'
+	] ) ;
 } ) ;

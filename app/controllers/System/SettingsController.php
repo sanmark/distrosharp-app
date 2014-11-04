@@ -250,4 +250,84 @@ class SettingsController extends \Controller
 		}
 	}
 
+	public function addUser ()
+	{
+		return \View::make ( 'web.system.addUser.add' ) ;
+	}
+
+	public function saveUser ()
+	{
+		try
+		{
+			$this -> validateAddUser () ;
+
+			$user = new \User() ;
+
+			$user -> username	 = \Input::get ( 'username' ) ;
+			$user -> email		 = \Input::get ( 'email' ) ;
+			$user -> password	 = \Hash::make ( \Input::get ( 'password' ) ) ;
+			$user -> first_name	 = \Input::get ( 'first_name' ) ;
+			$user -> last_name	 = \Input::get ( 'last_name' ) ;
+
+			$user -> save () ;
+
+			\MessageButler::setSuccess ( "New User was added successfully" ) ;
+			return \View::make ( 'web.system.addUser.add' ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
+	public function validateAddUser ()
+	{
+		$data = [
+			'username'				 => \Input::get ( 'username' ) ,
+			'email'					 => \Input::get ( 'email' ) ,
+			'password'				 => \Input::get ( 'password' ) ,
+			'password_confirmation'	 => \Input::get ( 'password_confirmation' ) ,
+			'first_name'			 => \Input::get ( 'first_name' ) ,
+			'last_name'				 => \Input::get ( 'last_name' ) ,
+			] ;
+
+		$rules = [
+			'username'				 => [
+				'required' ,
+				'unique:users,username' ] ,
+			'email'					 => [
+				'required' ,
+				'email' ,
+				'min:5' ,
+				'unique:users,email'
+			] ,
+			'password'				 => [
+				'required' ,
+				'min:5' ,
+				'confirmed'
+			] ,
+			'password_confirmation'	 => [
+				'required' ,
+				'min:5'
+			] ,
+			'first_name'			 => [
+				'required'
+			] ,
+			'last_name'				 => [
+				'required'
+			] ,
+			] ;
+
+		$validator = \Validator::make ( $data , $rules ) ;
+
+		if ( $validator -> fails () )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
 }
