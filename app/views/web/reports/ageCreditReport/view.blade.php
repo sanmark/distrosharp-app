@@ -86,7 +86,7 @@
 	routeId = $('#route_id').val();
 		$('#customer').find('option').remove();
 		$('#customer').append(
-		$('<option></option>').
+		$('<option value=""></option>').
 		text('Select')
 		);
 		$.post(
