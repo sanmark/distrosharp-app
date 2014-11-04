@@ -82,11 +82,26 @@ class TransferController extends \Controller
 	{
 		try
 		{
+			$this -> validateSelectedTransfers ( $fromStockId , $toStockId , $isUnloaded ) ;
+
+			$fromStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
+			$toStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
+			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
+				-> orderBy ( 'buying_invoice_order' , 'ASC' )
+				-> get () ;
+			$dateTime				 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+			$returnQuantityArray	 = $fromStock -> returnQuantities () ;
+			$returnQuantityStatus	 = \ArrayHelper::hasAtLeastOneElementWithValue ( $returnQuantityArray ) ;
+
+			$fromStockDetails	 = $fromStock -> goodQuantities () ;
+			$toStockDetails		 = $toStock -> goodQuantities () ;
+
 			if ( $isUnloaded == TRUE )
 			{
 				$stockObj	 = \Models\Stock::findOrFail ( $fromStockId ) ;
 				$isLoaded	 = $stockObj -> isLoadedWithItems () ;
 				$isSelled	 = $stockObj -> isSellingInvoicesAdded () ;
+
 
 				if ( $isLoaded == FALSE )
 				{
@@ -100,18 +115,12 @@ class TransferController extends \Controller
 					return \Redirect::back ()
 							-> withInput () ;
 				}
+
+				if ( $returnQuantityStatus == TRUE )
+				{
+					\MessageButler::setInfo ( 'There are <b>company returns</b> in the "' . $fromStock -> name . '" stock, We will unload them automatically' ) ;
+				}
 			}
-			$this -> validateSelectedTransfers ( $fromStockId , $toStockId , $isUnloaded ) ;
-
-			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
-			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$items		 = \Models\Item::where ( 'is_active' , '=' , '1' )
-				-> orderBy ( 'buying_invoice_order' , 'ASC' )
-				-> get () ;
-			$dateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
-
-			$fromStockDetails	 = $fromStock -> goodQuantities () ;
-			$toStockDetails		 = $toStock -> goodQuantities () ;
 
 			$data = compact ( [
 				'fromStock' ,
@@ -120,7 +129,8 @@ class TransferController extends \Controller
 				'dateTime' ,
 				'fromStockDetails' ,
 				'toStockDetails' ,
-				'isUnloaded'
+				'isUnloaded' ,
+				'returnQuantityArray'
 				] ) ;
 
 			return \View::make ( 'web.processes.transfers.add' , $data ) ;
@@ -136,18 +146,23 @@ class TransferController extends \Controller
 	{
 		try
 		{
-			$items				 = \Models\Item::where ( 'is_active' , '=' , '1' )
+			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
 				-> orderBy ( 'buying_invoice_order' , 'ASC' )
 				-> lists ( 'id' ) ;
-			$dateTime			 = \Input::get ( 'date_time' ) ;
-			$availableAmounts	 = \Input::get ( 'availale_amounts' ) ;
-			$transferAmounts	 = \Input::get ( 'transfer_amounts' ) ;
-			$description		 = \Input::get ( 'description' ) ;
-			$unload				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
-			$fromStockObj		 = \Models\Stock::findOrFail ( $fromStockId ) ;
+			$dateTime				 = \Input::get ( 'date_time' ) ;
+			$availableAmounts		 = \Input::get ( 'availale_amounts' ) ;
+			$transferAmounts		 = \Input::get ( 'transfer_amounts' ) ;
+			$description			 = \Input::get ( 'description' ) ;
+			$unload					 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
+			$fromStockObj			 = \Models\Stock::findOrFail ( $fromStockId ) ;
+			$fromStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
+			$companyReturns			 = $fromStock -> returnQuantities () ;
+			$returnQuantityStatus	 = \ArrayHelper::hasAtLeastOneElementWithValue ( $companyReturns ) ;
+
 
 			if ( $unload == TRUE )
 			{
+
 				$itemsWithoutZero = [ ] ;
 				foreach ( $items as $item )
 				{
@@ -165,6 +180,12 @@ class TransferController extends \Controller
 					}
 				}
 				$this -> validateUnloadTransfer ( $itemsWithoutZero ) ;
+
+				if ( $returnQuantityStatus == TRUE )
+				{
+					$this -> unloadCompanyReturns ( $companyReturns , $fromStockId , $dateTime ) ;
+				}
+
 				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
 
@@ -284,6 +305,30 @@ class TransferController extends \Controller
 			$iie -> validator	 = $validator ;
 
 			throw $iie ;
+		}
+	}
+
+	public function unloadCompanyReturns ( $returnQuantityArray , $fromStockId , $dateTime )
+	{
+		$description = "Company Return Unload" ;
+		$mainStock	 = \SystemSettingButler::getValue ( 'main_stock' ) ;
+		$stock		 = new \Models\Stock() ;
+		$transferId	 = $stock -> saveBasicTransferDetails ( $fromStockId , $mainStock , $dateTime , $description ) ;
+
+		foreach ( $returnQuantityArray as $item => $returnQuantity )
+		{
+			if ( ! \NullHelper::isNullEmptyOrWhitespace ( $returnQuantity ) )
+			{
+				$companyReturnsPrunedArray[ $item ]	 = $returnQuantity ;
+				$transferDetails					 = new \Models\TransferDetail() ;
+				$transferDetails -> transfer_id		 = $transferId ;
+				$transferDetails -> item_id			 = $item ;
+				$transferDetails -> quantity		 = $companyReturnsPrunedArray[ $item ] ;
+				$transferDetails -> save () ;
+
+				\StockDetailButler::decreaseReturnQuantity ( $fromStockId , $item , $companyReturnsPrunedArray[ $item ] ) ;
+				\StockDetailButler::increaseReturnQuantity ( $mainStock , $item , $companyReturnsPrunedArray[ $item ] ) ;
+			}
 		}
 	}
 
