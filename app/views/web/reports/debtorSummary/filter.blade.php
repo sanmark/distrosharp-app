@@ -43,7 +43,7 @@
 			<tr>
 				<th>Type</th>
 				<th>Date</th>
-				<th>Narration</th>
+				<th>Invoice Number</th>
 				<th>DR</th>
 				<th>CR</th>
 				<th>Invoice Status</th>
