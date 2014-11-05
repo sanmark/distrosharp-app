@@ -19,7 +19,7 @@
 					{{Form::input('date', 'to_date', $date_to,array('class' => '','required'=>true))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::submit('Submit',array('class' => 'btn btn-default pull-right'))}}
+					{{Form::submit('Submit',array('class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}
 			</div>
