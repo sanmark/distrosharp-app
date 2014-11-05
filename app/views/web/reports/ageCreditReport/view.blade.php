@@ -25,7 +25,7 @@
 					{{Form::select('customer',$customerSelectBox,null, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::label('age_by_days','Days More Than', array('class' => 'control-label'))}}
+					{{Form::label('age_by_days','Older than (Days)', array('class' => 'control-label'))}}
 					{{Form::text('age_by_days',$ageDays, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
