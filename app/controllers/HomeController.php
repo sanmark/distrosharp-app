@@ -29,7 +29,7 @@ class HomeController extends BaseController
 		$view	 = $view -> with ( 'lastThirtyDaysPurchase' , $lastThirtyDaysPurchase ) ;
 		$view	 = $view -> with ( 'lastThirtyDaysSales' , $lastThirtyDaysSales ) ;
 
-		$theSubmitedForm = \Input::get ( 'submitedForm' ) ;
+		$theSubmitedForm = \InputButler::get ( 'submitedForm' ) ;
 		if ( $theSubmitedForm == 'dailyWorkFlow' )
 		{
 			$dailyWorkflow	 = $this -> updateDailyWorkFlow () ;
@@ -41,7 +41,7 @@ class HomeController extends BaseController
 
 	private function updateDailyWorkFlow ()
 	{
-		$theDate = Input::get ( 'the_date' ) ;
+		$theDate = InputButler::get ( 'the_date' ) ;
 		$theDate = NullHelper::ifNullEmptyOrWhitespace ( $theDate , date ( 'Y-m-d' ) ) ;
 		$theDate = DateTimeHelper::convertTextToFormattedDateTime ( $theDate , 'Y-m-d' ) ;
 

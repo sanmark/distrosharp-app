@@ -9,12 +9,12 @@ class TransfersController extends \Controller
 	{
 		$filterValues	 = \Input::all () ;
 		$financeData	 = \Models\FinanceTransfer::viewAllFilter ( $filterValues ) ;
-		$fromDate		 = \Input::get ( 'from_date' ) ;
-		$toDate			 = \Input::get ( 'to_date' ) ;
-		$compareSign	 = \Input::get ( 'compare_sign' ) ;
-		$amount			 = \Input::get ( 'amount' ) ;
-		$fromAccount	 = \Input::get ( 'from_account' ) ;
-		$toAccount		 = \Input::get ( 'to_account' ) ;
+		$fromDate		 = \InputButler::get ( 'from_date' ) ;
+		$toDate			 = \InputButler::get ( 'to_date' ) ;
+		$compareSign	 = \InputButler::get ( 'compare_sign' ) ;
+		$amount			 = \InputButler::get ( 'amount' ) ;
+		$fromAccount	 = \InputButler::get ( 'from_account' ) ;
+		$toAccount		 = \InputButler::get ( 'to_account' ) ;
 
 		$compareSignSelectBox	 = ['' => 'Compare' , '>' => 'Greater Than' , '<' => 'Smaller Than' , '=' => 'Equals to' ] ;
 		$fromAccountsId			 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
@@ -68,8 +68,8 @@ class TransfersController extends \Controller
 	{
 		try
 		{
-			$from	 = \Input::get ( 'from' ) ;
-			$to		 = \Input::get ( 'to' ) ;
+			$from	 = \InputButler::get ( 'from' ) ;
+			$to		 = \InputButler::get ( 'to' ) ;
 
 			$data = compact ( [
 				'from' ,
@@ -105,9 +105,9 @@ class TransfersController extends \Controller
 	{
 		try
 		{
-			$dateTime	 = \Input::get ( 'date_time' ) ;
-			$amount		 = \Input::get ( 'amount' ) ;
-			$description = \Input::get ( 'description' ) ;
+			$dateTime	 = \InputButler::get ( 'date_time' ) ;
+			$amount		 = \InputButler::get ( 'amount' ) ;
+			$description = \InputButler::get ( 'description' ) ;
 
 			$financeTransfer				 = new \Models\FinanceTransfer() ;
 			$financeTransfer -> from_id		 = $fromAccountId ;
@@ -137,12 +137,12 @@ class TransfersController extends \Controller
 		$filterValues		 = \Input::all () + ['id' => $accountId ] ;
 		$accountTransfers	 = \Models\FinanceTransfer::filter ( $filterValues ) ;
 
-		$fromDate				 = \Input::get ( 'from_date' ) ;
-		$toDate					 = \Input::get ( 'to_date' ) ;
-		$inOrOut				 = \Input::get ( 'in_or_out' ) ;
-		$compareSign			 = \Input::get ( 'compare_sign' ) ;
-		$amount					 = \Input::get ( 'amount' ) ;
-		$accountRefill			 = \Input::get ( 'transfer_account' ) ;
+		$fromDate				 = \InputButler::get ( 'from_date' ) ;
+		$toDate					 = \InputButler::get ( 'to_date' ) ;
+		$inOrOut				 = \InputButler::get ( 'in_or_out' ) ;
+		$compareSign			 = \InputButler::get ( 'compare_sign' ) ;
+		$amount					 = \InputButler::get ( 'amount' ) ;
+		$accountRefill			 = \InputButler::get ( 'transfer_account' ) ;
 		$compareSignSelectBox	 = ['' => 'Compare' , '>' => 'Greater Than' , '<' => 'Smaller Than' , '=' => 'Equals to' ] ;
 
 		$inOrOutSelectBox	 = ['' => 'Any' , 'in' => 'In' , 'out' => 'Out' ] ;
@@ -192,15 +192,15 @@ class TransfersController extends \Controller
 			$financeTransferUpdateRow = \Models\FinanceTransfer::with ( 'chequeDetail' )
 				-> findOrFail ( $transferId ) ;
 
-			$dateTime			 = \Input::get ( 'date_time' ) ;
-			$amount				 = \Input::get ( 'amount' ) ;
-			$description		 = \Input::get ( 'description' ) ;
-			$fromId				 = \Input::get ( 'from_id' ) ;
-			$toId				 = \Input::get ( 'to_id' ) ;
-			$chequeBankId		 = \Input::get ( 'cheque_bank_id' ) ;
-			$chequeNumber		 = \Input::get ( 'cheque_number' ) ;
-			$chequeIssuedDate	 = \Input::get ( 'cheque_issued_date' ) ;
-			$chequePayableDate	 = \Input::get ( 'cheque_payable_date' ) ;
+			$dateTime			 = \InputButler::get ( 'date_time' ) ;
+			$amount				 = \InputButler::get ( 'amount' ) ;
+			$description		 = \InputButler::get ( 'description' ) ;
+			$fromId				 = \InputButler::get ( 'from_id' ) ;
+			$toId				 = \InputButler::get ( 'to_id' ) ;
+			$chequeBankId		 = \InputButler::get ( 'cheque_bank_id' ) ;
+			$chequeNumber		 = \InputButler::get ( 'cheque_number' ) ;
+			$chequeIssuedDate	 = \InputButler::get ( 'cheque_issued_date' ) ;
+			$chequePayableDate	 = \InputButler::get ( 'cheque_payable_date' ) ;
 
 			$this -> validateChequeDetails ( $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 

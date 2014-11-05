@@ -38,10 +38,10 @@ class Transfer extends BaseEntity implements \Interfaces\iEntity
 
 		if ( count ( $filterValues ) > 0 )
 		{
-			$fromDate	 = \Input::get ( 'from_date_time' ) ;
-			$toDate		 = \Input::get ( 'to_date_time' ) ;
-			$fromStock	 = \Input::get ( 'from_stock' ) ;
-			$toStock	 = \Input::get ( 'to_stock' ) ;
+			$fromDate	 = \InputButler::get ( 'from_date_time' ) ;
+			$toDate		 = \InputButler::get ( 'to_date_time' ) ;
+			$fromStock	 = \InputButler::get ( 'from_stock' ) ;
+			$toStock	 = \InputButler::get ( 'to_stock' ) ;
 			$minDate	 = $requestObject -> min ( 'date_time' ) ;
 			$maxDate	 = $requestObject -> max ( 'date_time' ) ;
 

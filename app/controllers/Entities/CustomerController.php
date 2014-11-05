@@ -13,9 +13,9 @@ class CustomerController extends \Controller
 
 		$customers		 = \Models\Customer::filter ( $filterValues ) ;
 		$routeSelectBox	 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Any' ] ) ;
-		$name			 = \Input::get ( 'name' ) ;
-		$routeId		 = \Input::get ( 'route' ) ;
-		$isActive		 = \Input::get ( 'is_active' ) ;
+		$name			 = \InputButler::get ( 'name' ) ;
+		$routeId		 = \InputButler::get ( 'route' ) ;
+		$isActive		 = \InputButler::get ( 'is_active' ) ;
 
 		$data[ 'customers' ]		 = $customers ;
 		$data[ 'routeSelectBox' ]	 = $routeSelectBox ;
@@ -36,10 +36,10 @@ class CustomerController extends \Controller
 		try
 		{
 			$customer				 = new \Models\Customer() ;
-			$customer -> name		 = \Input::get ( 'name' ) ;
-			$customer -> route_id	 = \Input::get ( 'route_id' ) ;
-			$customer -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$customer -> details	 = \Input::get ( 'details' ) ;
+			$customer -> name		 = \InputButler::get ( 'name' ) ;
+			$customer -> route_id	 = \InputButler::get ( 'route_id' ) ;
+			$customer -> is_active	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$customer -> details	 = \InputButler::get ( 'details' ) ;
 
 			$customer -> save () ;
 
@@ -77,10 +77,10 @@ class CustomerController extends \Controller
 		{
 			$customer = \Models\Customer::findOrFail ( $id ) ;
 
-			$customer -> name		 = \Input::get ( 'name' ) ;
-			$customer -> route_id	 = \Input::get ( 'route_id' ) ;
-			$customer -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$customer -> details	 = \Input::get ( 'details' ) ;
+			$customer -> name		 = \InputButler::get ( 'name' ) ;
+			$customer -> route_id	 = \InputButler::get ( 'route_id' ) ;
+			$customer -> is_active	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$customer -> details	 = \InputButler::get ( 'details' ) ;
 
 			$customer -> update () ;
 
@@ -97,7 +97,7 @@ class CustomerController extends \Controller
 
 	public function aForRouteId ()
 	{
-		$routeId	 = \Input::get ( 'routeId' ) ;
+		$routeId	 = \InputButler::get ( 'routeId' ) ;
 		$customers	 = \Models\Customer::where ( 'route_id' , '=' , $routeId )
 			-> get () ;
 
@@ -106,7 +106,7 @@ class CustomerController extends \Controller
 
 	public function aCreditInvoices ()
 	{
-		$customerId = \Input::get ( 'customerId' ) ;
+		$customerId = \InputButler::get ( 'customerId' ) ;
 
 		$customer = \Models\Customer::findOrFail ( $customerId ) ;
 

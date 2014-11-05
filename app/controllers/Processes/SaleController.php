@@ -58,20 +58,20 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items						 = \Input::get ( 'items' ) ;
-			$dateTime					 = \Input::get ( 'date_time' ) ;
-			$customerId					 = \Input::get ( 'customer_id' ) ;
-			$printedInvoiceNumber		 = \Input::get ( 'printed_invoice_number' ) ;
-			$discount					 = \Input::get ( 'discount' ) ;
-			$isCompletelyPaid			 = \Input::get ( 'is_completely_paid' ) ;
-			$cashPaymentAmount			 = \Input::get ( 'cash_payment' ) ;
-			$chequePaymentAmount		 = \Input::get ( 'cheque_payment' ) ;
-			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
-			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
-			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
-			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
-			$oldRouteId					 = \Input::get ( 'route_id' ) ;
-			$creditPayments				 = \Input::get ( 'credit_payments' ) ;
+			$items						 = \InputButler::get ( 'items' ) ;
+			$dateTime					 = \InputButler::get ( 'date_time' ) ;
+			$customerId					 = \InputButler::get ( 'customer_id' ) ;
+			$printedInvoiceNumber		 = \InputButler::get ( 'printed_invoice_number' ) ;
+			$discount					 = \InputButler::get ( 'discount' ) ;
+			$isCompletelyPaid			 = \InputButler::get ( 'is_completely_paid' ) ;
+			$cashPaymentAmount			 = \InputButler::get ( 'cash_payment' ) ;
+			$chequePaymentAmount		 = \InputButler::get ( 'cheque_payment' ) ;
+			$chequePaymentBankId		 = \InputButler::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
+			$oldRouteId					 = \InputButler::get ( 'route_id' ) ;
+			$creditPayments				 = \InputButler::get ( 'credit_payments' ) ;
 			$rep						 = \User::with ( 'stock' ) -> findOrFail ( \SessionButler::getRepId () ) ;
 			$stockId					 = $rep -> stock -> id ;
 
@@ -117,14 +117,14 @@ class SaleController extends \Controller
 		$routeSelectBox			 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 		$repSelectBox			 = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 		$isActiveSelectBox		 = \ViewButler::htmlSelectAnyYesNo () ;
-		$id						 = \Input::get ( 'id' ) ;
-		$printedInvoiceNumber	 = \Input::get ( 'printed_invoice_number' ) ;
-		$dateTimeFrom			 = \Input::get ( 'date_time_from' ) ;
-		$dateTimeTo				 = \Input::get ( 'date_time_to' ) ;
-		$customerId				 = \Input::get ( 'customer_id' ) ;
-		$repId					 = \Input::get ( 'rep_id' ) ;
-		$isCompletelyPaid		 = \Input::get ( 'is_completely_paid' ) ;
-		$routeId				 = \Input::get ( 'route_id' ) ;
+		$id						 = \InputButler::get ( 'id' ) ;
+		$printedInvoiceNumber	 = \InputButler::get ( 'printed_invoice_number' ) ;
+		$dateTimeFrom			 = \InputButler::get ( 'date_time_from' ) ;
+		$dateTimeTo				 = \InputButler::get ( 'date_time_to' ) ;
+		$customerId				 = \InputButler::get ( 'customer_id' ) ;
+		$repId					 = \InputButler::get ( 'rep_id' ) ;
+		$isCompletelyPaid		 = \InputButler::get ( 'is_completely_paid' ) ;
+		$routeId				 = \InputButler::get ( 'route_id' ) ;
 
 
 		$creditBalance		 = [ ] ;
@@ -205,24 +205,24 @@ class SaleController extends \Controller
 	{
 		try
 		{
-			$items						 = \Input::get ( 'items' ) ;
-			$cashPaymentAmount			 = \Input::get ( 'new_cash_payment' ) ;
-			$chequePaymentAmount		 = \Input::get ( 'new_cheque_payment' ) ;
-			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
-			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
-			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
-			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
+			$items						 = \InputButler::get ( 'items' ) ;
+			$cashPaymentAmount			 = \InputButler::get ( 'new_cash_payment' ) ;
+			$chequePaymentAmount		 = \InputButler::get ( 'new_cheque_payment' ) ;
+			$chequePaymentBankId		 = \InputButler::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
 			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
 			$this -> validateSaleItemsForUpdate ( $items ) ;
 			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$sellingInvoice = \Models\SellingInvoice::findOrFail ( $id ) ;
 
-			$sellingInvoice -> date_time				 = \Input::get ( 'date_time' ) ;
-			$sellingInvoice -> customer_id				 = \Input::get ( 'customer_id' ) ;
-			$sellingInvoice -> printed_invoice_number	 = \Input::get ( 'printed_invoice_number' ) ;
-			$sellingInvoice -> discount					 = \Input::get ( 'discount' ) ;
-			$sellingInvoice -> is_completely_paid		 = \Input::get ( 'is_completely_paid' ) ;
+			$sellingInvoice -> date_time				 = \InputButler::get ( 'date_time' ) ;
+			$sellingInvoice -> customer_id				 = \InputButler::get ( 'customer_id' ) ;
+			$sellingInvoice -> printed_invoice_number	 = \InputButler::get ( 'printed_invoice_number' ) ;
+			$sellingInvoice -> discount					 = \InputButler::get ( 'discount' ) ;
+			$sellingInvoice -> is_completely_paid		 = \InputButler::get ( 'is_completely_paid' ) ;
 
 			$sellingInvoice -> update () ;
 			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
@@ -261,7 +261,7 @@ class SaleController extends \Controller
 		{
 			$this -> validateSetRep () ;
 
-			$repId = \Input::get ( 'rep_id' ) ;
+			$repId = \InputButler::get ( 'rep_id' ) ;
 
 			\SessionButler::setRepId ( $repId ) ;
 
@@ -486,7 +486,7 @@ class SaleController extends \Controller
 
 	private function updateSellingItems ( $sellingInvoiceId )
 	{
-		$sellingItemsArray = \Input::get ( 'items' ) ;
+		$sellingItemsArray = \InputButler::get ( 'items' ) ;
 
 		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
 		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;

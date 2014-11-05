@@ -12,8 +12,8 @@ class VendorController extends \Controller
 		$filterValues = \Input::all () ;
 
 		$vendors	 = \Models\Vendor::filter ( $filterValues ) ;
-		$name		 = \Input::get ( 'name' ) ;
-		$isActive	 = \Input::get ( 'is_active' ) ;
+		$name		 = \InputButler::get ( 'name' ) ;
+		$isActive	 = \InputButler::get ( 'is_active' ) ;
 
 		$data[ 'vendors' ]	 = $vendors ;
 		$data[ 'name' ]		 = $name ;
@@ -32,9 +32,9 @@ class VendorController extends \Controller
 		try
 		{
 			$vendor				 = new \Models\Vendor() ;
-			$vendor -> name		 = \Input::get ( 'name' ) ;
-			$vendor -> details	 = \Input::get ( 'details' ) ;
-			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$vendor -> name		 = \InputButler::get ( 'name' ) ;
+			$vendor -> details	 = \InputButler::get ( 'details' ) ;
+			$vendor -> is_active = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
 			$vendor -> save () ;
 
 			\ActivityLogButler::add ( "Add Vendor " . $vendor -> id ) ;
@@ -68,9 +68,9 @@ class VendorController extends \Controller
 		{
 
 			$vendor				 = \Models\Vendor::findOrFail ( $id ) ;
-			$vendor -> name		 = \Input::get ( 'name' ) ;
-			$vendor -> details	 = \Input::get ( 'details' ) ;
-			$vendor -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$vendor -> name		 = \InputButler::get ( 'name' ) ;
+			$vendor -> details	 = \InputButler::get ( 'details' ) ;
+			$vendor -> is_active = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
 			$vendor -> update () ;
 
 			\ActivityLogButler::add ( "Edit Vendor " . $vendor -> id ) ;

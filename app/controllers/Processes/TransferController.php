@@ -11,10 +11,10 @@ class TransferController extends \Controller
 		$transfers		 = \Models\Transfer::filter ( $filterValues ) ;
 		$stocks			 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Any' ] ) ;
 
-		$fromStockId	 = \Input::get ( 'from_stock_id' ) ;
-		$toStockId		 = \Input::get ( 'to_stock_id' ) ;
-		$dateTimeFrom	 = \Input::get ( 'date_time_from' ) ;
-		$dateTimeTo		 = \Input::get ( 'date_time_to' ) ;
+		$fromStockId	 = \InputButler::get ( 'from_stock_id' ) ;
+		$toStockId		 = \InputButler::get ( 'to_stock_id' ) ;
+		$dateTimeFrom	 = \InputButler::get ( 'date_time_from' ) ;
+		$dateTimeTo		 = \InputButler::get ( 'date_time_to' ) ;
 
 		if ( is_null ( $dateTimeFrom ) )
 		{
@@ -63,9 +63,9 @@ class TransferController extends \Controller
 	{
 		try
 		{
-			$from		 = \Input::get ( 'from' ) ;
-			$to			 = \Input::get ( 'to' ) ;
-			$isUnloaded	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
+			$from		 = \InputButler::get ( 'from' ) ;
+			$to			 = \InputButler::get ( 'to' ) ;
+			$isUnloaded	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_unload' ) ) ;
 
 			$this -> validateSelectedTransfers ( $from , $to , $isUnloaded ) ;
 
@@ -149,11 +149,11 @@ class TransferController extends \Controller
 			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
 				-> orderBy ( 'buying_invoice_order' , 'ASC' )
 				-> lists ( 'id' ) ;
-			$dateTime				 = \Input::get ( 'date_time' ) ;
-			$availableAmounts		 = \Input::get ( 'availale_amounts' ) ;
-			$transferAmounts		 = \Input::get ( 'transfer_amounts' ) ;
-			$description			 = \Input::get ( 'description' ) ;
-			$unload					 = \NullHelper::zeroIfNull ( \Input::get ( 'is_unload' ) ) ;
+			$dateTime				 = \InputButler::get ( 'date_time' ) ;
+			$availableAmounts		 = \InputButler::get ( 'availale_amounts' ) ;
+			$transferAmounts		 = \InputButler::get ( 'transfer_amounts' ) ;
+			$description			 = \InputButler::get ( 'description' ) ;
+			$unload					 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_unload' ) ) ;
 			$fromStockObj			 = \Models\Stock::findOrFail ( $fromStockId ) ;
 			$fromStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$companyReturns			 = $fromStock -> returnQuantities () ;

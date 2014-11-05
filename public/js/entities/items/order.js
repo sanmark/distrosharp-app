@@ -1,6 +1,5 @@
 function validateDublicate() {
-
-
+	
 	$("#formItemOrder").submit(function (event) {
 
 		$(".alert").remove();

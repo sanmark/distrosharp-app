@@ -170,4 +170,22 @@ class ArrayHelper
 		}
 	}
 
+	public static function removeWhiteSpacesInValuesRecursive ( $array )
+	{
+		$processedArray = [ ] ;
+
+		foreach ( $array as $key => $value )
+		{
+			if ( is_array ( $value ) )
+			{
+				$processedArray[ $key ] = self::removeWhiteSpacesInValuesRecursive ( $value ) ;
+			} else
+			{
+				$processedArray[ $key ] = StringHelper::removeWhiteSpaces ( $value ) ;
+			}
+		}
+
+		return $processedArray ;
+	}
+
 }

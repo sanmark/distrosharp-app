@@ -8,7 +8,7 @@ class CreditSummaryReportController extends \Controller
 	public function home ()
 	{
 
-		$routeId			 = \Input::get ( 'route_id' ) ;
+		$routeId			 = \InputButler::get ( 'route_id' ) ;
 		$route				 = \Models\Route::find ( $routeId ) ;
 		$routeList			 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'All Routes' ] ) ;
 		$customersInRoute	 = \Models\Customer::lists ( 'id' ) ;

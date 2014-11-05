@@ -28,10 +28,10 @@ class DebtorSummaryController extends \Controller
 		{
 			$routes		 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 			$customers	 = [NULL => 'Select Route First' ] ;
-			$fromDate	 = \Input::get ( 'from_date' ) ;
-			$toDate		 = \Input::get ( 'to_date' ) ;
-			$routeId	 = \Input::get ( 'route_id' ) ;
-			$customerId	 = \Input::get ( 'customer_id' ) ;
+			$fromDate	 = \InputButler::get ( 'from_date' ) ;
+			$toDate		 = \InputButler::get ( 'to_date' ) ;
+			$routeId	 = \InputButler::get ( 'route_id' ) ;
+			$customerId	 = \InputButler::get ( 'customer_id' ) ;
 
 			$fromTime	 = $fromDate . ' 00:00:00' ;
 			$toTime		 = $toDate . ' 23:59:59' ;

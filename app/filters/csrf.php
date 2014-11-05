@@ -13,7 +13,7 @@
 
 Route::filter ( 'csrf' , function()
 {
-	if ( Session::token () != Input::get ( '_token' ) )
+	if ( Session::token () != InputButler::get ( '_token' ) )
 	{
 		throw new Illuminate\Session\TokenMismatchException ;
 	}

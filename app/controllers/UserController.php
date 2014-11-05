@@ -15,8 +15,8 @@ class UserController extends Controller
 
 	public function pLogin ( $superAdminLoginToken = NULL )
 	{
-		$organization = Input::get ( 'organization' ) ;
-
+		$organization = InputButler::get ( 'organization' ) ;
+		
 		if ( NullHelper::isNullEmptyOrWhitespace ( $organization ) )
 		{
 			MessageButler::setError ( 'Please enter organization code.' ) ;
@@ -37,8 +37,8 @@ class UserController extends Controller
 					-> withInput () ;
 		}
 
-		$credentials[ 'username' ]	 = Input::get ( 'username' ) ;
-		$credentials[ 'password' ]	 = Input::get ( 'password' ) ;
+		$credentials[ 'username' ]	 = InputButler::get ( 'username' ) ;
+		$credentials[ 'password' ]	 = InputButler::get ( 'password' ) ;
 
 		try
 		{

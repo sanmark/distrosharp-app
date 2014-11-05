@@ -225,7 +225,7 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 
 		$financeAccountConfirmation -> finance_account_id	 = $this -> id ;
 		$financeAccountConfirmation -> date_time			 = $viewDateTime ;
-		$financeAccountConfirmation -> amount				 = \Input::get ( 'endBalance' ) ;
+		$financeAccountConfirmation -> amount				 = \InputButler::get ( 'endBalance' ) ;
 
 		$financeAccountConfirmation -> save () ;
 	}

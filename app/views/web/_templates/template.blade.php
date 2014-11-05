@@ -15,6 +15,7 @@
 		{{ HTML::script('packages/jQuery/jquery.min.js') }}
 		{{ HTML::script('packages/jQueryUI/js/jquery-ui.min.js') }}
 		{{ HTML::script('packages/bootstrap/js/bootstrap.min.js') }}
+		{{ HTML::script('packages/SanmarkJsHelper/SanmarkJsHelper.js') }}
 	</head>
 	<body>
 

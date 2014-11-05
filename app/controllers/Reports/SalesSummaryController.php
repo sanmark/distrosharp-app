@@ -17,12 +17,12 @@ class SalesSummaryController extends \Controller
 		$reps			 = \User::whereIn ( 'id' , $reps_v_routes )
 			-> getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'All Reps' ] ) ;
 
-		$routesId	 = \Input::get ( 'route_id' ) ;
-		$customerId	 = \Input::get ( 'customerId' ) ;
-		$repId		 = \Input::get ( 'rep_id' ) ;
-		$dateFrom	 = \Input::get ( 'date_from' ) ;
-		$dateTo		 = \Input::get ( 'date_to' ) ;
-		$invoiceNum	 = \Input::get ( 'invoice_number' ) ;
+		$routesId	 = \InputButler::get ( 'route_id' ) ;
+		$customerId	 = \InputButler::get ( 'customerId' ) ;
+		$repId		 = \InputButler::get ( 'rep_id' ) ;
+		$dateFrom	 = \InputButler::get ( 'date_from' ) ;
+		$dateTo		 = \InputButler::get ( 'date_to' ) ;
+		$invoiceNum	 = \InputButler::get ( 'invoice_number' ) ;
 
 
 		$totalOfDiscountSum		 = 0 ;

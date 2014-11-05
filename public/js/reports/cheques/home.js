@@ -1,7 +1,7 @@
 function loadCustomers(url, token){
 
  $(document).on('change', '#route', function() {
-		var routeId = $(this).val();
+		var routeId = SanmarkJsHelper.Input.get(this);
 		$('#customer').find('option').remove();
 		$('#customer').append(
 				$('<option value=""></option>')

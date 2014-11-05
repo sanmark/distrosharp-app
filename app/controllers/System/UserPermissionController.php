@@ -22,8 +22,8 @@ class UserPermissionController extends \Controller
 
 	public function view ()
 	{
-		$userId		 = \Input::get ( 'userId' ) ;
-		$update		 = \Input::get ( 'update' ) ;
+		$userId		 = \InputButler::get ( 'userId' ) ;
+		$update		 = \InputButler::get ( 'update' ) ;
 		$usersList	 = \User::getArrayForHtmlSelect ( 'id' , 'username' , ['' => 'Select user' ] ) ;
 		$permissions = \Models\Ability::orderBy ( 'label' ) -> get () ;
 
@@ -50,9 +50,9 @@ class UserPermissionController extends \Controller
 		$newPermissions		 = [ ] ;
 		foreach ( $allInputs as $input )
 		{
-			if ( \Input::get ( 'is_assigned_' . $input ) != NULL )
+			if ( \InputButler::get ( 'is_assigned_' . $input ) != NULL )
 			{
-				$newPermissions[] = \Input::get ( 'is_assigned_' . $input ) ;
+				$newPermissions[] = \InputButler::get ( 'is_assigned_' . $input ) ;
 			}
 		}
 		foreach ( $newPermissions as $permission )

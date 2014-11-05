@@ -1,7 +1,7 @@
 function loadCustomers(url, token) {
 
 	$(document).on('change', '#route', function () {
-		var routeId = $(this).val();
+		var routeId = SanmarkJsHelper.Input.get($(this).val());
 		$('#customer').find('option').remove();
 		$('#customer').append(
 			$('<option value=""></option>')
@@ -32,8 +32,8 @@ function loadCustomers(url, token) {
 function validateDates() {
 	$("#from_date, #to_date").change(function () {
 
-		var from_date = $('#from_date').val();
-		var to_date = $('#to_date').val();
+		var from_date = SanmarkJsHelper.Input.get('#from_date');
+		var to_date = SanmarkJsHelper.Input.get('#to_date');
 
 		var from_dateJScript = document.getElementById('from_date');
 		var to_dateJScript = document.getElementById('to_date');

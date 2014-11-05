@@ -12,9 +12,9 @@ class RouteController extends \Controller
 		$filterValues = \Input::all () ;
 
 		$routes							 = \Models\Route::filter ( $filterValues ) ;
-		$name							 = \Input::get ( 'name' ) ;
-		$isActive						 = \Input::get ( 'is_active' ) ;
-		$repId							 = \Input::get ( 'rep_id' ) ;
+		$name							 = \InputButler::get ( 'name' ) ;
+		$isActive						 = \InputButler::get ( 'is_active' ) ;
+		$repId							 = \InputButler::get ( 'rep_id' ) ;
 		$reps							 = \Models\Route::distinct () -> lists ( 'rep_id' ) ;
 		$repSelectBoxContent			 = \User::getArrayForHtmlSelectByIds ( 'id' , 'username' , $reps , [NULL => 'Any' ] ) ;
 		$data[ 'repSelectBoxContent' ]	 = $repSelectBoxContent ;
@@ -38,9 +38,9 @@ class RouteController extends \Controller
 		try
 		{
 			$route				 = new \Models\Route() ;
-			$route -> name		 = \Input::get ( 'name' ) ;
-			$route -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$route -> rep_id	 = \Input::get ( 'rep_id' ) ;
+			$route -> name		 = \InputButler::get ( 'name' ) ;
+			$route -> is_active	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$route -> rep_id	 = \InputButler::get ( 'rep_id' ) ;
 
 			$route -> save () ;
 
@@ -75,9 +75,9 @@ class RouteController extends \Controller
 		{
 			$route = \Models\Route::findOrFail ( $id ) ;
 
-			$route -> name		 = \Input::get ( 'name' ) ;
-			$route -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$route -> rep_id	 = \Input::get ( 'rep_id' ) ;
+			$route -> name		 = \InputButler::get ( 'name' ) ;
+			$route -> is_active	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$route -> rep_id	 = \InputButler::get ( 'rep_id' ) ;
 
 			$route -> update () ;
 

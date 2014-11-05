@@ -31,8 +31,8 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$paymentSourceCash	 = \Input::get ( 'payment_source_cash' ) ;
-			$paymentSourceCheque = \Input::get ( 'payment_source_cheque' ) ;
+			$paymentSourceCash	 = \InputButler::get ( 'payment_source_cash' ) ;
+			$paymentSourceCheque = \InputButler::get ( 'payment_source_cheque' ) ;
 
 			\SystemSettingButler::setValue ( 'payment_source_cash' , $paymentSourceCash ) ;
 			\SystemSettingButler::setValue ( 'payment_source_cheque' , $paymentSourceCheque ) ;
@@ -68,7 +68,7 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$timezone = \Input::get ( 'time_zone' ) ;
+			$timezone = \InputButler::get ( 'time_zone' ) ;
 			\SystemSettingButler::setValue ( 'time_zone' , $timezone ) ;
 
 			\MessageButler::setSuccess ( 'Timezone was saved successfully.' ) ;
@@ -101,8 +101,8 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$paymentTargetCash	 = \Input::get ( 'payment_target_cash' ) ;
-			$paymentTargetCheque = \Input::get ( 'payment_target_cheque' ) ;
+			$paymentTargetCash	 = \InputButler::get ( 'payment_target_cash' ) ;
+			$paymentTargetCheque = \InputButler::get ( 'payment_target_cheque' ) ;
 
 			\SystemSettingButler::setValue ( 'payment_target_cash' , $paymentTargetCash ) ;
 			\SystemSettingButler::setValue ( 'payment_target_cheque' , $paymentTargetCheque ) ;
@@ -135,7 +135,7 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$imbalanceStockId = \Input::get ( 'imbalance_stock' ) ;
+			$imbalanceStockId = \InputButler::get ( 'imbalance_stock' ) ;
 
 			\SystemSettingButler::setValue ( 'imbalance_stock' , $imbalanceStockId ) ;
 
@@ -168,7 +168,7 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$mainStockId = \Input::get ( 'main_stock' ) ;
+			$mainStockId = \InputButler::get ( 'main_stock' ) ;
 
 			\SystemSettingButler::setValue ( 'main_stock' , $mainStockId ) ;
 
@@ -204,8 +204,8 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$incomeAccount	 = \Input::get ( 'income_account' ) ;
-			$expenseAccount	 = \Input::get ( 'expense_account' ) ;
+			$incomeAccount	 = \InputButler::get ( 'income_account' ) ;
+			$expenseAccount	 = \InputButler::get ( 'expense_account' ) ;
 
 			\SystemSettingButler::setValue ( 'income_account' , $incomeAccount ) ;
 			\SystemSettingButler::setValue ( 'expense_account' , $expenseAccount ) ;
@@ -237,7 +237,7 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$organizationName = \Input::get ( 'organization_name' ) ;
+			$organizationName = \InputButler::get ( 'organization_name' ) ;
 			\SystemSettingButler::setValue ( 'organization_name' , $organizationName ) ;
 
 			\MessageButler::setSuccess ( 'Organization name was saved successfully.' ) ;
@@ -263,11 +263,11 @@ class SettingsController extends \Controller
 
 			$user = new \User() ;
 
-			$user -> username	 = \Input::get ( 'username' ) ;
-			$user -> email		 = \Input::get ( 'email' ) ;
-			$user -> password	 = \Hash::make ( \Input::get ( 'password' ) ) ;
-			$user -> first_name	 = \Input::get ( 'first_name' ) ;
-			$user -> last_name	 = \Input::get ( 'last_name' ) ;
+			$user -> username	 = \InputButler::get ( 'username' ) ;
+			$user -> email		 = \InputButler::get ( 'email' ) ;
+			$user -> password	 = \Hash::make ( \InputButler::get ( 'password' ) ) ;
+			$user -> first_name	 = \InputButler::get ( 'first_name' ) ;
+			$user -> last_name	 = \InputButler::get ( 'last_name' ) ;
 
 			$user -> save () ;
 
@@ -284,12 +284,12 @@ class SettingsController extends \Controller
 	public function validateAddUser ()
 	{
 		$data = [
-			'username'				 => \Input::get ( 'username' ) ,
-			'email'					 => \Input::get ( 'email' ) ,
-			'password'				 => \Input::get ( 'password' ) ,
-			'password_confirmation'	 => \Input::get ( 'password_confirmation' ) ,
-			'first_name'			 => \Input::get ( 'first_name' ) ,
-			'last_name'				 => \Input::get ( 'last_name' ) ,
+			'username'				 => \InputButler::get ( 'username' ) ,
+			'email'					 => \InputButler::get ( 'email' ) ,
+			'password'				 => \InputButler::get ( 'password' ) ,
+			'password_confirmation'	 => \InputButler::get ( 'password_confirmation' ) ,
+			'first_name'			 => \InputButler::get ( 'first_name' ) ,
+			'last_name'				 => \InputButler::get ( 'last_name' ) ,
 			] ;
 
 		$rules = [

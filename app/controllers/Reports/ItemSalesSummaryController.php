@@ -25,9 +25,9 @@ class ItemSalesSummaryController extends \Controller
 
 	public function filter ()
 	{
-		$repId		 = \Input::get ( 'rep_id' ) ;
-		$fromDate	 = \Input::get ( 'from_date' ) ;
-		$toDate		 = \Input::get ( 'to_date' ) ;
+		$repId		 = \InputButler::get ( 'rep_id' ) ;
+		$fromDate	 = \InputButler::get ( 'from_date' ) ;
+		$toDate		 = \InputButler::get ( 'to_date' ) ;
 
 		$repSelectBox = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 

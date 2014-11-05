@@ -43,14 +43,14 @@ class PurchaseController extends \Controller
 
 		$data = [ ] ;
 
-		$id				 = \Input::get ( 'id' ) ;
-		$vendorId		 = \Input::get ( 'vendor_id' ) ;
-		$fromDate		 = \Input::get ( 'from_date_time' ) ;
-		$toDate			 = \Input::get ( 'to_date_time' ) ;
-		$isPaid			 = \Input::get ( 'is_paid' ) ;
-		$sortBy			 = \Input::get ( 'sort_by' ) ;
-		$sortOrder		 = \Input::get ( 'sort_order' ) ;
-		$stockId		 = \Input::get ( 'stock_id' ) ;
+		$id				 = \InputButler::get ( 'id' ) ;
+		$vendorId		 = \InputButler::get ( 'vendor_id' ) ;
+		$fromDate		 = \InputButler::get ( 'from_date_time' ) ;
+		$toDate			 = \InputButler::get ( 'to_date_time' ) ;
+		$isPaid			 = \InputButler::get ( 'is_paid' ) ;
+		$sortBy			 = \InputButler::get ( 'sort_by' ) ;
+		$sortOrder		 = \InputButler::get ( 'sort_order' ) ;
+		$stockId		 = \InputButler::get ( 'stock_id' ) ;
 		$vendors		 = \Models\BuyingInvoice::distinct () -> lists ( 'vendor_id' ) ;
 		$vendorSelectBox = \Models\Vendor::getArrayForHtmlSelectByIds ( 'id' , 'name' , $vendors , [ NULL => 'Any' ] ) ;
 		$stockSelectBox	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [ '' => 'Any' ] ) ;
@@ -135,18 +135,18 @@ class PurchaseController extends \Controller
 		{
 			$purchaseItem = \Models\BuyingInvoice::findOrFail ( $id ) ;
 
-			$purchaseItem -> date_time				 = \Input::get ( 'date_time' ) ;
-			$purchaseItem -> vendor_id				 = \Input::get ( 'vendor_id' ) ;
-			$purchaseItem -> printed_invoice_num	 = \Input::get ( 'printed_invoice_num' ) ;
-			$purchaseItem -> completely_paid		 = \NullHelper::zeroIfNull ( \Input::get ( 'completely_paid' ) ) ;
-			$purchaseItem -> other_expenses_amount	 = \Input::get ( 'other_expenses_amount' ) ;
-			$purchaseItem -> other_expenses_details	 = \Input::get ( 'other_expenses_details' ) ;
-			$cashPayment							 = \Input::get ( 'new_cash_payment' ) ;
-			$chequePayment							 = \Input::get ( 'new_cheque_payment' ) ;
-			$chequePaymentBankId					 = \Input::get ( 'cheque_payment_bank_id' ) ;
-			$chequePaymentChequeNumber				 = \Input::get ( 'cheque_payment_cheque_number' ) ;
-			$chequePaymentIssuedDate				 = \Input::get ( 'cheque_payment_issued_date' ) ;
-			$chequePaymentPayableDate				 = \Input::get ( 'cheque_payment_payable_date' ) ;
+			$purchaseItem -> date_time				 = \InputButler::get ( 'date_time' ) ;
+			$purchaseItem -> vendor_id				 = \InputButler::get ( 'vendor_id' ) ;
+			$purchaseItem -> printed_invoice_num	 = \InputButler::get ( 'printed_invoice_num' ) ;
+			$purchaseItem -> completely_paid		 = \NullHelper::zeroIfNull ( \InputButler::get ( 'completely_paid' ) ) ;
+			$purchaseItem -> other_expenses_amount	 = \InputButler::get ( 'other_expenses_amount' ) ;
+			$purchaseItem -> other_expenses_details	 = \InputButler::get ( 'other_expenses_details' ) ;
+			$cashPayment							 = \InputButler::get ( 'new_cash_payment' ) ;
+			$chequePayment							 = \InputButler::get ( 'new_cheque_payment' ) ;
+			$chequePaymentBankId					 = \InputButler::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber				 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate				 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate				 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
 
 			$this -> validateSaveNewPaymentBefore ( $cashPayment , $chequePayment , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 			$purchaseItem -> update () ;
@@ -156,21 +156,21 @@ class PurchaseController extends \Controller
 
 			foreach ( $countRows as $rows )
 			{
-				$itemId			 = \Input::get ( 'item_id_' . $rows -> id ) ;
-				$price			 = \Input::get ( 'buying_price_' . $rows -> id ) ;
-				$quantity		 = \Input::get ( 'quantity_' . $rows -> id ) ;
-				$freeQuantity	 = \Input::get ( 'free_quantity_' . $rows -> id ) ;
+				$itemId			 = \InputButler::get ( 'item_id_' . $rows -> id ) ;
+				$price			 = \InputButler::get ( 'buying_price_' . $rows -> id ) ;
+				$quantity		 = \InputButler::get ( 'quantity_' . $rows -> id ) ;
+				$freeQuantity	 = \InputButler::get ( 'free_quantity_' . $rows -> id ) ;
 
-				if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
+				if ( \InputButler::get ( 'exp_date_' . $rows -> id ) == '' )
 				{
 					$expDate = '0000-00-00' ;
 				} else
 				{
-					$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
+					$expDate = \InputButler::get ( 'exp_date_' . $rows -> id ) ;
 				}
-				$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
+				$batchNumber = \InputButler::get ( 'batch_number_' . $rows -> id ) ;
 
-				if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+				if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) > 0 )
 				{
 					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 								-> lists ( 'item_id' ) ) )
@@ -233,12 +233,12 @@ class PurchaseController extends \Controller
 							-> where ( 'item_id' , '=' , $itemId )
 							-> update ( [ 'good_quantity' => $newQuantity ] ) ;
 					}
-				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+				} elseif ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) == 0 )
 				{
 					if ( in_array ( $itemId , \Models\BuyingItem::where ( 'invoice_id' , '=' , $id )
 								-> lists ( 'item_id' ) ) )
 					{
-						if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) == 0 )
+						if ( strlen ( \InputButler::get ( 'free_quantity_' . $rows -> id ) ) == 0 )
 						{
 
 							$stockDetails = new \Models\StockDetail() ;
@@ -262,7 +262,7 @@ class PurchaseController extends \Controller
 							$stockDetails -> where ( 'stock_id' , '=' , $purchaseItem -> stock_id )
 								-> where ( 'item_id' , '=' , $itemId )
 								-> update ( [ 'good_quantity' => $newQuantity ] ) ;
-						} elseif ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
+						} elseif ( strlen ( \InputButler::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
 						{
 
 							$stockDetails = new \Models\StockDetail() ;
@@ -317,31 +317,31 @@ class PurchaseController extends \Controller
 		try
 		{
 			$items						 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
-			$toStockId					 = \Input::get ( 'stock_id' ) ;
-			$purchaseDate				 = \Input::get ( 'date_time' ) ;
-			$vendorId					 = \Input::get ( 'vendor_id' ) ;
-			$printedInvoiceNum			 = \Input::get ( 'printed_invoice_num' ) ;
-			$isPaid						 = \NullHelper::zeroIfNull ( \Input::get ( 'is_paid' ) ) ;
-			$cashPayment				 = \Input::get ( 'cash_payment' ) ;
-			$chequePayment				 = \Input::get ( 'cheque_payment' ) ;
-			$chequePaymentBankId		 = \Input::get ( 'cheque_payment_bank_id' ) ;
-			$chequePaymentChequeNumber	 = \Input::get ( 'cheque_payment_cheque_number' ) ;
-			$chequePaymentIssuedDate	 = \Input::get ( 'cheque_payment_issued_date' ) ;
-			$chequePaymentPayableDate	 = \Input::get ( 'cheque_payment_payable_date' ) ;
+			$toStockId					 = \InputButler::get ( 'stock_id' ) ;
+			$purchaseDate				 = \InputButler::get ( 'date_time' ) ;
+			$vendorId					 = \InputButler::get ( 'vendor_id' ) ;
+			$printedInvoiceNum			 = \InputButler::get ( 'printed_invoice_num' ) ;
+			$isPaid						 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_paid' ) ) ;
+			$cashPayment				 = \InputButler::get ( 'cash_payment' ) ;
+			$chequePayment				 = \InputButler::get ( 'cheque_payment' ) ;
+			$chequePaymentBankId		 = \InputButler::get ( 'cheque_payment_bank_id' ) ;
+			$chequePaymentChequeNumber	 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
+			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
+			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
 
-			if ( empty ( \Input::get ( 'other_expense_amount' ) ) )
+			if ( empty ( \InputButler::get ( 'other_expense_amount' ) ) )
 			{
 				$otherExpensesAmount = 0 ;
 			} else
 			{
-				$otherExpensesAmount = \Input::get ( 'other_expense_amount' ) ;
+				$otherExpensesAmount = \InputButler::get ( 'other_expense_amount' ) ;
 			}
-			if ( empty ( \Input::get ( 'other_expenses_details' ) ) )
+			if ( empty ( \InputButler::get ( 'other_expenses_details' ) ) )
 			{
 				$otherExpensesDetail = '' ;
 			} else
 			{
-				$otherExpensesDetail = \Input::get ( 'other_expenses_details' ) ;
+				$otherExpensesDetail = \InputButler::get ( 'other_expenses_details' ) ;
 			}
 
 			$buyingInvoice							 = new \Models\BuyingInvoice() ;
@@ -361,20 +361,20 @@ class PurchaseController extends \Controller
 
 			foreach ( $countRows as $rows )
 			{
-				$itemId			 = \Input::get ( 'item_id_' . $rows -> id ) ;
-				$price			 = \Input::get ( 'buying_price_' . $rows -> id ) ;
-				$quantity		 = \Input::get ( 'quantity_' . $rows -> id ) ;
-				$freeQuantity	 = \Input::get ( 'free_quantity_' . $rows -> id ) ;
-				if ( \Input::get ( 'exp_date_' . $rows -> id ) == '' )
+				$itemId			 = \InputButler::get ( 'item_id_' . $rows -> id ) ;
+				$price			 = \InputButler::get ( 'buying_price_' . $rows -> id ) ;
+				$quantity		 = \InputButler::get ( 'quantity_' . $rows -> id ) ;
+				$freeQuantity	 = \InputButler::get ( 'free_quantity_' . $rows -> id ) ;
+				if ( \InputButler::get ( 'exp_date_' . $rows -> id ) == '' )
 				{
 					$expDate = '0000-00-00' ;
 				} else
 				{
-					$expDate = \Input::get ( 'exp_date_' . $rows -> id ) ;
+					$expDate = \InputButler::get ( 'exp_date_' . $rows -> id ) ;
 				}
-				$batchNumber = \Input::get ( 'batch_number_' . $rows -> id ) ;
+				$batchNumber = \InputButler::get ( 'batch_number_' . $rows -> id ) ;
 
-				if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+				if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) > 0 )
 				{
 					$buyingItems = new \Models\BuyingItem() ;
 
@@ -398,9 +398,9 @@ class PurchaseController extends \Controller
 					$stockDetails -> where ( 'stock_id' , '=' , $toStockId )
 						-> where ( 'item_id' , '=' , $itemId )
 						-> update ( [ 'good_quantity' => $newQuantity ] ) ;
-				} elseif ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+				} elseif ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) == 0 )
 				{
-					if ( strlen ( \Input::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
+					if ( strlen ( \InputButler::get ( 'free_quantity_' . $rows -> id ) ) > 0 )
 					{
 						$buyingItems = new \Models\BuyingItem() ;
 

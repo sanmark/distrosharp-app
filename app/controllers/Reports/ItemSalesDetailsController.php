@@ -48,12 +48,12 @@ class ItemSalesDetailsController extends \Controller
 			$routes			 = \Models\Route::getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'All Routes' ] ) ;
 			$customers		 = [NULL => 'Select Route First' ] ;
 
-			$item		 = \Input::get ( 'item' ) ;
-			$rep		 = \Input::get ( 'rep' ) ;
-			$route		 = \Input::get ( 'route' ) ;
-			$customer	 = \Input::get ( 'customer' ) ;
-			$from_date	 = \Input::get ( 'from_date' ) ;
-			$to_date	 = \Input::get ( 'to_date' ) ;
+			$item		 = \InputButler::get ( 'item' ) ;
+			$rep		 = \InputButler::get ( 'rep' ) ;
+			$route		 = \InputButler::get ( 'route' ) ;
+			$customer	 = \InputButler::get ( 'customer' ) ;
+			$from_date	 = \InputButler::get ( 'from_date' ) ;
+			$to_date	 = \InputButler::get ( 'to_date' ) ;
 
 			$filterValues = \Input::all () ;
 
