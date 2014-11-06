@@ -175,23 +175,6 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
-	public function isSellingInvoicesAdded ()
-	{
-		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
-
-		$sellingInvoices = \Models\SellingInvoice::where ( 'stock_id' , '=' , $this -> id )
-			-> where ( 'date_time' , '>' , $lastLoadDate )
-			-> get () ;
-
-		if ( count ( $sellingInvoices ) == 0 )
-		{
-			return FALSE ;
-		} else
-		{
-			return TRUE ;
-		}
-	}
-
 	public function saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description )
 	{
 		$transferId = $this -> saveBasicTransferDetails ( $this -> id , $toStockId , $dateTime , $description ) ;
