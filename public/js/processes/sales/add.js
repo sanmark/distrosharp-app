@@ -33,7 +33,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 					return oldCreditPayments[index][property];
 				}
 			}
-		} else if (property == "cheque_issued_date") {
+		} else if (property === "cheque_issued_date") {
 			return date;
 		}
 		return null;
@@ -315,14 +315,11 @@ function loadPreviousValuesOnUnsuccessfulRedirectBack(oldCustomerId)
 function calculateLineTotal()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
+
 		var itemId = $(this).attr('data-item-id');
 		var price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][price]']");
 		var paid_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][paid_quantity]']");
-		var good_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_price]']");
-		var good_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_quantity]']");
-		var company_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_price]']");
-		var company_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_quantity]']");
-		var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
+		var lineTotal = (price * paid_quantity);
 		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal.toFixed(2));
 	});
 }
@@ -460,5 +457,332 @@ function validateChequeDetails()
 			$("#cheque_payment_issued_date").prop('required', false);
 			$("#cheque_payment_payable_date").prop('required', false);
 		}
+	});
+}
+
+function addReturnRow() {
+
+
+	$(document).on("keypress", 'form', function (e) {
+		var code = e.keyCode || e.which;
+		if (code == 13) {
+			jQuery('#add-new-return').click();
+			e.preventDefault();
+			return false;
+		}
+
+	});
+
+	$('#txtReturnItemCode').keyup(function () {
+		$('#txtReturnItemName').val("");
+		$('#txtGoodReturnPrice').val("");
+		$('#txtCompanyReturnPrice').val("");
+		$('#txtreturnId').val("");
+		$("#txtGRQ").val("");
+		$("#txtCRQ").val("");
+		$("#txtreturnLineTot").val("");
+	});
+
+	$('#add-new-return').click(function (event) {
+
+		event.preventDefault();
+
+		var txtReturnItemCode = $('#txtReturnItemCode').val();
+		var txtReturnItemName = $('#txtReturnItemName').val();
+		var txtGoodReturnPrice = $('#txtGoodReturnPrice').val();
+		var txtCompanyReturnPrice = $('#txtCompanyReturnPrice').val();
+		var txtGRQ = $('#txtGRQ').val();
+		var txtCRQ = $('#txtCRQ').val();
+		var txtreturnLineTot = $('#txtreturnLineTot').val();
+		var txtreturnId = $('#txtreturnId').val();
+
+		var validationVal = {
+			"txtReturnItemCode": txtReturnItemCode,
+			"txtReturnItemName": txtReturnItemName,
+			"txtGoodReturnPrice": txtGoodReturnPrice,
+			"txtCompanyReturnPrice": txtCompanyReturnPrice,
+			"txtGRQ": txtGRQ,
+			"txtCRQ": txtCRQ,
+			"txtreturnLineTot": txtreturnLineTot,
+			"txtreturnId": txtreturnId
+
+		};
+		var result = validateaddReturnRow(validationVal);
+
+		if (result) {
+
+			if (!txtGRQ) {
+				txtGRQ = 0;
+			}
+			else if (!txtCRQ) {
+				txtCRQ = 0;
+			}
+
+			var htmlOutput = '';
+			htmlOutput += '<div id="return-item-row_' + txtreturnId + '" class="row" style="background-color: #ECECEC; padding: 5px 0; border-radius: 4px 0 0 4px;">';
+
+			htmlOutput += '<div class="col-sm-6">';
+			htmlOutput += '<div class="row">';
+			htmlOutput += '<div class="col-sm-3">' + txtReturnItemCode + '</div>';
+			htmlOutput += '<div class="col-sm-3">' + txtReturnItemName + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" ">' + txtGoodReturnPrice + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >' + txtGRQ + '</div>';
+			htmlOutput += '</div>';
+			htmlOutput += '</div>';
+
+			htmlOutput += '<div class="col-sm-6" >';
+			htmlOutput += '<div class="row">';
+			htmlOutput += '<div class="col-sm-3 text-right">' + txtCompanyReturnPrice + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right">' + txtCRQ + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >' + txtreturnLineTot + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >';
+			htmlOutput += '<a class="edit-return" id=' + txtreturnId + '>Edit</a> /';
+			htmlOutput += '<a  class="delete-return"  id=' + txtreturnId + '>Delete</a>';
+			htmlOutput += '</div>';
+			htmlOutput += '</div>';
+			htmlOutput += '</div>';
+ 
+
+			htmlOutput += '<input type="hidden" id="item_code_' + txtreturnId + '" value="' + txtReturnItemCode + '">';
+			htmlOutput += '<input type="hidden" id="item_name_' + txtreturnId + '" value="' + txtReturnItemName + '">';
+			htmlOutput += '<input type="hidden" id="good_return_price_' + txtreturnId + '"  value="' + txtGoodReturnPrice + '" name="items[' + txtreturnId + '][good_return_price]">';
+
+			htmlOutput += '<input type="hidden" id="good_return_quantity' + txtreturnId + '"  value="' + txtGRQ + '"  name="items[' + txtreturnId + '][good_return_quantity]">';
+
+			htmlOutput += '<input type="hidden" id="company_return_price_' + txtreturnId + '"  value="' + txtCompanyReturnPrice + '"  name="items[' + txtreturnId + '][company_return_price]">';
+
+			htmlOutput += '<input type="hidden"  id="company_return_quantity' + txtreturnId + '"  value="' + txtCRQ + '"  name="items[' + txtreturnId + '][company_return_quantity]">';
+
+			htmlOutput += '<input type="hidden" id="line_total' + txtreturnId + '" value="' + txtreturnLineTot + '">';
+
+			htmlOutput += '</div>';
+
+			$('#table-return-list').append(htmlOutput);
+
+
+			var subTotal = $('#subTotal').val();
+			var newSubTotal = subTotal - txtreturnLineTot;
+			$('#subTotal').val(newSubTotal);
+
+			$('#txtReturnItemCode').val("");
+			$('#txtReturnItemName').val("");
+			$('#txtGoodReturnPrice').val("");
+			$('#txtCompanyReturnPrice').val("");
+			$('#txtreturnId').val("");
+			$("#txtGRQ").val("");
+			$("#txtCRQ").val("");
+			$("#txtreturnLineTot").val("");
+			$("#txtReturnItemCode").focus();
+
+			$('#add-new-return').text("Add");
+			$("#txtReturnItemCode").removeAttr("readonly");
+			$("#txtReturnItemName").removeAttr("readonly");
+
+		}
+	}
+	);
+
+	$(document).on('change keyup', '.cal_return_line_tot', function () {
+		calculateReturnLineTotal();
+	});
+}
+
+function selectReturnItem(csrfToken) {
+
+	$(window).keydown(function (event) {
+
+		var valPreventDefault = false;
+
+		if (event.keyCode === 13) {
+
+			if (event.target.id === 'txtReturnItemCode') {
+
+				valPreventDefault = true;
+
+				var txtReturnItemCode = $('#txtReturnItemCode').val();
+
+				$.post(
+					"/entities/items/ajax/getItemByCode", {
+						_token: csrfToken,
+						itemCode: txtReturnItemCode
+					},
+				function (data)
+				{
+					if (data.length !== 0)
+					{
+						$("input").removeClass("duplicate-error");
+						$("div").removeClass("duplicate-error");
+
+						$('#txtReturnItemCode').val(data[0].code);
+						$('#txtReturnItemName').val(data[0].name);
+						$('#txtGoodReturnPrice').val(data[0].current_selling_price);
+						$('#txtCompanyReturnPrice').val(data[0].current_selling_price);
+						$('#txtreturnId').val(data[0].id);
+						calculateReturnLineTotal();
+						$("#txtGRQ").focus();
+					}
+					else
+					{
+						$("#txtReturnItemCode").addClass('duplicate-error');
+						$('#txtReturnItemName').val("");
+						$('#txtGoodReturnPrice').val("");
+						$('#txtCompanyReturnPrice').val("");
+						$('#txtreturnId').val("");
+						$("#txtGRQ").val("");
+						$("#txtCRQ").val("");
+						$("#txtreturnLineTot").val("");
+						$("#txtReturnItemCode").select();
+
+					}
+
+				});
+
+			} else if (event.target.id === 'txtReturnItemName') {
+
+				valPreventDefault = true;
+			}
+			if (valPreventDefault) {
+				event.preventDefault();
+				return false;
+			}
+
+		}
+	});
+
+}
+
+function calculateReturnLineTotal() {
+
+	$("input").removeClass("duplicate-error");
+	$("div").removeClass("duplicate-error");
+
+	var txtGoodReturnPrice = $('#txtGoodReturnPrice').val();
+	var txtCompanyReturnPrice = $('#txtCompanyReturnPrice').val();
+	var txtGRQ = $('#txtGRQ').val();
+	var txtCRQ = $('#txtCRQ').val();
+
+	var lineTotal = (txtGoodReturnPrice * txtGRQ) + (txtCompanyReturnPrice * txtCRQ);
+
+	$("#txtreturnLineTot").val(lineTotal);
+
+}
+
+function validateaddReturnRow(validationVal) {
+	var status = true;
+
+	$("input").removeClass("duplicate-error");
+	$("div").removeClass("duplicate-error");
+	$('#dublicate-error-message').empty();
+
+	if (!validationVal.txtReturnItemCode.trim()) {
+		$("#txtReturnItemCode").addClass('duplicate-error');
+		status = false;
+	}
+	if (!validationVal.txtReturnItemName.trim()) {
+		$("#txtReturnItemName").addClass('duplicate-error');
+		status = false;
+	}
+	if (!validationVal.txtGoodReturnPrice.trim()) {
+		$("#txtGoodReturnPrice").addClass('duplicate-error');
+		status = false;
+	}
+	if (!validationVal.txtCompanyReturnPrice.trim()) {
+		$("#txtCompanyReturnPrice").addClass('duplicate-error');
+		status = false;
+	}
+	if (!validationVal.txtGRQ.trim() && !validationVal.txtCRQ.trim()) {
+		$("#txtGRQ").addClass('duplicate-error');
+		$("#txtCRQ").addClass('duplicate-error');
+		status = false;
+	}
+	if (validationVal.txtGRQ <= '0' && validationVal.txtCRQ <= '0') {
+		$("#txtGRQ").addClass('duplicate-error');
+		$("#txtCRQ").addClass('duplicate-error');
+		status = false;
+	}
+	if (validationVal.txtreturnLineTot === 0 && !validationVal.txtreturnLineTot.trim()) {
+		$("#txtreturnLineTot").addClass('duplicate-error');
+		status = false;
+	}
+	if (!validationVal.txtreturnId.trim()) {
+		$("#txtReturnItemCode").addClass('duplicate-error');
+		$("#txtReturnItemName").addClass('duplicate-error');
+		$("#txtGoodReturnPrice").addClass('duplicate-error');
+		$("#txtCompanyReturnPrice").addClass('duplicate-error');
+		$("#txtGRQ").addClass('duplicate-error');
+		$("#txtCRQ").addClass('duplicate-error');
+		$("#txtreturnLineTot").addClass('duplicate-error');
+		status = false;
+	}
+
+	if ($('#item_code_' + validationVal.txtreturnId).length !== 0) {
+
+		var html_message = "";
+		html_message += "<div id='return-exit-message'>";
+		html_message += validationVal.txtReturnItemName + " is already exists in the list";
+		html_message += "</div>";
+
+		$('#dublicate-error-message').append(html_message);
+
+		$('#return-item-row_' + validationVal.txtreturnId).addClass('duplicate-error');
+
+		$('#txtreturnId').val("");
+
+		status = false;
+	}
+
+	return status;
+}
+
+function editReturn() {
+	$(document).on('click', '.edit-return', function () {
+		var itemId = this.id;
+
+		$("input").removeClass("duplicate-error");
+		$("div").removeClass("duplicate-error");
+
+		if ($('#txtreturnId').val()) {
+			$("#txtReturnItemCode").addClass('duplicate-error');
+			$("#txtReturnItemName").addClass('duplicate-error');
+			$("#txtGoodReturnPrice").addClass('duplicate-error');
+			$("#txtCompanyReturnPrice").addClass('duplicate-error');
+			$("#txtGRQ").addClass('duplicate-error');
+			$("#txtCRQ").addClass('duplicate-error');
+			$("#txtreturnLineTot").addClass('duplicate-error');
+			$('html, body').animate({
+				scrollTop: $("#scrollTop").offset().top
+			}, 700);
+			return false;
+		}
+
+
+		$('#txtReturnItemCode').val($('#item_code_' + itemId).val());
+		$('#txtReturnItemName').val($('#item_name_' + itemId).val());
+		$('#txtGoodReturnPrice').val($('#good_return_price_' + itemId).val());
+		$('#txtCompanyReturnPrice').val($('#company_return_price_' + itemId).val());
+
+		$('#txtGRQ').val($('#good_return_quantity' + itemId).val());
+		$('#txtCRQ').val($('#company_return_quantity' + itemId).val());
+		$('#txtreturnLineTot').val($('#line_total' + itemId).val());
+		$('#txtreturnId').val(itemId);
+
+		$("#txtReturnItemCode").attr("readonly", "TRUE");
+		$("#txtReturnItemName").attr("readonly", "TRUE");
+		$("#return-item-row_" + itemId).remove();
+		$('#add-new-return').text("Update");
+
+		$('html, body').animate({
+			scrollTop: $("#scrollTop").offset().top
+		}, 700);
+
+	});
+}
+
+function deleteReturn() {
+
+	$(document).on('click', '.delete-return', function () {
+
+		$("#return-item-row_" + this.id).remove();
+
 	});
 }

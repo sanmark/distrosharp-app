@@ -51,4 +51,25 @@ Route::group ( [
 		'before' => ['hasAbilities:order_items' ] ,
 		'uses'	 => 'Controllers\Entities\ItemController@updateOrder'
 	] ) ;
+
+	Route::group ( [
+		'prefix' => 'ajax' ,
+		'before' => 'csrf'
+		] , function()
+	{
+		Route::post ( 'getItemByCode' , [
+			'as'	 => 'entities.items.ajax.getItemByCode' ,
+			'uses'	 => 'Controllers\Entities\ItemController@getItemByCode'
+		] ) ;
+
+		Route::post ( 'getItemByName' , [
+			'as'	 => 'entities.items.ajax.getItemByName' ,
+			'uses'	 => 'Controllers\Entities\ItemController@getItemByName'
+		] ) ;
+
+		Route::post ( 'getItemById' , [
+			'as'	 => 'entities.items.ajax.getItemById' ,
+			'uses'	 => 'Controllers\Entities\ItemController@getItemById'
+		] ) ;
+	} ) ;
 } ) ;

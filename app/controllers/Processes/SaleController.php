@@ -738,7 +738,7 @@ class SaleController extends \Controller
 	}
 
 	private function saveItems ( $sellingInvoice , $items )
-	{
+	{ 
 		$sellingInvoiceId = $sellingInvoice -> id ;
 
 		foreach ( $items as $itemId => $item )
@@ -755,16 +755,16 @@ class SaleController extends \Controller
 				$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
 				$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
 				$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
-				$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
-				$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
-				$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
-				$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
+				$sellingItem -> good_return_price		 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_price' ) ;
+				$sellingItem -> good_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_quantity' ) ;
+				$sellingItem -> company_return_price	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_price' ) ;
+				$sellingItem -> company_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_quantity' ) ;
 
 				$sellingItem -> save () ;
 
 				$stockId = $rep -> stock -> id ;
 
-				$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
+				$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $sellingItem -> good_return_quantity , $sellingItem -> company_return_quantity ) ;
 			}
 		}
 	}

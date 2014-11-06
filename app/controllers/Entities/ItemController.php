@@ -182,4 +182,28 @@ class ItemController extends \Controller
 		return $result ;
 	}
 
+	public function getItemByCode ()
+	{
+		$itemCode	 = \Input::get ( 'itemCode' ) ;
+		$item		 = \Models\Item::where ( 'code' , '=' , $itemCode )
+			-> get () ;
+		return \Response::json ( $item ) ;
+	}
+
+	public function getItemByName ()
+	{
+		$itemName	 = \Input::get ( 'itemName' ) ;
+		$item		 = \Models\Item::take(10)->where ( 'name' , 'LIKE' , '%' . $itemName . '%' )
+			-> get () ;
+		return \Response::json ( $item ) ;
+	}
+	
+	public function getItemById ()
+	{
+		$itemId	 = \Input::get ( 'itemId' ) ;
+		$item		 = \Models\Item::where ( 'id' , '=' ,$itemId )
+			-> get () ;
+		return \Response::json ( $item ) ;
+	}
+
 }
