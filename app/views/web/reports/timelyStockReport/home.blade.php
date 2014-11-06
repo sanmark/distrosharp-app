@@ -13,7 +13,7 @@
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
 					{{Form::label('from_date',null,array('class' => 'control-label'))}}
-					{{Form::input('datetime-local','fromDate',$fromDate,['step'=>'1','min'=>$minFromDate])}}
+					{{Form::input('datetime-local','fromDate',$fromDate,['step'=>'1'])}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('to_date',null,array('class' => 'control-label'))}}

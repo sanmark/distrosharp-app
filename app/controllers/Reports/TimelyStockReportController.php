@@ -8,20 +8,20 @@ class TimelyStockReportController extends \Controller
 	public function home ()
 	{
 		$stock		 = \SystemSettingButler::getValue ( 'main_stock' ) ;
-		$minFromDate = \Models\StockConfirmation::where ( 'stock_id' , '=' , $stock ) -> min ( 'date_time' ) ;
-		$minFromDate = \DateTimeHelper::dateTimeRefill ( $minFromDate ) ;
-		$fromDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $minFromDate ) ;
-		$fromDate	 = date ( 'Y-m-d H:i:s' , strtotime ( '+1 day' , strtotime ( $fromDate ) ) ) ;
+		if($stock==''&&$stock==NULL)
+		{
+			\MessageButler::setError('Please set "Main Stock"');
+			return \Redirect::action('system.settings.mainStock');
+		}
+		$fromDate	 = date ( 'Y-m-d H:i:s' , strtotime ( '-7 day' , strtotime ( 'today 00:00:00' ) ) ) ;
 		$fromDate	 = \DateTimeHelper::dateTimeRefill ( $fromDate ) ;
-		$toDate		 = \DateTimeHelper::convertTextToFormattedDateTime ( $fromDate ) ;
-		$toDate		 = date ( 'Y-m-d H:i:s' , strtotime ( '+7 day' , strtotime ( $toDate ) ) ) ;
+		$toDate		 = date ( 'Y-m-d H:i:s' , strtotime ( 'today 23:59:59' ) ) ;
 		$toDate		 = \DateTimeHelper::dateTimeRefill ( $toDate ) ;
 		$items		 = [ ] ;
 		$data		 = compact ( [
 			'fromDate' ,
 			'toDate' ,
 			'items' ,
-			'minFromDate'
 			] ) ;
 		return \View::make ( 'web.reports.timelyStockReport.home' , $data ) ;
 	}
@@ -31,8 +31,6 @@ class TimelyStockReportController extends \Controller
 		$stock				 = \SystemSettingButler::getValue ( 'main_stock' ) ;
 		$fromDate			 = \Input::get ( 'fromDate' ) ;
 		$toDate				 = \Input::get ( 'toDate' ) ;
-		$minFromDate		 = \Models\StockConfirmation::min ( 'date_time' ) ;
-		$minFromDate		 = \DateTimeHelper::dateTimeRefill ( $minFromDate ) ;
 		$items				 = \Models\StockDetail::where ( 'stock_id' , '=' , $stock ) -> get () ;
 		$item				 = new \Models\Item() ;
 		$stockConfirmation	 = new \Models\StockConfirmation() ;
@@ -43,7 +41,7 @@ class TimelyStockReportController extends \Controller
 
 		//add before from date max
 		$lastConfirmDate = $stockConfirmation -> where ( 'stock_id' , '=' , $stock )
-			-> where ( 'date_time' , '<' , $fromDate )
+			-> where ( 'date_time' , '<' , $toDate )
 			-> max ( 'date_time' ) ;
 
 		if ( $lastConfirmDate == NULL )
