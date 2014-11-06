@@ -10,9 +10,9 @@ function matchPassword(newpassword, confirmPassword) {
 function checkNewPassword() {
 	$("#new_password, #confirm_new_password").keyup(function () {
 
-		var existing_password = $('#existing_password').val();
-		var newPassword = $('#new_password').val();
-		var confirm_password = $('#confirm_new_password').val();
+		var existing_password = SanmarkJsHelper.Input.get('#existing_password');
+		var newPassword = SanmarkJsHelper.Input.get('#new_password');
+		var confirm_password = SanmarkJsHelper.Input.get('#confirm_new_password');
 
 		var conPassJScript = document.getElementById('confirm_new_password');
 		var newPassJScript = document.getElementById('new_password');

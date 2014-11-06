@@ -10,10 +10,10 @@ class UnloadComparisonController extends \Controller
 		$filterValues	 = \Input::all () ;
 		$transferRows	 = \Models\Transfer::unloadReportFilter ( $filterValues ) ;
 
-		$fromDate	 = \Input::get ( 'from_date_time' ) ;
-		$toDate		 = \Input::get ( 'to_date_time' ) ;
-		$fromStock	 = \Input::get ( 'from_stock' ) ;
-		$toStock	 = \Input::get ( 'to_stock' ) ;
+		$fromDate	 = \InputButler::get ( 'from_date_time' ) ;
+		$toDate		 = \InputButler::get ( 'to_date_time' ) ;
+		$fromStock	 = \InputButler::get ( 'from_stock' ) ;
+		$toStock	 = \InputButler::get ( 'to_stock' ) ;
 
 		if ( is_null ( $fromDate ) )
 		{

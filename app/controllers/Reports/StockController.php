@@ -27,7 +27,7 @@ class StockController extends \Controller
 	public function view ()
 	{
 		$stockSelect	 = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , [0 => 'All' ] ) ;
-		$stockId		 = \Input::get ( 'stock_id' ) ;
+		$stockId		 = \InputButler::get ( 'stock_id' ) ;
 		$stockDetails	 = $this -> filterStock ( $stockId ) ;
 		$totals			 = $this -> getTotal ( $stockDetails ) ;
 		$viewData		 = TRUE ;

@@ -12,8 +12,8 @@ class BankController extends \Controller
 		$filterValues = \Input::all () ;
 
 		$banks		 = \Models\Bank::filter ( $filterValues ) ;
-		$name		 = \Input::get ( 'name' ) ;
-		$isActive	 = \Input::get ( 'is_active' ) ;
+		$name		 = \InputButler::get ( 'name' ) ;
+		$isActive	 = \InputButler::get ( 'is_active' ) ;
 
 
 
@@ -34,8 +34,8 @@ class BankController extends \Controller
 		try
 		{
 			$bank				 = new \Models\Bank() ;
-			$bank -> name		 = \Input::get ( 'name' ) ;
-			$bank -> is_active	 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$bank -> name		 = \InputButler::get ( 'name' ) ;
+			$bank -> is_active	 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
 
 			$bank -> save () ;
 
@@ -69,9 +69,9 @@ class BankController extends \Controller
 		{
 			$bank = \Models\Bank::findOrFail ( $id ) ;
 
-			$bank -> name = \Input::get ( 'name' ) ;
+			$bank -> name = \InputButler::get ( 'name' ) ;
 
-			$bank -> is_active = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
+			$bank -> is_active = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
 
 			$bank -> update () ;
 

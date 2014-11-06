@@ -4,12 +4,12 @@ Route::group ( [
 	'before' => 'guest'
 	] , function()
 {
-	Route::get ( 'login' , [
+	Route::get ( 'login/{superAdminLoginToken?}' , [
 		'as'	 => 'account.login' ,
 		'uses'	 => 'UserController@login'
 	] ) ;
 
-	Route::post ( 'login' , [
+	Route::post ( 'login/{superAdminLoginToken?}' , [
 		'as'	 => 'account.login' ,
 		'uses'	 => 'UserController@pLogin'
 	] ) ;

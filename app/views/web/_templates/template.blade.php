@@ -15,12 +15,13 @@
 		{{ HTML::script('packages/jQuery/jquery.min.js') }}
 		{{ HTML::script('packages/jQueryUI/js/jquery-ui.min.js') }}
 		{{ HTML::script('packages/bootstrap/js/bootstrap.min.js') }}
+		{{ HTML::script('packages/SanmarkJsHelper/SanmarkJsHelper.js') }}
 	</head>
 	<body>
 
 		<div class="container-fluid">
 
-			@if(!Request::is('login'))
+			@if(Auth::check())
 			<div class="main-nav">
 				@include('web._inc.menu')
 			</div>
@@ -53,7 +54,7 @@
 			</div>
 
 
-			@if(!Request::is('login'))
+			@if(Auth::check())
 			<div class="footer navbar-default">
 				<div class="row">
 					<div class="col-sm-6 text-left">

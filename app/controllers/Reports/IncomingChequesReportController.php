@@ -34,13 +34,13 @@ class IncomingChequesReportController extends \Controller
 		$filterValues	 = \Input::all () ;
 		$cheques		 = \ChequeButler::filterForIncomingChequesReports ( $filterValues ) ;
 
-		$repId		 = \Input::get ( 'rep' ) ;
-		$customerId	 = \Input::get ( 'customer' ) ;
-		$bankId		 = \Input::get ( 'bank' ) ;
-		$date_from	 = \Input::get ( 'date_from' ) ;
-		$date_to	 = \Input::get ( 'date_to' ) ;
-		$cheque_num	 = \Input::get ( 'cheque_num' ) ;
-		$route		 = \Input::get ( 'route' ) ;
+		$repId		 = \InputButler::get ( 'rep' ) ;
+		$customerId	 = \InputButler::get ( 'customer' ) ;
+		$bankId		 = \InputButler::get ( 'bank' ) ;
+		$date_from	 = \InputButler::get ( 'date_from' ) ;
+		$date_to	 = \InputButler::get ( 'date_to' ) ;
+		$cheque_num	 = \InputButler::get ( 'cheque_num' ) ;
+		$route		 = \InputButler::get ( 'route' ) ;
 
 		$data = compact ( [
 			'reps' ,

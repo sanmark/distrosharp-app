@@ -5,7 +5,12 @@
 		@else
 		{{ViewButler::makeMenuHtmlFromArray(Session::get ( SESSION_MENU ))}}
 		<ul class="navbar-right">			
-			<li class="no-bg">Hi, {{Auth::user()->username}}</li>
+			<li class="no-bg">
+				Hi, {{Auth::user()->username}}
+				@if(SessionButler::isSuperAdminLoggedIn())
+				(Super Admin)
+				@endif
+			</li>
 			<li>{{HTML::link(URL::action('account.logout'), 'Logout')}}</li>			
 		</ul>
 		@endif

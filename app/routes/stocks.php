@@ -11,6 +11,18 @@ Route::group ( [
 		'uses'	 => 'Controllers\StockController@all'
 	] ) ;
 
+	Route::get ( 'add' , [
+		'as'	 => 'stocks.add' ,
+		'before' => ['hasAbilities:super_admin' ] ,
+		'uses'	 => 'Controllers\StockController@create'
+	] ) ;
+
+	Route::post ( 'add' , [
+		'as'	 => 'stocks.add' ,
+		'before' => ['hasAbilities:super_admin' ] ,
+		'uses'	 => 'Controllers\StockController@save'
+	] ) ;
+
 	Route::get ( '{stockId}' , [
 		'as'	 => 'stocks.view' ,
 		'before' => ['hasAbilities:view_stocks' ] ,

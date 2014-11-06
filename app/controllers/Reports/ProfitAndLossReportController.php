@@ -26,8 +26,8 @@ class ProfitAndLossReportController extends \Controller
 		try
 		{
 
-			$date_from	 = \Input::get ( 'from_date' ) ;
-			$date_to	 = \Input::get ( 'to_date' ) ;
+			$date_from	 = \InputButler::get ( 'from_date' ) ;
+			$date_to	 = \InputButler::get ( 'to_date' ) ;
 
 			$filterValues = \Input::all () ;
 

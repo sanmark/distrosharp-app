@@ -61,7 +61,8 @@ class MenuButler
 			]
 		] ,
 		['Stocks' , [
-				['View Stocks' , 'stocks.all' , ['view_stocks' ] ]
+				['View Stocks' , 'stocks.all' , ['view_stocks' ] ] ,
+				['Add New Stock' , 'stocks.add', ['super_admin'] ]
 			]
 		] ,
 		['Finance' , [
@@ -81,6 +82,7 @@ class MenuButler
 		['System' , [
 				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
 				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ] ,
+				[ 'Add New User' , 'system.addNewUser' , ['super_admin' ] ] ,
 				['Activity Log' , 'system.activityLog' , ['view_activity_log' ] ]
 			]
 		] ,
@@ -174,7 +176,7 @@ class MenuButler
 						$hasPermissions = array_intersect ( $userPermissions , $menuItem[ 2 ] ) ;
 					}
 
-					if ( count ( $hasPermissions ) > 0 )
+					if ( SessionButler::isSuperAdminLoggedIn () || count ( $hasPermissions ) > 0 )
 					{
 						$newItem		 = [ ] ;
 						$newItem[ 0 ]	 = $menuItem[ 0 ] ;

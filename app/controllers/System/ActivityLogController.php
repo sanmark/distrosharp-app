@@ -37,9 +37,9 @@ class ActivityLogController extends \Controller
 		try
 		{
 			$users			 = \User::getArrayForHtmlSelect ( 'id' , 'username' , [NULL => 'All Users' ] ) ;
-			$from_time		 = \Input::get ( 'from_time' ) ;
-			$to_time		 = \Input::get ( 'to_time' ) ;
-			$user			 = \Input::get ( 'user' ) ;
+			$from_time		 = \InputButler::get ( 'from_time' ) ;
+			$to_time		 = \InputButler::get ( 'to_time' ) ;
+			$user			 = \InputButler::get ( 'user' ) ;
 			$filterValues	 = [
 				"from_time"	 => $from_time ,
 				"to_time"	 => $to_time ,

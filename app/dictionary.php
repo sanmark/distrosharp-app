@@ -6,6 +6,7 @@
 define ( 'SESSION_ORGANIZATION' , 'organization' ) ;
 define ( 'SESSION_MENU' , 'menu' ) ;
 define ( 'SESSION_REP' , 'rep' ) ;
+define ( 'SESSION_IS_SUPER_ADMIN_LOGGED_IN' , 'is_super_admin_logged_in' ) ;
 
 /**
  * Config

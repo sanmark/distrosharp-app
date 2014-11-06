@@ -29,8 +29,10 @@ class TimelyStockReportController extends \Controller
 	public function filter ()
 	{
 		$stock				 = \SystemSettingButler::getValue ( 'main_stock' ) ;
-		$fromDate			 = \Input::get ( 'fromDate' ) ;
-		$toDate				 = \Input::get ( 'toDate' ) ;
+		$fromDate			 = \InputButler::get ( 'fromDate' ) ;
+		$toDate				 = \InputButler::get ( 'toDate' ) ;
+		$minFromDate		 = \Models\StockConfirmation::min ( 'date_time' ) ;
+		$minFromDate		 = \DateTimeHelper::dateTimeRefill ( $minFromDate ) ;
 		$items				 = \Models\StockDetail::where ( 'stock_id' , '=' , $stock ) -> get () ;
 		$item				 = new \Models\Item() ;
 		$stockConfirmation	 = new \Models\StockConfirmation() ;

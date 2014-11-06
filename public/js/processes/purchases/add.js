@@ -1,9 +1,9 @@
 function displayBalance()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var sub = $('#subTotal').val();
-		var cash = $('#cash_payment').val();
-		var cheque = $('#cheque_payment').val();
+		var sub = SanmarkJsHelper.Input.get('#subTotal');
+		var cash = SanmarkJsHelper.Input.get('#cash_payment');
+		var cheque = SanmarkJsHelper.Input.get('#cheque_payment');
 		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0).toFixed(2));
 	});
 }
@@ -11,7 +11,7 @@ function displayBalance()
 function displayIsCompletelyPaid()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var balance = $('#balance').val();
+		var balance = SanmarkJsHelper.Input.get('#balance');
 		if (balance <= 0) {
 			$('.myCheckbox').attr('checked', 'checked');
 		} else {

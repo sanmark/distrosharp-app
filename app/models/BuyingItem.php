@@ -30,7 +30,7 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 		foreach ( $countRows as $rows )
 		{
 
-			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+			if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) > 0 )
 			{
 				$data = $this -> toArray () ;
 
@@ -46,7 +46,7 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 					] ,
 					] ;
 			}
-			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+			if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) == 0 )
 			{
 				$data = $this -> toArray () ;
 
@@ -80,7 +80,7 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 		foreach ( $countRows as $rows )
 		{
 
-			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) > 0 )
+			if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) > 0 )
 			{
 				$data = $this -> toArray () ;
 
@@ -96,7 +96,7 @@ class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 					] ,
 					] ;
 			}
-			if ( strlen ( \Input::get ( 'quantity_' . $rows -> id ) ) == 0 )
+			if ( strlen ( \InputButler::get ( 'quantity_' . $rows -> id ) ) == 0 )
 			{
 				$data = $this -> toArray () ;
 

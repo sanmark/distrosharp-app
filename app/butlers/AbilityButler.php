@@ -12,7 +12,15 @@ class AbilityButler
 
 		$userAbilities = Auth::user () -> getAbilityCodes () ;
 
-		return self::hasCommonAbilities ( $allowedAbilities , $userAbilities ) ;
+		if ( self::hasCommonAbilities ( $allowedAbilities , $userAbilities ) )
+		{
+			return TRUE ;
+		} elseif ( in_array ( 'super_admin' , $allowedAbilities ) && SessionButler::isSuperAdminLoggedIn () )
+		{
+			return TRUE ;
+		}
+
+		return FALSE ;
 	}
 
 	private static function hasCommonAbilities ( $allowedAbilities , $userAbilities )

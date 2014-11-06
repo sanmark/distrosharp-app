@@ -26,8 +26,8 @@ class BankAccountController extends \Controller
 	{
 
 		$filterValues			 = \Input::all () ;
-		$bankAccountId			 = \Input::get ( 'account' ) ;
-		$viewDateTime			 = \Input::get ( 'datetime' ) ;
+		$bankAccountId			 = \InputButler::get ( 'account' ) ;
+		$viewDateTime			 = \InputButler::get ( 'datetime' ) ;
 		$bankAccountSelectBox	 = \FinanceAccountButler::getBankAccountsInvolvedForTransfer () ;
 
 		if ( $bankAccountId == '' )
@@ -46,7 +46,7 @@ class BankAccountController extends \Controller
 		$lastConfirmDateTime = $financeAccount -> getLastConfirmDateBefore ( $viewDateTime ) ;
 
 
-		if ( \Input::get ( 'confirm' ) )
+		if ( \InputButler::get ( 'confirm' ) )
 		{
 			$financeAccount -> verifyFinanceAccountBalance ( $viewDateTime ) ;
 			$filterValues[ 'datetime' ]	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;

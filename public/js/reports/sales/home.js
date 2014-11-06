@@ -9,7 +9,7 @@ function setOldCustomerId(oldCustomerId) {
 
 function loadCustomersForRout(url, token) { 
 	$(document).on('change', '#route_id', function () {
-		routeId = $('#route_id').val();
+		routeId = SanmarkJsHelper.Input.get('#route_id');
 		$('#customer_id').find('option').remove();
 		$('#customer_id').append(
 			$('<option value=""></option>').

@@ -1,7 +1,7 @@
 function populateCustomersForRoute(csrfToken)
 {
 	$(document).on('change', '#route_id', function () {
-		routeId = $('#route_id').val();
+		routeId = SanmarkJsHelper.Input.get('#route_id');
 		$('#customer_id').find('option').remove();
 		$('#customer_id').append(
 			$('<option value=""></option>').text('Select')
@@ -42,7 +42,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 	$(document).on('change', '#customer_id', function () {
 
 		$('#creditPayments').html('');
-		var customerId = $(this).val();
+		var customerId = SanmarkJsHelper.Input.get(this);
 		$.post("/entities/customers/ajax/creditInvoices", {
 			_token: csrfToken,
 			customerId: customerId
@@ -316,46 +316,46 @@ function calculateLineTotal()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
 		var itemId = $(this).attr('data-item-id');
-		var price = $("input[name='items[" + itemId + "][price]']").val();
-		var paid_quantity = $("input[name='items[" + itemId + "][paid_quantity]']").val();
-		var good_return_price = $("input[name='items[" + itemId + "][good_return_price]']").val();
-		var good_return_quantity = $("input[name='items[" + itemId + "][good_return_quantity]']").val();
-		var company_return_price = $("input[name='items[" + itemId + "][company_return_price]']").val();
-		var company_return_quantity = $("input[name='items[" + itemId + "][company_return_quantity]']").val();
+		var price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][price]']");
+		var paid_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][paid_quantity]']");
+		var good_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_price]']");
+		var good_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_quantity]']");
+		var company_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_price]']");
+		var company_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_quantity]']");
 		var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
 		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal);
-	});
-}
-
-function displayNetTotal()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var netTotal = null;
-		$('.lineTotal').each(function () {
-			var value = parseFloat($(this).val());
-			if (!isNaN(value)) {
-				netTotal += value;
-			}
-		});
-		$("input[name='netTotal']").val(netTotal);
 	});
 }
 
 function displaySubTotal()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var net = $('#netTotal').val();
-		var disc = $('#discount').val();
-		$('#subTotal').val((net - disc ? net - disc : 0));
+		var subTotal = null;
+		$('.lineTotal').each(function () {
+			var value = parseFloat($(this).val());
+			if (!isNaN(value)) {
+				subTotal += value;
+			}
+		});
+		$("input[name='subTotal']").val(subTotal);
+	});
+}
+
+function displayTotal()
+{
+	$(document).on('change keyup', '.saleDetail', function () {
+		var net = SanmarkJsHelper.Input.get('#subTotal');
+		var disc = SanmarkJsHelper.Input.get('#discount');
+		$('#total').val((net - disc ? net - disc : 0));
 	});
 }
 
 function displayBalance()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
-		var sub = $('#subTotal').val();
-		var cash = $('#cash_payment').val();
-		var cheque = $('#cheque_payment').val();
+		var sub = SanmarkJsHelper.Input.get('#total');
+		var cash = SanmarkJsHelper.Input.get('#cash_payment');
+		var cheque = SanmarkJsHelper.Input.get('#cheque_payment');
 		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0));
 	});
 }
@@ -411,9 +411,9 @@ function checkPaidAndFreeSum()
 	var trueFalse = [];
 	for (var i = 1; i <= itemAmount; i++)
 	{
-		var freeQuantity = $('[name="items[' + i + '][free_quantity]"]').val();
-		var availableQuantity = $('[name="items[' + i + '][available_quantity]"]').val();
-		var paidQuantity = $('[name="items[' + i + '][paid_quantity]"]').val();
+		var freeQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][free_quantity]"]');
+		var availableQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][available_quantity]"]');
+		var paidQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][paid_quantity]"]');
 
 		var sumOfFreeAndPaid = Number(paidQuantity) + Number(freeQuantity);
 		var input = document.getElementsByName('items[' + i + '][free_quantity]')[0];
@@ -429,7 +429,7 @@ function checkPaidAndFreeSum()
 		}
 	}
 	var resultArray = trueFalse.indexOf("1");
-	
+
 	if (resultArray !== (-1))
 	{
 		return true;

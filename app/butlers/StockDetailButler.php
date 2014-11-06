@@ -40,4 +40,18 @@ class StockDetailButler
 		return $stockDetail ;
 	}
 
+	public static function createStockItems ($stockId)
+	{
+		$allItems = \Models\Item::where ( 'is_active' , '=' , TRUE ) -> get () ;
+
+		foreach ( $allItems as $item )
+		{
+			$stockDetails				 = new \Models\StockDetail() ;
+			$stockDetails -> stock_id	 = $stockId ;
+			$stockDetails -> item_id	 = $item -> id ;
+
+			$stockDetails -> save () ;
+		}
+	}
+
 }

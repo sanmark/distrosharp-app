@@ -9,10 +9,10 @@ class AgeCreditReportController extends \Controller
 	{
 		$filterValues = \Input::all () ;
 
-		$repId		 = \Input::get ( 'rep' ) ;
-		$customerId	 = \Input::get ( 'customer' ) ;
-		$routeId	 = \Input::get ( 'route_id' ) ;
-		$ageDays	 = \Input::get ( 'age_by_days' ) ;
+		$repId		 = \InputButler::get ( 'rep' ) ;
+		$customerId	 = \InputButler::get ( 'customer' ) ;
+		$routeId	 = \InputButler::get ( 'route_id' ) ;
+		$ageDays	 = \InputButler::get ( 'age_by_days' ) ;
 		$sellingData = \Models\SellingInvoice::ageCreditFilter ( $filterValues ) ;
 		$repsList	 = \Models\SellingInvoice::distinct ( 'rep_id' )
 			-> where ( 'is_completely_paid' , '=' , FALSE )

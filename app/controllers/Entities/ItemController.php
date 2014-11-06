@@ -11,11 +11,11 @@ class ItemController extends \Controller
 
 		$filterValues	 = \Input::all () ;
 		$items			 = \Models\Item::filter ( $filterValues ) ;
-		$code			 = \Input::get ( 'code' ) ;
-		$name			 = \Input::get ( 'name' ) ;
-		$isActive		 = \Input::get ( 'is_active' ) ;
-		$sortBy			 = \Input::get ( 'sort_by' ) ;
-		$sortOrder		 = \Input::get ( 'sort_order' ) ;
+		$code			 = \InputButler::get ( 'code' ) ;
+		$name			 = \InputButler::get ( 'name' ) ;
+		$isActive		 = \InputButler::get ( 'is_active' ) ;
+		$sortBy			 = \InputButler::get ( 'sort_by' ) ;
+		$sortOrder		 = \InputButler::get ( 'sort_order' ) ;
 
 		$data[ 'items' ]	 = $items ;
 		$data[ 'code' ]		 = $code ;
@@ -45,15 +45,15 @@ class ItemController extends \Controller
 		{
 			$item = new \Models\Item() ;
 
-			$item -> code					 = \Input::get ( 'code' ) ;
-			$item -> name					 = \Input::get ( 'name' ) ;
-			$item -> reorder_level			 = \Input::get ( 'reorder_level' ) ;
-			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
-			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ;
+			$item -> code					 = \InputButler::get ( 'code' ) ;
+			$item -> name					 = \InputButler::get ( 'name' ) ;
+			$item -> reorder_level			 = \InputButler::get ( 'reorder_level' ) ;
+			$item -> current_buying_price	 = \InputButler::get ( 'current_buying_price' ) ;
+			$item -> current_selling_price	 = \InputButler::get ( 'current_selling_price' ) ;
 			$item -> buying_invoice_order	 = \ItemButler::getMinBuyingInvoiceOrder () ;
 			$item -> selling_invoice_order	 = \ItemButler::getMinSellingInvoiceOrder () ;
-			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$item -> weight					 = \Input::get ( 'weight' ) ;
+			$item -> is_active				 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$item -> weight					 = \InputButler::get ( 'weight' ) ;
 			$item -> save () ;
 
 			$this -> createStockDetailsByItem ( $item -> id ) ;
@@ -87,13 +87,13 @@ class ItemController extends \Controller
 		{
 			$item = \Models\Item::findOrFail ( $id ) ;
 
-			$item -> code					 = \Input::get ( 'code' ) ;
-			$item -> name					 = \Input::get ( 'name' ) ;
-			$item -> reorder_level			 = \Input::get ( 'reorder_level' ) ;
-			$item -> current_buying_price	 = \Input::get ( 'current_buying_price' ) ;
-			$item -> current_selling_price	 = \Input::get ( 'current_selling_price' ) ;
-			$item -> is_active				 = \NullHelper::zeroIfNull ( \Input::get ( 'is_active' ) ) ;
-			$item -> weight					 = \Input::get ( 'weight' ) ;
+			$item -> code					 = \InputButler::get ( 'code' ) ;
+			$item -> name					 = \InputButler::get ( 'name' ) ;
+			$item -> reorder_level			 = \InputButler::get ( 'reorder_level' ) ;
+			$item -> current_buying_price	 = \InputButler::get ( 'current_buying_price' ) ;
+			$item -> current_selling_price	 = \InputButler::get ( 'current_selling_price' ) ;
+			$item -> is_active				 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
+			$item -> weight					 = \InputButler::get ( 'weight' ) ;
 
 			$item -> update () ;
 

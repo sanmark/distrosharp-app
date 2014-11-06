@@ -51,10 +51,10 @@
 				<th>Inv. Date</th>
 				<th>Invoice num</th>
 				<th>Sales rep</th>
-				<th>Outlet</th>
+				<th>Customer</th>
 				<th>Bank</th>
 				<th>Payable on</th>
-				<th>Amount</th> 
+				<th class="text-right">Amount</th> 
 			</tr>  
 			@foreach($cheques as $cheque)
 			<tr>

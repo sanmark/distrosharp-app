@@ -41,9 +41,9 @@ class AccountsController extends \Controller
 	{
 		try
 		{
-			$name		 = \Input::get ( 'name' ) ;
-			$bankId		 = \Input::get ( 'bank_id' ) ;
-			$isActive	 = \Input::get ( 'is_active' ) ;
+			$name		 = \InputButler::get ( 'name' ) ;
+			$bankId		 = \InputButler::get ( 'bank_id' ) ;
+			$isActive	 = \InputButler::get ( 'is_active' ) ;
 
 			$financeAccounts = \Models\FinanceAccount::findOrFail ( $id ) ;
 
@@ -72,9 +72,9 @@ class AccountsController extends \Controller
 		try
 		{
 
-			$name			 = \Input::get ( 'name' ) ;
-			$bankId			 = \Input::get ( 'bank_id' ) ;
-			$isActive		 = \Input::get ( 'is_active' ) ;
+			$name			 = \InputButler::get ( 'name' ) ;
+			$bankId			 = \InputButler::get ( 'bank_id' ) ;
+			$isActive		 = \InputButler::get ( 'is_active' ) ;
 			$financeAccounts = new \Models\FinanceAccount() ;
 
 			$financeAccounts -> name			 = $name ;
@@ -103,9 +103,9 @@ class AccountsController extends \Controller
 		$filterValues	 = \Input::all () ;
 		$financeAccounts = \Models\FinanceAccount::filter ( $filterValues ) ;
 
-		$name					 = \Input::get ( 'name' ) ;
-		$bankId					 = \Input::get ( 'bank_id' ) ;
-		$isActive				 = \Input::get ( 'is_active' ) ;
+		$name					 = \InputButler::get ( 'name' ) ;
+		$bankId					 = \InputButler::get ( 'bank_id' ) ;
+		$isActive				 = \InputButler::get ( 'is_active' ) ;
 		$financeAccountsDetails	 = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE ) -> get () ;
 		$banks					 = \Models\FinanceAccount::distinct () -> lists ( 'bank_id' ) ;
 		$bankSelectBox			 = \Models\Bank::getArrayForHtmlSelectByIds ( 'id' , 'name' , $banks , [

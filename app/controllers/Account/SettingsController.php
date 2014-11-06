@@ -22,8 +22,8 @@ class SettingsController extends \Controller
 		{
 			$user = \Auth::user () ;
 
-			$user -> first_name	 = \Input::get ( 'first_name' ) ;
-			$user -> last_name	 = \Input::get ( 'last_name' ) ;
+			$user -> first_name	 = \InputButler::get ( 'first_name' ) ;
+			$user -> last_name	 = \InputButler::get ( 'last_name' ) ;
 
 			$user -> update () ;
 
@@ -44,9 +44,9 @@ class SettingsController extends \Controller
 	{
 		try
 		{
-			$existingPassword	 = \Input::get ( 'existing_password' ) ;
-			$newPassword		 = \Input::get ( 'new_password' ) ;
-			$confirmNewPassword	 = \Input::get ( 'confirm_new_password' ) ;
+			$existingPassword	 = \InputButler::get ( 'existing_password' ) ;
+			$newPassword		 = \InputButler::get ( 'new_password' ) ;
+			$confirmNewPassword	 = \InputButler::get ( 'confirm_new_password' ) ;
 
 			$user = \Auth::user () ;
 

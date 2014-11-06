@@ -9,9 +9,9 @@ class RepFinanceReportController extends \Controller
 	{
 		$repSelectBox = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 
-		$repId			 = \Input::get ( 'rep_id' ) ;
-		$dateFrom		 = \Input::get ( 'date_from' ) ;
-		$dateTo			 = \Input::get ( 'date_to' ) ;
+		$repId			 = \InputButler::get ( 'rep_id' ) ;
+		$dateFrom		 = \InputButler::get ( 'date_from' ) ;
+		$dateTo			 = \InputButler::get ( 'date_to' ) ;
 		$dates			 = [ ] ;
 		$totalTotal		 = NULL ;
 		$totalCash		 = NULL ;
