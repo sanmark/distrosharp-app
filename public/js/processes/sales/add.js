@@ -323,7 +323,7 @@ function calculateLineTotal()
 		var company_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_price]']");
 		var company_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_quantity]']");
 		var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
-		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal);
+		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal.toFixed(2));
 	});
 }
 
@@ -337,7 +337,7 @@ function displaySubTotal()
 				subTotal += value;
 			}
 		});
-		$("input[name='subTotal']").val(subTotal);
+		$("input[name='subTotal']").val(subTotal.toFixed(2));
 	});
 }
 
@@ -346,7 +346,11 @@ function displayTotal()
 	$(document).on('change keyup', '.saleDetail', function () {
 		var net = SanmarkJsHelper.Input.get('#subTotal');
 		var disc = SanmarkJsHelper.Input.get('#discount');
-		$('#total').val((net - disc ? net - disc : 0));
+		if (disc == '.')
+		{
+			disc = 0;
+		}
+		$('#total').val((net - disc ? net - disc : 0).toFixed(2));
 	});
 }
 
@@ -356,7 +360,7 @@ function displayBalance()
 		var sub = SanmarkJsHelper.Input.get('#total');
 		var cash = SanmarkJsHelper.Input.get('#cash_payment');
 		var cheque = SanmarkJsHelper.Input.get('#cheque_payment');
-		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0));
+		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0).toFixed(2));
 	});
 }
 
