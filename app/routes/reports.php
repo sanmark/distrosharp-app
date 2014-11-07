@@ -59,36 +59,36 @@ Route::group ( [
 		'uses'	 => 'Controllers\Reports\AgeCreditReportController@view'
 	] ) ;
 
-	Route::get ( 'salesSummary' , [
+	Route::get ( 'sales-summary' , [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
 	] ) ;
 
-	Route::post ( 'salesSummary' , [
+	Route::post ( 'sales-summary' , [
 		'as'	 => 'reports.salesSummary' ,
 		'before' => ['hasAbilities:view_sales_summary_report' ] ,
 		'uses'	 => 'Controllers\Reports\SalesSummaryController@all'
 	] ) ;
 
-	Route::get ( 'profitAndLossReport' , [
+	Route::get ( 'profit-and-loss' , [
 		'as'	 => 'reports.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@home'
 	] ) ;
 
-	Route::post ( 'profitAndLossReport' , [
+	Route::post ( 'profit-and-loss' , [
 		'as'	 => 'reports.profitAndLossReport' ,
 		'before' => ['hasAbilities:view_profit_and_loss_report' ] ,
 		'uses'	 => 'Controllers\Reports\ProfitAndLossReportController@filter'
 	] ) ;
 
-	Route::get ( 'incomingChequesReport' , [
+	Route::get ( 'incoming-cheques' , [
 		'as'	 => 'reports.incomingChequesReport' ,
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
 		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@home'
 	] ) ;
-	Route::post ( 'incomingChequesReport' , [
+	Route::post ( 'incoming-cheques' , [
 		'as'	 => 'reports.incomingChequesReport' ,
 		'before' => ['hasAbilities:view_incoming_cheques_report' ] ,
 		'uses'	 => 'Controllers\Reports\IncomingChequesReportController@view'
@@ -105,42 +105,42 @@ Route::group ( [
 		'uses'	 => 'Controllers\Reports\ItemSalesSummaryController@filter'
 	] ) ;
 
-	Route::get ( 'itemSalesDetails' , [
+	Route::get ( 'item-sales-details' , [
 		'as'	 => 'reports.itemSalesDetails' ,
 		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@home'
 	] ) ;
 
-	Route::post ( 'itemSalesDetails' , [
+	Route::post ( 'item-sales-details' , [
 		'as'	 => 'reports.itemSalesDetails' ,
 		'before' => ['hasAbilities:view_item_sales_details_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemSalesDetailsController@view'
 	] ) ;
 
-	Route::get ( 'itemReturnReport' , [
+	Route::get ( 'item-return' , [
 		'as'	 => 'reports.itemReturnReport' ,
 		'before' => ['hasAbilities:view_item_return_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemReturnReportController@home'
 	] ) ;
 
-	Route::post ( 'itemReturnReport' , [
+	Route::post ( 'item-return' , [
 		'as'	 => 'reports.itemReturnReport' ,
 		'before' => ['hasAbilities:view_item_return_report' ] ,
 		'uses'	 => 'Controllers\Reports\ItemReturnReportController@view'
 	] ) ;
-	Route::get ( 'credit-summary-report' , [
+	Route::get ( 'credit-summary' , [
 		'as'	 => 'reports.creditSummary' ,
 		'before' => ['hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
 	] ) ;
 
-	Route::post ( 'credit-summary-report' , [
+	Route::post ( 'credit-summary' , [
 		'as'	 => 'reports.creditSummary' ,
 		'before' => ['hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@home'
 	] ) ;
 
-	Route::get ( 'credit-summary-report/{id}' , [
+	Route::get ( 'credit-summary/{id}' , [
 		'as'	 => 'reports.creditSummary.view' ,
 		'before' => [ 'hasAbilities:view_credit_summery_report' ] ,
 		'uses'	 => 'Controllers\Reports\CreditSummaryReportController@view'
@@ -157,13 +157,13 @@ Route::group ( [
 		'before' => ['hasAbilities:view_rep_finance_report' ] ,
 		'uses'	 => 'Controllers\Reports\RepFinanceReportController@filter'
 	] ) ;
-	Route::get ( 'timelyStockReport' , [
+	Route::get ( 'timely-stock' , [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\TimelyStockReportController@home'
 	] ) ;
 
-	Route::post ( 'timelyStockReport' , [
+	Route::post ( 'timely-stock' , [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\TimelyStockReportController@filter'
