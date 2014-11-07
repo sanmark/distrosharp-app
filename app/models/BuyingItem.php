@@ -5,8 +5,6 @@ namespace Models ;
 class BuyingItem extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function item ()
 	{
 		return $this -> belongsTo ( 'Models\Item' ) ;

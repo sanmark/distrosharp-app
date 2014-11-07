@@ -5,8 +5,6 @@ namespace Models ;
 class Transfer extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function fromStock ()
 	{
 		return $this -> belongsTo ( 'Models\Stock' , 'from_stock_id' ) ;

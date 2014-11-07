@@ -5,8 +5,6 @@ namespace Models ;
 class Route extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function rep ()
 	{
 		return $this -> belongsTo ( '\User' ) ;

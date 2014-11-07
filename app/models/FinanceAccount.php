@@ -5,8 +5,6 @@ namespace Models ;
 class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function bank ()
 	{
 

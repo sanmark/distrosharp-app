@@ -5,8 +5,6 @@ namespace Models ;
 class Stock extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function stockDetails ()
 	{
 		return $this -> hasMany ( 'Models\StockDetail' ) ;
@@ -320,7 +318,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$data = $this -> toArray () ;
 
 		$rules = [
-			
+
 			'name'			 => [
 				'required' ,
 				'unique:stocks,name,' . $this -> id
@@ -343,7 +341,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		{
 			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
-			
+
 			throw $iie ;
 		}
 	}

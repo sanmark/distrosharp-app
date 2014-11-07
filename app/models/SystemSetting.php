@@ -5,8 +5,6 @@ namespace Models ;
 class SystemSetting extends \Eloquent
 {
 
-	public $timestamps = FALSE ;
-
 	public function update ( array $attributes = array () )
 	{
 		$this -> validateForUpdate () ;

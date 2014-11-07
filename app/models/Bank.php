@@ -5,8 +5,6 @@ namespace Models ;
 class Bank extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function save ( array $options = array () )
 	{
 		$this -> validateForSave () ;

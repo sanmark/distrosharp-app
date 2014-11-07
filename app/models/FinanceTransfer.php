@@ -5,8 +5,6 @@ namespace Models ;
 class FinanceTransfer extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function toAccount ()
 	{
 		return $this -> belongsTo ( 'Models\FinanceAccount' , 'to_id' ) ;

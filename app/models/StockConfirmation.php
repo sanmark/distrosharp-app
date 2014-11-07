@@ -5,8 +5,6 @@ namespace Models ;
 class StockConfirmation extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function getQuantitiesWhenConfirm ( $lastConfirmDate )
 	{
 		$confirmationId			 = $this -> where ( 'date_time' , '=' , $lastConfirmDate ) -> first () ;
