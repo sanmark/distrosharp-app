@@ -134,7 +134,7 @@ class FinanceAccount extends BaseEntity implements \Interfaces\iEntity
 		return $requestObject -> where ( 'is_in_house' , '=' , 1 ) -> get () ;
 	}
 
-	public function bankReportFilter ( $filterValues )
+	public function financeAccountReportFilter ( $filterValues )
 	{
 
 		$viewDateTime = $filterValues[ 'datetime' ] ;

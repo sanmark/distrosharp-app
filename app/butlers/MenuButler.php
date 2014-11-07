@@ -69,7 +69,7 @@ class MenuButler
 				['Account' , [
 						['Add Account' , 'finances.accounts.add' , ['add_finance_account' ] ] ,
 						['View Account' , 'finances.accounts.view' , ['view_finance_accounts' ] ] ,
-						['Confirm Account Balance' , 'finances.accounts.confirmBankAccount' , ['confirm_bank_account_balance' ] ]
+						['Confirm Account Balance' , 'finances.accounts.confirmAccountBalance' , ['confirm_finance_account_balance' ] ]
 					]
 				] ,
 				['Transfers' , [
