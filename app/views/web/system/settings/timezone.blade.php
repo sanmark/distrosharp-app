@@ -7,7 +7,6 @@
 		<h3 class="panel-title">Set Default Time Zone</h3>
 	</div>
 	<div class="panel-body">
-
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
