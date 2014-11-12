@@ -211,7 +211,7 @@ class SaleController extends \Controller
 			$chequePaymentChequeNumber	 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
 			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
 			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
-			$this -> validateAtLeastOneItemIsFilled ( $items ) ;
+
 			$this -> validateSaleItemsForUpdate ( $items ) ;
 			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
@@ -392,11 +392,9 @@ class SaleController extends \Controller
 						'numeric'
 					] ,
 					'paid_quantity'				 => [
-						'required_without_all:free_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'free_quantity'				 => [
-						'required_without_all:paid_quantity , good_return_quantity , company_return_quantity' ,
 						'numeric'
 					] ,
 					'good_return_price'			 => [
@@ -437,35 +435,6 @@ class SaleController extends \Controller
 					throw $iie ;
 				}
 			}
-		}
-	}
-
-	private function validateAtLeastOneItemIsFilled ( $items )
-	{
-		$itemsWithoutPriceAndAvailableQuantity = \ArrayHelper::withoutRecursive ( $items , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) ;
-
-		$data = [
-			'field' => $itemsWithoutPriceAndAvailableQuantity
-			] ;
-
-		$rules = [
-			'field' => [
-				'at_least_one_element_of_one_array_has_value'
-			]
-			] ;
-
-		$messages = [
-			'field.at_least_one_element_of_one_array_has_value' => 'Please enter sales data.'
-			] ;
-
-		$validator = \Validator::make ( $data , $rules , $messages ) ;
-
-		if ( $validator -> fails () )
-		{
-			$iie				 = new \Exceptions\InvalidInputException() ;
-			$iie -> validator	 = $validator ;
-
-			throw $iie ;
 		}
 	}
 
