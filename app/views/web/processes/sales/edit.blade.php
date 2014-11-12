@@ -41,7 +41,7 @@
 		<div class="form-group">
 			{{Form::label('discount',null,array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('number', 'discount', $sellingInvoice->discount,array('class' => 'form-control'))}}
+				{{Form::input('number', 'discount', $sellingInvoice->discount,array('class' => 'form-control', 'step'=>'0.01'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -82,28 +82,28 @@
 					<div class="col-sm-7">
 						<div class="row">
 							<div class="col-sm-3">
-								{{Form::input('number', 'items['.$item->id.'][price]', ObjectHelper::nullIfNonObject($sellingItem, 'price'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][price]', ObjectHelper::nullIfNonObject($sellingItem, 'price'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::input('number', 'items['.$item->id.'][paid_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'paid_quantity'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][paid_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'paid_quantity'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::input('number', 'items['.$item->id.'][free_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'free_quantity'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][free_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'free_quantity'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>
 							<div class="col-sm-3">
-								{{Form::input('number', 'items['.$item->id.'][good_return_price]', ObjectHelper::nullIfNonObject($sellingItem, 'good_return_price'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][good_return_price]', ObjectHelper::nullIfNonObject($sellingItem, 'good_return_price'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>							
 						</div>
 					</div>
 					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-4">
-								{{Form::input('number', 'items['.$item->id.'][good_return_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'good_return_quantity'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][good_return_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'good_return_quantity'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>
 							<div class="col-sm-4">
-								{{Form::input('number', 'items['.$item->id.'][company_return_price]', ObjectHelper::nullIfNonObject($sellingItem, 'company_return_price'),['class' => 'form-control text-right saleDetail'])}}
+								{{Form::input('number', 'items['.$item->id.'][company_return_price]', ObjectHelper::nullIfNonObject($sellingItem, 'company_return_price'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}
 							</div>
-							<div class="col-sm-4">{{Form::input('number', 'items['.$item->id.'][company_return_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'company_return_quantity'),['class' => 'form-control text-right saleDetail'])}}</div>
+							<div class="col-sm-4">{{Form::input('number', 'items['.$item->id.'][company_return_quantity]', ObjectHelper::nullIfNonObject($sellingItem, 'company_return_quantity'),['class' => 'form-control text-right saleDetail', 'step'=>'0.01'])}}</div>
 						</div>
 					</div>
 				</div>
@@ -160,7 +160,7 @@
 		<div class="form-group">
 			{{Form::label('new_cash_payment', null, array('class'=>'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
-				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control'))}}
+				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control', 'step'=>'0.01'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -181,7 +181,7 @@
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
+						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control', 'step'=>'0.01'))}}
 					</div>
 					<div class="col-sm-2">
 						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}

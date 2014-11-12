@@ -95,11 +95,11 @@
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtAvailable', null, array('id' => 'txtAvailable', 'class' => 'form-control text-right empty cal_return_line_tot', 'readonly'=>TRUE))}}
+								{{Form::input('number','txtAvailable', null, array('id' => 'txtAvailable', 'class' => 'form-control text-right empty cal_return_line_tot', 'readonly'=>TRUE, 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtPrice', null, array('id' => 'txtPrice', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtPrice', null, array('id' => 'txtPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
@@ -108,15 +108,15 @@
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
-								{{Form::input('number','txtPaidQty', null, array('id' => 'txtPaidQty', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtPaidQty', null, array('id' => 'txtPaidQty', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtFreeQty', null, array('id' => 'txtFreeQty', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtFreeQty', null, array('id' => 'txtFreeQty', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtSalesLineTot', null, array('id' => 'txtSalesLineTot', 'class' => 'form-control text-right empty', 'readonly'=>TRUE))}} 
+								{{Form::input('number','txtSalesLineTot', null, array('id' => 'txtSalesLineTot', 'class' => 'form-control text-right empty', 'readonly'=>TRUE, 'step'=>'0.01'))}} 
 							</div>
 							<div class="col-sm-3"> 
 								<div class="btn btn-primary pull-right" id="add-new-salesl" style="margin: 0px;">Add</div>  
@@ -202,11 +202,11 @@
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
@@ -215,15 +215,15 @@
 					<div class="col-sm-6">
 						<div class="row">
 							<div class="col-sm-3">
-								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot'))}}
+								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtreturnLineTot', null, array('id' => 'txtreturnLineTot', 'class' => 'form-control text-right empty', 'readonly'=>TRUE))}} 
+								{{Form::input('number','txtreturnLineTot', null, array('id' => 'txtreturnLineTot', 'class' => 'form-control text-right empty', 'readonly'=>TRUE, 'step'=>'0.01'))}} 
 							</div>
 							<div class="col-sm-3"> 
 								<div class="btn btn-primary pull-right" id="add-new-return" style="margin: 0px;">Add</div>  
@@ -380,7 +380,7 @@
 					{{Form::label('balance', 'Credit', array('class' => 'col-sm-6 control-label'))}}
 					<div class="col-sm-6">
 						<?php $tab ++ ?>
-						{{Form::input('number', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE])}}
+						{{Form::input('number', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE, 'step'=>'0.01'])}}
 					</div>
 				</div>
 			</div>
