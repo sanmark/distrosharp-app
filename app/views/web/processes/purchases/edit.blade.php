@@ -51,11 +51,11 @@
 				<div class="row">
 					<div class="col-sm-2">
 						<?php $tabCount ++ ; ?>
-						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'any','tabindex' => $tabCount, 'class' => 'form-control text-right','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,$quantity[$ItemRowValue],['step'=>'0.01','tabindex' => $tabCount, 'class' => 'form-control text-right','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
 						<?php $tabCount ++ ; ?>
-						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'any','tabindex' => $tabCount, 'class' => 'form-control text-right'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,$freeQuantity[$ItemRowValue],['step'=>'0.01','tabindex' => $tabCount, 'class' => 'form-control text-right'])}}
 					</div>
 					<div class="col-sm-3">
 						<?php $tabCount ++ ; ?>
@@ -81,11 +81,11 @@
 				<div class="row">
 					<div class="col-sm-2">
 						<?php $tabCount ++ ; ?>
-						{{Form::input('number','quantity_'.$ItemRowValue,null, ['tabindex' => $tabCount, 'class' => 'form-control text-right','step'=>'any','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
+						{{Form::input('number','quantity_'.$ItemRowValue,null, ['tabindex' => $tabCount, 'class' => 'form-control text-right','step'=>'0.01','id'=>$ItemRowValue,'onkeyup'=>'changeOnQuantity(this.id,this.value)'])}}
 					</div>
 					<div class="col-sm-2">
 						<?php $tabCount ++ ; ?>
-						{{Form::input('number','free_quantity_'.$ItemRowValue,null, ['tabindex' => $tabCount, 'class' => 'form-control text-right','step'=>'any'])}}
+						{{Form::input('number','free_quantity_'.$ItemRowValue,null, ['tabindex' => $tabCount, 'class' => 'form-control text-right','step'=>'0.01'])}}
 					</div>
 					<div class="col-sm-3">
 						<?php $tabCount ++ ; ?>
@@ -154,7 +154,7 @@
 		<div class="form-group">
 			{{Form::label('new_cash_payment', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
-				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control'))}}
+				{{Form::input('number', 'new_cash_payment', NULL, array('class' => 'form-control', 'step'=>'0.01'))}}
 			</div>
 		</div>
 		<div class="form-group">
@@ -175,7 +175,7 @@
 			<div class="col-sm-offset-2 col-sm-10">
 				<div class="row">
 					<div class="col-sm-2">
-						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control'))}}
+						{{Form::input('number', 'new_cheque_payment', NULL, array('class' => 'form-control', 'step'=>'0.01'))}}
 					</div>
 					<div class="col-sm-2">
 						{{Form::select('cheque_payment_bank_id', $banksList, null, array('class' => 'form-control'))}}
@@ -196,7 +196,7 @@
 			{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-2">
 				<?php $tabCount ++ ; ?>
-				{{Form::input('number','other_expenses_amount',number_format($purchaseInvoice->other_expenses_amount,2), array('tabindex' => $tabCount, 'class' => 'form-control','step'=>'any'))}}
+				{{Form::input('number','other_expenses_amount',number_format($purchaseInvoice->other_expenses_amount,2), array('tabindex' => $tabCount, 'class' => 'form-control','step'=>'0.01'))}}
 			</div>
 		</div>
 		<div class="form-group">

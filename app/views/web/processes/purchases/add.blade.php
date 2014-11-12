@@ -65,15 +65,15 @@
 				<div class="col-sm-10">
 					<div class="row">
 						<div class="col-sm-2">
-							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
+							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control text-right', 'step'=>'0.01','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
 							<?php $tab ++ ; ?>
-							{{Form::input('number','quantity_'.$itemRow->id, null, array('tabindex'=> $tab,'class' => 'form-control text-right', 'step'=>'any','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
+							{{Form::input('number','quantity_'.$itemRow->id, null, array('tabindex'=> $tab,'class' => 'form-control text-right', 'step'=>'0.01','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
 						</div>
 						<div class="col-sm-2">
 							<?php $tab ++ ; ?>
-							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('tabindex'=> $tab, 'class' => 'form-control text-right', 'step'=>'any'))}}
+							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('tabindex'=> $tab, 'class' => 'form-control text-right', 'step'=>'0.01'))}}
 						</div>
 						<div class="col-sm-2">
 							{{Form::input('date','exp_date_'.$itemRow->id, null, array('class' => 'form-control'))}}
@@ -196,7 +196,7 @@
 							{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-6 control-label', 'style' => 'padding-top: 0;'))}}
 							<div class="col-sm-6">
 								<?php $tab ++ ; ?>
-								{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => 'any'))}}
+								{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => '0.01'))}}
 							</div>
 						</div>
 					</div>

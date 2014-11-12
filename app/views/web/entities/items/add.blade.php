@@ -24,25 +24,25 @@
 		<div class="form-group">
 			{{Form::label('reorder_level', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','reorder_level', null, array('tabindex' => '3', 'class' => 'form-control','required'=>true,'step'=>'any'))}}
+				{{Form::input('number','reorder_level', null, array('tabindex' => '3', 'class' => 'form-control','required'=>true, 'step'=>'0.01'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('current_buying_price', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','current_buying_price', null, array('tabindex' => '4', 'class' => 'form-control','step' => 'any','required'=>true))}}
+				{{Form::input('number','current_buying_price', null, array('tabindex' => '4', 'class' => 'form-control','step' => '0.01','required'=>true))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('current_selling_price', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','current_selling_price', null, array('tabindex' => '5', 'class' => 'form-control','step' => 'any','required'=>true))}}
+				{{Form::input('number','current_selling_price', null, array('tabindex' => '5', 'class' => 'form-control','step' => '0.01','required'=>true))}}
 			</div>
 		</div>  
 		<div class="form-group">
 			{{Form::label('weight (g)', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-4">
-				{{Form::input('number','weight', null, array('tabindex' => '8', 'class' => 'form-control', 'step'=>'any'))}}
+				{{Form::input('number','weight', null, array('tabindex' => '8', 'class' => 'form-control', 'step'=>'0.01'))}}
 			</div>
 		</div> 
 		<div class="form-group">
