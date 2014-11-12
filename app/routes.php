@@ -34,6 +34,8 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
+	$result = \Controllers\StockController::getAvailableQuantity();
+	echo $result ;
 	
 } ) ;
 

@@ -407,6 +407,8 @@ body{
 	background-color: #fff !important;
 }
 
+/* Add Sale */
+
 .item-list-main-bar{
 	background-color: rgb(255, 255, 255);
 	position: absolute;
@@ -426,11 +428,19 @@ body{
 
 #error-li{
 	color: red;
+	border-top: 1px solid;
 }
 
-.item-list-main-bar .selected{
+.item-list-main-bar .selected_return{
 	background: rgb(191, 170, 255);;
 }
+
+
+
+.item-list-main-bar .selected {
+	background: rgb(191, 170, 255);;
+}
+
 
 a{
 	cursor: pointer;
@@ -441,4 +451,10 @@ a{
 	width: 500px;
 	color: red;
 	margin: 2px 0px 0px 0px;
+}
+
+.item-list-table{
+	background-color: #FFFFFF;
+	padding: 5px 0;
+	border: solid 1px rgb(218, 207, 240);
 }
