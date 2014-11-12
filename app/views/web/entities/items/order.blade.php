@@ -18,9 +18,9 @@
 			@foreach($items as $key => $item)
 			<tr>
 				<td>{{$item->name}}</td>
-				<td>{{Form::input('number','buyingOrder[]', $item->buying_invoice_order, array('class' => 'form-control','id' => 'buyingOrderId_'.$key))}}</td>
+				<td>{{Form::input('number','buyingOrder[]', $item->buying_invoice_order, array('class' => 'form-control','id' => 'buyingOrderId_'.$key, 'step'=>'1'))}}</td>
 				<td>
-					{{Form::input('number','sellingOrder[]',  $item->selling_invoice_order, array('class' => 'form-control','id' => 'sellingOrderId_'.$key))}} 
+					{{Form::input('number','sellingOrder[]',  $item->selling_invoice_order, array('class' => 'form-control','id' => 'sellingOrderId_'.$key, 'step'=>'1'))}} 
 					{{Form::hidden('itemId[]', $item->id, array('tabindex' => '2', 'class' => 'form-control'))}}
 				</td>
 			</tr>

@@ -95,32 +95,32 @@
 								{{Form::hidden('items['.$item->id.'][available_quantity]', $stockDetails[$item->id]['good_quantity'])}}
 							</div>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail paid_quantity', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+								{{Form::input('number','items['.$item->id.'][price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail paid_quantity', 'data-item-id'=>$item->id, 'step'=>'0.01'))}}
 							</div>
 
 							<div class="col-sm-2">
 								<?php $tab ++ ; ?>
-								{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity']))}}
+								{{Form::input('number','items['.$item->id.'][paid_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity'], 'step'=>'0.01'))}}
 							</div>
 							<?php $tab ++ ; ?>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity']))}}
+								{{Form::input('number','items['.$item->id.'][free_quantity]',NULL, array('tabindex'=> $tab, 'class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id,'id'=>$item->id,'max'=>$stockDetails[$item->id]['good_quantity'], 'step'=>'0.01'))}}
 							</div>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][good_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+								{{Form::input('number','items['.$item->id.'][good_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>'0.01'))}}
 							</div>
 							<div class="col-sm-2">
-								{{Form::input('number','items['.$item->id.'][good_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+								{{Form::input('number','items['.$item->id.'][good_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>'0.01'))}}
 							</div>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="row">
 							<div class="col-sm-4">
-								{{Form::input('number','items['.$item->id.'][company_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>0.01))}}
+								{{Form::input('number','items['.$item->id.'][company_return_price]',$item->current_selling_price, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>'0.01'))}}
 							</div>
 							<div class="col-sm-4">
-								{{Form::input('number','items['.$item->id.'][company_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id))}}
+								{{Form::input('number','items['.$item->id.'][company_return_quantity]',NULL, array('class' => 'form-control text-right saleDetail', 'data-item-id'=>$item->id, 'step'=>'0.01'))}}
 							</div>
 							<div class="col-sm-4">
 								{{Form::text('items['.$item->id.'][line_total]',NULL, array('class' => 'form-control text-right lineTotal', 'readonly'=>TRUE))}}
@@ -241,7 +241,7 @@
 					{{Form::label('balance', 'Credit', array('class' => 'col-sm-6 control-label'))}}
 					<div class="col-sm-6">
 						<?php $tab ++ ?>
-						{{Form::input('number', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE])}}
+						{{Form::input('number', 'balance', NULL, ['class'=>'form-control text-right balance', 'readonly'=>TRUE, 'step'=>'0.01'])}}
 					</div>
 				</div>
 			</div>

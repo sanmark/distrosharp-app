@@ -34,7 +34,7 @@
 				<div class="form-group bottom-space">
 					{{Form::label('amount')}}
 					{{Form::select('compare_sign',$compareSignSelectBox,$compareSign, array('tabindex' => '5', 'class' => ''))}}
-					{{Form::input('number','amount',$amount, array('tabindex' => '6', 'class' => ''),['step'=>'any'])}}
+					{{Form::input('number','amount',$amount,['tabindex' => '6', 'step'=>'0.01'])}}
 				</div>
 				<div class="form-group bottom-space">
 					{{Form::submit('Submit', array('tabindex' => '7', 'class' => 'btn btn-primary pull-right'))}}

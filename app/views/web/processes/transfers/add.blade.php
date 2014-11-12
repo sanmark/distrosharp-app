@@ -42,11 +42,11 @@
 						{{$fromStockDetails[$item->id]}}{{Form::hidden('availale_amounts['.$item->id.']', $fromStockDetails[$item->id])}}
 					</div>
 					<div class="col-sm-2 text-right"> 
-						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control numField','step' => 'any','id'=>$item->id))}}
+						{{Form::input('number','transfer_amounts['.$item->id.']', null, array('class' => 'form-control numField','step' => '0.01','id'=>$item->id))}}
 					</div>
 					@if($isUnloaded==1)
 					<div class="col-sm-2 text-right"> 
-						{{Form::input('number','imbalance_amount['.$item->id.']', null, array('class' => 'form-control','step' => 'any','readonly','disabled'=>'true'))}}
+						{{Form::input('number','imbalance_amount['.$item->id.']', null, array('class' => 'form-control','step' => '0.01','readonly','disabled'=>'true'))}}
 					</div>
 					@endif
 					<div class="col-sm-1 text-right">

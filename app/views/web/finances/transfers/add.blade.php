@@ -25,7 +25,7 @@
 		<div class="form-group">
 			{{Form::label('amount', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('number','amount',null, array('class' => 'form-control','required'=>true))}}
+				{{Form::input('number','amount',null, array('class' => 'form-control','required'=>true, 'step'=>'0.01'))}}
 			</div>			
 		</div>
 		<div class="form-group">
