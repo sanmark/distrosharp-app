@@ -189,7 +189,7 @@ class TransfersController extends \Controller
 	{
 		try
 		{
-			$financeTransferUpdateRow = \Models\FinanceTransfer::with ( 'chequeDetail' )
+			$financeTransfer = \Models\FinanceTransfer::with ( 'chequeDetail' )
 				-> findOrFail ( $transferId ) ;
 
 			$dateTime			 = \InputButler::get ( 'date_time' ) ;
@@ -202,23 +202,17 @@ class TransfersController extends \Controller
 			$chequeIssuedDate	 = \InputButler::get ( 'cheque_issued_date' ) ;
 			$chequePayableDate	 = \InputButler::get ( 'cheque_payable_date' ) ;
 
-			$this -> validateChequeDetails ( $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
+			$this -> validateChequeDetails ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 
-			$financeTransferUpdateRow -> date_time	 = $dateTime ;
-			$financeTransferUpdateRow -> amount		 = $amount ;
-			$financeTransferUpdateRow -> description = $description ;
-			$financeTransferUpdateRow -> from_id	 = $fromId ;
-			$financeTransferUpdateRow -> to_id		 = $toId ;
+			$financeTransfer -> date_time	 = $dateTime ;
+			$financeTransfer -> amount		 = $amount ;
+			$financeTransfer -> description	 = $description ;
+			$financeTransfer -> from_id		 = $fromId ;
+			$financeTransfer -> to_id		 = $toId ;
 
-			$financeTransferUpdateRow -> update () ;
+			$financeTransfer -> update () ;
 
-			$chequeDetail					 = $financeTransferUpdateRow -> chequeDetail ;
-			$chequeDetail -> bank_id		 = $chequeBankId ;
-			$chequeDetail -> cheque_number	 = $chequeNumber ;
-			$chequeDetail -> issued_date	 = $chequeIssuedDate ;
-			$chequeDetail -> payable_date	 = $chequePayableDate ;
-
-			$chequeDetail -> update () ;
+			$this -> updateChequeDetailsIfCheque ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 
 			\ActivityLogButler::add ( "Edit Finance Transfer " . $financeTransfer -> id ) ;
 
@@ -261,46 +255,65 @@ class TransfersController extends \Controller
 		}
 	}
 
-	public function validateChequeDetails ( $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate )
+	private function validateChequeDetails ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate )
 	{
-		$chequeIssuedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequeIssuedDate , 'Y-m-d' ) ;
-		$chequePayableDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePayableDate , 'Y-m-d' ) ;
-
-		$data = compact ( [
-			'chequeBankId' ,
-			'chequeNumber' ,
-			'chequeIssuedDate' ,
-			'chequePayableDate'
-			] ) ;
-
-		$rules = [
-			'chequeBankId'		 => [
-				'required'
-			] ,
-			'chequeNumber'		 => [
-				'required'
-			] ,
-			'chequeIssuedDate'	 => [
-				'required' ,
-				'date' ,
-				'date_format:Y-m-d'
-			] ,
-			'chequePayableDate'	 => [
-				'required' ,
-				'date' ,
-				'date_format:Y-m-d'
-			]
-			] ;
-
-		$validator = \Validator::make ( $data , $rules ) ;
-
-		if ( $validator -> fails () )
+		if ( $financeTransfer -> isCheque () )
 		{
-			$iie				 = new \Exceptions\InvalidInputException() ;
-			$iie -> validator	 = $validator ;
+			$chequeIssuedDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequeIssuedDate , 'Y-m-d' ) ;
+			$chequePayableDate	 = \DateTimeHelper::convertTextToFormattedDateTime ( $chequePayableDate , 'Y-m-d' ) ;
 
-			throw $iie ;
+			$data = compact ( [
+				'chequeBankId' ,
+				'chequeNumber' ,
+				'chequeIssuedDate' ,
+				'chequePayableDate'
+				] ) ;
+
+			$rules = [
+				'chequeBankId'		 => [
+					'required'
+				] ,
+				'chequeNumber'		 => [
+					'required'
+				] ,
+				'chequeIssuedDate'	 => [
+					'required' ,
+					'date' ,
+					'date_format:Y-m-d'
+				] ,
+				'chequePayableDate'	 => [
+					'required' ,
+					'date' ,
+					'date_format:Y-m-d'
+				]
+				] ;
+
+			$validator = \Validator::make ( $data , $rules ) ;
+
+			if ( $validator -> fails () )
+			{
+				$iie				 = new \Exceptions\InvalidInputException() ;
+				$iie -> validator	 = $validator ;
+
+				throw $iie ;
+			}
 		}
+	}
+
+	private function updateChequeDetailsIfCheque ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate )
+	{
+		if ( $financeTransfer -> isCheque () )
+		{
+			$chequeDetail					 = $financeTransfer -> chequeDetail ;
+			$chequeDetail -> bank_id		 = $chequeBankId ;
+			$chequeDetail -> cheque_number	 = $chequeNumber ;
+			$chequeDetail -> issued_date	 = $chequeIssuedDate ;
+			$chequeDetail -> payable_date	 = $chequePayableDate ;
+
+			return $chequeDetail -> update () ;
+		}
+
+		return FALSE ;
 	}
 
 }
