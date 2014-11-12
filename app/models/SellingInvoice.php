@@ -285,6 +285,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			] ,
 			'printed_invoice_number' => [
 				'required' ,
+				'unique:selling_invoices,printed_invoice_number,' . $this -> id
 			] ,
 			'discount'				 => [
 				'numeric'
