@@ -169,17 +169,49 @@ class TransfersController extends \Controller
 
 	public function edit ( $transferId )
 	{
-		$financeTransfer	 = \Models\FinanceTransfer::with ( 'chequeDetail.bank' )
+		$financeTransfer = \Models\FinanceTransfer::with ( 'chequeDetail.bank' )
 			-> findOrFail ( $transferId ) ;
-		$accountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelect ( 'id' , 'name' ) ;
-		$dateTime			 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time ) ;
-		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$fromAccount	 = $financeTransfer -> from_id ;
+		$toAccount		 = $financeTransfer -> to_id ;
+		$amount			 = $financeTransfer -> amount ;
+		$description	 = $financeTransfer -> description ;
+		$requestObject	 = \Models\FinanceAccount::where ( 'is_active' , '=' , TRUE )
+			-> where ( 'is_in_house' , '=' , TRUE ) ;
+
+		$fromAccountSelectBox	 = \Models\FinanceAccount::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $requestObject , [NULL => 'Select Account' ] ) ;
+		$fromDisabled			 = '' ;
+		$toAccountSelectBox		 = \Models\FinanceAccount::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $requestObject , [NULL => 'Select Account' ] ) ;
+		$toDisabled				 = '' ;
+
+
+		$isInHouseAccounts = \Models\FinanceAccount::where ( 'is_in_house' , '!=' , TRUE ) -> lists ( 'id' ) ;
+		if ( in_array ( $fromAccount , $isInHouseAccounts ) )
+		{
+			$fromAccountSelectBox	 = [$fromAccount => $financeTransfer -> fromAccount -> name ] ;
+			$fromDisabled			 = 'readonly' ;
+		}
+
+		if ( in_array ( $toAccount , $isInHouseAccounts ) )
+		{
+			$toAccountSelectBox	 = [$toAccount => $financeTransfer -> toAccount -> name ] ;
+			$toDisabled			 = 'readonly' ;
+		}
+
+		$dateTime	 = \DateTimeHelper::dateTimeRefill ( $financeTransfer -> date_time ) ;
+		$banksList	 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'financeTransfer' ,
-			'accountSelectBox' ,
+			'fromAccountSelectBox' ,
+			'toAccountSelectBox' ,
 			'dateTime' ,
-			'banksList'
+			'banksList' ,
+			'fromAccount' ,
+			'toAccount' ,
+			'amount' ,
+			'description' ,
+			'fromDisabled' ,
+			'toDisabled'
 			] ) ;
 
 		return \View::make ( 'web.finances.transfers.edit' , $data ) ;
@@ -201,6 +233,22 @@ class TransfersController extends \Controller
 			$chequeNumber		 = \InputButler::get ( 'cheque_number' ) ;
 			$chequeIssuedDate	 = \InputButler::get ( 'cheque_issued_date' ) ;
 			$chequePayableDate	 = \InputButler::get ( 'cheque_payable_date' ) ;
+
+
+			$isInHouseAccounts = \Models\FinanceAccount::where ( 'is_in_house' , '!=' , TRUE ) -> lists ( 'id' ) ;
+			if ( in_array ( $financeTransfer -> from_id , $isInHouseAccounts ) && $fromId != $financeTransfer -> from_id )
+			{
+				\MessageButler::setError ( "Invalid input" ) ;
+				return \Redirect::back ()
+						-> withInput () ;
+			}
+
+			if ( in_array ( $financeTransfer -> to_id , $isInHouseAccounts ) && $toId != $financeTransfer -> to_id )
+			{
+				\MessageButler::setError ( "Invalid input" ) ;
+				return \Redirect::back ()
+						-> withInput () ;
+			}
 
 			$this -> validateChequeDetails ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
 

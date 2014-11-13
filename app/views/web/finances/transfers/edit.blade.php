@@ -8,7 +8,7 @@
 	</div>
 	<div class="panel-body">
 
-		{{Form::model($financeTransfer,['class'=>'form-horizontal', 'role'=>'form'])}}
+		{{Form::open(['class'=>'form-horizontal', 'role'=>'form'])}}
 		<br />
 		<div class="form-group">
 			{{Form::label('date_time',null, array('class' => 'col-sm-1 control-label'))}}
@@ -19,25 +19,25 @@
 		<div class="form-group">
 			{{Form::label('from',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('from_id',$accountSelectBox,null, array('tabindex' => '1', 'class' => 'form-control'))}}
+				{{Form::select('from_id',$fromAccountSelectBox,$fromAccount, array('tabindex' => '1', 'class' => 'form-control',$fromDisabled,'required'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('amount',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::input('number','amount',null, array('tabindex' => '2', 'class' => 'form-control', 'step'=>'0.01'),['step'=>'any','required'=>'required'])}}
+				{{Form::input('number','amount',$amount, array('tabindex' => '2', 'class' => 'form-control', 'step'=>'0.01'),['step'=>'any','required'=>'required'])}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('to',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::select('to_id',$accountSelectBox,null, array('tabindex' => '3', 'class' => 'form-control'))}}
+				{{Form::select('to_id',$toAccountSelectBox,$toAccount, array('tabindex' => '3', 'class' => 'form-control',$toDisabled,'required'))}}
 			</div>
 		</div>
 		<div class="form-group">
 			{{Form::label('description',null, array('class' => 'col-sm-1 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::textarea('description',null, array('tabindex' => '4', 'class' => 'form-control'))}}
+				{{Form::textarea('description',$description, array('tabindex' => '4', 'class' => 'form-control'))}}
 			</div>
 		</div>
 
