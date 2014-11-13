@@ -165,9 +165,8 @@ class ArrayHelper
 			{
 				return FALSE ;
 			}
-
-			return TRUE ;
 		}
+		return TRUE ;
 	}
 
 	public static function removeWhiteSpacesInValuesRecursive ( $array )
