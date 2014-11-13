@@ -486,22 +486,7 @@ function editSales() {
 		var itemId = this.id;
 
 		clearError();
-
-		if ($('#txtItemId').val()) {
-			$("#txtItemCode").addClass('duplicate-error');
-			$("#txtItemName").addClass('duplicate-error');
-			$("#txtAvailable").addClass('duplicate-error');
-			$("#txtPaidQty").addClass('duplicate-error');
-			$("#txtPrice").addClass('duplicate-error');
-			$("#txtFreeQty").addClass('duplicate-error');
-			$("#txtSalesLineTot").addClass('duplicate-error');
-			$('html, body').animate({
-				scrollTop: $("#scrollTopReturn").offset().top
-			}, 700);
-			return false;
-		}
-
-
+ 
 		$('#txtItemCode').val($('#item_code_' + itemId).val());
 		$('#txtItemName').val($('#item_name_' + itemId).val());
 		$('#txtAvailable').val($('#available_quantity' + itemId).val());

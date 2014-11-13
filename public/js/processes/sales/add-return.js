@@ -440,22 +440,7 @@ function editReturn() {
 		var itemId = this.id;
 
 		clearError();
-
-		if ($('#txtreturnId').val()) {
-			$("#txtReturnItemCode").addClass('duplicate-error');
-			$("#txtReturnItemName").addClass('duplicate-error');
-			$("#txtGoodReturnPrice").addClass('duplicate-error');
-			$("#txtCompanyReturnPrice").addClass('duplicate-error');
-			$("#txtGRQ").addClass('duplicate-error');
-			$("#txtCRQ").addClass('duplicate-error');
-			$("#txtreturnLineTot").addClass('duplicate-error');
-			$('html, body').animate({
-				scrollTop: $("#scrollTopReturn").offset().top
-			}, 700);
-			return false;
-		}
-
-
+ 
 		$('#txtReturnItemCode').val($('#return_item_code_' + itemId).val());
 		$('#txtReturnItemName').val($('#item_name_' + itemId).val());
 		$('#txtGoodReturnPrice').val($('#good_return_price_' + itemId).val());
