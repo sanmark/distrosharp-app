@@ -392,6 +392,7 @@ body{
 } 
 .duplicate-error{
 	border-bottom: 1px solid #FF0000 !important;
+	color: rgb(202, 0, 0) !important;
 }
 
 .panel-title-btn{
@@ -400,7 +401,60 @@ body{
 	color: #fff !important;
 	border: none !important;
 }
+
 .email-input
 {
 	background-color: #fff !important;
+}
+
+/* Add Sale */
+
+.item-list-main-bar{
+	background-color: rgb(255, 255, 255);
+	position: absolute;
+	min-width: 103px;
+	width: auto;
+	padding: 0px;
+	cursor: pointer;
+	z-index: 9999;
+}
+
+.item-list-main-bar li{
+	list-style: none;
+	padding: 1px 0px 0px 5px;
+	border-style: solid;
+	border-width: 0px 1px 1px 1px;
+}
+
+#error-li{
+	color: red;
+	border-top: 1px solid;
+}
+
+.item-list-main-bar .selected_return{
+	background: rgb(191, 170, 255);;
+}
+
+
+
+.item-list-main-bar .selected {
+	background: rgb(191, 170, 255);;
+}
+
+
+a{
+	cursor: pointer;
+}
+
+#return-exit-message{
+	position: absolute;
+	width: 500px;
+	color: red;
+	margin: 2px 0px 0px 0px;
+}
+
+.item-list-table{
+	background-color: #FFFFFF;
+	padding: 5px 0;
+	border: solid 1px rgb(218, 207, 240);
 }

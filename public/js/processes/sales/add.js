@@ -33,7 +33,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 					return oldCreditPayments[index][property];
 				}
 			}
-		} else if (property == "cheque_issued_date") {
+		} else if (property === "cheque_issued_date") {
 			return date;
 		}
 		return null;
@@ -312,58 +312,6 @@ function loadPreviousValuesOnUnsuccessfulRedirectBack(oldCustomerId)
 	});
 }
 
-function calculateLineTotal()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var itemId = $(this).attr('data-item-id');
-		var price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][price]']");
-		var paid_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][paid_quantity]']");
-		var good_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_price]']");
-		var good_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][good_return_quantity]']");
-		var company_return_price = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_price]']");
-		var company_return_quantity = SanmarkJsHelper.Input.get("input[name='items[" + itemId + "][company_return_quantity]']");
-		var lineTotal = (price * paid_quantity) - ((good_return_price * good_return_quantity) + (company_return_price * company_return_quantity));
-		$("input[name='items[" + itemId + "][line_total]']").val(lineTotal.toFixed(2));
-	});
-}
-
-function displaySubTotal()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var subTotal = null;
-		$('.lineTotal').each(function () {
-			var value = parseFloat($(this).val());
-			if (!isNaN(value)) {
-				subTotal += value;
-			}
-		});
-		$("input[name='subTotal']").val(subTotal.toFixed(2));
-	});
-}
-
-function displayTotal()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var net = SanmarkJsHelper.Input.get('#subTotal');
-		var disc = SanmarkJsHelper.Input.get('#discount');
-		if (disc == '.')
-		{
-			disc = 0;
-		}
-		$('#total').val((net - disc ? net - disc : 0).toFixed(2));
-	});
-}
-
-function displayBalance()
-{
-	$(document).on('change keyup', '.saleDetail', function () {
-		var sub = SanmarkJsHelper.Input.get('#total');
-		var cash = SanmarkJsHelper.Input.get('#cash_payment');
-		var cheque = SanmarkJsHelper.Input.get('#cheque_payment');
-		$('#balance').val((sub - cash - cheque ? sub - cash - cheque : 0).toFixed(2));
-	});
-}
-
 function displayIsCompletelyPaid()
 {
 	$(document).on('change keyup', '.saleDetail', function () {
@@ -407,42 +355,7 @@ function checkValidit(input)
 	} else {
 		return;
 	}
-}
-
-function checkPaidAndFreeSum()
-{
-	var itemAmount = document.getElementsByName('item_list_amount')[0].value;
-	var trueFalse = [];
-	for (var i = 1; i <= itemAmount; i++)
-	{
-		var freeQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][free_quantity]"]');
-		var availableQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][available_quantity]"]');
-		var paidQuantity = SanmarkJsHelper.Input.get('[name="items[' + i + '][paid_quantity]"]');
-
-		var sumOfFreeAndPaid = Number(paidQuantity) + Number(freeQuantity);
-		var input = document.getElementsByName('items[' + i + '][free_quantity]')[0];
-		if (sumOfFreeAndPaid > availableQuantity)
-		{
-			input.setCustomValidity("Sum of free and paid is higher than " + availableQuantity + "");
-			trueFalse.push("1");
-		}
-		else
-		{
-			input.setCustomValidity('');
-			trueFalse.push("0");
-		}
-	}
-	var resultArray = trueFalse.indexOf("1");
-
-	if (resultArray !== (-1))
-	{
-		return true;
-	}
-	else if (resultArray == (-1))
-	{
-		return false;
-	}
-}
+} 
 
 function validateChequeDetails()
 {
@@ -462,3 +375,66 @@ function validateChequeDetails()
 		}
 	});
 }
+
+function clearError() {
+
+	$("input").removeClass("duplicate-error");
+}
+
+function setMethodToEnter() {
+
+	$(document).on("keypress", 'form', function (e) {
+		var code = e.keyCode || e.which;
+		var target_id = event.target.id;
+		if (code === 13) {
+			if (target_id === 'txtPrice' || target_id === 'txtPaidQty' || target_id === 'txtFreeQty' || target_id === 'txtSalesLineTot') {
+				jQuery('#add-new-salesl').click();
+			}
+			if (target_id === 'txtGoodReturnPrice' || target_id === 'txtGRQ' || target_id === 'txtCompanyReturnPrice' || target_id === 'txtCRQ' || target_id === 'txtreturnLineTot') {
+				jQuery('#add-new-return').click();
+			}
+			e.preventDefault();
+			return false;
+		}
+
+	});
+
+}
+
+function setSubTotal() {
+
+	var txt_sales_total = $('#txt_sales_total').val();
+	var txt_return_total = $('#txt_return_total').val();
+
+	var result = txt_sales_total - txt_return_total;
+
+	$('#subTotal').val(result.toFixed(2));
+
+	var discount = $('#discount').val();
+	if (!discount.trim()) {
+		discount = 0;
+	}
+
+	var total = result - parseInt(discount);
+
+	$('#total').val(total.toFixed(2));
+
+}
+
+function displayBalance()
+{
+	var sub = SanmarkJsHelper.Input.get('#total');
+	var cash = SanmarkJsHelper.Input.get('#cash_payment');
+	var cheque = SanmarkJsHelper.Input.get('#cheque_payment');
+	var result = (sub - cash - cheque ? sub - cash - cheque : 0);
+	$('#balance').val(result.toFixed(2));
+
+}
+ 
+$(document).on('change keyup keypress', '#cash_payment, #cheque_payment, #discount', function () {
+ 
+	setSubTotal();
+	displayBalance();
+
+});
+ 

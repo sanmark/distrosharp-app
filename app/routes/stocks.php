@@ -45,4 +45,15 @@ Route::group ( [
 		'before' => ['hasAbilities:edit_stock' ] ,
 		'uses'	 => 'Controllers\StockController@update'
 	] ) ;
+
+	Route::group ( [
+		'prefix' => 'ajax' ,
+		'before' => 'csrf'
+		] , function()
+	{
+		Route::post ( 'getAvailableQuantity' , [
+			'as'	 => 'stocks.ajax.getAvailableQuantity' ,
+			'uses'	 => 'Controllers\StockController@getAvailableQuantity'
+		] ) ;
+	} ) ;
 } ) ;

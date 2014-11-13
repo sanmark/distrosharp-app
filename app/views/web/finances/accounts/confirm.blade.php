@@ -3,15 +3,15 @@
 @section('body')
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Confirm Bank Account Balance</h3>
+		<h3 class="panel-title">Confirm Account Balance</h3>
 	</div>
 	<div class="panel-body">
 		<div class="panel panel-default">
 			<div class="panel-body">
 				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
 				<div class="form-group inline-form">
-					{{Form::label('account','Bank Account', array('class' => 'control-label'))}}
-					{{Form::select('account',$bankAccountSelectBox,$bankAccountId, array('class' => '','required'=>'required'))}}
+					{{Form::label('account','Finance Account', array('class' => 'control-label'))}}
+					{{Form::select('account',$accountSelectBox,$accountId, array('class' => '','required'=>'required'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('datetime','Date/Time', array('class' => 'control-label'))}}

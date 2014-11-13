@@ -5,8 +5,6 @@ namespace Models ;
 class Stock extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function stockDetails ()
 	{
 		return $this -> hasMany ( 'Models\StockDetail' ) ;
@@ -175,23 +173,6 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		}
 	}
 
-	public function isSellingInvoicesAdded ()
-	{
-		$lastLoadDate = $this -> getLastLoadDate ( $this -> id ) ;
-
-		$sellingInvoices = \Models\SellingInvoice::where ( 'stock_id' , '=' , $this -> id )
-			-> where ( 'date_time' , '>' , $lastLoadDate )
-			-> get () ;
-
-		if ( count ( $sellingInvoices ) == 0 )
-		{
-			return FALSE ;
-		} else
-		{
-			return TRUE ;
-		}
-	}
-
 	public function saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description )
 	{
 		$transferId = $this -> saveBasicTransferDetails ( $this -> id , $toStockId , $dateTime , $description ) ;
@@ -337,7 +318,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		$data = $this -> toArray () ;
 
 		$rules = [
-			
+
 			'name'			 => [
 				'required' ,
 				'unique:stocks,name,' . $this -> id
@@ -360,7 +341,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		{
 			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
-			
+
 			throw $iie ;
 		}
 	}

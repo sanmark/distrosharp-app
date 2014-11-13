@@ -100,18 +100,10 @@ class TransferController extends \Controller
 			{
 				$stockObj	 = \Models\Stock::findOrFail ( $fromStockId ) ;
 				$isLoaded	 = $stockObj -> isLoadedWithItems () ;
-				$isSelled	 = $stockObj -> isSellingInvoicesAdded () ;
-
 
 				if ( $isLoaded == FALSE )
 				{
 					\MessageButler::setError ( 'Your stock is empty.Please load the stock.' ) ;
-					return \Redirect::back ()
-							-> withInput () ;
-				}
-				if ( $isSelled == FALSE )
-				{
-					\MessageButler::setError ( 'Please make at least one sale before unload' ) ;
 					return \Redirect::back ()
 							-> withInput () ;
 				}

@@ -5,8 +5,6 @@ namespace Models ;
 class Item extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function stockDetail ()
 	{
 		return $this -> hasOne ( 'Models\StockDetail' ) ;

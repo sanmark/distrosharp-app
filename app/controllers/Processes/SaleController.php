@@ -28,7 +28,7 @@ class SaleController extends \Controller
 		{
 			$customers			 = [ NULL => 'Select Route First' ] ;
 			$routes				 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
-			$items				 = \Models\Item::where ( 'is_active' , '=' , TRUE ) -> orderBy ( 'selling_invoice_order' , 'ASC' ) -> get () ;
+			 
 			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
 			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
 			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
@@ -37,8 +37,7 @@ class SaleController extends \Controller
 
 			$data = compact ( [
 				'customers' ,
-				'routes' ,
-				'items' ,
+				'routes' , 
 				'stockDetails' ,
 				'guessedInvoiceId' ,
 				'currentDateTime' ,
@@ -278,58 +277,62 @@ class SaleController extends \Controller
 
 	private function validateSaleItems ( $items )
 	{
-		foreach ( $items as $itemId => $item )
+
+		if ( count ( $items ) > 0 )
 		{
-			$itemO = \Models\Item::findOrFail ( $itemId ) ;
-
-			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
+			foreach ( $items as $itemId => $item )
 			{
-				$rules = [
-					'price'						 => [
-						'required_with:paid_quantity , free_quantity' ,
-						'numeric'
-					] ,
-					'available_quantity'		 => [
-						'required_with:paid_quantity , free_quantity' ,
-						'greater_than_or_equal_to:' . ($item[ 'paid_quantity' ] + $item[ 'free_quantity' ])
-					] ,
-					'paid_quantity'				 => [
-						'numeric'
-					] ,
-					'free_quantity'				 => [
-						'numeric'
-					] ,
-					'good_return_price'			 => [
-						'required_with:good_return_quantity' ,
-						'numeric'
-					] ,
-					'good_return_quantity'		 => [
-						'numeric'
-					] ,
-					'company_return_price'		 => [
-						'required_with:company_return_quantity' ,
-						'numeric'
-					] ,
-					'company_return_quantity'	 => [
-						'numeric'
-					]
-					] ;
+				$itemO = \Models\Item::findOrFail ( $itemId ) ;
 
-				$messages = [
-					'price.required_with'							 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
-					'available_quantity.greater_than_or_equal_to'	 => $itemO -> name . ': The sum of Paid and Free Quantities are higher than the available amount.' ,
-					'good_return_price.required_with'				 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
-					'company_return_price.required_with'			 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
-					] ;
-
-				$validator = \Validator::make ( $item , $rules , $messages ) ;
-
-				if ( $validator -> fails () )
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , ['price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
 				{
-					$iie				 = new \Exceptions\InvalidInputException() ;
-					$iie -> validator	 = $validator ;
+					$rules = [
+						'price'						 => [
+							'required_with:paid_quantity , free_quantity' ,
+							'numeric'
+						] ,
+						'available_quantity'		 => [
+							'required_with:paid_quantity , free_quantity' ,
+							'greater_than_or_equal_to:' . (\ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'paid_quantity' ) + \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'free_quantity' ))
+						] ,
+						'paid_quantity'				 => [
+							'numeric'
+						] ,
+						'free_quantity'				 => [
+							'numeric'
+						] ,
+						'good_return_price'			 => [
+							'required_with:good_return_quantity' ,
+							'numeric'
+						] ,
+						'good_return_quantity'		 => [
+							'numeric'
+						] ,
+						'company_return_price'		 => [
+							'required_with:company_return_quantity' ,
+							'numeric'
+						] ,
+						'company_return_quantity'	 => [
+							'numeric'
+						]
+						] ;
 
-					throw $iie ;
+					$messages = [
+						'price.required_with'							 => $itemO -> name . ': Please enter the Price. It is require when Paid Quantity or Free Quantity is present.' ,
+						'available_quantity.greater_than_or_equal_to'	 => $itemO -> name . ': The sum of Paid and Free Quantities are higher than the available amount.' ,
+						'good_return_price.required_with'				 => $itemO -> name . ': Good Return Price is required when Good Return Quantity is present.' ,
+						'company_return_price.required_with'			 => $itemO -> name . ': Company Return Price is required when Company Return Quantity is present.' ,
+						] ;
+
+					$validator = \Validator::make ( $item , $rules , $messages ) ;
+
+					if ( $validator -> fails () )
+					{
+						$iie				 = new \Exceptions\InvalidInputException() ;
+						$iie -> validator	 = $validator ;
+
+						throw $iie ;
+					}
 				}
 			}
 		}
@@ -710,30 +713,34 @@ class SaleController extends \Controller
 	{
 		$sellingInvoiceId = $sellingInvoice -> id ;
 
-		foreach ( $items as $itemId => $item )
+		if ( count ( $items ) > 0 )
 		{
-			if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
+			foreach ( $items as $itemId => $item )
 			{
-				$rep = \User::with ( 'stock' )
-					-> findOrFail ( \SessionButler::getRepId () ) ;
+				if ( \ArrayHelper::hasAtLeastOneElementWithValue ( $item , [ 'price' , 'available_quantity' , 'good_return_price' , 'company_return_price' ] ) )
+				{
+					$rep = \User::with ( 'stock' )
+						-> findOrFail ( \SessionButler::getRepId () ) ;
 
-				$sellingItem = new \Models\SellingItem() ;
+					$sellingItem = new \Models\SellingItem() ;
 
-				$sellingItem -> selling_invoice_id		 = $sellingInvoiceId ;
-				$sellingItem -> item_id					 = $itemId ;
-				$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
-				$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
-				$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
-				$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
-				$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
-				$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
-				$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
+					$sellingItem -> selling_invoice_id	 = $sellingInvoiceId ;
+					$sellingItem -> item_id				 = $itemId ;
 
-				$sellingItem -> save () ;
+					$sellingItem -> price					 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'price' ) ;
+					$sellingItem -> paid_quantity			 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'paid_quantity' ) ;
+					$sellingItem -> free_quantity			 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'free_quantity' ) ;
+					$sellingItem -> good_return_price		 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_price' ) ;
+					$sellingItem -> good_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_quantity' ) ;
+					$sellingItem -> company_return_price	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_price' ) ;
+					$sellingItem -> company_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_quantity' ) ;
 
-				$stockId = $rep -> stock -> id ;
+					$sellingItem -> save () ;
 
-				$this -> updateStockOnSave ( $stockId , $itemId , $item[ 'paid_quantity' ] , $item[ 'free_quantity' ] , $item[ 'good_return_quantity' ] , $item[ 'company_return_quantity' ] ) ;
+					$stockId = $rep -> stock -> id ;
+
+					$this -> updateStockOnSave ( $stockId , $itemId , $sellingItem -> paid_quantity , $sellingItem -> free_quantity , $sellingItem -> good_return_quantity , $sellingItem -> company_return_quantity ) ;
+				}
 			}
 		}
 	}

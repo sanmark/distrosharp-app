@@ -5,8 +5,6 @@ namespace Models ;
 class Customer extends BaseEntity implements \Interfaces\iEntity
 {
 
-	public $timestamps = FALSE ;
-
 	public function route ()
 	{
 		return $this -> belongsTo ( 'Models\Route' ) ;

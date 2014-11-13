@@ -140,4 +140,17 @@ class StockController extends \Controller
 		}
 	}
 
+	public function getAvailableQuantity ()
+	{ 
+		$itemId	 = \Input::get ( 'itemId' ) ;
+		$repId	 = \Input::get ( 'rep_id' ) ;
+  
+		$stock = \Models\Stock::where ( 'incharge_id' , '=' , $repId ) -> firstOrFail () ;
+
+		$stockDetail = \Models\StockDetail::where ( 'stock_id' , '=' , $stock -> id )
+			-> where ( 'item_id' , '=' , $itemId )
+			-> firstOrFail () ; 
+		return \Response::json ( $stockDetail->good_quantity ) ; 
+	}
+
 }

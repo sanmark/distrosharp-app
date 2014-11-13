@@ -125,4 +125,72 @@ class AccountsController extends \Controller
 		return \View::make ( 'web.finances.accounts.home' , $data ) ;
 	}
 
+	public function confirmAccountHome ()
+	{
+		$accountSelectBox	 = \FinanceAccountButler::getAccountsInvolvedForTransfer () ;
+		$accountId			 = NULL ;
+		$viewDateTime		 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+		$transferData		 = NULL ;
+
+		$data = compact ( [
+			'accountSelectBox' ,
+			'accountId' ,
+			'viewDateTime' ,
+			'transferData'
+			] ) ;
+
+		return \View::make ( 'web.finances.accounts.confirm' , $data ) ;
+	}
+
+	public function confirmAccountFilter ()
+	{
+
+		$filterValues		 = \Input::all () ;
+		$accountId			 = \InputButler::get ( 'account' ) ;
+		$viewDateTime		 = \InputButler::get ( 'datetime' ) ;
+		$accountSelectBox	 = \FinanceAccountButler::getAccountsInvolvedForTransfer () ;
+
+		if ( $accountId == '' )
+		{
+			\MessageButler::setError ( "Please select a finance account" ) ;
+			return \Redirect::back ()
+					-> withInput () ;
+		}
+
+		$financeAccount = \Models\FinanceAccount::findOrFail ( $accountId ) ;
+
+		$viewDateTime = \NullHelper::ifNullEmptyOrWhitespace ( $viewDateTime , date ( 'Y-m-d H:i:s' ) ) ;
+
+		$transferData = $financeAccount -> financeAccountReportFilter ( $filterValues ) ;
+
+		$lastConfirmDateTime = $financeAccount -> getLastConfirmDateBefore ( $viewDateTime ) ;
+
+
+		if ( \InputButler::get ( 'confirm' ) )
+		{
+			$financeAccount -> verifyFinanceAccountBalance ( $viewDateTime ) ;
+			$filterValues[ 'datetime' ]	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+			$viewDateTime				 = $filterValues[ 'datetime' ] ;
+
+			$transferData = $financeAccount -> financeAccountReportFilter ( $filterValues ) ;
+
+			$lastConfirmDateTime = $financeAccount -> getLastConfirmDate () ;
+		}
+
+		$startingTotal	 = $financeAccount -> getFinanceAccountStartBalance ( $lastConfirmDateTime ) ;
+		$endingTotal	 = $financeAccount -> getFinanceAccountEndBalance ( $lastConfirmDateTime , $transferData ) ;
+
+		$data = compact ( [
+			'accountSelectBox' ,
+			'accountId' ,
+			'viewDateTime' ,
+			'transferData' ,
+			'endingTotal' ,
+			'startingTotal' ,
+			'startingConfirmDateTime'
+			] ) ;
+
+		return \View::make ( 'web.finances.accounts.confirm' , $data ) ;
+	}
+
 }

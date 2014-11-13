@@ -39,20 +39,21 @@ class FinanceAccountButler
 		return $chequeSourceAccount ;
 	}
 
-	public static function getBankAccountsInvolvedForTransfer ()
+	public static function getAccountsInvolvedForTransfer ()
 	{
-		$bankAccountListFromId	 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
-		$bankAccountListToId	 = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
+		$accountListFromId	 = \Models\FinanceTransfer::distinct ( 'from_id' ) -> lists ( 'from_id' ) ;
+		$accountListToId	 = \Models\FinanceTransfer::distinct ( 'to_id' ) -> lists ( 'to_id' ) ;
 
-		$bankAccountListFromTransfers = array_unique ( array_merge ( $bankAccountListFromId , $bankAccountListToId ) ) ;
+		$accountListFromTransfers = array_unique ( array_merge ( $accountListFromId , $accountListToId ) ) ;
 
-		$bankAccountList = \Models\FinanceAccount::where ( 'bank_id' , '!=' , '' ) -> lists ( 'id' ) ;
+		$accountList = \Models\FinanceAccount::where ( 'is_in_house' , '=' , TRUE ) -> lists ( 'id' ) ;
 
-		$bankAccountList = array_intersect ( $bankAccountListFromTransfers , $bankAccountList ) ;
+		$accountList = array_intersect ( $accountListFromTransfers , $accountList ) ;
 
-		$bankAccountSelectBox = \Models\FinanceAccount::getArrayForHtmlSelectByIds ( 'id' , 'name' , $bankAccountList , ['' => 'Select Account' ] ) ;
+		$accountSelectBox = \Models\FinanceAccount::getArrayForHtmlSelectByIds ( 'id' , 'name' , $accountList , ['' => 'Select Account' ] ) ;
 
-		return $bankAccountSelectBox ;
+		return $accountSelectBox ;
+		
 	}
 
 }
