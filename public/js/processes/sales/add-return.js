@@ -169,7 +169,7 @@ function addReturnRow() {
 			}
 
 			var htmlOutput = '';
-			htmlOutput += '<div id="return-item-row_' + txtreturnId + '" class="row item-list-table" >';
+			htmlOutput += '<div id="return_item_row_' + txtreturnId + '" class="row item-list-table" >';
 
 			htmlOutput += '<div class="col-sm-6">';
 			htmlOutput += '<div class="row">';
@@ -275,11 +275,11 @@ function selectReturnItem(csrfToken) {
 
 							var html_message = "";
 							html_message += "<div id='return-exit-message'>";
-							html_message += data[0].id + " is already exists in the list";
+							html_message += data[0].name + " is already exists in the list";
 							html_message += "</div>";
 
 							$('#return-dublicate-error-message').append(html_message);
-							$('#return-item-row_' + data[0].id).addClass('duplicate-error');
+							$('#return_item_row_' + data[0].id).addClass('duplicate-error');
 
 							setTimeout(function () {
 								$("div").removeClass("duplicate-error");
@@ -421,7 +421,7 @@ function validateaddReturnRow(validationVal) {
 		html_message += "</div>";
 
 		$('#return-dublicate-error-message').append(html_message);
-		$('#return-item-row_' + validationVal.txtreturnId).addClass('duplicate-error');
+		$('#return_item_row_' + validationVal.txtreturnId).addClass('duplicate-error');
 
 		setTimeout(function () {
 			$("div").removeClass("duplicate-error");
@@ -468,7 +468,7 @@ function editReturn() {
 
 		$("#txtReturnItemCode").attr("disabled", "TRUE");
 		$("#txtReturnItemName").attr("disabled", "TRUE");
-		$("#return-item-row_" + itemId).remove();
+		$("#return_item_row_" + itemId).remove();
 		$('#add-new-return').text("Save");
 
 		$('html, body').animate({
@@ -482,12 +482,13 @@ function deleteReturn() {
 
 	$(document).on('click', '.delete-return', function () {
 
-		$("#return-item-row_" + this.id).remove();
+		$("#return_item_row_" + this.id).remove();
 
-		setTimeout(function () {
-			setSubTotal();
-			displayBalance();
-		},1000);
+		setTotalReturn();
+		setSubTotal();
+		displayBalance();
+
+		return false;
 
 	});
 }

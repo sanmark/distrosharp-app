@@ -183,7 +183,7 @@ function addSalesRow() {
 			}
 
 			var htmlOutput = '';
-			htmlOutput += '<div id="salse-item-row_' + txtItemId + '" class="row item-list-table">';
+			htmlOutput += '<div id="salse_item_row_' + txtItemId + '" class="row item-list-table">';
 
 			htmlOutput += '<div class="col-sm-6">';
 			htmlOutput += '<div class="row">';
@@ -201,7 +201,7 @@ function addSalesRow() {
 			htmlOutput += '<div class="col-sm-3 text-right" >' + txtSalesLineTot + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right" >';
 			htmlOutput += '<a title="Click to edit ' + txtItemName + ' "  class="edit-sales" id=' + txtItemId + '> Edit </a> / ';
-			htmlOutput += '<a title="Click to delete ' + txtItemName + ' "   class="delete-return"  id=' + txtItemId + '> Delete </a>';
+			htmlOutput += '<a title="Click to delete ' + txtItemName + ' "   class="delete-sales"  id=' + txtItemId + '> Delete </a>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
@@ -286,13 +286,13 @@ function selectSalesItem(csrfToken) {
 							$("#txtPrice").addClass('duplicate-error');
 							$("#txtFreeQty").addClass('duplicate-error');
 							$("#txtSalesLineTot").addClass('duplicate-error');
-							$('#salse-item-row_' + data[0].id).addClass('duplicate-error');
+							$('#salse_item_row_' + data[0].id).addClass('duplicate-error');
 							$('#txtItemId').val("");
 							$("#txtItemCode").select();
 
 							var html_message = "";
 							html_message += "<div id='return-exit-message'>";
-							html_message += +data[0].id + " is already exists in the list";
+							html_message += data[0].name + " is already exists in the list";
 							html_message += "</div>";
 
 							$('#dublicate-error-message').append(html_message);
@@ -387,7 +387,7 @@ function validateaddSalesRow(validationVal) {
 	clearError();
 
 	if (parseInt(0 + validationVal.txtPaidQty) + parseInt(0 + validationVal.txtFreeQty) > validationVal.txtAvailable) {
-		 
+
 		$("#txtPaidQty").addClass('duplicate-error');
 		$("#txtFreeQty").addClass('duplicate-error');
 		$("#txtAvailable").addClass('duplicate-error');
@@ -460,7 +460,7 @@ function validateaddSalesRow(validationVal) {
 		$("#txtPrice").addClass('duplicate-error');
 		$("#txtFreeQty").addClass('duplicate-error');
 		$("#txtSalesLineTot").addClass('duplicate-error');
-		$('#salse-item-row_' + validationVal.txtItemId).addClass('duplicate-error');
+		$('#salse_item_row_' + validationVal.txtItemId).addClass('duplicate-error');
 		$('#txtItemId').val("");
 
 		var html_message = "";
@@ -514,7 +514,7 @@ function editSales() {
 
 		$("#txtItemCode").attr("disabled", "TRUE");
 		$("#txtItemName").attr("disabled", "TRUE");
-		$("#salse-item-row_" + itemId).remove();
+		$("#salse_item_row_" + itemId).remove();
 		$('#add-new-salesl').text("Save");
 
 		$('html, body').animate({
@@ -526,9 +526,15 @@ function editSales() {
 
 function deleteSales() {
 
-	$(document).on('click', '.delete-return', function () {
+	$(document).on('click', '.delete-sales', function () {
 
-		$("#salse-item-row_" + this.id).remove();
+		$("#salse_item_row_" + this.id).remove();
+
+		setTotal();
+		setSubTotal();
+		displayBalance();
+
+		return false;
 	});
 }
 
