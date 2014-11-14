@@ -78,7 +78,8 @@ function autoloadItemForReturn(csrfToken) {
 						itemList += '</li>';
 						$('#loader-img-return').hide();
 					}
-
+					
+					$('#item_list_f_return').empty();
 					$('#item_list_f_return').append(itemList);
 
 				});

@@ -78,7 +78,8 @@ function autoloadItemForSales(csrfToken) {
 						itemList += '</li>';
 						$('#loader-img').hide();
 					}
-
+					
+                    $('#item_list_f_sales').empty();
 					$('#item_list_f_sales').append(itemList);
 
 				});
