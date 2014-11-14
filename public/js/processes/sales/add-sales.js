@@ -386,7 +386,7 @@ function validateaddSalesRow(validationVal) {
 
 	clearError();
 
-	if (parseInt(0 + validationVal.txtPaidQty) + parseInt(0 + validationVal.txtFreeQty) > validationVal.txtAvailable) {
+	if (parseFloat(0 + validationVal.txtPaidQty) + parseFloat(0 + validationVal.txtFreeQty) > validationVal.txtAvailable) {
 
 		$("#txtPaidQty").addClass('duplicate-error');
 		$("#txtFreeQty").addClass('duplicate-error');
@@ -528,7 +528,7 @@ function setTotal() {
 	var sales_line_total = 0;
 
 	$(".sales_line_total").each(function () {
-		sales_line_total += parseInt($(this).val());
+		sales_line_total += parseFloat($(this).val());
 	});
 
 	$('#lable_sales_total').text(sales_line_total.toFixed(2));
