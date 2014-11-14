@@ -483,7 +483,7 @@ function setTotalReturn() {
 	var return_line_total = 0;
 
 	$(".return_line_total").each(function () {
-		return_line_total += parseInt($(this).val());
+		return_line_total += parseFloat($(this).val());
 	});
 
 	$('#lable_return_total').text(return_line_total.toFixed(2));

@@ -415,7 +415,7 @@ function setSubTotal() {
 		discount = 0;
 	}
 
-	var total = result - parseInt(discount);
+	var total = result - parseFloat(discount);
 
 	$('#total').val(total.toFixed(2));
 
