@@ -412,7 +412,7 @@ body{
 .item-list-main-bar{
 	background-color: rgb(255, 255, 255);
 	position: absolute;
-	min-width: 103px;
+	min-width: 229px;
 	width: auto;
 	padding: 0px;
 	cursor: pointer;
@@ -455,6 +455,15 @@ a{
 
 .item-list-table{
 	background-color: #FFFFFF;
-	padding: 5px 0;
+	padding: 6px 0px 4px 0px;
 	border: solid 1px rgb(218, 207, 240);
+	height: auto;
+	margin: 0px;
 }
+
+.item-list-table input{
+	margin: -4px 0px 0px 0px;
+	border: solid 1px rgb(173, 173, 173) !important;
+}
+
+/* Edit Sale */
