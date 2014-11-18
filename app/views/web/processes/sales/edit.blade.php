@@ -642,23 +642,10 @@
 		</div>
 
 		<br/><br/> 
-		
-		
-		
-		
+ 
 		<div id="creditPayments" class="">
-		</div>
+		</div> 
 		
-		
-		
-		
-		
-		
-		
-
-
-
-
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
 				{{Form::submit('Submit', array('class' => 'btn btn-primary pull-right'))}}
@@ -668,8 +655,10 @@
 		{{Form::close()}}
 	</div>
 </div>
- 
- 
+{{Form::input('hidden', 'current_edit_sales_id', NULL, ['id'=>'current_edit_sales_id'])}}
+{{Form::input('hidden', 'current_edit_return_id', NULL, ['id'=>'current_edit_return_id'])}}
+
+
 @stop
 
 @section('file-footer')
