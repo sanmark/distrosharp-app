@@ -24,7 +24,8 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Item</th>
+					<th>Item Code</th>
+					<th>Item Name</th>
 					<th class="text-right">Good Qnt</th>
 					<th class="text-right">Return Qnt</th>
 					<th class='text-right'>Good Qnt. Weight(Kg)</th>
@@ -36,6 +37,7 @@
 			<tbody> 
 				@foreach ($stockDetails as $stock)
 				<tr>
+					<td>{{$stock['item']['code']}}</td>
 					<td>{{$stock['item']['name']}}</td>
 					<td class="text-right">{{number_format($stock['good_quantity'],2)}}</td>
 					<td class="text-right">{{number_format($stock['return_quantity'],2)}}</td> 
@@ -46,7 +48,7 @@
 				</tr>
 				@endforeach 
 				<tr> 
-					<td colspan="3"><b>Total</b></td>
+					<td colspan="4"><b>Total</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'totalWeight' ],2)}}</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_value_total' ],2)}}</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_value_total' ],2)}}</b></td>
