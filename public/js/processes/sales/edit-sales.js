@@ -271,6 +271,7 @@ function addSalesRow() {
 			$("#txtFreeQty").val("");
 			$("#txtSalesLineTot").val("");
 			$("#txtItemCode").focus();
+			$('#current_edit_sales_id').val("");
 
 			$('#add-new-salesl').text("Add");
 			$("#txtItemCode").removeAttr("disabled");
@@ -472,11 +473,6 @@ function validateaddSalesRow(validationVal) {
 		$("#txtFreeQty").addClass('duplicate-error');
 		status = false;
 	}
-	if (validationVal.txtSalesLineTot === 0 && !validationVal.txtSalesLineTot.trim()) {
-		$("#txtSalesLineTot").addClass('duplicate-error');
-		status = false;
-	}
-
 	if (!validationVal.txtItemId.trim()) {
 		$("#txtItemCode").addClass('duplicate-error');
 		$("#txtItemName").addClass('duplicate-error');
@@ -524,40 +520,87 @@ function editSales() {
 		var itemId = this.id;
 
 		clearError();
+		var current_edit_sales_id = $('#current_edit_sales_id').val();
 
-		if ($('#txtItemId').val()) {
-			$("#txtItemCode").addClass('duplicate-error');
-			$("#txtItemName").addClass('duplicate-error');
-			$("#txtAvailable").addClass('duplicate-error');
-			$("#txtPaidQty").addClass('duplicate-error');
-			$("#txtPrice").addClass('duplicate-error');
-			$("#txtFreeQty").addClass('duplicate-error');
-			$("#txtSalesLineTot").addClass('duplicate-error');
+		if (current_edit_sales_id) {
+
+			var txtItemCode = $('#txtItemCode').val();
+			var txtItemName = $('#txtItemName').val();
+			var txtAvailable = $('#txtAvailable').val();
+			var txtPaidQty = $('#txtPaidQty').val();
+			var txtPrice = $('#txtPrice').val();
+			var txtFreeQty = $('#txtFreeQty').val();
+			var txtSalesLineTot = parseFloat($('#txtSalesLineTot').val());
+			var txtItemId = $('#txtItemId').val();
+
+			var validationVal = {
+				"txtItemCode": txtItemCode,
+				"txtItemName": txtItemName,
+				"txtAvailable": txtAvailable,
+				"txtPaidQty": txtPaidQty,
+				"txtPrice": txtPrice,
+				"txtFreeQty": txtFreeQty,
+				"txtSalesLineTot": txtSalesLineTot,
+				"txtItemId": txtItemId
+
+			};
+
+			var result = validateaddSalesRow(validationVal);
+
+			if (result) {
+
+				jQuery('#add-new-salesl').click();
+
+				$('#current_edit_sales_id').val(itemId);
+
+				$('#txtItemCode').val($('#item_code_' + itemId).val());
+				$('#txtItemName').val($('#item_name_' + itemId).val());
+				$('#txtAvailable').val($('#available_quantity' + itemId).val());
+				$('#txtPrice').val($('#price' + itemId).val());
+
+				$('#txtPaidQty').val($('#paid_quantity' + itemId).val());
+				$('#txtFreeQty').val($('#free_quantity' + itemId).val());
+				$('#txtSalesLineTot').val($('#sales_line_total' + itemId).val());
+				$('#txtItemId').val(itemId);
+
+				$("#txtItemCode").attr("disabled", "TRUE");
+				$("#txtItemName").attr("disabled", "TRUE");
+				$("#salse-item-row_" + itemId).remove();
+				$('#add-new-salesl').text("Save");
+
+				$('html, body').animate({
+					scrollTop: $("#scrollTopSales").offset().top
+				}, 700);
+
+			}
+
+		}
+		else
+		{
+
+			$('#current_edit_sales_id').val(itemId);
+
+			$('#txtItemCode').val($('#item_code_' + itemId).val());
+			$('#txtItemName').val($('#item_name_' + itemId).val());
+			$('#txtAvailable').val($('#available_quantity' + itemId).val());
+			$('#txtPrice').val($('#price' + itemId).val());
+
+			$('#txtPaidQty').val($('#paid_quantity' + itemId).val());
+			$('#txtFreeQty').val($('#free_quantity' + itemId).val());
+			$('#txtSalesLineTot').val($('#sales_line_total' + itemId).val());
+			$('#txtItemId').val(itemId);
+
+			$("#txtItemCode").attr("disabled", "TRUE");
+			$("#txtItemName").attr("disabled", "TRUE");
+			$("#salse-item-row_" + itemId).remove();
+			$('#add-new-salesl').text("Save");
+
 			$('html, body').animate({
-				scrollTop: $("#scrollTopReturn").offset().top
+				scrollTop: $("#scrollTopSales").offset().top
 			}, 700);
-			return false;
 		}
 
 
-		$('#txtItemCode').val($('#item_code_' + itemId).val());
-		$('#txtItemName').val($('#item_name_' + itemId).val());
-		$('#txtAvailable').val($('#available_quantity' + itemId).val());
-		$('#txtPrice').val($('#price' + itemId).val());
-
-		$('#txtPaidQty').val($('#paid_quantity' + itemId).val());
-		$('#txtFreeQty').val($('#free_quantity' + itemId).val());
-		$('#txtSalesLineTot').val($('#sales_line_total' + itemId).val());
-		$('#txtItemId').val(itemId);
-
-		$("#txtItemCode").attr("disabled", "TRUE");
-		$("#txtItemName").attr("disabled", "TRUE");
-		$("#salse-item-row_" + itemId).remove();
-		$('#add-new-salesl').text("Save");
-
-		$('html, body').animate({
-			scrollTop: $("#scrollTopSales").offset().top
-		}, 700);
 
 	});
 }

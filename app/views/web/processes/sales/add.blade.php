@@ -399,6 +399,11 @@
 
 	</div>
 </div>
+
+{{Form::input('hidden', 'current_edit_sales_id', NULL, ['id'=>'current_edit_sales_id'])}}
+{{Form::input('hidden', 'current_edit_return_id', NULL, ['id'=>'current_edit_return_id'])}}
+
+
 @stop
 
 @section('file-footer')
