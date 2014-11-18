@@ -26,9 +26,9 @@ class SaleController extends \Controller
 
 		if ( $rep -> stock -> isLoaded () )
 		{
-			$customers			 = [ NULL => 'Select Route First' ] ;
-			$routes				 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
-			 
+			$customers	 = [ NULL => 'Select Route First' ] ;
+			$routes		 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+
 			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
 			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
 			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
@@ -37,7 +37,7 @@ class SaleController extends \Controller
 
 			$data = compact ( [
 				'customers' ,
-				'routes' , 
+				'routes' ,
 				'stockDetails' ,
 				'guessedInvoiceId' ,
 				'currentDateTime' ,
@@ -189,12 +189,14 @@ class SaleController extends \Controller
 		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
 		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , $sellingInvoice-> rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'sellingInvoice' ,
 			'customerDropDown' ,
 			'items' ,
-			'banksList'
+			'banksList',
+			'routes'
 			] ) ;
 
 		return \View::make ( 'web.processes.sales.edit' , $data ) ;
@@ -211,6 +213,10 @@ class SaleController extends \Controller
 			$chequePaymentChequeNumber	 = \InputButler::get ( 'cheque_payment_cheque_number' ) ;
 			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
 			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
+			$creditPayments				 = \InputButler::get ( 'credit_payments' ) ;
+			
+			$this -> validateCreditPayments ( $creditPayments ) ;
+			
 
 			$this -> validateSaleItemsForUpdate ( $items ) ;
 			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
@@ -224,6 +230,7 @@ class SaleController extends \Controller
 			$sellingInvoice -> is_completely_paid		 = \InputButler::get ( 'is_completely_paid' ) ;
 
 			$sellingInvoice -> update () ;
+			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
 			$this -> savePayments ( $sellingInvoice , $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
 
 			$this -> updateSellingItems ( $id ) ;
@@ -487,13 +494,13 @@ class SaleController extends \Controller
 					$sellingItem -> item_id				 = $itemId ;
 				}
 
-				$sellingItem -> price					 = \NullHelper::nullIfEmpty ( $item[ 'price' ] ) ;
-				$sellingItem -> paid_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'paid_quantity' ] ) ;
-				$sellingItem -> free_quantity			 = \NullHelper::nullIfEmpty ( $item[ 'free_quantity' ] ) ;
-				$sellingItem -> good_return_price		 = \NullHelper::nullIfEmpty ( $item[ 'good_return_price' ] ) ;
-				$sellingItem -> good_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'good_return_quantity' ] ) ;
-				$sellingItem -> company_return_price	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_price' ] ) ;
-				$sellingItem -> company_return_quantity	 = \NullHelper::nullIfEmpty ( $item[ 'company_return_quantity' ] ) ;
+				$sellingItem -> price					 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'price' ) ;
+				$sellingItem -> paid_quantity			 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'paid_quantity' ) ;
+				$sellingItem -> free_quantity			 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'free_quantity' ) ;
+				$sellingItem -> good_return_price		 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_price' ) ;
+				$sellingItem -> good_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'good_return_quantity' ) ;
+				$sellingItem -> company_return_price	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_price' ) ;
+				$sellingItem -> company_return_quantity	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $item , 'company_return_quantity' ) ;
 
 				$filledItemsArray[] = $sellingItem ;
 			}

@@ -77,4 +77,18 @@ class SellingItem extends BaseEntity implements \Interfaces\iEntity
 		return $goodReturnQuantity ;
 	}
 
+	public function getSalesLineTotal ()
+	{
+		$lineTotal = $this -> price * $this -> paid_quantity ;
+
+		return $lineTotal ;
+	}
+
+	public function getReturnLineTotal ()
+	{
+		$lineTotal = ($this -> good_return_price * $this -> good_return_quantity) + ($this -> company_return_price * $this -> company_return_quantity);
+
+		return $lineTotal ;
+	}
+
 }

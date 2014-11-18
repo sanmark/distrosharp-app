@@ -14,7 +14,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 	{
 		return $this -> belongsTo ( 'User' , 'rep_id' ) ;
 	}
-
+	 
 	public static function ageCreditFilter ( $filterValues )
 	{
 		$requestObject = new \Models\SellingInvoice() ;
