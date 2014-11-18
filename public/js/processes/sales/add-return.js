@@ -115,7 +115,7 @@ function select_item_return(csrfToken) {
 		$('#txtGoodReturnPrice').val(data[0].current_selling_price);
 		$('#txtCompanyReturnPrice').val(data[0].current_selling_price);
 		$('#txtreturnId').val(data[0].id);
-		$("#txtGRQ").focus();
+		$("#txtCRQ").focus();
 		calculateReturnLineTotal();
 
 	});
@@ -176,15 +176,15 @@ function addReturnRow() {
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3">' + txtReturnItemCode + '</div>';
 			htmlOutput += '<div class="col-sm-3">' + txtReturnItemName + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" ">' + txtGoodReturnPrice + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" >' + txtGRQ + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" ">' + txtCompanyReturnPrice + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >' + txtCRQ + '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 
 			htmlOutput += '<div class="col-sm-6" >';
 			htmlOutput += '<div class="row">';
-			htmlOutput += '<div class="col-sm-3 text-right">' + txtCompanyReturnPrice + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right">' + txtCRQ + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right">' + txtGoodReturnPrice + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right">' + txtGRQ + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right" >' + txtreturnLineTot + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right" >';
 			htmlOutput += '<a title="Click to edit ' + txtReturnItemName + ' " class="edit-return" id=' + txtreturnId + '> Edit </a> / ';
@@ -299,7 +299,7 @@ function selectReturnItem(csrfToken) {
 							$('#txtCompanyReturnPrice').val(data[0].current_selling_price);
 							$('#txtreturnId').val(data[0].id);
 							calculateReturnLineTotal();
-							$("#txtGRQ").focus();
+							$("#txtCRQ").focus();
 						}
 					}
 					else
