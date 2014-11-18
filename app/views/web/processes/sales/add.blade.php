@@ -166,14 +166,14 @@
 						<div class="row">
 							<div class="col-sm-3">Item Code</div>
 							<div class="col-sm-5">Item Name</div>
-							<div class="col-sm-2 text-right">GR Price</div>
-							<div class="col-sm-2 text-right">GR Qty</div>
+							<div class="col-sm-2 text-right">CR Price</div>
+							<div class="col-sm-2 text-right">CR Qty</div>
 						</div>
 					</div>
 					<div class="col-sm-5">
 						<div class="row">
-							<div class="col-sm-3 text-right">CR Price</div>
-							<div class="col-sm-3 text-right">CR Qty</div>
+							<div class="col-sm-3 text-right">GR Price</div>
+							<div class="col-sm-3 text-right">GR Qty</div>
 							<div class="col-sm-3 text-right">Line Total</div>
 							<div class="col-sm-3 text-right">&nbsp</div>
 						</div>
@@ -199,12 +199,12 @@
 								<ul id="item_list_f_return" class="item-list-main-bar"> </ul> 
 							</div> 
 
-							<div class="col-sm-2">
-								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+							<div class="col-sm-2"> 
+								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
-							<div class="col-sm-2">
-								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+							<div class="col-sm-2"> 
+								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
@@ -213,11 +213,11 @@
 					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3">
-								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 							<div class="col-sm-3">
@@ -411,7 +411,7 @@
 <script>
 loadPreviousValuesOnUnsuccessfulRedirectBack("{{Input::old('customer_id')}}");
 populateCustomersForRoute("{{csrf_token()}}");
-loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}'); 
+loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
 displayIsCompletelyPaid();
 validateChequeDetails();
 addReturnRow();

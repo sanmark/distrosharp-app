@@ -361,6 +361,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
+								.attr('step', 'any')
 								)
 							)
 						);
@@ -623,6 +624,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))
+								.attr('step', 'any')
 								)
 							)
 						);
