@@ -232,17 +232,17 @@
 				<div class="row">
 					<div class="col-sm-7">
 						<div class="row">
-							<div class="col-sm-3">Item Code</div>
+							<div class="col-sm-3"><b>Item Code</div>
 							<div class="col-sm-5">Item Name</div>
-							<div class="col-sm-2 text-right">GR Price</div>
-							<div class="col-sm-2 text-right">GR Qty</div>
+							<div class="col-sm-2 text-right">CR Price</div>
+							<div class="col-sm-2 text-right">CR Qty</div>
 						</div>
 					</div>
 					<div class="col-sm-5">
 						<div class="row">
-							<div class="col-sm-3 text-right">CR Price</div>
-							<div class="col-sm-3 text-right">CR Qty</div>
-							<div class="col-sm-3 text-right">Line Total</div>
+							<div class="col-sm-3 text-right">GR Price</div>
+							<div class="col-sm-3 text-right">GR Qty</div>
+							<div class="col-sm-3 text-right">Line Total</b></div>
 							<div class="col-sm-3 text-right">&nbsp</div>
 						</div>
 					</div>
@@ -268,11 +268,11 @@
 							</div> 
 
 							<div class="col-sm-2">
-								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-2">
-								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
@@ -281,11 +281,11 @@
 					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3">
-								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
 							<div class="col-sm-3">
-								{{Form::input('number','txtCRQ', null, array('id' => 'txtCRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
+								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 							<div class="col-sm-3">
@@ -331,21 +331,20 @@
 										{{$item->name}}
 									</div>
 									<div class="col-sm-2 text-right">
-                                        {{number_format(ObjectHelper::nullIfNonObject($sellingItem, 'good_return_price'),2)}}
+                                        {{number_format(ObjectHelper::nullIfNonObject($sellingItem, 'company_return_price'),2)}}
 									</div>
 									<div class="col-sm-2 text-right"> 
-										{{ ObjectHelper::nullIfNonObject($sellingItem, 'good_return_quantity')}} 
+										 {{ ObjectHelper::nullIfNonObject($sellingItem, 'company_return_quantity')}}
 									</div> 
 								</div> 
 							</div>
 							<div class="col-sm-5">
 								<div class="row">
-									<div class="col-sm-3 text-right"> 
-										{{number_format(ObjectHelper::nullIfNonObject($sellingItem, 'company_return_price'),2)}}
+									<div class="col-sm-3 text-right">
+										{{number_format(ObjectHelper::nullIfNonObject($sellingItem, 'good_return_price'),2)}} 
 									</div>
 									<div class="col-sm-3 text-right"> 
-										{{ ObjectHelper::nullIfNonObject($sellingItem, 'company_return_quantity')}}
-
+										{{ ObjectHelper::nullIfNonObject($sellingItem, 'good_return_quantity')}}
 									</div>
 									<div class="col-sm-3 text-right"> 
 										<?php $returnTotal += $sellingItem -> getReturnLineTotal () ; ?>
