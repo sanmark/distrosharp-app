@@ -56,20 +56,20 @@
 				<div class="row">
 					<div style="margin-bottom: 12px;"><h4><b>Add Sales</b></h4></div>
 				</div>
-				<div class="row">
-					<div class="col-sm-6">
+				<div class="row" id="top-item-lable">
+					<div class="col-sm-7">
 						<div class="row">
-							<div class="col-sm-3">Item Code</div>
-							<div class="col-sm-3">Item Name</div>
-							<div class="col-sm-3 text-right">Available</div>
-							<div class="col-sm-3 text-right">Price</div>
+							<div class="col-sm-3"><b>Item Code</b> <span>(F1)</span></div>
+							<div class="col-sm-5"><b>Item Name</b> <span>(F2)</span></div>
+							<div class="col-sm-2 text-right"><b>Available</b></div>
+							<div class="col-sm-2 text-right"><b>Price</b></div>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="row">
-							<div class="col-sm-3 text-right">Paid Qty</div>
-							<div class="col-sm-3 text-right">Free Qty</div>
-							<div class="col-sm-3 text-right">Line Total</div>
+							<div class="col-sm-3 text-right"><b>Paid Qty</b> <span>(F3)</span></div>
+							<div class="col-sm-3 text-right"><b>Free Qty</b> <span>(F4)</span></div>
+							<div class="col-sm-3 text-right"><b>Line Total</b></div>
 							<div class="col-sm-3 text-right">&nbsp</div>
 						</div>
 					</div>
@@ -80,7 +80,7 @@
 		<div class="form-group">
 			<div class="col-sm-10 col-sm-offset-2">
 				<div class="row">					
-					<div class="col-sm-6"> 
+					<div class="col-sm-7"> 
 						<div class="row"> 
 							<div class="col-sm-3">
 								{{Form::text('txtItemCode', null, array('id' => 'txtItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}} 
@@ -88,24 +88,24 @@
 								{{Form::input('hidden','txtItemId', null, array('id' => 'txtItemId'))}}
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-5">
 								{{Form::text('txtItemName', null, array('id' => 'txtItemName', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
 								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -27px 3px 0px 77px;" id="loader-img">
 								<ul id="item_list_f_sales" class="item-list-main-bar"> </ul> 
 							</div> 
 
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								{{Form::input('number','txtAvailable', null, array('id' => 'txtAvailable', 'class' => 'form-control text-right empty cal_return_line_tot', 'readonly'=>TRUE, 'step'=>'0.01'))}}
 							</div> 
 
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								{{Form::input('number','txtPrice', null, array('id' => 'txtPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
 					</div>
 
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3">
 								{{Form::input('number','txtPaidQty', null, array('id' => 'txtPaidQty', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
@@ -135,14 +135,12 @@
 			</div>   
 		</div>
 
-
-
-
+ 
 		<div class="form-group" style="margin-bottom: 3px;">
 			<div class="col-sm-10 col-sm-offset-2"> 
 				<div class="row">
-					<div class="col-sm-6"> </div>
-					<div class="col-sm-6">
+					<div class="col-sm-7"> </div>
+					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3 text-right">&nbsp</div>
 							<div class="col-sm-3 text-right"><b>Total :</b> </div>
@@ -164,15 +162,15 @@
 					<div style="margin-bottom: 12px;"><h4><b>Add Returns</b></h4></div>
 				</div>
 				<div class="row">
-					<div class="col-sm-6">
+					<div class="col-sm-7">
 						<div class="row">
 							<div class="col-sm-3">Item Code</div>
-							<div class="col-sm-3">Item Name</div>
-							<div class="col-sm-3 text-right">GR Price</div>
-							<div class="col-sm-3 text-right">GR Qty</div>
+							<div class="col-sm-5">Item Name</div>
+							<div class="col-sm-2 text-right">GR Price</div>
+							<div class="col-sm-2 text-right">GR Qty</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3 text-right">CR Price</div>
 							<div class="col-sm-3 text-right">CR Qty</div>
@@ -187,7 +185,7 @@
 		<div class="form-group">
 			<div class="col-sm-10 col-sm-offset-2">
 				<div class="row">					
-					<div class="col-sm-6"> 
+					<div class="col-sm-7"> 
 						<div class="row"> 
 							<div class="col-sm-3">
 								{{Form::text('txtReturnItemCode', null, array('id' => 'txtReturnItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}} 
@@ -195,24 +193,24 @@
 								{{Form::input('hidden','txtreturnId', null, array('id' => 'txtreturnId'))}}
 							</div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-5">
 								{{Form::text('txtReturnItemName', null, array('id' => 'txtReturnItemName', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
 								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -27px 3px 0px 77px;" id="loader-img-return">
 								<ul id="item_list_f_return" class="item-list-main-bar"> </ul> 
 							</div> 
 
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								{{Form::input('number','txtGoodReturnPrice', null, array('id' => 'txtGoodReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div> 
 
-							<div class="col-sm-3">
+							<div class="col-sm-2">
 								{{Form::input('number','txtGRQ', null, array('id' => 'txtGRQ', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
 							</div>
 
 						</div>
 					</div>
 
-					<div class="col-sm-6">
+					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3">
 								{{Form::input('number','txtCompanyReturnPrice', null, array('id' => 'txtCompanyReturnPrice', 'class' => 'form-control text-right empty cal_return_line_tot', 'step'=>'0.01'))}}
@@ -250,8 +248,8 @@
 		<div class="form-group" style="margin-bottom: 3px;">
 			<div class="col-sm-10 col-sm-offset-2"> 
 				<div class="row">
-					<div class="col-sm-6"> </div>
-					<div class="col-sm-6">
+					<div class="col-sm-7"> </div>
+					<div class="col-sm-5">
 						<div class="row">
 							<div class="col-sm-3 text-right">&nbsp</div>
 							<div class="col-sm-3 text-right"><b>Total :</b> </div>
