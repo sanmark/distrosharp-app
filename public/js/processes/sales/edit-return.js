@@ -219,6 +219,7 @@ function addReturnRow() {
 			$("#txtCRQ").val("");
 			$("#txtreturnLineTot").val("");
 			$("#txtReturnItemCode").focus();
+			$('#current_edit_return_id').val("");
 
 			$('#add-new-return').text("Add");
 			$("#txtReturnItemCode").removeAttr("disabled");
@@ -437,44 +438,88 @@ function validateaddReturnRow(validationVal) {
 }
 
 function editReturn() {
+
 	$(document).on('click', '.edit-return', function () {
+
 		var itemId = this.id;
 
 		clearError();
 
-		if ($('#txtreturnId').val()) {
-			$("#txtReturnItemCode").addClass('duplicate-error');
-			$("#txtReturnItemName").addClass('duplicate-error');
-			$("#txtGoodReturnPrice").addClass('duplicate-error');
-			$("#txtCompanyReturnPrice").addClass('duplicate-error');
-			$("#txtGRQ").addClass('duplicate-error');
-			$("#txtCRQ").addClass('duplicate-error');
-			$("#txtreturnLineTot").addClass('duplicate-error');
+		var current_edit_return_id = $('#current_edit_return_id').val();
+
+		if (current_edit_return_id) {
+
+			var txtReturnItemCode = $('#txtReturnItemCode').val();
+			var txtReturnItemName = $('#txtReturnItemName').val();
+			var txtGoodReturnPrice = $('#txtGoodReturnPrice').val();
+			var txtCompanyReturnPrice = $('#txtCompanyReturnPrice').val();
+			var txtGRQ = $('#txtGRQ').val();
+			var txtCRQ = $('#txtCRQ').val();
+			var txtreturnLineTot = $('#txtreturnLineTot').val();
+			var txtreturnId = $('#txtreturnId').val();
+
+			var validationVal = {
+				"txtReturnItemCode": txtReturnItemCode,
+				"txtReturnItemName": txtReturnItemName,
+				"txtGoodReturnPrice": txtGoodReturnPrice,
+				"txtCompanyReturnPrice": txtCompanyReturnPrice,
+				"txtGRQ": txtGRQ,
+				"txtCRQ": txtCRQ,
+				"txtreturnLineTot": txtreturnLineTot,
+				"txtreturnId": txtreturnId
+			};
+
+			var result = validateaddReturnRow(validationVal);
+
+			if (result) {
+				jQuery('#add-new-return').click();
+
+				$('#current_edit_return_id').val(itemId);
+				$('#txtReturnItemCode').val($('#return_item_code_' + itemId).val());
+				$('#txtReturnItemName').val($('#item_name_' + itemId).val());
+				$('#txtGoodReturnPrice').val($('#good_return_price_' + itemId).val());
+				$('#txtCompanyReturnPrice').val($('#company_return_price_' + itemId).val());
+
+				$('#txtGRQ').val($('#good_return_quantity' + itemId).val());
+				$('#txtCRQ').val($('#company_return_quantity' + itemId).val());
+				$('#txtreturnLineTot').val($('#line_total' + itemId).val());
+				$('#txtreturnId').val(itemId);
+
+				$("#txtReturnItemCode").attr("disabled", "TRUE");
+				$("#txtReturnItemName").attr("disabled", "TRUE");
+				$("#return-item-row_" + itemId).remove();
+				$('#add-new-return').text("Save");
+
+				$('html, body').animate({
+					scrollTop: $("#scrollTopReturn").offset().top
+				}, 700);
+
+			}
+		}
+		else
+		{
+			$('#current_edit_return_id').val(itemId);
+			$('#txtReturnItemCode').val($('#return_item_code_' + itemId).val());
+			$('#txtReturnItemName').val($('#item_name_' + itemId).val());
+			$('#txtGoodReturnPrice').val($('#good_return_price_' + itemId).val());
+			$('#txtCompanyReturnPrice').val($('#company_return_price_' + itemId).val());
+
+			$('#txtGRQ').val($('#good_return_quantity' + itemId).val());
+			$('#txtCRQ').val($('#company_return_quantity' + itemId).val());
+			$('#txtreturnLineTot').val($('#line_total' + itemId).val());
+			$('#txtreturnId').val(itemId);
+
+			$("#txtReturnItemCode").attr("disabled", "TRUE");
+			$("#txtReturnItemName").attr("disabled", "TRUE");
+			$("#return-item-row_" + itemId).remove();
+			$('#add-new-return').text("Save");
+
 			$('html, body').animate({
 				scrollTop: $("#scrollTopReturn").offset().top
 			}, 700);
-			return false;
 		}
 
 
-		$('#txtReturnItemCode').val($('#return_item_code_' + itemId).val());
-		$('#txtReturnItemName').val($('#item_name_' + itemId).val());
-		$('#txtGoodReturnPrice').val($('#good_return_price_' + itemId).val());
-		$('#txtCompanyReturnPrice').val($('#company_return_price_' + itemId).val());
-
-		$('#txtGRQ').val($('#good_return_quantity' + itemId).val());
-		$('#txtCRQ').val($('#company_return_quantity' + itemId).val());
-		$('#txtreturnLineTot').val($('#line_total' + itemId).val());
-		$('#txtreturnId').val(itemId);
-
-		$("#txtReturnItemCode").attr("disabled", "TRUE");
-		$("#txtReturnItemName").attr("disabled", "TRUE");
-		$("#return-item-row_" + itemId).remove();
-		$('#add-new-return').text("Save");
-
-		$('html, body').animate({
-			scrollTop: $("#scrollTopReturn").offset().top
-		}, 700);
 
 	});
 }
