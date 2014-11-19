@@ -58,7 +58,7 @@
 			<div class="footer navbar-default">
 				<div class="row">
 					<div class="col-sm-6 text-left">
-						&COPY; <a href="http://thesanmark.com/" target="_blank">Sanmark</a>
+						<a href="http://sapps.io/#/distrosharp" target="_blank">Distro# {{file_get_contents ( '../VERSION' )}}</a> | &COPY; <a href="http://thesanmark.com/" target="_blank">Sanmark</a>
 					</div> 
 					<div class="col-sm-6 text-right">
 						Organization : {{SystemSettingButler::getValue ( 'organization_name')}}
