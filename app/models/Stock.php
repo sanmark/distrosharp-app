@@ -32,7 +32,9 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	public function unloadings ()
 	{
-		return $this -> hasMany ( 'Models\Transfer' , 'from_stock_id' ) ;
+		$normalStocks = StockType::where ( 'name' , '=' , STOCK_NORMAL ) -> firstOrFail () ;
+
+		return $this -> hasMany ( 'Models\Transfer' , 'from_stock_id' ) -> whereIn ( 'to_stock_id' , $normalStocks -> stockIdsExceptImbalance () ) ;
 	}
 
 	public function totalItemQuantities ()
