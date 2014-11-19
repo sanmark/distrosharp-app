@@ -34,9 +34,7 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	$result = \Controllers\StockController::getAvailableQuantity();
-	echo $result ;
-	
+	dd ( file_get_contents ( '../VERSION' ) ) ;
 } ) ;
 
 

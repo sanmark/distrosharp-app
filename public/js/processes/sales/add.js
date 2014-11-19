@@ -356,7 +356,7 @@ function checkValidit(input)
 	} else {
 		return;
 	}
-} 
+}
 
 function validateChequeDetails()
 {
@@ -385,15 +385,20 @@ function clearError() {
 function setMethodToEnter() {
 
 	$(document).on("keypress", 'form', function (e) {
+
 		var code = e.keyCode || e.which;
 		var target_id = event.target.id;
+
 		if (code === 13) {
+
 			if (target_id === 'txtPrice' || target_id === 'txtPaidQty' || target_id === 'txtFreeQty' || target_id === 'txtSalesLineTot') {
 				jQuery('#add-new-salesl').click();
 			}
+
 			if (target_id === 'txtGoodReturnPrice' || target_id === 'txtGRQ' || target_id === 'txtCompanyReturnPrice' || target_id === 'txtCRQ' || target_id === 'txtreturnLineTot') {
 				jQuery('#add-new-return').click();
 			}
+
 			e.preventDefault();
 			return false;
 		}
@@ -431,11 +436,39 @@ function displayBalance()
 	$('#balance').val(result.toFixed(2));
 
 }
- 
+
 $(document).on('change keyup keypress', '#cash_payment, #cheque_payment, #discount', function () {
- 
+
 	setSubTotal();
 	displayBalance();
 
+});
+
+// action on key down
+$(document).keydown(function (e) {
+
+	 //alert(e.which);
+ 
+	 
+	if (e.which === 112) { 
+		
+		$('#txtItemCode').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 113) { 
+		
+		$('#txtItemName').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 114) { 
+		
+		$('#txtPaidQty').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 115) { 
+		
+		$('#txtFreeQty').focus();
+		e.preventDefault();
+	}  
 });
  

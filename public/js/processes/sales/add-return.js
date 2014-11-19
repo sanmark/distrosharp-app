@@ -172,16 +172,16 @@ function addReturnRow() {
 			var htmlOutput = '';
 			htmlOutput += '<div id="return_item_row_' + txtreturnId + '" class="row item-list-table" >';
 
-			htmlOutput += '<div class="col-sm-6">';
+			htmlOutput += '<div class="col-sm-7">';
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3">' + txtReturnItemCode + '</div>';
-			htmlOutput += '<div class="col-sm-3">' + txtReturnItemName + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" ">' + txtCompanyReturnPrice + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" >' + txtCRQ + '</div>';
+			htmlOutput += '<div class="col-sm-5">' + txtReturnItemName + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" ">' + txtCompanyReturnPrice + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" >' + txtCRQ + '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 
-			htmlOutput += '<div class="col-sm-6" >';
+			htmlOutput += '<div class="col-sm-5" >';
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtGoodReturnPrice + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtGRQ + '</div>';
@@ -230,8 +230,7 @@ function addReturnRow() {
 			displayBalance();
 
 		}
-	}
-	);
+	} );
 
 	$(document).on('change keyup', '.cal_return_line_tot', function () {
 		calculateReturnLineTotal();

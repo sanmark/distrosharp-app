@@ -67,20 +67,20 @@ class MenuButler
 		] ,
 		['Finance' , [
 				['Account' , [
-						['Add Account' , 'finances.accounts.add' , ['add_finance_account' ] ] ,
-						['View Account' , 'finances.accounts.view' , ['view_finance_accounts' ] ] ,
-						['Confirm Account Balance' , 'finances.accounts.confirmAccountBalance' , ['confirm_finance_account_balance' ] ]
+						['Add Account' , 'finances.accounts.add' , ['super_admin' ] ] ,
+						['View Account' , 'finances.accounts.view' , ['super_admin' ] ] ,
+						['Confirm Account Balance' , 'finances.accounts.confirmAccountBalance' , ['super_admin' ] ]
 					]
 				] ,
 				['Transfers' , [
-						['Add Transfer' , 'finances.transfers.selectAccountsInvolved' , ['add_finance_transfer' ] ] ,
-						['View Transfers' , 'finances.transfers.viewAll' , ['view_finance_transfers_details' ] ]
+						['Add Transfer' , 'finances.transfers.selectAccountsInvolved' , ['super_admin' ] ] ,
+						['View Transfers' , 'finances.transfers.viewAll' , ['super_admin' ] ]
 					]
 				]
 			] ,
 		] ,
 		['System' , [
-				['Settings' , 'system.settings' , ['edit_system_settings' ] ] ,
+				['Settings' , 'system.settings' , ['super_admin' ] ] ,
 				[ 'User Permissions' , 'system.userPermissions' , [ 'change_user_permissions' ] ] ,
 				[ 'Add New User' , 'system.addNewUser' , ['super_admin' ] ] ,
 				['Activity Log' , 'system.activityLog' , ['view_activity_log' ] ]

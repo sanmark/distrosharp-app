@@ -466,4 +466,9 @@ a{
 	border: solid 1px rgb(173, 173, 173) !important;
 }
 
-/* Edit Sale */
+#top-item-lable span{
+	font-size: 10px;
+	color: black;
+	margin: 0px 0px 0px 4px;
+
+}

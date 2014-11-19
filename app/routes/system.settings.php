@@ -4,7 +4,7 @@ Route::group ( [
 	'prefix' => 'system/settings' ,
 	'before' => [
 		'auth' ,
-		'hasAbilities:edit_system_settings'
+		'hasAbilities:super_admin'
 	]
 	] , function ()
 {

@@ -186,16 +186,16 @@ function addSalesRow() {
 			var htmlOutput = '';
 			htmlOutput += '<div id="salse_item_row_' + txtItemId + '" class="row item-list-table">';
 
-			htmlOutput += '<div class="col-sm-6">';
+			htmlOutput += '<div class="col-sm-7">';
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3">' + txtItemCode + '</div>';
-			htmlOutput += '<div class="col-sm-3">' + txtItemName + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" ">' + txtAvailable + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" >' + txtPrice + '</div>';
+			htmlOutput += '<div class="col-sm-5">' + txtItemName + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" ">' + txtAvailable + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" >' + txtPrice + '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 
-			htmlOutput += '<div class="col-sm-6" >';
+			htmlOutput += '<div class="col-sm-5" >';
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtPaidQty + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtFreeQty + '</div>';
