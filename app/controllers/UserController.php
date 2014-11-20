@@ -74,6 +74,7 @@ class UserController extends Controller
 
 	public function logout ()
 	{
+		\ActivityLogButler::add ( "Logout User  " .  Auth::user ()->id .' ('.Auth::user ()->username.')'  ) ;
 		Auth::logout () ;
 		Session::clear () ;
 		return Redirect::to ( '/' ) ;
