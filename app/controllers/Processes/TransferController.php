@@ -179,15 +179,21 @@ class TransferController extends \Controller
 				}
 
 				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
+				
 				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
+				
+				\ActivityLogButler::add ( "Unload from stock " . $fromStockObj -> id . " to stock " . $toStockId . "." ) ;
 
 				return \Redirect::action ( 'processes.transfers.selectStocksInvolved' ) ;
 			} else
 			{
 				$this -> validateItemTransfers ( $transferAmounts ) ;
+				
 				$fromStockObj -> saveNonUnload ( $toStockId , $dateTime , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
-
+				
+				\ActivityLogButler::add ( "Transfer from stock " . $fromStockObj -> id . " to stock " . $toStockId . "." ) ; 
+				
 				return \Redirect::action ( 'processes.transfers.selectStocksInvolved' ) ;
 			}
 		} catch ( \Exceptions\InvalidInputException $ex )

@@ -65,6 +65,7 @@ class StockController extends \Controller
 
 			$stockConfirmationDeatil -> save () ;
 		}
+		\ActivityLogButler::add ( "Stock Details Confirme " . $stockId ) ;
 		\MessageButler::setSuccess ( "Stock details confirmed successfully" ) ;
 		return \Redirect::action ( 'stocks.all' ) ;
 	}
@@ -97,6 +98,9 @@ class StockController extends \Controller
 			$stock -> update () ;
 
 			\MessageButler::setSuccess ( 'Successfully updated stock details.' ) ;
+			
+			\ActivityLogButler::add ( "Update Stock " . $stockId ) ;
+			
 			return \Redirect::action ( 'stocks.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -131,6 +135,7 @@ class StockController extends \Controller
 			\StockDetailButler::createStockItems ( $stock -> id ) ;
 
 			\MessageButler::setSuccess ( 'New stock was created successfully' ) ;
+			\ActivityLogButler::add ( "Create Stock " . $stock -> id  ) ;
 			return \Redirect::action ( 'stocks.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{

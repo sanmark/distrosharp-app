@@ -13,8 +13,8 @@ class SessionButler
 		return Session::get ( SESSION_ORGANIZATION ) ;
 	}
 
-	public static function setMenu ( $menu )
-	{
+	public static function setMenu ( $menu ) 
+	{ 
 		return Session::set ( SESSION_MENU , $menu ) ;
 	}
 
