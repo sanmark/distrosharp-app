@@ -83,14 +83,15 @@
 					<div class="col-sm-7"> 
 						<div class="row"> 
 							<div class="col-sm-3">
-								{{Form::text('txtItemCode', null, array('id' => 'txtItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}} 
+								{{Form::text('txtItemCode', null, array('id' => 'txtItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 99px;" id="loader-img-code">
 								<div id="dublicate-error-message"></div>
 								{{Form::input('hidden','txtItemId', null, array('id' => 'txtItemId'))}}
 							</div>
 
 							<div class="col-sm-5">
 								{{Form::text('txtItemName', null, array('id' => 'txtItemName', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
-								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -27px 3px 0px 77px;" id="loader-img">
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 202px;" id="loader-img">
 								<ul id="item_list_f_sales" class="item-list-main-bar"> </ul> 
 							</div> 
 
@@ -161,10 +162,10 @@
 				<div class="row">
 					<div style="margin-bottom: 12px;"><h4><b>Add Returns</b></h4></div>
 				</div>
-				<div class="row">
+				<div class="row" id="top-item-lable">
 					<div class="col-sm-7">
 						<div class="row">
-							<div class="col-sm-3">Item Code</div>
+							<div class="col-sm-3"><b>Item Code</div>
 							<div class="col-sm-5">Item Name</div>
 							<div class="col-sm-2 text-right">CR Price</div>
 							<div class="col-sm-2 text-right">CR Qty</div>
@@ -174,7 +175,7 @@
 						<div class="row">
 							<div class="col-sm-3 text-right">GR Price</div>
 							<div class="col-sm-3 text-right">GR Qty</div>
-							<div class="col-sm-3 text-right">Line Total</div>
+							<div class="col-sm-3 text-right">Line Total</b></div>
 							<div class="col-sm-3 text-right">&nbsp</div>
 						</div>
 					</div>
@@ -189,13 +190,14 @@
 						<div class="row"> 
 							<div class="col-sm-3">
 								{{Form::text('txtReturnItemCode', null, array('id' => 'txtReturnItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}} 
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 99px;" id="loader-img-code-retur">
 								<div id="return-dublicate-error-message"></div>
 								{{Form::input('hidden','txtreturnId', null, array('id' => 'txtreturnId'))}}
 							</div>
 
 							<div class="col-sm-5">
 								{{Form::text('txtReturnItemName', null, array('id' => 'txtReturnItemName', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
-								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -27px 3px 0px 77px;" id="loader-img-return">
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 202px;" id="loader-img-return">
 								<ul id="item_list_f_return" class="item-list-main-bar"> </ul> 
 							</div> 
 

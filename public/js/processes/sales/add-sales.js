@@ -76,9 +76,9 @@ function autoloadItemForSales(csrfToken) {
 						itemList += '<li id="error-li" class="error">';
 						itemList += 'Not Found';
 						itemList += '</li>';
-						$('#loader-img').hide();
 					}
 
+					$('#loader-img').hide();
 					$('#item_list_f_sales').empty();
 					$('#item_list_f_sales').append(itemList);
 
@@ -100,8 +100,17 @@ function autoloadItemForSales(csrfToken) {
 
 function select_item_sales(csrfToken) {
 
+
+
+	$('#loader-img').show();
+
 	var itemId = $(".selected").attr('id');
 	var rep_id = $('#rep_id').val();
+
+	if (!itemId) {
+		$('#loader-img').hide();
+	}
+
 
 	$('#item_list_f_sales').empty();
 
@@ -112,26 +121,63 @@ function select_item_sales(csrfToken) {
 		},
 	function (data)
 	{
-		$('#txtItemCode').val(data[0].code);
-		$('#txtItemName').val(data[0].name);
-		$("#txtPrice").val(data[0].current_selling_price);
-		$('#txtItemId').val(data[0].id);
-		$('#txtPaidQty').focus();
-		calculateSalesLineTotal();
+		if ($('#item_code_' + data[0].id).length !== 0) {
+
+			$("#txtItemCode").addClass('duplicate-error');
+			$("#txtItemName").addClass('duplicate-error');
+			$("#txtAvailable").addClass('duplicate-error');
+			$("#txtPaidQty").addClass('duplicate-error');
+			$("#txtPrice").addClass('duplicate-error');
+			$("#txtFreeQty").addClass('duplicate-error');
+			$("#txtSalesLineTot").addClass('duplicate-error');
+			$('#salse_item_row_' + data[0].id).addClass('duplicate-error');
+			$('#txtItemId').val("");
+			$("#txtItemName").select();
+
+
+			var html_message = "";
+			html_message += "<div id='return-exit-message'>";
+			html_message += data[0].name + " is already exists in the list";
+			html_message += "</div>";
+
+			$('#dublicate-error-message').append(html_message);
+
+			setTimeout(function () {
+				$("div").removeClass("duplicate-error");
+				$('#dublicate-error-message').empty();
+				clearError();
+			}, 3000);
+
+			$('#loader-img').hide();
+			return false;
+		}
+		else
+		{
+			$('#txtItemCode').val(data[0].code);
+			$('#txtItemName').val(data[0].name);
+			$("#txtPrice").val(data[0].current_selling_price);
+			$('#txtItemId').val(data[0].id);
+			$('#txtPaidQty').focus();
+			calculateSalesLineTotal();
+
+			$.post(
+				"/stocks/ajax/getAvailableQuantity", {
+					_token: csrfToken,
+					itemId: itemId,
+					rep_id: rep_id
+				},
+			function (data)
+			{
+				$('#txtAvailable').val(data);
+				$('#loader-img').hide();
+			});
+
+
+
+		}
 
 	});
 
-	$.post(
-		"/stocks/ajax/getAvailableQuantity", {
-			_token: csrfToken,
-			itemId: itemId,
-			rep_id: rep_id
-		},
-	function (data)
-	{
-		$('#txtAvailable').val(data);
-
-	});
 }
 
 
@@ -191,7 +237,7 @@ function addSalesRow() {
 			htmlOutput += '<div class="col-sm-3">' + txtItemCode + '</div>';
 			htmlOutput += '<div class="col-sm-5">' + txtItemName + '</div>';
 			htmlOutput += '<div class="col-sm-2 text-right" ">' + txtAvailable + '</div>';
-			htmlOutput += '<div class="col-sm-2 text-right" >' + txtPrice + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" >' + parseFloat(txtPrice).toFixed(2) + '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 
@@ -199,7 +245,7 @@ function addSalesRow() {
 			htmlOutput += '<div class="row">';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtPaidQty + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right">' + txtFreeQty + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" >' + txtSalesLineTot + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >' + parseFloat(txtSalesLineTot).toFixed(2) + '</div>';
 			htmlOutput += '<div class="col-sm-3 text-right" >';
 			htmlOutput += '<a title="Click to edit ' + txtItemName + ' "  class="edit-sales" id=' + txtItemId + '> Edit </a> / ';
 			htmlOutput += '<a title="Click to delete ' + txtItemName + ' "   class="delete-sales"  id=' + txtItemId + '> Delete </a>';
@@ -261,6 +307,7 @@ function selectSalesItem(csrfToken) {
 		if (event.keyCode === 13) {
 
 			if (event.target.id === 'txtItemCode') {
+				$('#loader-img-code').show();
 
 				valPreventDefault = true;
 
@@ -304,6 +351,7 @@ function selectSalesItem(csrfToken) {
 								$('#dublicate-error-message').empty();
 								clearError();
 							}, 3000);
+							$('#loader-img-code').hide();
 
 							status = false;
 						} else {
@@ -324,6 +372,7 @@ function selectSalesItem(csrfToken) {
 							function (data)
 							{
 								$('#txtAvailable').val(data);
+								$('#loader-img-code').hide();
 
 							});
 						}
@@ -351,6 +400,7 @@ function selectSalesItem(csrfToken) {
 						$("#txtFreeQty").val("");
 						$("#txtSalesLineTot").val("");
 						$("#txtItemCode").select();
+						$('#loader-img-code').hide();
 
 					}
 
@@ -379,7 +429,7 @@ function calculateSalesLineTotal() {
 
 	var lineTotal = txtPaidQty * txtPrice;
 
-	$("#txtSalesLineTot").val(lineTotal);
+	$("#txtSalesLineTot").val(parseFloat(lineTotal).toFixed(2));
 
 }
 
@@ -435,7 +485,7 @@ function validateaddSalesRow(validationVal) {
 		$("#txtPaidQty").addClass('duplicate-error');
 		$("#txtFreeQty").addClass('duplicate-error');
 		status = false;
-	} 
+	}
 
 	if (!validationVal.txtItemId.trim()) {
 		$("#txtItemCode").addClass('duplicate-error');
@@ -449,7 +499,6 @@ function validateaddSalesRow(validationVal) {
 	}
 
 	if ($('#item_code_' + validationVal.txtItemId).length !== 0) {
-
 
 		$("#txtItemCode").addClass('duplicate-error');
 		$("#txtItemName").addClass('duplicate-error');

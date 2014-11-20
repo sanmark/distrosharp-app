@@ -467,8 +467,11 @@ a{
 }
 
 #top-item-lable span{
-	font-size: 10px;
-	color: black;
-	margin: 0px 0px 0px 4px;
+	font-size: 13px; 
+	margin: 0px 0px 0px 0px;
 
+}
+
+#top-item-lable{
+	font-size: 13px;
 }

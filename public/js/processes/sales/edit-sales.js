@@ -103,6 +103,10 @@ function select_item_sales(csrfToken) {
 
 	var itemId = $(".selected").attr('id');
 	var rep_id = $('#rep_id').val();
+ 
+	if (!itemId) {
+		$('#loader-img').hide();
+	}
 
 	$('#item_list_f_sales').empty();
 
@@ -130,7 +134,7 @@ function select_item_sales(csrfToken) {
 
 			var html_message = "";
 			html_message += "<div id='return-exit-message'>";
-			html_message += +data[0].id + " is already exists in the list";
+			html_message += data[0].name + " is already exists in the list";
 			html_message += "</div>";
 
 			$('#dublicate-error-message').append(html_message);
@@ -298,6 +302,8 @@ function selectSalesItem(csrfToken) {
 		if (event.keyCode === 13) {
 
 			if (event.target.id === 'txtItemCode') {
+				
+				$('#loader-img-code').show();
 
 				valPreventDefault = true;
 
@@ -331,7 +337,7 @@ function selectSalesItem(csrfToken) {
 
 							var html_message = "";
 							html_message += "<div id='return-exit-message'>";
-							html_message += +data[0].id + " is already exists in the list";
+							html_message +=  data[0].name + " is already exists in the list";
 							html_message += "</div>";
 
 							$('#dublicate-error-message').append(html_message);
@@ -341,6 +347,8 @@ function selectSalesItem(csrfToken) {
 								$('#dublicate-error-message').empty();
 								clearError();
 							}, 3000);
+							
+							$('#loader-img-code').hide();
 
 							status = false;
 						} else {
@@ -363,6 +371,7 @@ function selectSalesItem(csrfToken) {
 								$('#txtAvailable').val(data);
 
 							});
+							$('#loader-img-code').hide();
 						}
 					}
 					else
@@ -388,6 +397,7 @@ function selectSalesItem(csrfToken) {
 						$("#txtFreeQty").val("");
 						$("#txtSalesLineTot").val("");
 						$("#txtItemCode").select();
+						$('#loader-img-code').hide();
 
 					}
 

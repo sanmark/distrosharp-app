@@ -76,9 +76,9 @@ function autoloadItemForReturn(csrfToken) {
 						itemList += '<li id="error-li" class="error">';
 						itemList += 'Not Found';
 						itemList += '</li>';
-						$('#loader-img-return').hide();
 					}
 
+					$('#loader-img-return').hide();
 					$('#item_list_f_return').empty();
 					$('#item_list_f_return').append(itemList);
 
@@ -100,8 +100,14 @@ function autoloadItemForReturn(csrfToken) {
 
 function select_item_return(csrfToken) {
 
+	$('#loader-img-return').show();
+
 	var itemId = $(".selected_return").attr('id');
 	$('#item_list_f_return').empty();
+
+	if(!itemId){
+		$('#loader-img-return').hide();
+	}
 
 	$.post(
 		"/entities/items/ajax/getItemById", {
@@ -110,13 +116,49 @@ function select_item_return(csrfToken) {
 		},
 	function (data)
 	{
-		$('#txtReturnItemCode').val(data[0].code);
-		$('#txtReturnItemName').val(data[0].name);
-		$('#txtGoodReturnPrice').val(data[0].current_selling_price);
-		$('#txtCompanyReturnPrice').val(data[0].current_selling_price);
-		$('#txtreturnId').val(data[0].id);
-		$("#txtCRQ").focus();
-		calculateReturnLineTotal();
+		if ($('#return_item_code_' + data[0].id).length !== 0) {
+
+			$("#txtReturnItemCode").addClass('duplicate-error');
+			$("#txtReturnItemName").addClass('duplicate-error');
+			$("#txtCompanyReturnPrice").addClass('duplicate-error');
+			$("#txtCRQ").addClass('duplicate-error');
+			$("#txtGoodReturnPrice").addClass('duplicate-error');
+			$("#txtGRQ").addClass('duplicate-error');
+			$("#txtreturnLineTot").addClass('duplicate-error');
+			$('#return_item_row_' + data[0].id).addClass('duplicate-error');
+			$('#txtreturnId').val("");
+			$("#txtReturnItemName").select();
+
+			var html_message = "";
+			html_message += "<div id='return-exit-message'>";
+			html_message += data[0].name + " is already exists in the list";
+			html_message += "</div>";
+
+			$('#return-dublicate-error-message').append(html_message);
+
+			setTimeout(function () {
+				$("div").removeClass("duplicate-error");
+				$('#return-dublicate-error-message').empty();
+				clearError();
+			}, 3000);
+
+			$('#loader-img-return').hide();
+			return false;
+		}
+		else
+		{
+			$('#txtReturnItemCode').val(data[0].code);
+			$('#txtReturnItemName').val(data[0].name);
+			$('#txtGoodReturnPrice').val(data[0].current_selling_price);
+			$('#txtCompanyReturnPrice').val(data[0].current_selling_price);
+			$('#txtreturnId').val(data[0].id);
+			$("#txtCRQ").focus();
+			calculateReturnLineTotal();
+			$('#loader-img-return').hide();
+
+		}
+
+
 
 	});
 }
@@ -155,7 +197,6 @@ function addReturnRow() {
 			"txtCRQ": txtCRQ,
 			"txtreturnLineTot": txtreturnLineTot,
 			"txtreturnId": txtreturnId
-
 		};
 
 		var result = validateaddReturnRow(validationVal);
@@ -230,7 +271,7 @@ function addReturnRow() {
 			displayBalance();
 
 		}
-	} );
+	});
 
 	$(document).on('change keyup', '.cal_return_line_tot', function () {
 		calculateReturnLineTotal();
@@ -246,6 +287,8 @@ function selectReturnItem(csrfToken) {
 		if (event.keyCode === 13) {
 
 			if (event.target.id === 'txtReturnItemCode') {
+
+				$('#loader-img-code-retur').show();
 
 				valPreventDefault = true;
 
@@ -286,6 +329,7 @@ function selectReturnItem(csrfToken) {
 								$("div").removeClass("duplicate-error");
 								$('#return-dublicate-error-message').empty();
 							}, 3000);
+							$('#loader-img-code-retur').hide();
 
 
 							status = false;
@@ -299,6 +343,7 @@ function selectReturnItem(csrfToken) {
 							$('#txtreturnId').val(data[0].id);
 							calculateReturnLineTotal();
 							$("#txtCRQ").focus();
+							$('#loader-img-code-retur').hide();
 						}
 					}
 					else
@@ -324,6 +369,7 @@ function selectReturnItem(csrfToken) {
 						$("#txtCRQ").val("");
 						$("#txtreturnLineTot").val("");
 						$("#txtReturnItemCode").select();
+						$('#loader-img-code-retur').hide();
 
 					}
 
