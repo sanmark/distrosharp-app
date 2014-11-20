@@ -734,3 +734,33 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 		);
 	});
 }
+
+
+// action on key down
+$(document).keydown(function (e) {
+
+	 //alert(e.which);
+ 
+	 
+	if (e.which === 112) { 
+		
+		$('#txtItemCode').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 113) { 
+		
+		$('#txtItemName').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 114) { 
+		
+		$('#txtPaidQty').focus();
+		e.preventDefault();
+	} 
+	if (e.which === 115) { 
+		
+		$('#txtFreeQty').focus();
+		e.preventDefault();
+	}  
+});
+ 
