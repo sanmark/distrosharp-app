@@ -62,6 +62,8 @@ class UserPermissionController extends \Controller
 			$abilitySave -> ability_id	 = $permission ;
 			$abilitySave -> save () ;
 		}
+		
+		\ActivityLogButler::add ( "Update User Permissions " . $userId  ) ;
 	}
 
 }
