@@ -32,63 +32,102 @@
 				{{Form::select('stock_id',$stocks, NULL, array('tabindex'=> '3','class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<div class="row">
-					<div class="col-sm-2"><b>Price</b></div>
-					<div class="col-sm-2"><b>Quantity</b></div>
-					<div class="col-sm-2"><b>Free Quantity</b></div>
-					<div class="col-sm-2"><b>Expire Date</b></div>
-					<div class="col-sm-2"><b>Batch Number</b></div>
-					<div class="col-sm-2"><b>Line Total</b></div>
-				</div>
-			</div>
-		</div>
-		<div id="add_purchase_items">
-			<?php $tab = 3 ; ?>
-			@foreach($itemRows as $itemRow)
-			<?php $tab ++ ; ?>
-			<div class="form-group">
-				{{Form::hidden('item_id_'.$itemRow->id,$itemRow->id)}}
-				@if(false!=$itemRow->getImageUrl())
-				<div class="col-sm-2 text-right">
-					<a href="#"  class="img-label">
-						{{$itemRow->name}}
-						<div class="tool-tip slideIn bottom" >
-							<img class="tool-tip-img" src="{{$itemRow->getImageUrl()}}" >
+ 
+		<br>
+		<br> 
+ 
+		<div class="form-group" style="margin-bottom: 3px;"  id="scrollTopSales">
+			<div class="col-sm-12 col-sm-offset-0"> 
+				<div class="row" id="top-item-lable">
+					<div class="col-sm-5">
+						<div class="row">
+							<div class="col-sm-2"><b>Code</b> <span>(F1)</span></div>
+							<div class="col-sm-5"><b>Item Name</b> <span>(F2)</span></div>
+							<div class="col-sm-3 text-right"><b>Price</b></div>
+							<div class="col-sm-2 text-right"><b>Quantity</b><span>(F3)</span></div>
 						</div>
-					</a>
-				</div>
-				@else
-				{{Form::label(null, $itemRow->name,array('class' => 'col-sm-2 control-label'))}}
-				@endif
-				<div class="col-sm-10">
-					<div class="row">
-						<div class="col-sm-2">
-							{{Form::input('number','buying_price_'.$itemRow->id,$itemRow->current_buying_price, array('class' => 'form-control text-right', 'step'=>'0.01','onkeyup'=>'changeOnPrice(this.id,this.value)','id'=>$itemRow->id))}}
-						</div>
-						<div class="col-sm-2">
-							<?php $tab ++ ; ?>
-							{{Form::input('number','quantity_'.$itemRow->id, null, array('tabindex'=> $tab,'class' => 'form-control text-right', 'step'=>'0.01','onkeyup'=>'changeOnQuantity(this.id,this.value)','id'=>$itemRow->id))}}
-						</div>
-						<div class="col-sm-2">
-							<?php $tab ++ ; ?>
-							{{Form::input('number','free_quantity_'.$itemRow->id, null, array('tabindex'=> $tab, 'class' => 'form-control text-right', 'step'=>'0.01'))}}
-						</div>
-						<div class="col-sm-2">
-							{{Form::input('date','exp_date_'.$itemRow->id, null, array('class' => 'form-control'))}}
-						</div>
-						<div class="col-sm-2">
-							{{Form::text('batch_number_'.$itemRow->id, null, array('class' => 'form-control'))}}
-						</div>
-						<div class="col-sm-2">
-							{{Form::text('line_total_'.$itemRow->id, null, array('class' => 'form-control text-right', 'step'=>'any','readonly'=>'readonly'))}}
+					</div>
+					<div class="col-sm-7">
+						<div class="row">
+							<div class="col-sm-2 text-right"><b>Free Qty</b><span>(F4)</span></div>
+							<div class="col-sm-3 text-right"><b>Expire Date</b></div>
+							<div class="col-sm-2"><b>Batch Number</b></div>
+							<div class="col-sm-3 text-right"><b>Line Total</b></div>
+							<div class="col-sm-2 text-right">&nbsp</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			@endforeach
 		</div>
+
+		<div class="form-group">
+			<div class="col-sm-12 col-sm-offset-0">
+				<div class="row">					
+					<div class="col-sm-5"> 
+						<div class="row"> 
+							<div class="col-sm-2">
+								{{Form::text('txtItemCode', null, array('id' => 'txtItemCode', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 32px;" id="loader-img-code">
+								<div id="dublicate-error-message"></div>
+								{{Form::input('hidden','txtItemId', null, array('id' => 'txtItemId'))}}
+							</div>
+
+							<div class="col-sm-5">
+								{{Form::text('txtItemName', null, array('id' => 'txtItemName', 'class' => 'form-control', 'autocomplete' => 'off','onClick'=>'this.select();'))}}
+								<img src="../../images/loading_small.gif" style="display: none; position: absolute; margin: -26px 0px 0px 165px;" id="loader-img">
+								<ul id="item_list_f_purchase" class="item-list-main-bar"> </ul> 
+							</div> 
+
+							<div class="col-sm-3">
+								{{Form::input('number','txtPrice', null, array('id' => 'txtPrice', 'class' => 'form-control text-right empty cal_line_tot', 'step'=>'0.01','readonly'=>TRUE))}}
+
+							</div> 
+
+							<div class="col-sm-2">
+								{{Form::input('number','txtQuantity', null, array('id' => 'txtQuantity', 'class' => 'form-control text-right empty cal_line_tot' , 'step'=>'0.01'))}}
+							</div>
+
+						</div>
+					</div>
+
+					<div class="col-sm-7">
+						<div class="row">
+							<div class="col-sm-2">
+								{{Form::input('number','txtFreeQuantity', null, array('id' => 'txtFreeQuantity', 'class' => 'form-control text-right empty cal_line_tot', 'step'=>'0.01'))}}
+							</div> 
+
+							<div class="col-sm-3">
+								{{Form::input('date','txtExpireDate', null, array('id' => 'txtExpireDate', 'class' => 'form-control text-right empty', 'step'=>'0.01'))}}
+							</div>
+
+							<div class="col-sm-2">
+								{{Form::input('text','txtBatchNumber', null, array('id' => 'txtBatchNumber', 'class' => 'form-control empty', 'step'=>'0.01'))}} 
+							</div>
+
+
+							<div class="col-sm-3">
+								{{Form::input('number','txtPurchaseLineTot', null, array('id' => 'txtPurchaseLineTot', 'class' => 'form-control text-right empty', 'readonly'=>TRUE, 'step'=>'0.01'))}} 
+							</div>
+
+							<div class="col-sm-2"> 
+								<div class="btn btn-primary pull-right" id="add-new-purchase" style="margin: 0px;">Add</div>  
+							</div> 
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-12 col-sm-offset-0">
+				<div class="row">					
+					<div class="col-sm-12" id="table-purchase-list"> </div>
+				</div>
+			</div>   
+		</div> 
+		<br>  
+
+
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
@@ -118,8 +157,8 @@
 						<div class="row">
 							{{Form::label('cash_payment', 'Cash Payment', array('class' => 'col-sm-6 control-label'))}}
 							<div class="col-sm-6">
-								<?php $tab ++ ; ?>
-								{{Form::input('text', 'cash_payment', NULL, array('id' => 'cash_payment', 'tabindex'=> $tab,'class' => 'form-control text-right saleDetail'))}}
+
+								{{Form::input('text', 'cash_payment', NULL, array('id' => 'cash_payment','class' => 'form-control text-right saleDetail'))}}
 							</div>
 						</div>
 					</div>
@@ -151,7 +190,7 @@
 						<div class="row">
 							{{Form::label('cheque_payment', 'Cheque Payment', array('class' => 'col-sm-6 control-label'))}}
 							<div class="col-sm-6">
-								{{Form::input('text', 'cheque_payment', NULL, array('id' => 'cheque_payment','tabindex'=> $tab,'class' => 'form-control text-right saleDetail'))}}
+								{{Form::input('text', 'cheque_payment', NULL, array('id' => 'cheque_payment', 'class' => 'form-control text-right saleDetail'))}}
 							</div>
 						</div>
 					</div>
@@ -171,7 +210,7 @@
 						<div class="row">
 							{{Form::label('balance', 'Credit', array('class' => 'col-sm-6 control-label'))}}
 							<div class="col-sm-6">
-								{{Form::input('text', 'balance', NULL, array('tabindex'=> $tab,'class' => 'form-control text-right','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}
+								{{Form::input('text', 'balance', NULL, array( 'class' => 'form-control text-right','readonly'=>'readonly','style'=>'font-weight:bolder;'))}}
 							</div>
 						</div>
 					</div>
@@ -186,8 +225,8 @@
 						<div class="row">
 							{{Form::label(null, 'Other Expense Details', array('class' => 'col-sm-3 control-label'))}}
 							<div class="col-sm-9">
-								<?php $tab ++ ; ?>
-								{{Form::text('other_expenses_details',null, array('tabindex'=> $tab,'class' => 'form-control'))}}
+
+								{{Form::text('other_expenses_details',null, array( 'class' => 'form-control'))}}
 							</div>
 						</div>
 					</div>
@@ -195,8 +234,8 @@
 						<div class="row">
 							{{Form::label(null, 'Other Expense Amount', array('class' => 'col-sm-6 control-label', 'style' => 'padding-top: 0;'))}}
 							<div class="col-sm-6">
-								<?php $tab ++ ; ?>
-								{{Form::input('number','other_expense_amount', null, array('tabindex'=> $tab,'class' => 'form-control','step' => '0.01'))}}
+
+								{{Form::input('number','other_expense_amount', null, array( 'class' => 'form-control','step' => '0.01'))}}
 							</div>
 						</div>
 					</div>
@@ -206,8 +245,8 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<?php $tab ++ ; ?>
-				{{Form::submit('Submit', array('tabindex'=> $tab,'class' => 'btn btn-primary pull-right'))}}
+
+				{{Form::submit('Submit', array( 'class' => 'btn btn-primary pull-right'))}}
 			</div>
 		</div>
 
@@ -215,6 +254,9 @@
 
 	</div>
 </div>
+{{Form::input('hidden', 'current_edite_purchase_id', NULL, ['id'=>'current_edite_purchase_id'])}}
+
+
 
 <script type="text/javascript">
 	function changeOnQuantity(name, quantity)
@@ -248,9 +290,21 @@
 </script>
 
 <script src="/js/processes/purchases/add.js"></script>
+<script src="/js/processes/purchases/add-purchase.js"></script>
 <script>
 	displayBalance();
 	displayIsCompletelyPaid();
 	validateChequeDetails();
+
+
+	selectSalesItem("{{csrf_token()}}");
+	setMethodToEnter();
+	autoloadItemForSales("{{csrf_token()}}");
+	addItemRow();
+	editSales();
+	deleteSales();
+
+
+
 </script>
 @stop
