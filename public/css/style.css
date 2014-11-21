@@ -475,3 +475,14 @@ a{
 #top-item-lable{
 	font-size: 13px;
 }
+/*Add Transfer */
+
+#table-sales-list .row
+{
+	background-color: #f9f9f9 !important;	
+}
+
+.transfer-row span
+{	
+	font-size: 12px;
+}

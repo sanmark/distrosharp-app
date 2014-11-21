@@ -86,9 +86,10 @@ class TransferController extends \Controller
 
 			$fromStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
 			$toStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
-				-> orderBy ( 'buying_invoice_order' , 'ASC' )
-				-> get () ;
+			$LoadedItems					 = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock->id )
+				-> lists('item_id') ;
+			$LoadedItems=  json_encode($LoadedItems);
+			
 			$dateTime				 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 			$returnQuantityArray	 = $fromStock -> returnQuantities () ;
 			$returnQuantityStatus	 = \ArrayHelper::hasAtLeastOneElementWithValue ( $returnQuantityArray ) ;
@@ -117,7 +118,7 @@ class TransferController extends \Controller
 			$data = compact ( [
 				'fromStock' ,
 				'toStock' ,
-				'items' ,
+				'LoadedItems' ,
 				'dateTime' ,
 				'fromStockDetails' ,
 				'toStockDetails' ,
@@ -132,6 +133,24 @@ class TransferController extends \Controller
 					-> withErrors ( $ex -> validator )
 					-> withInput () ;
 		}
+	}
+
+	public function getAvailableQuantity ()
+	{
+		$itemId	 = \Input::get ( 'itemId' ) ;
+		$fromId	 = \Input::get ( 'fromStock_id' ) ;
+
+		$itemAvailable = \Models\StockDetail::where ( 'stock_id' , '=' , $fromId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
+		return $itemAvailable -> good_quantity ;
+	}
+
+	public function getTargetStockQuantity ()
+	{
+		$itemId	 = \Input::get ( 'itemId' ) ;
+		$toId	 = \Input::get ( 'toStock_id' ) ;
+
+		$itemAvailable = \Models\StockDetail::where ( 'stock_id' , '=' , $toId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
+		return $itemAvailable -> good_quantity ;
 	}
 
 	public function save ( $fromStockId , $toStockId )
@@ -158,9 +177,10 @@ class TransferController extends \Controller
 				$itemsWithoutZero = [ ] ;
 				foreach ( $items as $item )
 				{
+					
 					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '' )
 					{
-						
+						continue ;
 					}
 					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] != '' )
 					{
