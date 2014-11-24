@@ -14,7 +14,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 	{
 		return $this -> belongsTo ( 'User' , 'rep_id' ) ;
 	}
-	 
+
 	public static function ageCreditFilter ( $filterValues )
 	{
 		$requestObject = new \Models\SellingInvoice() ;
@@ -424,26 +424,37 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 			if ( strlen ( $date_from ) > 0 && strlen ( $date_to ) > 0 )
 			{
-				$date_from	 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_from ) ;
-				$date_to	 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_to ) ;
+				$date_from	 =  $date_from . " 00:00:00" ;
+				$date_to	 = $date_to . " 23:59:59" ;
 
-				$datesAndTimes = [$date_from , $date_to ] ;
+				$datesAndTimes = [$date_from , $date_to ] ; 
 
 				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
 			} elseif ( strlen ( $date_from ) > 0 )
 			{
-				$date_from		 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_from ) ;
+				$date_from		 = $date_from . " 00:00:00";
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_from ) ;
 			} elseif ( strlen ( $date_to ) > 0 )
 			{
-				$date_to		 = \DateTimeHelper::convertTextToFormattedDateTime ( $date_to ) ;
+				$date_to		 =  $date_to . " 23:59:59" ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_to ) ;
-			}
+			} else
+
 			if ( strlen ( $invoice_number ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;
 			}
 		}
+		else
+		{
+
+			$time_1 = date ( 'Y-m-d' , mktime ( 0 , 0 , 0 , date ( 'm' ) , date ( 'd' ) - 3 , date ( 'Y' ) ) ) . " 00:00:00" ;
+
+			$time_2 = date ( 'Y-m-d' ) . " 23:59:59" ;
+
+			$requestObject = $requestObject -> whereBetween ( 'date_time' , array ( $time_1 , $time_2 ) ) ;
+		}
+
 
 		return $requestObject ;
 	}
