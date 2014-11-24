@@ -93,6 +93,7 @@ class MenuButler
 						['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] ,
 						['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ] ,
 						['Timely Stock Report' , 'reports.timelyStockReport' , ['view_timely_stock_report' ] ] ,
+						['Stock Confirm Report' , 'reports.stockConfirmReport' , ['view_stock_confirm_report' ] ] ,
 					]
 				] ,
 				['Finance' , [
