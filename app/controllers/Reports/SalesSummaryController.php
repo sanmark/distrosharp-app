@@ -23,7 +23,17 @@ class SalesSummaryController extends \Controller
 		$dateFrom	 = \InputButler::get ( 'date_from' ) ;
 		$dateTo		 = \InputButler::get ( 'date_to' ) ;
 		$invoiceNum	 = \InputButler::get ( 'invoice_number' ) ;
+		 
+		if ( ! $dateFrom )
+		{
+			$dateFrom = date ( 'Y-m-d' , mktime ( 0 , 0 , 0 , date ( 'm' ) , date ( 'd' ) - 3 , date ( 'Y' ) ) );
+		}
 
+
+		if ( ! $dateTo )
+		{
+			$dateTo = date ( 'Y-m-d' );
+		}
 
 		$totalOfDiscountSum		 = 0 ;
 		$totalOfInvoiceSum		 = 0 ;
