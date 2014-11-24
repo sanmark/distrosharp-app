@@ -192,16 +192,18 @@ class ItemController extends \Controller
 
 	public function getItemByName ()
 	{
-		$itemName	 = \Input::get ( 'itemName' ) ;
-		$item		 = \Models\Item::take(10)->where ( 'name' , 'LIKE' , '%' . $itemName . '%' )
-			-> get () ;
+		$itemName = \Input::get ( 'itemName' ) ;
+
+		$item = \Models\Item::take ( 10 ) -> where ( 'name' , 'LIKE' , $itemName . '%' )
+				-> orWhere ( 'name' , 'LIKE' , '% ' . $itemName . '%' ) -> get () ;
+
 		return \Response::json ( $item ) ;
 	}
-	
+
 	public function getItemById ()
 	{
 		$itemId	 = \Input::get ( 'itemId' ) ;
-		$item		 = \Models\Item::where ( 'id' , '=' ,$itemId )
+		$item	 = \Models\Item::where ( 'id' , '=' , $itemId )
 			-> get () ;
 		return \Response::json ( $item ) ;
 	}
