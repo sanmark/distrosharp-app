@@ -113,6 +113,10 @@ class MenuButler
 				]
 			]
 		] ,
+		['Tools' , [
+				['Weight Calculator' , 'tools.weightCalculator' , ['view_weight_calculator' ] ]  
+			]
+		] ,
 		['Account' , [
 				['Logout' , 'account.logout' , NULL ] ,
 				['Settings' , 'account.settings' , NULL ]

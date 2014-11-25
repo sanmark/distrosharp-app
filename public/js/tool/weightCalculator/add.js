@@ -1,4 +1,53 @@
 
+// main 
+
+function setMethodToEnter() {
+
+	$(document).on("keypress", 'body', function (e) {
+
+		var code = e.keyCode || e.which;
+		var target_id = e.target.id;
+
+		if (code === 13) {
+			if (target_id === 'txtQuantity') {
+
+				jQuery('#add-new-row').click();
+			}
+
+			e.preventDefault();
+			return false;
+		}
+
+	});
+
+}
+
+function clearError() {
+
+	$("input").removeClass("duplicate-error");
+}
+
+$(document).keydown(function (e) {
+
+	if (e.which === 112) {
+
+		$('#txtItemCode').focus();
+		e.preventDefault();
+	}
+	if (e.which === 113) {
+
+		$('#txtItemName').focus();
+		e.preventDefault();
+	}
+	if (e.which === 114) {
+
+		$('#txtQuantity').focus();
+		e.preventDefault();
+	}
+});
+
+//calculator 
+
 function selectSalesItem(csrfToken) {
 
 	$(window).keydown(function (event) {
@@ -13,7 +62,6 @@ function selectSalesItem(csrfToken) {
 				valPreventDefault = true;
 
 				var txtItemCode = $('#txtItemCode').val();
-				var rep_id = $('#rep_id').val();
 
 				$.post(
 					"/entities/items/ajax/getItemByCode", {
@@ -29,9 +77,7 @@ function selectSalesItem(csrfToken) {
 						if ($('#item_code_' + data[0].id).length !== 0) {
 
 							$("#txtItemCode").addClass('duplicate-error');
-							$("#txtItemName").addClass('duplicate-error');
-							$("#txtPrice").addClass('duplicate-error');
-							$('#purchase_item_row_' + data[0].id).addClass('duplicate-error');
+							$('#item_row_' + data[0].id).addClass('duplicate-error');
 							$('#txtItemId').val("");
 							$("#txtItemCode").select();
 
@@ -41,7 +87,7 @@ function selectSalesItem(csrfToken) {
 							html_message += "</div>";
 
 							$('#dublicate-error-message').empty();
-							
+
 							$('#dublicate-error-message').append(html_message);
 
 							setTimeout(function () {
@@ -56,7 +102,8 @@ function selectSalesItem(csrfToken) {
 
 							$('#txtItemCode').val(data[0].code);
 							$('#txtItemName').val(data[0].name);
-							$("#txtPrice").val(parseFloat(data[0].current_buying_price).toFixed(2));
+							$("#txtUnitWeight").val(data[0].weight);
+							$('#txtBuyingPrice').val(parseFloat(data[0].current_buying_price).toFixed(2));
 							$('#txtItemId').val(data[0].id);
 							$('#txtQuantity').focus();
 							$('#loader-img-code').hide();
@@ -70,23 +117,24 @@ function selectSalesItem(csrfToken) {
 						html_message += "<div id='return-exit-message'>";
 						html_message += "Please enter a valid item code";
 						html_message += "</div>";
-						
+
 						$('#dublicate-error-message').empty();
-						
+
 						$('#dublicate-error-message').append(html_message);
 
 						setTimeout(function () {
 							$('#dublicate-error-message').empty();
 						}, 2000);
 
+
 						$('#txtItemName').val("");
 						$("#txtPrice").val("");
-						$('#txtQuantity').val("");
-						$("#txtFreeQuantity").val("");
-						$("#txtExpireDate").val("");
-						$("#txtPurchaseLineTot").val("");
-						$("#txtBatchNumber").val("");
-						$("#txtPurchaseLineTot").val("");
+						$('#txtUnitWeight').val("");
+						$("#txtBuyingPrice").val("");
+						$("#txtItemId").val("");
+						$("#txtQuantity").val("");
+						$('#txtLineWeight').val("");
+						$('#txtLineTotal').val("");
 						$("#txtItemCode").select();
 						$('#loader-img-code').hide();
 
@@ -108,22 +156,24 @@ function selectSalesItem(csrfToken) {
 
 }
 
+
+
 function autoloadItemForSales(csrfToken) {
 
 	$("body").click(function () {
-		$('#item_list_f_purchase').empty();
+		$('#item_list').empty();
 	});
 
 	$('#txtItemName').keyup(function (event) {
 
 		$('#txtItemCode').val("");
 		$("#txtPrice").val("");
-		$('#txtQuantity').val("");
-		$("#txtFreeQuantity").val("");
-		$("#txtExpireDate").val("");
-		$("#txtBatchNumber").val("");
-		$("#txtPurchaseLineTot").val("");
-		$('#txtItemId').val("");
+		$('#txtUnitWeight').val("");
+		$("#txtBuyingPrice").val("");
+		$("#txtItemId").val("");
+		$("#txtQuantity").val("");
+		$('#txtLineWeight').val("");
+		$('#txtLineTotal').val("");
 
 		if (event.keyCode === 13) { // enter 
 			select_item_purchase(csrfToken);
@@ -131,7 +181,7 @@ function autoloadItemForSales(csrfToken) {
 
 		else if (event.keyCode === 38) { // up
 			var selected = $(".selected");
-			$("#item_list_f_purchase li").removeClass("selected");
+			$("#item_list li").removeClass("selected");
 			if (selected.prev().length === 0) {
 				selected.siblings().last().addClass("selected");
 			} else {
@@ -141,7 +191,7 @@ function autoloadItemForSales(csrfToken) {
 
 		else if (event.keyCode === 40) { // down
 			var selected = $(".selected");
-			$("#item_list_f_purchase li").removeClass("selected");
+			$("#item_list li").removeClass("selected");
 			if (selected.next().length === 0) {
 				selected.siblings().first().addClass("selected");
 			} else {
@@ -152,14 +202,14 @@ function autoloadItemForSales(csrfToken) {
 		else {
 
 			$('#loader-img').show();
-			$('#item_list_f_purchase').empty();
+			$('#item_list').empty();
 
 			var txtItemName = $('#txtItemName').val();
 			var itemList = '';
 
 			if (!txtItemName.trim()) {
 				$('#loader-img').hide();
-				$('#item_list_f_purchase').empty();
+				$('#item_list').empty();
 			}
 			else {
 				$.post(
@@ -190,18 +240,18 @@ function autoloadItemForSales(csrfToken) {
 					}
 
 					$('#loader-img').hide();
-					$('#item_list_f_purchase').empty();
-					$('#item_list_f_purchase').append(itemList);
+					$('#item_list').empty();
+					$('#item_list').append(itemList);
 
 				});
 			}
 		}
 	});
 
-	$("#item_list_f_purchase").on("mouseover", "#item_list_f_purchase li", function (event) {
+	$("#item_list").on("mouseover", "#item_list li", function (event) {
 		if ($(event.target).attr('class') !== 'error')
 		{
-			$("#item_list_f_purchase li").removeClass("selected");
+			$("#item_list li").removeClass("selected");
 			$(this).addClass("selected");
 		}
 	}).click(function () {
@@ -224,7 +274,7 @@ function select_item_purchase(csrfToken) {
 	}
 
 
-	$('#item_list_f_purchase').empty();
+	$('#item_list').empty();
 
 	$.post(
 		"/entities/items/ajax/getItemById", {
@@ -235,14 +285,8 @@ function select_item_purchase(csrfToken) {
 	{
 		if ($('#item_code_' + data[0].id).length !== 0) {
 
-			$("#txtItemCode").addClass('duplicate-error');
 			$("#txtItemName").addClass('duplicate-error');
-			$("#txtAvailable").addClass('duplicate-error');
-			$("#txtQuantity").addClass('duplicate-error');
-			$("#txtPrice").addClass('duplicate-error');
-			$("#txtFreeQuantity").addClass('duplicate-error');
-			$("#txtSalesLineTot").addClass('duplicate-error');
-			$('#purchase_item_row_' + data[0].id).addClass('duplicate-error');
+			$('#item_row_' + data[0].id).addClass('duplicate-error');
 			$('#txtItemId').val("");
 			$("#txtItemName").select();
 
@@ -253,7 +297,7 @@ function select_item_purchase(csrfToken) {
 			html_message += "</div>";
 
 			$('#dublicate-error-message').empty();
-			
+
 			$('#dublicate-error-message').append(html_message);
 
 			setTimeout(function () {
@@ -269,12 +313,11 @@ function select_item_purchase(csrfToken) {
 		{
 			$('#txtItemCode').val(data[0].code);
 			$('#txtItemName').val(data[0].name);
-			$("#txtPrice").val(parseFloat(data[0].current_buying_price).toFixed(2));
+			$("#txtUnitWeight").val(data[0].weight);
+			$('#txtBuyingPrice').val(parseFloat(data[0].current_buying_price).toFixed(2));
 			$('#txtItemId').val(data[0].id);
 			$('#txtQuantity').focus();
 			$('#loader-img').hide();
-
-
 
 		}
 
@@ -282,83 +325,81 @@ function select_item_purchase(csrfToken) {
 
 }
 
+$(document).on('change keyup', '#txtQuantity', function () {
+
+	var txtUnitWeight = $('#txtUnitWeight').val();
+	var txtBuyingPrice = $('#txtBuyingPrice').val();
+	var txtQuantity = $('#txtQuantity').val();
+	var txtLineWeight = txtUnitWeight * txtQuantity / 1000;
+	var txtLineTotal = txtBuyingPrice * txtQuantity;
+
+	$('#txtLineWeight').val(parseFloat(txtLineWeight).toFixed(2));
+	$('#txtLineTotal').val(parseFloat(txtLineTotal).toFixed(2));
+
+});
+
+
 function addItemRow() {
 
 	$('#txtItemCode').keyup(function () {
 
 		$('#txtItemName').val("");
 		$("#txtPrice").val("");
-		$('#txtQuantity').val("");
-		$("#txtFreeQuantity").val("");
-		$("#txtExpireDate").val("");
-		$("#txtBatchNumber").val("");
-		$("#txtPurchaseLineTot").val("");
-		$('#txtItemId').val("");
+		$('#txtUnitWeight').val("");
+		$("#txtBuyingPrice").val("");
+		$("#txtItemId").val("");
+		$("#txtQuantity").val("");
+		$('#txtLineWeight').val("");
+		$('#txtLineTotal').val("");
 
 	});
 
-	$('#add-new-purchase').click(function (event) {
+	$('#add-new-row').click(function (event) {
 
 		event.preventDefault();
 
 		var txtItemCode = $('#txtItemCode').val();
 		var txtItemName = $('#txtItemName').val();
-		var txtPrice = $('#txtPrice').val();
+		var txtUnitWeight = $('#txtUnitWeight').val();
+		var txtBuyingPrice = $('#txtBuyingPrice').val();
 		var txtQuantity = $('#txtQuantity').val();
-		var txtFreeQuantity = $('#txtFreeQuantity').val();
-		var txtExpireDate = $('#txtExpireDate').val();
-		var txtBatchNumber = $('#txtBatchNumber').val();
-		var txtPurchaseLineTot = $('#txtPurchaseLineTot').val();
+		var txtLineWeight = $('#txtLineWeight').val();
+		var txtLineTotal = $('#txtLineTotal').val();
 		var txtItemId = $('#txtItemId').val();
 
 		var validationVal = {
 			"txtItemCode": txtItemCode,
 			"txtItemName": txtItemName,
-			"txtPrice": txtPrice,
 			"txtQuantity": txtQuantity,
-			"txtFreeQuantity": txtFreeQuantity,
 			"txtItemId": txtItemId
 		};
 
 		var result = validateaddItemRow(validationVal);
 
-
 		if (result) {
 
-			if (!txtQuantity) {
-				txtQuantity = 0;
-			}
-			else if (!txtFreeQuantity) {
-				txtFreeQuantity = 0;
-			}
+
 
 			var htmlOutput = '';
-			htmlOutput += '<div id="purchase_item_row_' + txtItemId + '" class="row item-list-table">';
+			htmlOutput += '<div id="item_row_' + txtItemId + '" class="row item-list-table">';
 
-			htmlOutput += '<div class="col-sm-5">';
+			htmlOutput += '<div class="col-sm-7">';
 			htmlOutput += '<div class="row">';
-			htmlOutput += '<div class="col-sm-2">' + txtItemCode + '</div>';
+			htmlOutput += '<div class="col-sm-3">' + txtItemCode + '</div>';
 			htmlOutput += '<div class="col-sm-5">' + txtItemName + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" ">' + parseFloat(txtPrice).toFixed(2) + '</div>';
-			htmlOutput += '<div class="col-sm-2 text-right" >' + txtQuantity + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" ">' + parseFloat(txtUnitWeight).toFixed(2) + '</div>';
+			htmlOutput += '<div class="col-sm-2 text-right" >' + parseFloat(txtBuyingPrice).toFixed(2) + '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 
-			htmlOutput += '<div class="col-sm-7" >';
+			htmlOutput += '<div class="col-sm-5" >';
 			htmlOutput += '<div class="row">';
-			htmlOutput += '<div class="col-sm-2 text-right">' + txtFreeQuantity + '</div>';
-			if (!txtExpireDate) {
-				txtExpireDate = " - - / - - / - - - - ";
-			}
-			htmlOutput += '<div class="col-sm-3 text-right">' + txtExpireDate + '</div>';
-			if (!txtBatchNumber) {
-				txtBatchNumber = " - - ";
-			}
-			htmlOutput += '<div class="col-sm-2" >' + txtBatchNumber + '</div>';
-			htmlOutput += '<div class="col-sm-3 text-right" >' + txtPurchaseLineTot + '</div>';
-			htmlOutput += '<div class="col-sm-2 text-right" >';
-			htmlOutput += '<a title="Click to edit ' + txtItemName + ' "  class="edit-purchase" id=' + txtItemId + '> Edit </a> / ';
-			htmlOutput += '<a title="Click to delete ' + txtItemName + ' "   class="delete-purchase"  id=' + txtItemId + '> Delete </a>';
+			htmlOutput += '<div class="col-sm-3 text-right">' + txtQuantity + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right">' + parseFloat(txtLineWeight).toFixed(2) + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >' + parseFloat(txtLineTotal).toFixed(2) + '</div>';
+			htmlOutput += '<div class="col-sm-3 text-right" >';
+			htmlOutput += '<a title="Click to edit ' + txtItemName + ' "  class="edite_row" id=' + txtItemId + '> Edit </a> / ';
+			htmlOutput += '<a title="Click to delete ' + txtItemName + ' "   class="delete-row"  id=' + txtItemId + '> Delete </a>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
 			htmlOutput += '</div>';
@@ -367,60 +408,43 @@ function addItemRow() {
 			htmlOutput += '<input type="hidden" id="item_name_' + txtItemId + '" value="' + txtItemName + '">';
 			htmlOutput += '<input type="hidden" name="item_id_' + txtItemId + '" id="item_id_' + txtItemId + '" value="' + txtItemId + '">';
 
-			htmlOutput += '<input type="hidden" id="buying_price_' + txtItemId + '"  value="' + txtPrice + '"  name="buying_price_' + txtItemId + '">';
+			htmlOutput += '<input type="hidden" id="unitWeight' + txtItemId + '"  value="' + txtUnitWeight + '"  name="buying_price_' + txtItemId + '">';
 
-			htmlOutput += '<input type="hidden" id="quantity_' + txtItemId + '"  value="' + txtQuantity + '"  name="quantity_' + txtItemId + '">';
-
-
-			htmlOutput += '<input type="hidden"  id="free_quantity_' + txtItemId + '"  value="' + txtFreeQuantity + '"  name="free_quantity_' + txtItemId + '">';
-
-			htmlOutput += '<input type="hidden"  id="exp_date_' + txtItemId + '"  value="' + txtExpireDate + '"  name="exp_date_' + txtItemId + '">';
+			htmlOutput += '<input type="hidden" id="buyingPrice' + txtItemId + '"  value="' + txtBuyingPrice + '"  name="quantity_' + txtItemId + '">';
 
 
-			htmlOutput += '<input type="hidden"  id="batch_number_' + txtItemId + '"  value="' + txtBatchNumber + '"  name="batch_number_' + txtItemId + '">';
+			htmlOutput += '<input type="hidden"  id="quantity' + txtItemId + '"  value="' + txtQuantity + '"  name="free_quantity_' + txtItemId + '">';
 
-			htmlOutput += '<input type="hidden" class="purchaseLineTot" id="purchaseLineTot' + txtItemId + '" value="' + txtPurchaseLineTot + '">';
+			htmlOutput += '<input type="hidden"  class="lineWeight" id="lineWeight' + txtItemId + '"  value="' + txtLineWeight + '"  name="exp_date_' + txtItemId + '">';
+
+
+			htmlOutput += '<input type="hidden" class="lineTotal" id="lineTotal' + txtItemId + '"  value="' + txtLineTotal + '"  name="batch_number_' + txtItemId + '">';
 
 			htmlOutput += '</div>';
 
-			$('#table-purchase-list').append(htmlOutput);
+			$('#table-item-list').append(htmlOutput);
+			$('#current_edit_row_id').val("");
 			setTotal();
-			displayBalance();
+
 
 			$('#txtItemCode').val("");
-			$('#txtItemId').val("");
 			$('#txtItemName').val("");
+			$('#txtItemId').val("");
 			$("#txtPrice").val("");
-			$('#txtQuantity').val("");
-			$("#txtFreeQuantity").val("");
-			$("#txtExpireDate").val("");
-			$("#txtBatchNumber").val("");
-			$("#txtPurchaseLineTot").val("");
-			$("#txtItemCode").focus();
-			$('#current_edite_purchase_id').val("");
+			$('#txtUnitWeight').val("");
+			$("#txtBuyingPrice").val("");
+			$("#txtQuantity").val("");
+			$('#txtLineWeight').val("");
+			$('#txtLineTotal').val("");
 
-			$('#add-new-purchase').text("Add");
+			$("#txtItemCode").focus();
+
+			$('#add-new-row').text("Add");
 			$("#txtItemCode").removeAttr("disabled");
 			$("#txtItemName").removeAttr("disabled");
 
 		}
 	});
-
-	$(document).on('change keyup', '.cal_line_tot', function () {
-		calculatePurchaseLineTotal();
-	});
-}
-
-function calculatePurchaseLineTotal() {
-
-	clearError();
-
-	var txtPrice = $('#txtPrice').val();
-	var txtQuantity = $('#txtQuantity').val();
-
-	var lineTotal = txtQuantity * txtPrice;
-
-	$("#txtPurchaseLineTot").val(parseFloat(lineTotal).toFixed(2));
 
 }
 
@@ -438,52 +462,34 @@ function validateaddItemRow(validationVal)
 		$("#txtItemName").addClass('duplicate-error');
 		status = false;
 	}
-	if (!validationVal.txtPrice.trim()) {
-		$("#txtPrice").addClass('duplicate-error');
+
+	if (!validationVal.txtQuantity.trim() || parseFloat(validationVal.txtQuantity) <= '0') {
+
+		$("#txtQuantity").addClass('duplicate-error');
 		status = false;
 	}
 
-	if (!validationVal.txtQuantity.trim() && !validationVal.txtFreeQuantity.trim()) {
-		$("#txtQuantity").addClass('duplicate-error');
-		$("#txtFreeQuantity").addClass('duplicate-error');
-		status = false;
-	}
-
-	if (!validationVal.txtQuantity.trim() && parseFloat(validationVal.txtFreeQuantity) <= '0') {
-		$("#txtQuantity").addClass('duplicate-error');
-		$("#txtFreeQuantity").addClass('duplicate-error');
-		status = false;
-	}
-
-	if (!validationVal.txtFreeQuantity.trim() && parseFloat(validationVal.txtQuantity) <= '0') {
-		$("#txtQuantity").addClass('duplicate-error');
-		$("#txtFreeQuantity").addClass('duplicate-error');
-		status = false;
-	}
 
 	if (!validationVal.txtItemId.trim()) {
 
-		$("#txtItemCode").addClass('duplicate-error');
+
+		$('#txtItemCode').addClass('duplicate-error');
+		$('#txtItemName').addClass('duplicate-error');
+		$('#txtItemId').addClass('duplicate-error');
 		$("#txtPrice").addClass('duplicate-error');
+		$('#txtUnitWeight').addClass('duplicate-error');
+		$("#txtBuyingPrice").addClass('duplicate-error');
 		$("#txtQuantity").addClass('duplicate-error');
-		$("#txtFreeQuantity").addClass('duplicate-error');
-		$("#txtExpireDate").addClass('duplicate-error');
-		$("#txtBatchNumber").addClass('duplicate-error');
-		$("#txtPurchaseLineTot").addClass('duplicate-error');
+		$('#txtLineWeight').addClass('duplicate-error');
+		$('#txtLineTotal').addClass('duplicate-error');
 
-		status = false;
-	}
-
-	if (parseFloat(validationVal.txtQuantity) <= '0' && parseFloat(validationVal.txtFreeQuantity) <= '0') {
-		$("#txtQuantity").addClass('duplicate-error');
-		$("#txtFreeQuantity").addClass('duplicate-error');
 		status = false;
 	}
 
 	if ($('#item_code_' + validationVal.txtItemId).length !== 0) {
 
 		$("#txtItemCode").addClass('duplicate-error');
-		$('#purchase_item_row_' + validationVal.txtItemId).addClass('duplicate-error');
+		$('#item_row_' + validationVal.txtItemId).addClass('duplicate-error');
 		$('#txtItemId').val("");
 
 		var html_message = "";
@@ -492,7 +498,7 @@ function validateaddItemRow(validationVal)
 		html_message += "</div>";
 
 		$('#dublicate-error-message').empty();
-		
+
 		$('#dublicate-error-message').append(html_message);
 
 		setTimeout(function () {
@@ -503,125 +509,125 @@ function validateaddItemRow(validationVal)
 		status = false;
 	}
 
-
 	return status;
 
 }
 
-
 function setTotal() {
 
-	var purchaseLineTot = 0;
+	var lineWeightTotal = 0;
+	var subLineTotal = 0;
 
-	$(".purchaseLineTot").each(function () {
-		purchaseLineTot += parseFloat($(this).val());
+	$(".lineWeight").each(function () {
+		lineWeightTotal += parseFloat($(this).val());
 	});
 
-	$('#subTotal').val(purchaseLineTot.toFixed(2));
+	$(".lineTotal").each(function () {
+		subLineTotal += parseFloat($(this).val());
+	});
+  
+	if (lineWeightTotal + lineWeightTotal <= 0)
+	{
+		$('#total_text').text('');
+		$('#lineWeightTotal').text('');
+		$('#subLineTotal').text('');
+	}
+	else
+	{
+		$('#total_text').text('Total : ');
+		$('#lineWeightTotal').text(lineWeightTotal.toFixed(2));
+		$('#subLineTotal').text(subLineTotal.toFixed(2));
+	}
 
 }
 
-$(document).on('change keyup', '.saleDetail', function () {
-	displayBalance();
-});
-
-
-
-
-function editSales() {
-	$(document).on('click', '.edit-purchase', function () {
+function editRow() {
+	$(document).on('click', '.edite_row', function () {
 		var itemId = this.id;
 
 		clearError();
 
-		var current_edite_purchase_id = $('#current_edite_purchase_id').val();
+		var current_edit_row_id = $('#current_edit_row_id').val();
 
-		if (current_edite_purchase_id)
+		if (current_edit_row_id)
 		{
 			var txtItemCode = $('#txtItemCode').val();
 			var txtItemName = $('#txtItemName').val();
-			var txtPrice = $('#txtPrice').val();
 			var txtQuantity = $('#txtQuantity').val();
-			var txtFreeQuantity = $('#txtFreeQuantity').val();
 			var txtItemId = $('#txtItemId').val();
 
 			var validationVal = {
 				"txtItemCode": txtItemCode,
 				"txtItemName": txtItemName,
-				"txtPrice": txtPrice,
 				"txtQuantity": txtQuantity,
-				"txtFreeQuantity": txtFreeQuantity,
 				"txtItemId": txtItemId
 			};
 
 			var result = validateaddItemRow(validationVal);
 
-
-
 			if (result)
 			{
-				jQuery('#add-new-purchase').click();
+				jQuery('#add-new-row').click();
 
-				$('#current_edite_purchase_id').val(itemId);
+				$('#current_edit_row_id').val(itemId);
 
 				$('#txtItemCode').val($('#item_code_' + itemId).val());
 				$('#txtItemName').val($('#item_name_' + itemId).val());
-				$('#txtPrice').val($('#buying_price_' + itemId).val());
-				$('#txtQuantity').val($('#quantity_' + itemId).val());
+				$('#txtUnitWeight').val($('#unitWeight' + itemId).val());
+				$('#txtBuyingPrice').val($('#buyingPrice' + itemId).val());
 
-				$('#txtFreeQuantity').val($('#free_quantity_' + itemId).val());
-				$('#txtExpireDate').val($('#exp_date_' + itemId).val());
-				$('#txtBatchNumber').val($('#batch_number_' + itemId).val());
-				$('#txtPurchaseLineTot').val($('#purchaseLineTot' + itemId).val());
+				$('#txtQuantity').val($('#quantity' + itemId).val());
+				$('#txtLineWeight').val($('#lineWeight' + itemId).val());
+				$('#txtLineTotal').val($('#lineTotal' + itemId).val());
 				$('#txtItemId').val(itemId);
 
 				$("#txtItemCode").attr("disabled", "TRUE");
 				$("#txtItemName").attr("disabled", "TRUE");
-				$("#purchase_item_row_" + itemId).remove();
-				$('#add-new-purchase').text("Save");
+				$("#item_row_" + itemId).remove();
+				$('#add-new-row').text("Save");
 
 				$('html, body').animate({
-					scrollTop: $("#scrollTopSales").offset().top
+					scrollTop: $("#scrollTop").offset().top
 				}, 700);
 			}
 
 		}
 		else
 		{
-			$('#current_edite_purchase_id').val(itemId);
+			$('#current_edit_row_id').val(itemId);
 
 			$('#txtItemCode').val($('#item_code_' + itemId).val());
 			$('#txtItemName').val($('#item_name_' + itemId).val());
-			$('#txtPrice').val($('#buying_price_' + itemId).val());
-			$('#txtQuantity').val($('#quantity_' + itemId).val());
+			$('#txtUnitWeight').val($('#unitWeight' + itemId).val());
+			$('#txtBuyingPrice').val($('#buyingPrice' + itemId).val());
 
-			$('#txtFreeQuantity').val($('#free_quantity_' + itemId).val());
-			$('#txtExpireDate').val($('#exp_date_' + itemId).val());
-			$('#txtBatchNumber').val($('#batch_number_' + itemId).val());
-			$('#txtPurchaseLineTot').val($('#purchaseLineTot' + itemId).val());
+			$('#txtQuantity').val($('#quantity' + itemId).val());
+			$('#txtLineWeight').val($('#lineWeight' + itemId).val());
+			$('#txtLineTotal').val($('#lineTotal' + itemId).val());
 			$('#txtItemId').val(itemId);
 
 			$("#txtItemCode").attr("disabled", "TRUE");
 			$("#txtItemName").attr("disabled", "TRUE");
-			$("#purchase_item_row_" + itemId).remove();
-			$('#add-new-purchase').text("Save");
+			$("#item_row_" + itemId).remove();
+			$('#add-new-row').text("Save");
 
 			$('html, body').animate({
-				scrollTop: $("#scrollTopSales").offset().top
+				scrollTop: $("#scrollTop").offset().top
 			}, 700);
 		}
+
+		setTotal();
 
 	});
 }
 
 function deleteSales() {
 
-	$(document).on('click', '.delete-purchase', function () {
+	$(document).on('click', '.delete-row', function () {
 
-		$("#purchase_item_row_" + this.id).remove();
+		$("#item_row_" + this.id).remove();
 
 		setTotal();
-		displayBalance();
 
 		return false;
 	});
