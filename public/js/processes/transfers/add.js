@@ -1,9 +1,9 @@
-	$(document).on('change keyup', '.numField', function () {
+	$(document).on('change keyup', '#txtTransfer', function () {
 		var value = SanmarkJsHelper.Input.get(this);
-		var id = $(this).attr('id');
-		var available = SanmarkJsHelper.Input.get('[name="availale_amounts['+id+']"]');
+		
+		var available = SanmarkJsHelper.Input.get('#txtAvailable');
 		var imbalanceTransfer = Number(available) - Number(value);
-		$('[name="imbalance_amount['+id+']"]').val(imbalanceTransfer);
+		$('#txtImbalanceTransfer').val(imbalanceTransfer);
 	});
 
 

@@ -93,22 +93,6 @@ class ItemButler
 		return $itemDetails ;
 	}
 
-	public static function getMinBuyingInvoiceOrder ()
-	{
-		$allOrder			 = \Models\Item::lists ( 'buying_invoice_order' ) ;
-		$buying_invoice_id	 = \NumberHelper::getMinimumAvailableNumberFromArray ( $allOrder ) ;
-
-		return $buying_invoice_id ;
-	}
-
-	public static function getMinSellingInvoiceOrder ()
-	{
-		$allOrder			 = \Models\Item::lists ( 'selling_invoice_order' ) ;
-		$selling_invoice_id	 = \NumberHelper::getMinimumAvailableNumberFromArray ( $allOrder ) ;
-
-		return $selling_invoice_id ;
-	}
-
 	public static function filterReturnItem ( $filterValues )
 	{
 		$requestObject = new \Models\SellingItem() ;

@@ -17,7 +17,6 @@ class MenuButler
 				[ 'Items' , [
 						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
 						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ] ,
-						[ 'Order Items' , 'entities.items.order' , [ 'order_items' ] ]
 					]
 				] ,
 				[ 'Vendors' , [
@@ -93,6 +92,7 @@ class MenuButler
 						['Unload Report' , 'reports.unloadComparison' , ['view_unload_comparison_report' ] ] ,
 						['Item Return Report' , 'reports.itemReturnReport' , ['view_item_return_report' ] ] ,
 						['Timely Stock Report' , 'reports.timelyStockReport' , ['view_timely_stock_report' ] ] ,
+						['Stock Confirm Report' , 'reports.stockConfirmReport' , ['view_stock_confirm_report' ] ] ,
 					]
 				] ,
 				['Finance' , [
@@ -110,6 +110,10 @@ class MenuButler
 						['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
 					]
 				]
+			]
+		] ,
+		['Tools' , [
+				['Weight Calculator' , 'tools.weightCalculator' , ['view_weight_calculator' ] ]  
 			]
 		] ,
 		['Account' , [

@@ -45,4 +45,18 @@ Route::group ( [
 		'before' => ['hasAbilities:view_transfers' ] ,
 		'uses'	 => 'Controllers\Processes\TransferController@viewTransfer'
 	] ) ;
+	Route::group ( [
+		'prefix' => 'ajax' ,
+		'before' => 'csrf'
+		] , function()
+	{
+		Route::post ( 'getAvailableQuantity' , [
+			'as'	 => 'processes.transfer.ajax.getAvailableQuantity' ,
+			'uses'	 => 'Controllers\Processes\TransferController@getAvailableQuantity'
+		] ) ;
+		Route::post ( 'getTargetStockQuantity' , [
+			'as'	 => 'processes.transfer.ajax.getTragetStockQuantity' ,
+			'uses'	 => 'Controllers\Processes\TransferController@getTargetStockQuantity'
+		] ) ;
+	} ) ;
 } ) ;

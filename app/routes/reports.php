@@ -168,4 +168,19 @@ Route::group ( [
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\TimelyStockReportController@filter'
 	] ) ;
+	Route::get ( 'stock-confirm' , [
+		'as'	 => 'reports.stockConfirmReport' ,
+		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
+		'uses'	 => 'Controllers\Reports\StockConfirmReportController@home'
+	] ) ;
+	Route::get ( '{id}/view' , [
+		'as'	 => 'reports.stockConfirmReport.view' ,
+		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
+		'uses'	 => 'Controllers\Reports\StockConfirmReportController@view'
+	] ) ;
+	Route::post ( 'stock-confirm' , [
+		'as'	 => 'reports.stockConfirmReport' ,
+		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
+		'uses'	 => 'Controllers\Reports\StockConfirmReportController@filter'
+	] ) ;
 } ) ;

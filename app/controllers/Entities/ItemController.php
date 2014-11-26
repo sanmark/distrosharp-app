@@ -50,8 +50,6 @@ class ItemController extends \Controller
 			$item -> reorder_level			 = \InputButler::get ( 'reorder_level' ) ;
 			$item -> current_buying_price	 = \InputButler::get ( 'current_buying_price' ) ;
 			$item -> current_selling_price	 = \InputButler::get ( 'current_selling_price' ) ;
-			$item -> buying_invoice_order	 = \ItemButler::getMinBuyingInvoiceOrder () ;
-			$item -> selling_invoice_order	 = \ItemButler::getMinSellingInvoiceOrder () ;
 			$item -> is_active				 = \NullHelper::zeroIfNull ( \InputButler::get ( 'is_active' ) ) ;
 			$item -> weight					 = \InputButler::get ( 'weight' ) ;
 			$item -> save () ;
@@ -121,65 +119,6 @@ class ItemController extends \Controller
 			$stockDetails -> return_quantity = 0 ;
 			$stockDetails -> save () ;
 		}
-	}
-
-	public function order ()
-	{
-		$items	 = \Models\Item::all () ;
-		$data	 = compact ( [ 'items' ] ) ;
-
-		return \View::make ( 'web.entities.items.order' , $data ) ;
-	}
-
-	public function updateOrder ()
-	{
-		$items = \Input::all () ;
-
-		$result = $this -> validateForSaveOrder ( $items ) ;
-
-		if ( ! $result )
-		{
-			foreach ( $items[ 'sellingOrder' ] as $key => $sellingOrder )
-			{
-				$item							 = \Models\Item::findOrFail ( $items[ 'itemId' ][ $key ] ) ;
-				$item -> buying_invoice_order	 = $items[ 'buyingOrder' ][ $key ] ;
-				$item -> selling_invoice_order	 = $sellingOrder ;
-				$item -> update () ;
-			}
-
-			\MessageButler::setSuccess ( 'Item Ordered successfully.' ) ;
-
-			\ActivityLogButler::add ( "Ordere Item" ) ;
-
-			return \Redirect::back () ;
-		} else
-		{
-			return \Redirect::back () ;
-		}
-	}
-
-	public function validateForSaveOrder ( $items )
-	{
-		$result = TRUE ;
-
-		if ( array_unique ( $items[ 'sellingOrder' ] ) != $items[ 'sellingOrder' ] )
-		{
-			\MessageButler::setError ( 'The Selling Invoice Order can not be duplicated.' ) ;
-		} elseif ( array_unique ( $items[ 'buyingOrder' ] ) != $items[ 'buyingOrder' ] )
-		{
-			\MessageButler::setError ( 'The Buying Invoice Order can not be duplicated.' ) ;
-		} elseif ( ! \ArrayHelper::areAllElementsFilled ( $items[ 'sellingOrder' ] ) )
-		{
-			\MessageButler::setError ( 'The Selling Invoice Order can not be empty.' ) ;
-		} elseif ( ! \ArrayHelper::areAllElementsFilled ( $items[ 'buyingOrder' ] ) )
-		{
-			\MessageButler::setError ( 'The Buying Invoice Order can not be empty.' ) ;
-		} else
-		{
-			$result = FALSE ;
-		}
-
-		return $result ;
 	}
 
 	public function getItemByCode ()

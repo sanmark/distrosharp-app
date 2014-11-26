@@ -58,8 +58,6 @@ class ViewButler
 			'reorder_level'			 => 'Reorder Level' ,
 			'current_buying_price'	 => 'Buying Price' ,
 			'current_selling_price'	 => 'Selling Price' ,
-			'buying_invoice_order'	 => 'Buying Invoice Order' ,
-			'selling_invoice_order'	 => 'Selling Invoice Order' ,
 			] ;
 		return $values ;
 	}
