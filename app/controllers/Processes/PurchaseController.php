@@ -10,7 +10,7 @@ class PurchaseController extends \Controller
 		try
 		{
 			$this -> checkIfPaymentAccountsAreSet () ;
-			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> orderBy ( 'buying_invoice_order' , 'ASC' ) -> get () ;
+			$itemRows			 = \Models\Item::where ( 'is_active' , '=' , 1 ) -> get () ;
 			$itemRowsForTotal	 = $itemRows -> lists ( 'id' ) ;
 			$notVehicleList		 = \Models\Stock::whereNotIn ( 'stock_type_id' , ['2' ] ) ;
 			$stocks				 = \Models\Stock::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $notVehicleList , [ '' => 'Select Stock' ] ) ;
