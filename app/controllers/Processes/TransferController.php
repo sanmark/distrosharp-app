@@ -158,7 +158,6 @@ class TransferController extends \Controller
 		try
 		{
 			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
-				-> orderBy ( 'buying_invoice_order' , 'ASC' )
 				-> lists ( 'id' ) ;
 			$dateTime				 = \InputButler::get ( 'date_time' ) ;
 			$availableAmounts		 = \InputButler::get ( 'availale_amounts' ) ;

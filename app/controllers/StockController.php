@@ -30,11 +30,6 @@ class StockController extends \Controller
 
 		$stockDetails = $stock -> stockDetails () -> activeItems () -> get () ;
 
-		$stockDetails = $stockDetails -> sortBy ( function($stockDetail)
-		{
-			return $stockDetail -> item -> buying_invoice_order ;
-		} ) ;
-
 		$data = compact ( [
 			'stock' ,
 			'stockDetails' ,
@@ -98,9 +93,9 @@ class StockController extends \Controller
 			$stock -> update () ;
 
 			\MessageButler::setSuccess ( 'Successfully updated stock details.' ) ;
-			
+
 			\ActivityLogButler::add ( "Update Stock " . $stockId ) ;
-			
+
 			return \Redirect::action ( 'stocks.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -135,7 +130,7 @@ class StockController extends \Controller
 			\StockDetailButler::createStockItems ( $stock -> id ) ;
 
 			\MessageButler::setSuccess ( 'New stock was created successfully' ) ;
-			\ActivityLogButler::add ( "Create Stock " . $stock -> id  ) ;
+			\ActivityLogButler::add ( "Create Stock " . $stock -> id ) ;
 			return \Redirect::action ( 'stocks.all' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
@@ -146,16 +141,16 @@ class StockController extends \Controller
 	}
 
 	public function getAvailableQuantity ()
-	{ 
+	{
 		$itemId	 = \Input::get ( 'itemId' ) ;
 		$repId	 = \Input::get ( 'rep_id' ) ;
-  
+
 		$stock = \Models\Stock::where ( 'incharge_id' , '=' , $repId ) -> firstOrFail () ;
 
 		$stockDetail = \Models\StockDetail::where ( 'stock_id' , '=' , $stock -> id )
 			-> where ( 'item_id' , '=' , $itemId )
-			-> firstOrFail () ; 
-		return \Response::json ( $stockDetail->good_quantity ) ; 
+			-> firstOrFail () ;
+		return \Response::json ( $stockDetail -> good_quantity ) ;
 	}
 
 }
