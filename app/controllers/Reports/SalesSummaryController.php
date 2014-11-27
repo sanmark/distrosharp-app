@@ -40,7 +40,10 @@ class SalesSummaryController extends \Controller
 		$invoiceByCashTotalSum	 = 0 ;
 		$invoiceByChequeTotalSum = 0 ;
 		$invoiceByCreditTotalSum = 0 ;
-		$invoiceGrossAmountTotal = 0 ;
+		$creditPaymentsByCash =0;
+		$creditPaymentsByCheque =0;
+		$invoiceSubAmountTotal = 0 ;
+		$totalAmount			 = 0 ;
 
 		foreach ( $sellingInvoices as $sellingInvoice )
 		{
@@ -48,11 +51,14 @@ class SalesSummaryController extends \Controller
 			$invoiceByCashTotalSum += $sellingInvoice -> getPaymentValueByCash () ;
 			$invoiceByChequeTotalSum += $sellingInvoice -> getPaymentValueByCheque () ;
 			$invoiceByCreditTotalSum += $sellingInvoice -> getInvoiceCredit () ;
-			$totalOfInvoiceSum += $sellingInvoice -> getInvoiceTotal () ;
-			$invoiceGrossAmountTotal += $sellingInvoice -> getGrossAmount () ;
+			$creditPaymentsByCash += $sellingInvoice -> getLateCreditPayments()['amount_cash'];
+			$creditPaymentsByCheque += $sellingInvoice -> getLateCreditPayments()['amount_cheque'];
+			$totalOfInvoiceSum += $sellingInvoice -> getTotalCollection () ;
+			$invoiceSubAmountTotal += $sellingInvoice -> getSubTotal () ;
+			$totalAmount += $sellingInvoice -> getTotal () ;
 		}
 
-		$totalNetAmount = $invoiceGrossAmountTotal - $totalOfDiscountSum ;
+		$totalNetAmount = $invoiceSubAmountTotal - $totalOfDiscountSum ;
 
 		$data = compact ( [
 			'routes' ,
@@ -70,8 +76,11 @@ class SalesSummaryController extends \Controller
 			'invoiceByCashTotalSum' ,
 			'invoiceByChequeTotalSum' ,
 			'invoiceByCreditTotalSum' ,
-			'invoiceGrossAmountTotal' ,
-			'totalNetAmount'
+			'invoiceSubAmountTotal' ,
+			'totalNetAmount' ,
+			'totalAmount',
+			'creditPaymentsByCash',
+			'creditPaymentsByCheque'
 			] ) ;
 
 		return \View::make ( 'web.reports.sales.home' , $data ) ;
