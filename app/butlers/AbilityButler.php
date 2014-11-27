@@ -25,7 +25,12 @@ class AbilityButler
 
 	private static function hasCommonAbilities ( $allowedAbilities , $userAbilities )
 	{
-		$commonAbilities = array_intersect ( $allowedAbilities , $userAbilities ) ;
+		$commonAbilities = [ ] ;
+
+		if ( is_array ( $allowedAbilities ) && is_array ( $userAbilities ) )
+		{
+			$commonAbilities = array_intersect ( $allowedAbilities , $userAbilities ) ;
+		}
 
 		if ( count ( $commonAbilities ) == 0 )
 		{
