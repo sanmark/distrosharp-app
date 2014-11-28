@@ -56,12 +56,17 @@ class MenuButler
 						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
 						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ] ,
 					]
+				] ,
+				['Company Returns' , [
+						['Add Company Returns' , 'processes.companyReturns.add' , ['add_company_returns' ] ] ,
+						['View Company Returns' , 'processes.companyReturns.view' , ['view_company_returns' ] ] ,
+					]
 				]
 			]
 		] ,
 		['Stocks' , [
 				['View Stocks' , 'stocks.all' , ['view_stocks' ] ] ,
-				['Add New Stock' , 'stocks.add', ['super_admin'] ]
+				['Add New Stock' , 'stocks.add' , ['super_admin' ] ]
 			]
 		] ,
 		['Finance' , [
