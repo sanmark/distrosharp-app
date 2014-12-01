@@ -487,6 +487,12 @@ a{
 {	
 	font-size: 12px;
 }
+
 .total-line-bottom{
 	border-bottom: double 3px;
+}
+
+.browser-detect-message
+{
+	margin-top: 20px;
 }

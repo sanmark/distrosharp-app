@@ -17,7 +17,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-offset-1 col-md-10">
+					<div class="col-md-offset-1 col-md-10 input-area">
 						<br />
 						{{Form::open(['role' => 'form'])}}
 						<div class="form-group">
@@ -48,5 +48,5 @@
 		</div>
 	</div>
 </div>
-
+<script src="js/login/checkCompatibility.js"/>
 @stop
