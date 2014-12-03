@@ -84,12 +84,19 @@ class TransferController extends \Controller
 		{
 			$this -> validateSelectedTransfers ( $fromStockId , $toStockId , $isUnloaded ) ;
 
-			$fromStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
-			$toStock				 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$LoadedItems					 = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock->id )
-				-> lists('item_id') ;
-			$LoadedItems=  json_encode($LoadedItems);
-			
+			$fromStock		 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
+			$toStock		 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
+			$LoadedItems	 = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock -> id )
+				-> lists ( 'item_id' ) ;
+			$loadedItemNames = [ ] ;
+			foreach ( $LoadedItems as $loadedItem )
+			{
+				$itemNames = \Models\Item::findOrFail ( $loadedItem ) ;
+				$loadedItemNames[$loadedItem]=$itemNames->name;
+			}
+			$LoadedItems	 = json_encode ( $LoadedItems ) ;
+			$loadedItemNames = json_encode ( $loadedItemNames ) ;
+
 			$dateTime				 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 			$returnQuantityArray	 = $fromStock -> returnQuantities () ;
 			$returnQuantityStatus	 = \ArrayHelper::hasAtLeastOneElementWithValue ( $returnQuantityArray ) ;
@@ -118,12 +125,14 @@ class TransferController extends \Controller
 			$data = compact ( [
 				'fromStock' ,
 				'toStock' ,
-				'LoadedItems' ,
+				'loadedItemNames' ,
+				'LoadedItems',
 				'dateTime' ,
 				'fromStockDetails' ,
 				'toStockDetails' ,
 				'isUnloaded' ,
-				'returnQuantityArray'
+				'returnQuantityArray' ,
+				'itemNames'
 				] ) ;
 
 			return \View::make ( 'web.processes.transfers.add' , $data ) ;
@@ -176,7 +185,7 @@ class TransferController extends \Controller
 				$itemsWithoutZero = [ ] ;
 				foreach ( $items as $item )
 				{
-					
+
 					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '' )
 					{
 						continue ;
@@ -198,21 +207,21 @@ class TransferController extends \Controller
 				}
 
 				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
-				
+
 				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
-				
+
 				\ActivityLogButler::add ( "Unload from stock " . $fromStockObj -> id . " to stock " . $toStockId . "." ) ;
 
 				return \Redirect::action ( 'processes.transfers.selectStocksInvolved' ) ;
 			} else
 			{
 				$this -> validateItemTransfers ( $transferAmounts ) ;
-				
+
 				$fromStockObj -> saveNonUnload ( $toStockId , $dateTime , $transferAmounts , $description ) ;
 				\MessageButler::setSuccess ( 'Transfer recorded successfully.' ) ;
-				
-				\ActivityLogButler::add ( "Transfer from stock " . $fromStockObj -> id . " to stock " . $toStockId . "." ) ; 
-				
+
+				\ActivityLogButler::add ( "Transfer from stock " . $fromStockObj -> id . " to stock " . $toStockId . "." ) ;
+
 				return \Redirect::action ( 'processes.transfers.selectStocksInvolved' ) ;
 			}
 		} catch ( \Exceptions\InvalidInputException $ex )

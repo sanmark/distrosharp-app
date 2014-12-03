@@ -180,14 +180,14 @@ function select_item_sales(csrfToken) {
 			$("#txtItemName").addClass('duplicate-error');
 			$("#txtTransfer").addClass('duplicate-error');
 			$('#salse_item_row_' + data[0].id).children('.row').addClass('duplicate-error');
-			
+
 			$('#txtAvailable').val("");
 			$('#txtTransfer').val("");
 			$('#txtItemId').val("");
 			$("#txtImbalanceTransfer").val("");
 			$("#txtTargetQuantity").val("");
 			$("#txtItemId").val("");
-			
+
 			$("#txtItemName").select();
 			$("#txtItemName").focus();
 
@@ -504,7 +504,7 @@ function editTransferItem() {
 			$('#add-new-transfer').text("Save");
 
 			$('html, body').animate({
-				scrollTop: $("#scrollTopSales").offset().top
+				scrollTop: $("#scrollTopTransfers").offset().top
 			}, 700);
 			$('#txtTransfer').focus();
 
@@ -529,7 +529,7 @@ function editTransferItem() {
 			$('#add-new-transfer').text("Save");
 
 			$('html, body').animate({
-				scrollTop: $("#scrollTopSales").offset().top
+				scrollTop: $("#scrollTopTransfers").offset().top
 			}, 700);
 			$('#txtTransfer').focus();
 		}
@@ -568,18 +568,38 @@ function validateUnloadOnSubmit()
 		}
 		if (unloadable.length != 0)
 		{
+			var loadedItemNames = $('#loadedItemNames').val();
+			var loadedItemNames = jQuery.parseJSON(loadedItemNames);
+			var unloadableItemNames = [];
+			for (var i = 0; i < unloadable.length; i++)
+			{
+				unloadableItemNames.push(loadedItemNames[unloadable[i]]);
+			}
 			$("#txtItemCode").addClass('duplicate-error');
+			if (unloadableItemNames.length > 3)
+			{
+				var html_message = "";
+				html_message += "<div id='return-exit-message'>";
+				html_message += "Please Unload " + unloadableItemNames.slice(0, 3)+ " etc...";
+				html_message += "</div>";
+			}
+			else
+			{
+				var html_message = "";
+				html_message += "<div id='return-exit-message'>";
+				html_message += "Please Unload " + unloadableItemNames;
+				html_message += "</div>";
+			}
 
-			var html_message = "";
-			html_message += "<div id='return-exit-message'>";
-			html_message += "Please Unload all items in stock";
-			html_message += "</div>";
+			$('html, body').animate({
+				scrollTop: $("#scrollTopTransfers").offset().top
+			}, 700);
 
 			$('#dublicate-error-message').append(html_message);
 
-			setTimeout(function () {
+			$("#txtItemCode,#txtItemName").keyup(function () {
 				$('#dublicate-error-message').empty();
-			}, 2000);
+			});
 
 			event.preventDefault();
 			return false;

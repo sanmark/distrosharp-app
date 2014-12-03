@@ -8,7 +8,7 @@
 	</div>
 	<div class="panel-body">
 		<p>Transfer Items from stock <b>{{$fromStock->name}}{{Form::hidden('fromStock',$fromStock->id,['id'=>'fromStock'])}}</b> to stock <b>{{$toStock->name}}{{Form::hidden('toStock',$toStock->id,['id'=>'toStock'])}}{{Form::hidden('loadedItems',$LoadedItems,['id'=>'loadedItems'])}}</b>.</p>
-
+		{{Form::hidden('loadedItemNames',$loadedItemNames,['id'=>'loadedItemNames'])}}
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form','id'=>'transferForm'])}}
 		<br />
 
@@ -19,7 +19,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group" id="scrollTopSales">
+		<div class="form-group" id="scrollTopTransfers">
 			<div class="col-sm-10 col-sm-offset-2">
 				<div class="row transfer-row">
 					<div class="col-sm-8">
