@@ -179,7 +179,7 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@home'
 	] ) ;
-	Route::get ( '{id}/view' , [
+	Route::get ( 'stock-confirm/{id}/view' , [
 		'as'	 => 'reports.stockConfirmReport.view' ,
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@view'

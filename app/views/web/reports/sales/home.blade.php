@@ -46,17 +46,18 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>Route Name</th>
-					<th>Customer Name</th>
-					<th class="text-center">Invoice Number</th>
-					<th class="text-right">By Cash</th>
-					<th class="text-right">By Cheque</th>
-					<th class="text-right">By Credit</th>
-					<th class="text-right">Gross Amount</th>
-					<th class="text-right">Cash Discount</th>
-					<th class="text-right">Net Amount</th>
-					<th class="text-right">Late Credit Invoice</th>
-					<th class="text-right">Late Credit Amount</th>
+					<th>Route</th>
+					<th>Customer</th>
+					<th>Invoice<br> Number</th>
+					<th class="text-right">Sub Total</th>
+					<th class="text-right">Discount</th>
+					<th class="text-right">Total</th>
+					<th class="text-right">Cash Payment</th>
+					<th class="text-right">Cheque Payment </th>
+					<th class="text-right">Credit</th>
+					<th>Late Credit <br>  Invoices</th>
+					<th class="text-right"> Late Credit Payments <br> By Cash </th>
+					<th class="text-right"> Late Credit Payments <br> By  Cheque </th> 
 					<th class="text-right">Total Collection</th>
 				</tr>
 			</thead>
@@ -65,29 +66,42 @@
 				<tr>
 					<td>{{$sellingInvoice->customer->route->name}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
-					<td class="text-center">{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
+					<td>{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->getSubTotal(), 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->discount, 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->getTotal(), 2)}}</td>
 					<td class="text-right">{{number_format($sellingInvoice->getPaymentValueByCash (), 2) }}</td>
 					<td class="text-right">{{number_format($sellingInvoice->getPaymentValueByCheque () , 2)}}</td>
 					<td class="text-right">{{number_format($sellingInvoice->getInvoiceCredit () , 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getGrossAmount()+$sellingInvoice->discount, 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->discount, 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getInvoiceTotal(), 2)}}</td>
-					<td class="text-right">&nbsp;</td>
-					<td class="text-right">&nbsp;</td>
-					<td class="text-right">{{number_format($sellingInvoice->getInvoiceTotal(), 2)}}</td>
+					<td >  
+						@foreach($sellingInvoice -> getLateCreditInvoices () as $key => $invoice)  
+						@if($key !== 0)
+						,
+						@endif 
+						{{HTML::link(URL::action('processes.sales.edit', [$invoice]),$invoice)}} 
+						@endforeach 
+					</td>
+					<td class="text-right">   
+						{{number_format($sellingInvoice -> getLateCreditPayments()['amount_cash'],2)}}  
+					</td> 
+					<td class="text-right">     
+						{{number_format($sellingInvoice -> getLateCreditPayments()['amount_cheque'],2)}} 
+					</td>
+					<td class="text-right">{{number_format($sellingInvoice->getTotalCollection(), 2)}}</td>
 				</tr>
 				@endforeach
 				<tr>
 					<td colspan="3"><b>Total</b></td>
-					<td class="text-right"><b>{{number_format($invoiceByCashTotalSum,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($invoiceByChequeTotalSum,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($invoiceByCreditTotalSum,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($invoiceGrossAmountTotal,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($totalOfDiscountSum,2)}}</b></td>
-					<td class="text-right"><b>{{number_format($totalOfInvoiceSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($invoiceSubAmountTotal,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($totalOfDiscountSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($totalAmount,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($invoiceByCashTotalSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($invoiceByChequeTotalSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($invoiceByCreditTotalSum,2)}}</b></td>
 					<td class="text-right"><b>&nbsp;</b></td>
-					<td class="text-right"><b>&nbsp;</b></td>
-					<td class="text-right"><b>{{number_format($totalOfInvoiceSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($creditPaymentsByCash,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($creditPaymentsByCheque,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($totalOfInvoiceSum,2)}}</b></td>
 				</tr>
 			</tbody>
 		</table>

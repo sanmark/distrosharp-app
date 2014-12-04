@@ -66,7 +66,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		return $returnQuantity ;
 	}
-
+	
 	public function isUnloaded ()
 	{
 		$lastLoadTime	 = $this -> loadings -> last ()[ 'date_time' ] ;

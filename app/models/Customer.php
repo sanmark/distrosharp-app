@@ -167,6 +167,5 @@ class Customer extends BaseEntity implements \Interfaces\iEntity
 		$creditBalanceWithCustomerId = $customerCredit ;
 
 		return $creditBalanceWithCustomerId ;
-	}
-
+	} 
 }

@@ -160,7 +160,7 @@ class SetupDb extends Migration
 			$t -> increments ( 'id' ) ;
 			$t -> datetime ( 'date_time' ) ;
 			$t -> integer ( 'vendor_id' ) -> unsigned () ;
-			$t -> string ( 'printed_invoice_num' ) ;
+			$t -> string ( 'printed_invoice_num',100 ) ;
 			$t -> boolean ( 'completely_paid' ) ;
 			$t -> double ( 'other_expenses_amount' ) -> nullable () ;
 			$t -> text ( 'other_expenses_details' ) -> nullable () ;

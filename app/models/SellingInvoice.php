@@ -48,7 +48,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 	public function financeTransfers ()
 	{
-		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) ;
+		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) -> withPivot ( 'paid_invoice_id' ) ;
+		;
 	}
 
 	public function sellingItemById ( $sellingItemId )
@@ -176,10 +177,16 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $Credit ;
 	}
 
-	public function getGrossAmount ()
+	public function getSubTotal ()
 	{
-		$grossAmount = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () ;
-		return $grossAmount ;
+		$subTotal = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () + $this -> discount ;
+		return $subTotal ;
+	}
+
+	public function getTotal ()
+	{
+		$amount = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () ;
+		return $amount ;
 	}
 
 	public function getInvoiceBalance ()
@@ -424,19 +431,19 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 			if ( strlen ( $date_from ) > 0 && strlen ( $date_to ) > 0 )
 			{
-				$date_from	 =  $date_from . " 00:00:00" ;
+				$date_from	 = $date_from . " 00:00:00" ;
 				$date_to	 = $date_to . " 23:59:59" ;
 
-				$datesAndTimes = [$date_from , $date_to ] ; 
+				$datesAndTimes = [$date_from , $date_to ] ;
 
 				$requestObject = $requestObject -> whereBetween ( 'date_time' , $datesAndTimes ) ;
 			} elseif ( strlen ( $date_from ) > 0 )
 			{
-				$date_from		 = $date_from . " 00:00:00";
+				$date_from		 = $date_from . " 00:00:00" ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_from ) ;
 			} elseif ( strlen ( $date_to ) > 0 )
 			{
-				$date_to		 =  $date_to . " 23:59:59" ;
+				$date_to		 = $date_to . " 23:59:59" ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_to ) ;
 			} else
 
@@ -444,8 +451,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;
 			}
-		}
-		else
+		} else
 		{
 
 			$time_1 = date ( 'Y-m-d' , mktime ( 0 , 0 , 0 , date ( 'm' ) , date ( 'd' ) - 3 , date ( 'Y' ) ) ) . " 00:00:00" ;
@@ -457,6 +463,70 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 
 		return $requestObject ;
+	}
+
+	public function getLateCreditInvoices ()
+	{
+		$result = array () ;
+
+		$requestObject = new \Models\SellingInvoice() ;
+
+		$requestObject = $requestObject -> with ( 'financeTransfers' ) ;
+
+		foreach ( $requestObject -> get () as $key => $invoices )
+		{
+			foreach ( $invoices -> finance_transfers as $key => $finance_transfers )
+			{
+
+				if ( $finance_transfers -> pivot -> paid_invoice_id === $this -> id && $finance_transfers -> pivot -> selling_invoice_id !== $this -> id )
+				{
+					array_push ( $result , $finance_transfers -> pivot -> selling_invoice_id ) ;
+				}
+			}
+		}
+
+		return array_unique ( $result ) ;
+	}
+
+	public function getLateCreditPayments ()
+	{
+		$amount_cash	 = 0 ;
+		$amount_cheque	 = 0 ;
+
+		$requestObject = new \Models\SellingInvoice() ;
+
+		$requestObject = $requestObject -> with ( 'financeTransfers' ) ;
+
+		foreach ( $requestObject -> get () as $key => $invoices )
+		{
+			foreach ( $invoices -> finance_transfers as $key => $finance_transfers )
+			{
+
+				if ( $finance_transfers -> pivot -> paid_invoice_id === $this -> id && $finance_transfers -> pivot -> selling_invoice_id !== $this -> id )
+				{
+					if ( $finance_transfers -> isCash () )
+					{
+
+						$amount_cash = $amount_cash + $finance_transfers -> amount ;
+					}
+
+					if ( $finance_transfers -> isCheque () )
+					{
+
+						$amount_cheque = $amount_cheque + $finance_transfers -> amount ;
+					}
+				}
+			}
+		}
+
+		return array ( "amount_cash" => $amount_cash , "amount_cheque" => $amount_cheque ) ;
+	}
+
+	public function getTotalCollection ()
+	{
+		$result = $this -> getLateCreditPayments ()[ 'amount_cash' ] + $this -> getLateCreditPayments ()[ 'amount_cheque' ] + $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () ;
+
+		return $result ;
 	}
 
 }
