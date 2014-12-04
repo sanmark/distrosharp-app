@@ -39,32 +39,6 @@ class StockController extends \Controller
 		return \View::make ( 'web.stocks.view' , $data ) ;
 	}
 
-	public function confirmStock ( $stockId )
-	{
-		$stockConfirm				 = new \Models\StockConfirmation() ;
-		$stockConfirm -> stock_id	 = $stockId ;
-		$stockConfirm -> date_time	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
-		$stockConfirm -> save () ;
-
-		$stockConfirmationId = $stockConfirm -> id ;
-
-		$stockDetails = \Models\StockDetail::where ( 'stock_id' , '=' , $stockId ) -> get () ;
-
-		foreach ( $stockDetails as $stockDetail )
-		{
-			$stockConfirmationDeatil							 = new \Models\StockConfirmationDetail() ;
-			$stockConfirmationDeatil -> stock_confirmation_id	 = $stockConfirmationId ;
-			$stockConfirmationDeatil -> item_id					 = $stockDetail -> item_id ;
-			$stockConfirmationDeatil -> good_item_quantity		 = $stockDetail -> good_quantity ;
-			$stockConfirmationDeatil -> return_item_quantity	 = $stockDetail -> return_quantity ;
-
-			$stockConfirmationDeatil -> save () ;
-		}
-		\ActivityLogButler::add ( "Stock Details Confirme " . $stockId ) ;
-		\MessageButler::setSuccess ( "Stock details confirmed successfully" ) ;
-		return \Redirect::action ( 'stocks.all' ) ;
-	}
-
 	public function edit ( $stockId )
 	{
 		$data = [ ] ;

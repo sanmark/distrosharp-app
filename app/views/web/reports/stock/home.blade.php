@@ -21,6 +21,8 @@
 		</div>
 		@if( $viewData)
 		<br/>
+		{{Form::open(['class'=>'form-inline', 'role'=>'form','action'=>'reports.stocks.confirm'])}}
+		{{Form::hidden('stock_id',$stockId)}}
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -56,6 +58,11 @@
 					<td class="text-right"><b>{{number_format($totals[ 'grandTotal' ],2)}}</b></td>
 
 				</tr>
+				@if($confirmStock)
+				<tr>
+					<td colspan="8" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-danger pull-right'])}}</td>
+				</tr>
+				@endif
 			</tbody>
 		</table>
 		@else

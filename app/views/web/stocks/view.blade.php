@@ -28,9 +28,11 @@
 					<td class="text-right">{{number_format($total_weight,2)}}</td>
 				</tr>
 				@endforeach
+				
 				<tr>
 					<td colspan="4" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-danger pull-right'])}}</td>
 				</tr>
+			
 			</tbody>
 		</table>
 		{{Form::close()}}
