@@ -91,8 +91,8 @@ class TransferController extends \Controller
 			$loadedItemNames = [ ] ;
 			foreach ( $LoadedItems as $loadedItem )
 			{
-				$itemNames = \Models\Item::findOrFail ( $loadedItem ) ;
-				$loadedItemNames[$loadedItem]=$itemNames->name;
+				$itemNames						 = \Models\Item::findOrFail ( $loadedItem ) ;
+				$loadedItemNames[ $loadedItem ]	 = $itemNames -> name ;
 			}
 			$LoadedItems	 = json_encode ( $LoadedItems ) ;
 			$loadedItemNames = json_encode ( $loadedItemNames ) ;
@@ -126,7 +126,7 @@ class TransferController extends \Controller
 				'fromStock' ,
 				'toStock' ,
 				'loadedItemNames' ,
-				'LoadedItems',
+				'LoadedItems' ,
 				'dateTime' ,
 				'fromStockDetails' ,
 				'toStockDetails' ,
@@ -186,10 +186,19 @@ class TransferController extends \Controller
 				foreach ( $items as $item )
 				{
 
-					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '' )
+					if(!isset($availableAmounts[ $item ]))
+					{
+						$availableAmounts[ $item ]=0;
+					}
+					if(!isset($transferAmounts[ $item ]))
+					{
+						$transferAmounts[ $item ]=0;
+					}
+					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '')
 					{
 						continue ;
 					}
+					
 					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] != '' )
 					{
 						$itemsWithoutZero[ $item ] = $transferAmounts[ $item ] ;
