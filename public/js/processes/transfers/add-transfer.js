@@ -568,6 +568,7 @@ function validateUnloadOnSubmit()
 		}
 		if (unloadable.length != 0)
 		{
+			return true;
 			var loadedItemNames = $('#loadedItemNames').val();
 			var loadedItemNames = jQuery.parseJSON(loadedItemNames);
 			var unloadableItemNames = [];
