@@ -7,7 +7,7 @@ Route::group ( [
 {
 	Route::get ( '' , [
 		'as'	 => 'stocks.all' ,
-		'before' => ['hasAbilities:view_stocks' ] ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@all'
 	] ) ;
 
@@ -25,24 +25,19 @@ Route::group ( [
 
 	Route::get ( '{stockId}' , [
 		'as'	 => 'stocks.view' ,
-		'before' => ['hasAbilities:view_stocks' ] ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@view'
 	] ) ;
-	Route::post ( '{stockId}' , [
-		'as'	 => 'stocks.view' ,
-		'before' => ['hasAbilities:confirm_stock' ] ,
-		'uses'	 => 'Controllers\StockController@confirmStock'
-	] ) ;
-
+	
 	Route::get ( '{stockId}/edit' , [
 		'as'	 => 'stocks.edit' ,
-		'before' => ['hasAbilities:edit_stock' ] ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@edit'
 	] ) ;
 
 	Route::post ( '{stockId}/edit' , [
 		'as'	 => 'stocks.update' ,
-		'before' => ['hasAbilities:edit_stock' ] ,
+		'before' => ['hasAbilities:super_admin' ] ,
 		'uses'	 => 'Controllers\StockController@update'
 	] ) ;
 

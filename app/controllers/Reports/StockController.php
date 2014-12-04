@@ -13,15 +13,49 @@ class StockController extends \Controller
 		$stockDetails	 = $this -> filterStock ( $stockId ) ;
 		$totals			 = $this -> getTotal ( $stockDetails ) ;
 		$viewData		 = TRUE ;
+		$confirmStock	 = \AbilityButler::checkAbilities ( ['confirm_stock' ] ) ;
 		$data			 = compact ( [
 			'stockSelect' ,
 			'stockId' ,
 			'stockDetails' ,
 			'viewData' ,
-			'totals'
+			'totals' ,
+			'confirmStock'
 			] ) ;
 
 		return \View::make ( 'web.reports.stock.home' , $data ) ;
+	}
+
+	public function confirmStock ()
+	{
+		$stockId = \Input::get ( 'stock_id' ) ;
+		if ( $stockId == 0 )
+		{
+			\MessageButler::setError ( "Please select stock for confirm" ) ;
+			return \Redirect::action ( 'reports.stocks' ) ;
+		}
+		$stockConfirm				 = new \Models\StockConfirmation() ;
+		$stockConfirm -> stock_id	 = $stockId ;
+		$stockConfirm -> date_time	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+		$stockConfirm -> save () ;
+
+		$stockConfirmationId = $stockConfirm -> id ;
+
+		$stockDetails = \Models\StockDetail::where ( 'stock_id' , '=' , $stockId ) -> get () ;
+
+		foreach ( $stockDetails as $stockDetail )
+		{
+			$stockConfirmationDeatil							 = new \Models\StockConfirmationDetail() ;
+			$stockConfirmationDeatil -> stock_confirmation_id	 = $stockConfirmationId ;
+			$stockConfirmationDeatil -> item_id					 = $stockDetail -> item_id ;
+			$stockConfirmationDeatil -> good_item_quantity		 = $stockDetail -> good_quantity ;
+			$stockConfirmationDeatil -> return_item_quantity	 = $stockDetail -> return_quantity ;
+
+			$stockConfirmationDeatil -> save () ;
+		}
+		\ActivityLogButler::add ( "Stock Details Confirme " . $stockId ) ;
+		\MessageButler::setSuccess ( "Stock details confirmed successfully" ) ;
+		return $this -> view () ;
 	}
 
 	public function view ()
@@ -30,15 +64,16 @@ class StockController extends \Controller
 		$stockId		 = \InputButler::get ( 'stock_id' ) ;
 		$stockDetails	 = $this -> filterStock ( $stockId ) ;
 		$totals			 = $this -> getTotal ( $stockDetails ) ;
+		$confirmStock	 = \AbilityButler::checkAbilities ( ['confirm_stock' ] ) ;
 		$viewData		 = TRUE ;
 		$data			 = compact ( [
 			'stockSelect' ,
 			'stockId' ,
 			'stockDetails' ,
 			'viewData' ,
-			'totals'
+			'totals' ,
+			'confirmStock'
 			] ) ;
-
 		return \View::make ( 'web.reports.stock.home' , $data ) ;
 	}
 
