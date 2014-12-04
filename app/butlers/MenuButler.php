@@ -60,7 +60,7 @@ class MenuButler
 			]
 		] ,
 		['Stocks' , [
-				['View Stocks' , 'stocks.all' , ['view_stocks' ] ] ,
+				['View Stocks' , 'stocks.all' , ['super_admin' ] ] ,
 				['Add New Stock' , 'stocks.add', ['super_admin'] ]
 			]
 		] ,

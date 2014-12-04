@@ -17,6 +17,12 @@ Route::group ( [
 		'uses'	 => 'Controllers\Reports\StockController@view'
 	] ) ;
 
+	Route::post ( 'stocks/confirm' , [
+		'as'	 => 'reports.stocks.confirm' ,
+		'before' => ['hasAbilities:confirm_stock' ] ,
+		'uses'	 => 'Controllers\Reports\StockController@confirmStock'
+	] ) ;
+	
 	Route::get ( 'debtor-summary' , [
 		'as'	 => 'reports.debtorSummary' ,
 		'before' => ['hasAbilities:view_debtor_summary_report' ] ,
