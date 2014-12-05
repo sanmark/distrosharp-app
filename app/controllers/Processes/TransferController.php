@@ -16,6 +16,7 @@ class TransferController extends \Controller
 		$dateTimeFrom	 = \InputButler::get ( 'date_time_from' ) ;
 		$dateTimeTo		 = \InputButler::get ( 'date_time_to' ) ;
 
+		
 		if ( is_null ( $dateTimeFrom ) )
 		{
 			$dateTimeFrom = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( '-7 days midnight' ) ) ) ;
@@ -84,18 +85,30 @@ class TransferController extends \Controller
 		{
 			$this -> validateSelectedTransfers ( $fromStockId , $toStockId , $isUnloaded ) ;
 
-			$fromStock		 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
-			$toStock		 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
-			$LoadedItems	 = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock -> id )
-				-> lists ( 'item_id' ) ;
+			$fromStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $fromStockId ) ;
+			$toStock	 = \Models\Stock::with ( 'stockDetails' ) -> findOrFail ( $toStockId ) ;
+
+			if ( $isUnloaded == true )
+			{
+				$LoadedItems = \StockButler::getItemsForUnload ( $fromStockId ) ;
+
+			} else
+			{
+				$LoadedItems = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock -> id )
+					-> lists ( 'item_id' ) ;
+			}
+			
 			$loadedItemNames = [ ] ;
+
 			foreach ( $LoadedItems as $loadedItem )
 			{
 				$itemNames						 = \Models\Item::findOrFail ( $loadedItem ) ;
 				$loadedItemNames[ $loadedItem ]	 = $itemNames -> name ;
 			}
+
 			$LoadedItems	 = json_encode ( $LoadedItems ) ;
 			$loadedItemNames = json_encode ( $loadedItemNames ) ;
+
 
 			$dateTime				 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
 			$returnQuantityArray	 = $fromStock -> returnQuantities () ;
@@ -140,7 +153,8 @@ class TransferController extends \Controller
 		{
 			return \Redirect::action ( 'processes.transfers.selectStocksInvolved' )
 					-> withErrors ( $ex -> validator )
-					-> withInput () ;
+					->
+					withInput () ;
 		}
 	}
 
@@ -149,8 +163,9 @@ class TransferController extends \Controller
 		$itemId	 = \Input::get ( 'itemId' ) ;
 		$fromId	 = \Input::get ( 'fromStock_id' ) ;
 
-		$itemAvailable = \Models\StockDetail::where ( 'stock_id' , '=' , $fromId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
-		return $itemAvailable -> good_quantity ;
+		$itemAvailable = \Models\StockDetail:: where ( 'stock_id' , '=' , $fromId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
+		return $itemAvailable ->
+			good_quantity ;
 	}
 
 	public function getTargetStockQuantity ()
@@ -158,16 +173,16 @@ class TransferController extends \Controller
 		$itemId	 = \Input::get ( 'itemId' ) ;
 		$toId	 = \Input::get ( 'toStock_id' ) ;
 
-		$itemAvailable = \Models\StockDetail::where ( 'stock_id' , '=' , $toId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
-		return $itemAvailable -> good_quantity ;
+		$itemAvailable = \Models\StockDetail:: where ( 'stock_id' , '=' , $toId ) -> where ( 'item_id' , '=' , $itemId ) -> firstOrFail () ;
+		return $itemAvailable ->
+			good_quantity ;
 	}
 
 	public function save ( $fromStockId , $toStockId )
 	{
 		try
 		{
-			$items					 = \Models\Item::where ( 'is_active' , '=' , '1' )
-				-> lists ( 'id' ) ;
+			$items					 = \StockButler::getItemsForUnload ( $fromStockId ) ;
 			$dateTime				 = \InputButler::get ( 'date_time' ) ;
 			$availableAmounts		 = \InputButler::get ( 'availale_amounts' ) ;
 			$transferAmounts		 = \InputButler::get ( 'transfer_amounts' ) ;
@@ -181,29 +196,19 @@ class TransferController extends \Controller
 
 			if ( $unload == TRUE )
 			{
-
 				$itemsWithoutZero = [ ] ;
 				foreach ( $items as $item )
 				{
-
-					if(!isset($availableAmounts[ $item ]))
-					{
-						$availableAmounts[ $item ]=0;
-					}
-					if(!isset($transferAmounts[ $item ]))
-					{
-						$transferAmounts[ $item ]=0;
-					}
-					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] == '')
+					if ( $availableAmounts [ $item ] == 0 && $transferAmounts [ $item ] == '' )
 					{
 						continue ;
 					}
-					
-					if ( $availableAmounts[ $item ] == 0 && $transferAmounts[ $item ] != '' )
+
+					if ( $availableAmounts [ $item ] == 0 && $transferAmounts [ $item ] != '' )
 					{
 						$itemsWithoutZero[ $item ] = $transferAmounts[ $item ] ;
 					}
-					if ( $availableAmounts[ $item ] != 0 && $transferAmounts[ $item ] == '' )
+					if ( $availableAmounts [ $item ] != 0 && $transferAmounts [ $item ] == '' )
 					{
 						$itemsWithoutZero[ $item ] = $transferAmounts[ $item ] ;
 					}
@@ -237,7 +242,8 @@ class TransferController extends \Controller
 		{
 			return \Redirect::back ()
 					-> withErrors ( $ex -> validator )
-					-> withInput () ;
+					->
+					withInput () ;
 		}
 	}
 
@@ -278,7 +284,7 @@ class TransferController extends \Controller
 				'a_normal_stock'	 => 'Can not unload to vehicle stock.' ,
 				] ;
 		}
-		$validator = \Validator::make ( $data , $rules , $messages ) ;
+		$validator = \ Validator:: make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{
@@ -305,7 +311,7 @@ class TransferController extends \Controller
 			'transfer_amounts.at_least_one_array_element_has_value' => 'Please enter at least one Item transfer amount.'
 			] ;
 
-		$validator = \Validator::make ( $data , $rules , $messages ) ;
+		$validator = \ Validator:: make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{
@@ -332,7 +338,7 @@ class TransferController extends \Controller
 			'transfer_amounts.all_fields_filled' => 'Please unload all items in stock'
 			] ;
 
-		$validator = \Validator::make ( $data , $rules , $messages ) ;
+		$validator = \ Validator:: make ( $data , $rules , $messages ) ;
 
 		if ( $validator -> fails () )
 		{

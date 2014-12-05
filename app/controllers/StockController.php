@@ -127,4 +127,28 @@ class StockController extends \Controller
 		return \Response::json ( $stockDetail -> good_quantity ) ;
 	}
 
+	public function getItemByName ()
+	{
+		$itemName	 = \Input::get ( 'itemName' ) ;
+		$stockId	 = \Input::get ( 'stock_id' ) ;
+
+		$itemIds = \StockButler::getItemsForUnload ( $stockId ) ;
+		$item	 = \Models\Item::take ( 10 ) -> whereIn ( 'id' , $itemIds )
+			-> where ( 'name' , 'LIKE' , $itemName . '%' )
+			-> orWhere ( 'name' , 'LIKE' , '% ' . $itemName . '%' )
+			-> get () ;
+
+		return \Response::json ( $item ) ;
+	}
+
+	public function getItemByCode ()
+	{
+		$itemCode	 = \Input::get ( 'itemCode' ) ;
+		$stockId	 = \Input::get ( 'stock_id' ) ;
+		$itemIds	 = \StockButler::getItemsForUnload ( $stockId ) ;
+		$item		 = \Models\Item::whereIn ( 'id' , $itemIds ) -> where ( 'code' , '=' , $itemCode )
+			-> get () ;
+		return \Response::json ( $item ) ;
+	}
+
 }
