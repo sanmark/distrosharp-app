@@ -62,6 +62,7 @@ function setMethodToEnter() {
 }
 
 function autoloadItemForTransfer(csrfToken) {
+	var isUnload = $("#isUnload").val();
 
 	$("body").click(function () {
 		$('#item_list_f_transfer').empty();
@@ -106,6 +107,7 @@ function autoloadItemForTransfer(csrfToken) {
 			$('#item_list_f_transfer').empty();
 
 			var txtItemName = $('#txtItemName').val();
+			var fromStock = $('#fromStock').val();
 			var itemList = '';
 
 			if (!txtItemName.trim()) {
@@ -113,10 +115,21 @@ function autoloadItemForTransfer(csrfToken) {
 				$('#item_list_f_transfer').empty();
 			}
 			else {
-				$.post(
-					"/entities/items/ajax/getItemByName", {
+				if (isUnload == 1)
+				{
+					var route = "/stocks/ajax/getItemByName";
+					var fromStockId = fromStock;
+				}
+				else
+				{
+					var route = "/entities/items/ajax/getItemByName";
+					var fromStockId = null;
+				}
+				$.post(route
+					, {
 						_token: csrfToken,
-						itemName: txtItemName
+						itemName: txtItemName,
+						stock_id: fromStockId
 					},
 				function (data)
 				{
@@ -166,6 +179,7 @@ function select_item_sales(csrfToken) {
 	var fromStockId = $("#fromStock").val();
 	var toStockId = $("#toStock").val();
 	$('#item_list_f_transfer').empty();
+
 	$.post(
 		"/entities/items/ajax/getItemById", {
 			_token: csrfToken,
@@ -359,11 +373,26 @@ function selectTransferItem(csrfToken) {
 				valPreventDefault = true;
 
 				var txtItemCode = $('#txtItemCode').val();
+				var isUnload = $("#isUnload").val();
+				var fromStock = $('#fromStock').val();
+
+				if (isUnload == 1)
+				{
+					var route = "/stocks/ajax/getItemByCode";
+					var fromStockId = fromStock;
+				}
+				else
+				{
+					var route = "/entities/items/ajax/getItemByCode";
+					var fromStockId = null;
+				}
+
 
 				$.post(
-					"/entities/items/ajax/getItemByCode", {
+					route, {
 						_token: csrfToken,
-						itemCode: txtItemCode
+						itemCode: txtItemCode,
+						stock_id:fromStockId
 					},
 				function (data)
 				{
@@ -513,7 +542,6 @@ function editTransferItem() {
 
 			$('#current_edit_sales_id').val(itemId);
 
-			console.log($('#availale_amounts[' + itemId + ']').val());
 			$('#txtItemCode').val($('#itemCode_' + itemId).val());
 			$('#txtItemName').val($('#itemName_' + itemId).val());
 			$('#txtAvailable').val($('#available_' + itemId).val());
@@ -568,7 +596,6 @@ function validateUnloadOnSubmit()
 		}
 		if (unloadable.length != 0)
 		{
-			return true;
 			var loadedItemNames = $('#loadedItemNames').val();
 			var loadedItemNames = jQuery.parseJSON(loadedItemNames);
 			var unloadableItemNames = [];
@@ -581,7 +608,7 @@ function validateUnloadOnSubmit()
 			{
 				var html_message = "";
 				html_message += "<div id='return-exit-message'>";
-				html_message += "Please Unload " + unloadableItemNames.slice(0, 3)+ " etc...";
+				html_message += "Please Unload " + unloadableItemNames.slice(0, 3) + " etc...";
 				html_message += "</div>";
 			}
 			else

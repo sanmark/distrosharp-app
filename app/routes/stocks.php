@@ -50,5 +50,13 @@ Route::group ( [
 			'as'	 => 'stocks.ajax.getAvailableQuantity' ,
 			'uses'	 => 'Controllers\StockController@getAvailableQuantity'
 		] ) ;
+		Route::post ( 'getItemByName' , [
+			'as'	 => 'stocks.ajax.getItemByName' ,
+			'uses'	 => 'Controllers\StockController@getItemByName'
+		] ) ;
+		Route::post ( 'getItemByCode' , [
+			'as'	 => 'stocks.ajax.getItemByCode' ,
+			'uses'	 => 'Controllers\StockController@getItemByCode'
+		] ) ;
 	} ) ;
 } ) ;
