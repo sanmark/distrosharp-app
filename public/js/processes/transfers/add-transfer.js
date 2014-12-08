@@ -588,9 +588,12 @@ function deleteTransferItem() {
 	});
 }
 
-function validateUnloadOnSubmit()
+function validateTransferOnSubmit()
 {
-	$("#transferForm").submit(function (event) {
+	var isUnload = $("#isUnload").val();
+	if (isUnload == true)
+	{
+		$("#transferForm").submit(function (event) {
 
 		$('#dublicate-error-message').empty();
 		
@@ -598,58 +601,93 @@ function validateUnloadOnSubmit()
 			return this.value;
 		}).get();
 
-		var loadedItems = $('#loadedItems').val();
+			var loadedItems = $('#loadedItems').val();
 
-		var loadedarray = JSON.parse(loadedItems);
+			var loadedarray = JSON.parse(loadedItems);
 
-		var unloadable = [];
-		for (var i = 0; i < loadedarray.length; i++)
-		{
-			if (jQuery.inArray(loadedarray[i], submitItems) == -1) {
-				unloadable.push(loadedarray[i]);
-			}
-		}
-		if (unloadable.length != 0)
-		{
-			var loadedItemNames = $('#loadedItemNames').val();
-			var loadedItemNames = jQuery.parseJSON(loadedItemNames);
-			var unloadableItemNames = [];
-			for (var i = 0; i < unloadable.length; i++)
+			var unloadable = [];
+			for (var i = 0; i < loadedarray.length; i++)
 			{
-				unloadableItemNames.push(loadedItemNames[unloadable[i]]);
+				if (jQuery.inArray(loadedarray[i], submitItems) == -1) {
+					unloadable.push(loadedarray[i]);
+				}
 			}
-			$("#txtItemCode").addClass('duplicate-error');
-			if (unloadableItemNames.length > 3)
+			if (unloadable.length != 0)
 			{
-				var html_message = "";
-				html_message += "<div id='return-exit-message'>";
-				html_message += "Please Unload " + unloadableItemNames.slice(0, 3) + " etc...";
-				html_message += "</div>";
+				var loadedItemNames = $('#loadedItemNames').val();
+				var loadedItemNames = jQuery.parseJSON(loadedItemNames);
+				var unloadableItemNames = [];
+				for (var i = 0; i < unloadable.length; i++)
+				{
+					unloadableItemNames.push(loadedItemNames[unloadable[i]]);
+				}
+				$("#txtItemCode").addClass('duplicate-error');
+				if (unloadableItemNames.length > 3)
+				{
+					var html_message = "";
+					html_message += "<div id='return-exit-message'>";
+					html_message += "Please Unload " + unloadableItemNames.slice(0, 3) + " etc...";
+					html_message += "</div>";
+				}
+				else
+				{
+					var html_message = "";
+					html_message += "<div id='return-exit-message'>";
+					html_message += "Please Unload " + unloadableItemNames;
+					html_message += "</div>";
+				}
+
+				$('html, body').animate({
+					scrollTop: $("#scrollTopTransfers").offset().top
+				}, 700);
+
+				$('#dublicate-error-message').append(html_message);
+
+				$("#txtItemCode,#txtItemName").keyup(function () {
+					$('#dublicate-error-message').empty();
+				});
+
+				event.preventDefault();
+				return false;
 			}
 			else
 			{
+				return true;
+			}
+		});
+	}
+	else
+	{
+
+		$("#transferForm").submit(function (event) {
+
+			var submitItems = $("#table-sales-list").find(".submitIds").map(function () {
+				return this.value;
+			}).get();
+			if (submitItems.length == 0)
+			{
 				var html_message = "";
 				html_message += "<div id='return-exit-message'>";
-				html_message += "Please Unload " + unloadableItemNames;
+				html_message += "Please add items to load ";
 				html_message += "</div>";
+
+				$('html, body').animate({
+					scrollTop: $("#scrollTopTransfers").offset().top
+				}, 700);
+
+				$('#dublicate-error-message').append(html_message);
+
+				$("#txtItemCode,#txtItemName").keyup(function () {
+					$('#dublicate-error-message').empty();
+				});
+
+				event.preventDefault();
+				return false;
 			}
-
-			$('html, body').animate({
-				scrollTop: $("#scrollTopTransfers").offset().top
-			}, 700);
-
-			$('#dublicate-error-message').append(html_message);
-
-			$("#txtItemCode,#txtItemName").keyup(function () {
-				$('#dublicate-error-message').empty();
-			});
-
-			event.preventDefault();
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	});
+			else
+			{
+				return true;
+			}
+		});
+	}
 }
