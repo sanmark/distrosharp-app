@@ -1,5 +1,7 @@
 
 $(document).keydown(function (e) {
+	
+	$('#dublicate-error-message').empty();
 
 	if (e.which === 112)
 	{
@@ -392,12 +394,23 @@ function selectTransferItem(csrfToken) {
 					route, {
 						_token: csrfToken,
 						itemCode: txtItemCode,
-						stock_id:fromStockId
+						stock_id: fromStockId
 					},
 				function (data)
 				{
 					if (data.length !== 0)
 					{
+						if (typeof data.length == 'undefined')
+						{
+							var html_message = "";
+							html_message += "<div id='return-exit-message'>";
+							html_message += data['availability'];
+							html_message += "</div>";
+
+							$('#dublicate-error-message').append(html_message);
+
+							return false;
+						}
 						clearError();
 
 						if ($('#item_code_' + data[0].id).length !== 0) {
@@ -579,6 +592,8 @@ function validateUnloadOnSubmit()
 {
 	$("#transferForm").submit(function (event) {
 
+		$('#dublicate-error-message').empty();
+		
 		var submitItems = $("#table-sales-list").find(".submitIds").map(function () {
 			return this.value;
 		}).get();
@@ -638,4 +653,3 @@ function validateUnloadOnSubmit()
 		}
 	});
 }
-
