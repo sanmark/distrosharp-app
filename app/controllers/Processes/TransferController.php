@@ -16,7 +16,7 @@ class TransferController extends \Controller
 		$dateTimeFrom	 = \InputButler::get ( 'date_time_from' ) ;
 		$dateTimeTo		 = \InputButler::get ( 'date_time_to' ) ;
 
-		
+
 		if ( is_null ( $dateTimeFrom ) )
 		{
 			$dateTimeFrom = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' , strtotime ( '-7 days midnight' ) ) ) ;
@@ -91,13 +91,12 @@ class TransferController extends \Controller
 			if ( $isUnloaded == true )
 			{
 				$LoadedItems = \StockButler::getItemsForUnload ( $fromStockId ) ;
-
 			} else
 			{
 				$LoadedItems = \Models\StockDetail::where ( 'stock_id' , '=' , $fromStock -> id )
 					-> lists ( 'item_id' ) ;
 			}
-			
+
 			$loadedItemNames = [ ] ;
 
 			foreach ( $LoadedItems as $loadedItem )
@@ -193,7 +192,6 @@ class TransferController extends \Controller
 			$companyReturns			 = $fromStock -> returnQuantities () ;
 			$returnQuantityStatus	 = \ArrayHelper::hasAtLeastOneElementWithValue ( $companyReturns ) ;
 
-
 			if ( $unload == TRUE )
 			{
 				$itemsWithoutZero = [ ] ;
@@ -215,12 +213,12 @@ class TransferController extends \Controller
 				}
 				$this -> validateUnloadTransfer ( $itemsWithoutZero ) ;
 
+				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
+
 				if ( $returnQuantityStatus == TRUE )
 				{
 					$this -> unloadCompanyReturns ( $companyReturns , $fromStockId , $dateTime ) ;
 				}
-
-				$fromStockObj -> saveUnload ( $toStockId , $dateTime , $availableAmounts , $transferAmounts , $description ) ;
 
 				\MessageButler::setSuccess ( 'Unload details saved successfully.' ) ;
 
