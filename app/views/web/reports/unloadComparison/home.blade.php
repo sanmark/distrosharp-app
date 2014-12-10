@@ -36,12 +36,13 @@
 		@if(count($transferRows)==0)
 		<h4 class="text-center">There are no records to display...</h4>
 		@else
-		<table class="table table-striped" style="width:40%;">
+		<table class="table table-striped" style="width:80%;">
 			<tr>
 				<th>Id</th>
 				<th>Date/Time</th>
 				<th>From</th>
 				<th>To</th>
+				<th>Description</th>
 			</tr>
 			@foreach($transferRows as $unloadDetail)
 			<tr>
@@ -49,6 +50,7 @@
 				<td>{{HTML::link(URL::action('reports.unloadComparison.view',[$unloadDetail->id]),$unloadDetail->date_time)}}</td>
 				<td>{{$unloadDetail->fromStock->name}}</td>
 				<td>{{$unloadDetail->toStock->name}}</td>
+				<td>{{$unloadDetail->description}}</td>
 			</tr>
 			@endforeach
 		</table>
