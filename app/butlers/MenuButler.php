@@ -115,11 +115,15 @@ class MenuButler
 						['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
 						['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
 					]
+				] ,
+				['Purchases' , [
+						['View Purchases' , 'reports.viewPurchases' , ['view_purchases_report' ] ]
+					]
 				]
 			]
 		] ,
 		['Tools' , [
-				['Weight Calculator' , 'tools.weightCalculator' , ['view_weight_calculator' ] ]  
+				['Weight Calculator' , 'tools.weightCalculator' , ['view_weight_calculator' ] ]
 			]
 		] ,
 		['Account' , [
