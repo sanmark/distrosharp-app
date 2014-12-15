@@ -189,4 +189,14 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@filter'
 	] ) ;
+	Route::get ( 'view-sales' , [
+		'as'	 => 'reports.viewSales' ,
+		'before' => ['hasAbilities:view_sales_report' ] ,
+		'uses'	 => 'Controllers\Reports\SaleController@all'
+	] ) ;
+	Route::post ( 'view-sales' , [
+		'as'	 => 'reports.viewSales' ,
+		'before' => ['hasAbilities:view_sales_report' ] ,
+		'uses'	 => 'Controllers\Reports\SaleController@all'
+	] ) ;
 } ) ;

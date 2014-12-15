@@ -110,6 +110,7 @@ class MenuButler
 					]
 				] ,
 				['Sales' , [
+						['View Sales' , 'reports.viewSales' , ['view_sales_report' ] ] ,
 						['Sales Summary Report' , 'reports.salesSummary' , ['view_sales_summary_report' ] ] ,
 						['Item Sales Details' , 'reports.itemSalesDetails' , ['view_item_sales_details_report' ] ] ,
 						['Item Sales Summary' , 'report.itemSalesSummary' , ['view_item_sales_summary_report' ] ] ,
