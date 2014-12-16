@@ -15,51 +15,51 @@ class MenuButler
 		[ 'Home' , 'home' ] ,
 		[ 'Entities' , [
 				[ 'Items' , [
-						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
 						[ 'Add Item' , 'entities.items.add' , [ 'add_item' ] ] ,
+						[ 'View Items' , 'entities.items.view' , [ 'view_items' ] ] ,
 					]
 				] ,
 				[ 'Vendors' , [
+						[ 'Add Vendor' , 'entities.vendors.add' , [ 'add_vendor' ] ],
 						[ 'View Vendors' , 'entities.vendors.view' , [ 'view_vendors' ] ] ,
-						[ 'Add Vendor' , 'entities.vendors.add' , [ 'add_vendor' ] ]
 					]
 				] ,
 				[ 'Routes' , [
+						[ 'Add Route' , 'entities.routes.add' , [ 'add_route' ] ],
 						[ 'View Routes' , 'entities.routes.view' , [ 'view_routes' ] ] ,
-						[ 'Add Route' , 'entities.routes.add' , [ 'add_route' ] ]
 					]
 				] ,
 				[ 'Customers' , [
+						[ 'Add Customer' , 'entities.customers.add' , [ 'add_customer' ] ],
 						[ 'View Customers' , 'entities.customers.view' , [ 'view_customers' ] ] ,
-						[ 'Add Customer' , 'entities.customers.add' , [ 'add_customer' ] ]
 					]
 				] ,
 				[ 'Banks' , [
+						[ 'Add Bank' , 'entities.banks.add' , [ 'add_bank' ] ],
 						[ 'View Banks' , 'entities.banks.view' , [ 'view_banks' ] ] ,
-						[ 'Add Bank' , 'entities.banks.add' , [ 'add_bank' ] ]
 					]
 				]
 			]
 		] ,
 		[ 'Processes' , [
 				[ 'Purchases' , [
-						[ 'View Purchases' , 'processes.purchases.view' , [ 'view_purchases' ] ] ,
-						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ]
+						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ],
+						[ 'Edit Purchases' , 'processes.purchases.view' , [ 'view_purchases' ] ] ,
 					]
 				] ,
 				['Transfers' , [
 						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ] ,
-						[ 'View Transfers' , 'processes.transfers.all' , ['view_transfers' ] ]
+						[ 'Edit Transfers' , 'processes.transfers.all' , ['view_transfers' ] ],
 					]
 				] ,
 				['Sales' , [
-						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
 						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ] ,
+						['Edit Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
 					]
 				] ,
 				['Company Returns' , [
 						['Add Company Returns' , 'processes.companyReturns.add' , ['add_company_returns' ] ] ,
-						['View Company Returns' , 'processes.companyReturns.view' , ['view_company_returns' ] ] ,
+						['Edit Company Returns' , 'processes.companyReturns.view' , ['view_company_returns' ] ] ,
 					]
 				]
 			]
