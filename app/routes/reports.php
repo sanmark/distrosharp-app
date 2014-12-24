@@ -167,8 +167,8 @@ Route::group ( [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\TimelyStockReportController@home'
-	] ) ;
-
+	] ) ; 
+	
 	Route::post ( 'timely-stock' , [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
@@ -179,14 +179,40 @@ Route::group ( [
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@home'
 	] ) ;
+
 	Route::get ( 'stock-confirm/{id}/view' , [
 		'as'	 => 'reports.stockConfirmReport.view' ,
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@view'
 	] ) ;
+
 	Route::post ( 'stock-confirm' , [
 		'as'	 => 'reports.stockConfirmReport' ,
 		'before' => ['hasAbilities:view_stock_confirm_report' ] ,
 		'uses'	 => 'Controllers\Reports\StockConfirmReportController@filter'
+	] ) ;
+
+	Route::get ( 'view-sales' , [
+		'as'	 => 'reports.viewSales' ,
+		'before' => ['hasAbilities:view_sales_report' ] ,
+		'uses'	 => 'Controllers\Reports\SaleController@all'
+	] ) ;
+
+	Route::post ( 'view-sales' , [
+		'as'	 => 'reports.viewSales' ,
+		'before' => ['hasAbilities:view_sales_report' ] ,
+		'uses'	 => 'Controllers\Reports\SaleController@all'
+	] ) ;
+
+	Route::get ( 'view-purchases' , [
+		'as'	 => 'reports.viewPurchases' ,
+		'before' => ['hasAbilities:view_purchases_report'] ,
+		'uses'	 => 'Controllers\Reports\PurchaseController@home'
+	] ) ; 
+
+	Route::post ( 'view-purchases' , [
+		'as'	 => 'reports.viewPurchases' ,
+		'before' => ['hasAbilities:view_purchases_report'] ,
+		'uses'	 => 'Controllers\Reports\PurchaseController@home'
 	] ) ;
 } ) ;

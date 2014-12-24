@@ -145,10 +145,24 @@ class StockController extends \Controller
 	{
 		$itemCode	 = \Input::get ( 'itemCode' ) ;
 		$stockId	 = \Input::get ( 'stock_id' ) ;
-		$itemIds	 = \StockButler::getItemsForUnload ( $stockId ) ;
-		$item		 = \Models\Item::whereIn ( 'id' , $itemIds ) -> where ( 'code' , '=' , $itemCode )
+
+		$isItemAvailable = \Models\Item::where ( 'code' , '=' , $itemCode ) -> get () ;
+		$itemIds		 = \StockButler::getItemsForUnload ( $stockId ) ;
+		$item			 = \Models\Item::whereIn ( 'id' , $itemIds ) -> where ( 'code' , '=' , $itemCode )
 			-> get () ;
-		return \Response::json ( $item ) ;
+
+		if ( count ( $isItemAvailable ) == 0 )
+		{
+			return \Response::json ( ['availability' => 'The item code you entered is not valid' ]) ;
+		} elseif ( count ( $isItemAvailable ) > 0 && count ( $item ) == 0 )
+		{
+
+			return \Response::json ( ['availability' => 'The item you entered is not available for unload.' ] ) ;
+		} elseif ( count ( $isItemAvailable ) > 0 && count ( $item ) > 0 )
+		{
+
+			return \Response::json ( $item ) ;
+		}
 	}
 
 }
