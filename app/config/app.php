@@ -107,6 +107,7 @@ return array (
 		'Illuminate\View\ViewServiceProvider' ,
 		'Illuminate\Workbench\WorkbenchServiceProvider' ,
 		'A2way\LaravelTenantMigrate\LaravelTenantMigrateServiceProvider' ,
+		'A2Way\LaravelHash\LaravelHashServiceProvider'
 	) ,
 	/*
 	  |--------------------------------------------------------------------------

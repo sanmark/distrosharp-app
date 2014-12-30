@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"a2way/laravel-tenant-migrate": "dev-master"
+		"a2way/laravel-tenant-migrate": "1.*",
+		"a2way/laravel-hash": "1.*"
 	},
 	"autoload": {
 		"classmap": [
