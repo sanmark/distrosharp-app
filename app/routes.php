@@ -34,7 +34,8 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	dd ( file_get_contents ( '../VERSION' ) ) ;
+	$se = SellingInvoiceButler::getLateCreditInvoices(5);
+	dd ( $se) ;
 } ) ;
 
 
