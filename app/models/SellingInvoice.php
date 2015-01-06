@@ -49,7 +49,14 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 	public function financeTransfers ()
 	{
 		return $this -> belongsToMany ( 'Models\FinanceTransfer' ) -> withPivot ( 'paid_invoice_id' ) ;
-		;
+	}
+
+	public function financeTransfersPaidByThis ()
+	{
+		return $this -> belongsToMany ( 'Models\FinanceTransfer' , 'finance_transfer_selling_invoice' , 'paid_invoice_id' )
+				-> withPivot ( [
+					'selling_invoice_id'
+				] ) ;
 	}
 
 	public function sellingItemById ( $sellingItemId )
@@ -164,28 +171,73 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		return $paymentValueByCheque ;
 	}
 
-	public function getInvoiceCredit ()
+	public function getInvoiceCredit ( $byCash = null , $byCheque = null , $invoiceTotal = null )
 	{
-		$ByCash		 = $this -> getPaymentValueByCash () ;
-		$Cheque		 = $this -> getPaymentValueByCheque () ;
-		$discount	 = $this -> discount ;
+		if ( is_null ( $byCash ) )
+		{
+			$byCash = $this -> getPaymentValueByCash () ;
+		}
 
-		$paidAmount = $ByCash + $Cheque + $discount ;
+		if ( is_null ( $byCheque ) )
+		{
+			$byCheque = $this -> getPaymentValueByCheque () ;
+		}
 
-		$Credit = $this -> getInvoiceTotal () - $paidAmount ;
+		if ( is_null ( $invoiceTotal ) )
+		{
+			$invoiceTotal = $this -> getInvoiceTotal () ;
+		}
 
-		return $Credit ;
+		$discount = $this -> discount ;
+
+		$paidAmount = $byCash + $byCheque + $discount ;
+
+		$credit = $invoiceTotal - $paidAmount ;
+
+		return $credit ;
 	}
 
-	public function getSubTotal ()
+	public function getSubTotal ( $paymentByCash = null , $paymentByCheque = null , $invoiceCredit = null )
 	{
-		$subTotal = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () + $this -> discount ;
+		if ( is_null ( $paymentByCash ) )
+		{
+			$paymentByCash = $this -> getPaymentValueByCash () ;
+		}
+
+		if ( is_null ( $paymentByCheque ) )
+		{
+			$paymentByCheque = $this -> getPaymentValueByCheque () ;
+		}
+
+		if ( is_null ( $invoiceCredit ) )
+		{
+			$invoiceCredit = $this -> getInvoiceCredit () ;
+		}
+
+		$subTotal = $paymentByCash + $paymentByCheque + $invoiceCredit + $this -> discount ;
+
 		return $subTotal ;
 	}
 
-	public function getTotal ()
+	public function getTotal ( $paymentCash = null , $paymentCheque = null , $invoiceCredit = null )
 	{
-		$amount = $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () + $this -> getInvoiceCredit () ;
+		if ( is_null ( $paymentCash ) )
+		{
+			$paymentCash = $this -> getPaymentValueByCash () ;
+		}
+
+		if ( is_null ( $paymentCheque ) )
+		{
+			$paymentCheque = $this -> getPaymentValueByCheque () ;
+		}
+
+		if ( is_null ( $invoiceCredit ) )
+		{
+			$invoiceCredit = $this -> getInvoiceCredit () ;
+		}
+
+		$amount = $paymentCash + $paymentCheque + $invoiceCredit ;
+
 		return $amount ;
 	}
 
@@ -392,8 +444,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 		$requestObject = self::prepareRequestObjectForfilterForSalesSummary ( $requestObject , $filterValues ) ;
 
-		$requestObject	 = $requestObject -> with ( 'customer' ) ;
-		$requestObject	 = $requestObject -> with ( 'rep' ) ;
+		$requestObject	 = $requestObject -> with ( ['customer', 'rep', 'financeTransfers', 'sellingItems'] ) ;
 
 		return $requestObject -> get () ;
 	}
@@ -403,7 +454,6 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 		if ( count ( $filterValues ) > 0 )
 		{
-
 			$route_id		 = $filterValues[ 'route_id' ] ;
 			$customer_id	 = $filterValues[ 'customer_id' ] ;
 			$rep_id			 = $filterValues[ 'rep_id' ] ;
@@ -445,8 +495,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$date_to		 = $date_to . " 23:59:59" ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_to ) ;
-			} else
-
+			}
+			
 			if ( strlen ( $invoice_number ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;
@@ -467,64 +517,37 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 	public function getLateCreditInvoices ()
 	{
-		$result = array () ;
-
-		$requestObject = new \Models\SellingInvoice() ;
-
-		$requestObject = $requestObject -> with ( 'financeTransfers' ) ;
-
-		foreach ( $requestObject -> get () as $key => $invoices )
-		{
-			foreach ( $invoices -> finance_transfers as $key => $finance_transfers )
-			{
-
-				if ( $finance_transfers -> pivot -> paid_invoice_id === $this -> id && $finance_transfers -> pivot -> selling_invoice_id !== $this -> id )
-				{
-					array_push ( $result , $finance_transfers -> pivot -> selling_invoice_id ) ;
-				}
-			}
-		}
-
-		return array_unique ( $result ) ;
+		return \SellingInvoiceButler::getLateCreditInvoices ( $this -> id ) ;
 	}
 
 	public function getLateCreditPayments ()
 	{
-		$amount_cash	 = 0 ;
-		$amount_cheque	 = 0 ;
-
-		$requestObject = new \Models\SellingInvoice() ;
-
-		$requestObject = $requestObject -> with ( 'financeTransfers' ) ;
-
-		foreach ( $requestObject -> get () as $key => $invoices )
-		{
-			foreach ( $invoices -> finance_transfers as $key => $finance_transfers )
-			{
-
-				if ( $finance_transfers -> pivot -> paid_invoice_id === $this -> id && $finance_transfers -> pivot -> selling_invoice_id !== $this -> id )
-				{
-					if ( $finance_transfers -> isCash () )
-					{
-
-						$amount_cash = $amount_cash + $finance_transfers -> amount ;
-					}
-
-					if ( $finance_transfers -> isCheque () )
-					{
-
-						$amount_cheque = $amount_cheque + $finance_transfers -> amount ;
-					}
-				}
-			}
-		}
-
-		return array ( "amount_cash" => $amount_cash , "amount_cheque" => $amount_cheque ) ;
+		return \SellingInvoiceButler::getLateCreditPayments ( $this -> id ) ;
 	}
 
-	public function getTotalCollection ()
+	public function getTotalCollection ( $lateCreditPaymentsCash = null , $lateCreditPaymentsCheque = null , $paymentByCash = null , $paymentByCheque = null )
 	{
-		$result = $this -> getLateCreditPayments ()[ 'amount_cash' ] + $this -> getLateCreditPayments ()[ 'amount_cheque' ] + $this -> getPaymentValueByCash () + $this -> getPaymentValueByCheque () ;
+		if ( is_null ( $lateCreditPaymentsCash ) )
+		{
+			$lateCreditPaymentsCash = $this -> getLateCreditPayments ()[ 'amount_cash' ] ;
+		}
+
+		if ( is_null ( $lateCreditPaymentsCheque ) )
+		{
+			$lateCreditPaymentsCheque = $this -> getLateCreditPayments ()[ 'amount_cheque' ] ;
+		}
+
+		if ( is_null ( $paymentByCash ) )
+		{
+			$paymentByCash = $this -> getPaymentValueByCash () ;
+		}
+
+		if ( is_null ( $paymentByCheque ) )
+		{
+			$paymentByCheque = $this -> getPaymentValueByCheque () ;
+		}
+
+		$result = $lateCreditPaymentsCash + $lateCreditPaymentsCheque + $paymentByCash + $paymentByCheque ;
 
 		return $result ;
 	}

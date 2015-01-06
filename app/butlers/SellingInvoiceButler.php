@@ -98,4 +98,62 @@ class SellingInvoiceButler
 		return $sellingInvoicesForDates ;
 	}
 
+	public static function getLateCreditInvoices ( $id )
+	{
+		$result = array () ;
+
+		$requestObject = new \Models\SellingInvoice() ;
+
+		$requestObject = $requestObject -> where ( 'id' , '=' , $id ) ;
+
+		$requestObject = $requestObject -> with ( 'financeTransfersPaidByThis' ) -> get () ;
+
+		if ( count ( $requestObject ) )
+		{
+			foreach ( $requestObject[ 0 ] -> financeTransfersPaidByThis as $finance_transfer )
+			{ 
+				if ( $finance_transfer -> pivot -> selling_invoice_id != $id )
+				{
+					array_push ( $result , $finance_transfer -> pivot -> selling_invoice_id ) ;
+				}
+			}
+		}
+
+		return array_unique ( $result ) ;
+	}
+
+	public static function getLateCreditPayments ( $id )
+	{
+		$amount_cash	 = 0 ;
+		$amount_cheque	 = 0 ;
+
+		$requestObject = new \Models\SellingInvoice() ;
+
+		$requestObject = $requestObject -> where ( 'id' , '=' , $id ) ;
+
+		$requestObject = $requestObject -> with ( 'financeTransfersPaidByThis' ) -> get () ;
+
+		if ( count ( $requestObject ) )
+		{
+
+			foreach ( $requestObject[ 0 ] -> financeTransfersPaidByThis as $finance_transfer )
+			{
+				if ( $finance_transfer -> pivot -> selling_invoice_id != $id )
+				{ 
+					if ( $finance_transfer -> isCash () )
+					{
+						$amount_cash = $amount_cash + $finance_transfer -> amount ;
+					}
+
+					if ( $finance_transfer -> isCheque () )
+					{
+						$amount_cheque = $amount_cheque + $finance_transfer -> amount ;
+					}
+				}
+			}
+		}
+
+		return array ( "amount_cash" => $amount_cash , "amount_cheque" => $amount_cheque ) ;
+	}
+
 }

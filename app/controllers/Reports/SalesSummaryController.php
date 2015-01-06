@@ -23,16 +23,16 @@ class SalesSummaryController extends \Controller
 		$dateFrom	 = \InputButler::get ( 'date_from' ) ;
 		$dateTo		 = \InputButler::get ( 'date_to' ) ;
 		$invoiceNum	 = \InputButler::get ( 'invoice_number' ) ;
-		 
+
 		if ( ! $dateFrom )
 		{
-			$dateFrom = date ( 'Y-m-d' , mktime ( 0 , 0 , 0 , date ( 'm' ) , date ( 'd' ) - 3 , date ( 'Y' ) ) );
+			$dateFrom = date ( 'Y-m-d' , mktime ( 0 , 0 , 0 , date ( 'm' ) , date ( 'd' ) - 3 , date ( 'Y' ) ) ) ;
 		}
 
 
 		if ( ! $dateTo )
 		{
-			$dateTo = date ( 'Y-m-d' );
+			$dateTo = date ( 'Y-m-d' ) ;
 		}
 
 		$totalOfDiscountSum		 = 0 ;
@@ -40,22 +40,42 @@ class SalesSummaryController extends \Controller
 		$invoiceByCashTotalSum	 = 0 ;
 		$invoiceByChequeTotalSum = 0 ;
 		$invoiceByCreditTotalSum = 0 ;
-		$creditPaymentsByCash =0;
-		$creditPaymentsByCheque =0;
-		$invoiceSubAmountTotal = 0 ;
+		$creditPaymentsByCash	 = 0 ;
+		$creditPaymentsByCheque	 = 0 ;
+		$invoiceSubAmountTotal	 = 0 ;
 		$totalAmount			 = 0 ;
 
-		foreach ( $sellingInvoices as $sellingInvoice )
+		foreach ( $sellingInvoices as $key => $sellingInvoice )
 		{
+			$paymentValueByCash		 = $sellingInvoice -> getPaymentValueByCash () ;
+			$paymentValueByCheque	 = $sellingInvoice -> getPaymentValueByCheque () ;
+			$lateCreditPayments		 = $sellingInvoice -> getLateCreditPayments () ;
+			$invoiceTotal			 = $sellingInvoice -> getInvoiceTotal () ;
+			$invoiceCredit			 = $sellingInvoice -> getInvoiceCredit ( $paymentValueByCash , $paymentValueByCheque, $invoiceTotal ) ;
+			$subTotal				 = $sellingInvoice -> getSubTotal ( $paymentValueByCash , $paymentValueByCheque , $invoiceCredit ) ;
+			$total					 = $sellingInvoice -> getTotal ( $paymentValueByCash , $paymentValueByCheque , $invoiceCredit ) ;
+			$totalCollection		 = $sellingInvoice -> getTotalCollection ( $lateCreditPayments[ 'amount_cash' ] , $lateCreditPayments[ 'amount_cheque' ] , $paymentValueByCash , $paymentValueByCheque ) ;
+
 			$totalOfDiscountSum += $sellingInvoice -> discount ;
-			$invoiceByCashTotalSum += $sellingInvoice -> getPaymentValueByCash () ;
-			$invoiceByChequeTotalSum += $sellingInvoice -> getPaymentValueByCheque () ;
-			$invoiceByCreditTotalSum += $sellingInvoice -> getInvoiceCredit () ;
-			$creditPaymentsByCash += $sellingInvoice -> getLateCreditPayments()['amount_cash'];
-			$creditPaymentsByCheque += $sellingInvoice -> getLateCreditPayments()['amount_cheque'];
-			$totalOfInvoiceSum += $sellingInvoice -> getTotalCollection () ;
-			$invoiceSubAmountTotal += $sellingInvoice -> getSubTotal () ;
-			$totalAmount += $sellingInvoice -> getTotal () ;
+			$invoiceByCashTotalSum += $paymentValueByCash ;
+			$invoiceByChequeTotalSum += $paymentValueByCheque ;
+			$invoiceByCreditTotalSum += $invoiceCredit ;
+			$creditPaymentsByCash += $lateCreditPayments[ 'amount_cash' ] ;
+			$creditPaymentsByCheque += $lateCreditPayments[ 'amount_cheque' ] ;
+			$totalOfInvoiceSum += $totalCollection ;
+			$invoiceSubAmountTotal += $subTotal ;
+			$totalAmount += $total ;
+
+			$sellingInvoice -> subTotal				 = $subTotal ;
+			$sellingInvoice -> total				 = $total ;
+			$sellingInvoice -> paymentValueByCash	 = $paymentValueByCash ;
+			$sellingInvoice -> paymentValueByCheque	 = $paymentValueByCheque ;
+			$sellingInvoice -> invoiceCredit		 = $invoiceCredit ;
+			$sellingInvoice -> lateCreditPayments	 = $lateCreditPayments ;
+			$sellingInvoice -> totalCollection		 = $totalCollection ;
+			$sellingInvoice -> invoiceTotal			 = $invoiceTotal ;
+
+			$sellingInvoices[ $key ] = $sellingInvoice ;
 		}
 
 		$totalNetAmount = $invoiceSubAmountTotal - $totalOfDiscountSum ;
@@ -78,8 +98,8 @@ class SalesSummaryController extends \Controller
 			'invoiceByCreditTotalSum' ,
 			'invoiceSubAmountTotal' ,
 			'totalNetAmount' ,
-			'totalAmount',
-			'creditPaymentsByCash',
+			'totalAmount' ,
+			'creditPaymentsByCash' ,
 			'creditPaymentsByCheque'
 			] ) ;
 
