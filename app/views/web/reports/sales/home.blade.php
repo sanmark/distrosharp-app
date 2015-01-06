@@ -67,12 +67,12 @@
 					<td>{{$sellingInvoice->customer->route->name}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
 					<td>{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getSubTotal(), 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->subTotal, 2)}}</td>
 					<td class="text-right">{{number_format($sellingInvoice->discount, 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getTotal(), 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getPaymentValueByCash (), 2) }}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getPaymentValueByCheque () , 2)}}</td>
-					<td class="text-right">{{number_format($sellingInvoice->getInvoiceCredit () , 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->total, 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->paymentValueByCash, 2) }}</td>
+					<td class="text-right">{{number_format($sellingInvoice->paymentValueByCheque, 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->invoiceCredit, 2)}}</td>
 					<td >  
 						@foreach($sellingInvoice -> getLateCreditInvoices () as $key => $invoice)  
 						@if($key !== 0)
@@ -82,12 +82,12 @@
 						@endforeach 
 					</td>
 					<td class="text-right">   
-						{{number_format($sellingInvoice -> getLateCreditPayments()['amount_cash'],2)}}  
+						{{number_format($sellingInvoice -> lateCreditPayments['amount_cash'],2)}}  
 					</td> 
 					<td class="text-right">     
-						{{number_format($sellingInvoice -> getLateCreditPayments()['amount_cheque'],2)}} 
+						{{number_format($sellingInvoice -> lateCreditPayments['amount_cheque'],2)}} 
 					</td>
-					<td class="text-right">{{number_format($sellingInvoice->getTotalCollection(), 2)}}</td>
+					<td class="text-right">{{number_format($sellingInvoice->totalCollection, 2)}}</td>
 				</tr>
 				@endforeach
 				<tr>
