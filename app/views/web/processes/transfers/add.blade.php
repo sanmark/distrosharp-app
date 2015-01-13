@@ -123,10 +123,6 @@ selectTransferItem("{{csrf_token()}}");
 editTransferItem();
 deleteTransferItem();
 setMethodToEnter();
+validateTransferOnSubmit();
 </script>
-@if($isUnloaded==1)
-<script>
-	validateUnloadOnSubmit();
-</script>
-@endif
 @stop
