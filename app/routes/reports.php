@@ -22,7 +22,7 @@ Route::group ( [
 		'before' => ['hasAbilities:confirm_stock' ] ,
 		'uses'	 => 'Controllers\Reports\StockController@confirmStock'
 	] ) ;
-	
+
 	Route::get ( 'debtor-summary' , [
 		'as'	 => 'reports.debtorSummary' ,
 		'before' => ['hasAbilities:view_debtor_summary_report' ] ,
@@ -167,8 +167,8 @@ Route::group ( [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
 		'uses'	 => 'Controllers\Reports\TimelyStockReportController@home'
-	] ) ; 
-	
+	] ) ;
+
 	Route::post ( 'timely-stock' , [
 		'as'	 => 'reports.timelyStockReport' ,
 		'before' => ['hasAbilities:view_timely_stock_report' ] ,
@@ -206,13 +206,25 @@ Route::group ( [
 
 	Route::get ( 'view-purchases' , [
 		'as'	 => 'reports.viewPurchases' ,
-		'before' => ['hasAbilities:view_purchases_report'] ,
+		'before' => ['hasAbilities:view_purchases_report' ] ,
 		'uses'	 => 'Controllers\Reports\PurchaseController@home'
-	] ) ; 
+	] ) ;
 
 	Route::post ( 'view-purchases' , [
 		'as'	 => 'reports.viewPurchases' ,
-		'before' => ['hasAbilities:view_purchases_report'] ,
+		'before' => ['hasAbilities:view_purchases_report' ] ,
 		'uses'	 => 'Controllers\Reports\PurchaseController@home'
 	] ) ;
+
+	Route::group ( [
+		'prefix' => 'ajax' ,
+		'before' => 'csrf'
+		] , function()
+	{
+		Route::post ( 'createSalesSummaryReport' , [
+			'as'	 => 'reports.ajax.createSalesSummaryReport' ,
+			'uses'	 => 'Controllers\Reports\SalesSummaryController@createSalesSummaryReport'
+		] ) ;
+ 
+	} ) ;
 } ) ;
