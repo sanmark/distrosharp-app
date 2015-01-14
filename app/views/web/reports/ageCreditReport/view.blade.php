@@ -57,7 +57,7 @@
 				<td>{{$sellingRow->customer['name']}}</td>
 				<td>{{HTML::link (URL::action ( 'processes.sales.edit',[$sellingRow->id] ), $sellingRow->printed_invoice_number )}}</td>
 				<td>{{number_format((strtotime(date('Y-m-d H:i:s'))-strtotime($sellingRow->date_time))/86400,0)}}</td>
-				<td class="text-right">{{$invoiceBalanceTotal[$sellingRow->id]}}</td>
+				<td class="text-right">{{number_format($invoiceBalanceTotal[$sellingRow->id],2)}}</td>
 			</tr>
 			@endforeach
 			@if(count($sellingData)==0)
@@ -65,6 +65,16 @@
 			@else
 			<?php $customerId	 = $sellingRow -> customer_id ; ?>
 			@endif
+
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="text-right"><b>Total</b></td>
+				<td class="text-right"><b class="total-line-bottom">{{number_format($total,2)}}</b></td>
+			</tr>
+
 		</table>
 		@endif
 
