@@ -32,12 +32,14 @@
 
 
 		@if(isset($items))
-		<table class="table table-striped" style="width: 55%;">
+		<table class="table table-striped" style="width: 70%;">
 			<thead>
 				<tr>
 					<th>Name</th>
 					<th class="text-right">Total Free Amount</th>
+					<th class="text-right">Total Free Amount Value</th>
 					<th class="text-right">Total Paid Amount</th>
+					<th class="text-right">Total Paid Amount Value</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,10 +47,25 @@
 				<tr>
 					<td>{{$item->name}}</td>
 					<td class="text-right">{{$item->totalFreeAmount}}</td>
+					<td class="text-right">
+						{{number_format($item->totalFreeAmount * $item->selling_price,2)}}
+					</td>
 					<td class="text-right">{{$item->totalPaidAmount}}</td>
+					<td class="text-right">
+						{{number_format($item->totalPaidAmount * $item->selling_price,2)}}
+					</td>
 				</tr>
 				@endforeach
 			</tbody>
+			<tfoot>
+				<tr>
+					<td class="text-right"></td>
+					<td class="text-right"><b>Total</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($freeAmountValueSum,2)}}</b></td>
+					<td class="text-right"></td>
+					<td class="text-right"><b class="total-line-bottom">{{number_format($paidAmountValueSum,2)}}</b></td>
+				</tr>
+			</tfoot>
 		</table>
 		@else
 		<h4 class="text-center">Please define a criteria and press "Submit".</h4>

@@ -47,6 +47,10 @@
 					{{Form::select('is_completely_paid', $isActiveSelectBox, $isCompletelyPaid, array('tabindex' => '7', 'class' => ''))}}
 				</div>
 				<div class="form-group bottom-space">
+					{{Form::label('discount', null, array('class' => 'control-label'))}}
+					{{Form::select('discount', $isActiveSelectBox, $isDiscount, array('tabindex' => '7', 'class' => ''))}}
+				</div>
+				<div class="form-group bottom-space">
 					{{Form::submit('Submit', array('tabindex' => '8', 'class' => 'btn btn-primary pull-right'))}}
 				</div>
 				{{Form::close()}}

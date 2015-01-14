@@ -25,10 +25,14 @@ class AgeCreditReportController extends \Controller
 		$customerSelectBox = ['' => 'Select Route First' ] ;
 
 		$invoiceBalanceTotal = [ ] ;
+		
+		$total = 0;
 
 		for ( $i = 0 ; $i < count ( $sellingData ) ; $i ++ )
 		{
 			$invoiceBalanceTotal[ $sellingData[ $i ][ 'id' ] ] = \Models\SellingInvoice::find ( $sellingData[ $i ][ 'id' ] ) -> getInvoiceBalance () ;
+			
+			$total = $total + $invoiceBalanceTotal[ $sellingData[ $i ][ 'id' ] ];
 		}
 		$data = compact ( [
 			'sellingData' ,
@@ -40,7 +44,8 @@ class AgeCreditReportController extends \Controller
 			'now' ,
 			'invoiceBalanceTotal' ,
 			'routeSelectBox' ,
-			'routeId'
+			'routeId',
+			'total'
 			] ) ;
 		return \View::make ( 'web.reports.ageCreditReport.view' , $data ) ;
 	}

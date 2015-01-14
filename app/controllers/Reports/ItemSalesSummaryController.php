@@ -33,10 +33,21 @@ class ItemSalesSummaryController extends \Controller
 
 		$items = \Models\Item::all () ;
 
+
+		$freeAmountValueSum	 = 0 ;
+		$paidAmountValueSum	 = 0 ;
+
 		foreach ( $items as $index => $item )
 		{
 			$item -> totalFreeAmount = $item -> getTotalFreeAmountSoldForRepAndTimeRange ( $repId , $fromDate , $toDate ) ;
+
 			$item -> totalPaidAmount = $item -> getTotalPaidAmountSoldForRepAndTimeRange ( $repId , $fromDate , $toDate ) ;
+
+			$item -> selling_price = $item -> current_selling_price ;
+
+
+			$freeAmountValueSum	 = $freeAmountValueSum + $item -> totalFreeAmount * $item -> selling_price ;
+			$paidAmountValueSum	 = $paidAmountValueSum + $item -> totalPaidAmount * $item -> selling_price ;
 
 			$items[ $index ] = $item ;
 		}
@@ -46,7 +57,10 @@ class ItemSalesSummaryController extends \Controller
 			'fromDate' ,
 			'toDate' ,
 			'repSelectBox' ,
-			'items'
+			'items',
+			'freeAmountValueSum',
+			'paidAmountValueSum'
+			
 			] ) ;
 
 		return \View::make ( 'web.reports.itemSalesSummary.home' , $data ) ;

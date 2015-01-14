@@ -391,6 +391,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			$repId					 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'rep_id' ) ;
 			$printedInvoiceNumber	 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'printed_invoice_number' ) ;
 			$isCompletelyPaid		 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'is_completely_paid' ) ;
+			$isDiscount				 = \ArrayHelper::getValueIfKeyExistsOrNull ( $filterValues , 'discount' ) ;
 
 			if ( strlen ( $id ) > 0 )
 			{
@@ -434,6 +435,18 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'is_completely_paid' , '=' , $isCompletelyPaid ) ;
 			}
+
+			if ( strlen ( $isDiscount ) > 0 )
+			{
+				if ( $isDiscount )
+				{
+					$requestObject = $requestObject -> where ( 'discount' , '>' , 0 ) ;
+				}
+				if ( !$isDiscount )
+				{ 
+					$requestObject = $requestObject -> where ( 'discount' , '=' , null ) ;
+				}
+			}
 		}
 		return $requestObject ;
 	}
@@ -444,7 +457,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 		$requestObject = self::prepareRequestObjectForfilterForSalesSummary ( $requestObject , $filterValues ) ;
 
-		$requestObject	 = $requestObject -> with ( ['customer', 'rep', 'financeTransfers', 'sellingItems'] ) ;
+		$requestObject = $requestObject -> with ( ['customer' , 'rep' , 'financeTransfers' , 'sellingItems' ] ) ;
 
 		return $requestObject -> get () ;
 	}
@@ -496,7 +509,7 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				$date_to		 = $date_to . " 23:59:59" ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '=' , $date_to ) ;
 			}
-			
+
 			if ( strlen ( $invoice_number ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'printed_invoice_number' , '=' , $invoice_number ) ;

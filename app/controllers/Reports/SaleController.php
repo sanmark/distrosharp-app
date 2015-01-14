@@ -22,6 +22,7 @@ class SaleController extends \Controller
 		$repId					 = \InputButler::get ( 'rep_id' ) ;
 		$isCompletelyPaid		 = \InputButler::get ( 'is_completely_paid' ) ;
 		$routeId				 = \InputButler::get ( 'route_id' ) ;
+		$isDiscount				 = \InputButler::get ( 'discount' ) ;
 
 
 		$creditBalance		 = [ ] ;
@@ -75,7 +76,8 @@ class SaleController extends \Controller
 			'totalOfInvoiceSum' ,
 			'totalOfDiscountSum' ,
 			'routeSelectBox' ,
-			'routeId'
+			'routeId',
+			'isDiscount'
 			] ) ;
 		return \View::make ( 'web.reports.sales.view' , $data ) ;
 	}
