@@ -36,6 +36,8 @@ class SellingInvoiceButler
 		{
 			$date_from	 = $filterValues[ 'from_date' ] ;
 			$date_to	 = $filterValues[ 'to_date' ] ;
+			$route_id	 = $filterValues[ 'route_id' ] ;
+			$rep_id		 = $filterValues[ 'rep_id' ] ;
 
 			if ( strlen ( $date_from ) > 0 && strlen ( $date_to ) > 0 )
 			{
@@ -49,6 +51,21 @@ class SellingInvoiceButler
 				$date_from_end	 = $date_from . " 23:59:59" ;
 
 				$requestObject = $requestObject -> whereBetween ( 'date_time' , array ( $date_from_start , $date_from_end ) ) ;
+			}
+
+			if ( strlen ( $route_id ) > 0 )
+			{
+				$customers = \Models\Customer::where ( 'route_id' , '=' , $route_id ) -> lists ( 'id' ) ;
+				if ( ! $customers )
+				{
+					$customers [ 0 ] = NULL ;
+				}
+				$requestObject = $requestObject -> whereIn ( 'customer_id' , $customers ) ;
+			}
+
+			if ( strlen ( $rep_id ) > 0 )
+			{
+				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $rep_id ) ;
 			}
 		}
 
@@ -111,7 +128,7 @@ class SellingInvoiceButler
 		if ( count ( $requestObject ) )
 		{
 			foreach ( $requestObject[ 0 ] -> financeTransfersPaidByThis as $finance_transfer )
-			{ 
+			{
 				if ( $finance_transfer -> pivot -> selling_invoice_id != $id )
 				{
 					array_push ( $result , $finance_transfer -> pivot -> selling_invoice_id ) ;
@@ -135,11 +152,10 @@ class SellingInvoiceButler
 
 		if ( count ( $requestObject ) )
 		{
-
 			foreach ( $requestObject[ 0 ] -> financeTransfersPaidByThis as $finance_transfer )
 			{
 				if ( $finance_transfer -> pivot -> selling_invoice_id != $id )
-				{ 
+				{
 					if ( $finance_transfer -> isCash () )
 					{
 						$amount_cash = $amount_cash + $finance_transfer -> amount ;
