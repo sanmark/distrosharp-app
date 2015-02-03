@@ -189,13 +189,13 @@ class SaleController extends \Controller
 		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
 		$items				 = \Models\Item::all () ;
 		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
-		$routes				 = \Models\Route::where ( 'rep_id' , '=' , $sellingInvoice-> rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , $sellingInvoice -> rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
 
 		$data = compact ( [
 			'sellingInvoice' ,
 			'customerDropDown' ,
 			'items' ,
-			'banksList',
+			'banksList' ,
 			'routes'
 			] ) ;
 
@@ -214,9 +214,9 @@ class SaleController extends \Controller
 			$chequePaymentIssuedDate	 = \InputButler::get ( 'cheque_payment_issued_date' ) ;
 			$chequePaymentPayableDate	 = \InputButler::get ( 'cheque_payment_payable_date' ) ;
 			$creditPayments				 = \InputButler::get ( 'credit_payments' ) ;
-			
+
 			$this -> validateCreditPayments ( $creditPayments ) ;
-			
+
 
 			$this -> validateSaleItemsForUpdate ( $items ) ;
 			$this -> validateSaveNewPayments ( $cashPaymentAmount , $chequePaymentAmount , $chequePaymentBankId , $chequePaymentChequeNumber , $chequePaymentIssuedDate , $chequePaymentPayableDate ) ;
@@ -387,6 +387,11 @@ class SaleController extends \Controller
 
 	private function validateSaleItemsForUpdate ( $items )
 	{
+		if ( ! is_array ( $items ) )
+		{
+			return TRUE ;
+		}
+
 		foreach ( $items as $itemId => $item )
 		{
 			$itemO = \Models\Item::findOrFail ( $itemId ) ;
@@ -469,7 +474,14 @@ class SaleController extends \Controller
 
 		$originalSellingItems	 = \Models\SellingItem::where ( 'selling_invoice_id' , '=' , $sellingInvoiceId ) -> get () ;
 		$filledItems			 = $this -> getFilledItems ( $sellingInvoiceId , $sellingItemsArray ) ;
-		$deletedItems			 = $originalSellingItems -> diff ( $filledItems ) ;
+
+		if ( is_null ( $filledItems ) )
+		{
+			$deletedItems = $originalSellingItems ;
+		} else
+		{
+			$deletedItems = $originalSellingItems -> diff ( $filledItems ) ;
+		}
 
 		$this -> updateFilledItems ( $filledItems ) ;
 		$this -> updateDeletedItems ( $deletedItems ) ;
@@ -477,6 +489,11 @@ class SaleController extends \Controller
 
 	private function getFilledItems ( $sellingInvoiceId , $sellingItems )
 	{
+		if ( ! is_array ( $sellingItems ) )
+		{
+			return NULL ;
+		}
+
 		$filledItemsArray = [ ] ;
 
 		foreach ( $sellingItems as $itemId => $item )
@@ -513,6 +530,11 @@ class SaleController extends \Controller
 
 	private function updateFilledItems ( $filledItems )
 	{
+		if ( ! is_array ( $filledItems ) )
+		{
+			return FALSE ;
+		}
+
 		foreach ( $filledItems as $filledItem )
 		{
 			$filledItem -> load ( 'sellingInvoice.rep.stock' , 'item' ) ;
