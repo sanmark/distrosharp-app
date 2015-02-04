@@ -247,7 +247,12 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		$totalPaymentValue	 = $this -> getTotalPaymentValue () ;
 		$discount			 = $this -> discount ;
 
-		$invoiceBalance = $invoiceTotal - $totalPaymentValue - $discount ;
+		$invoiceBalance = round ( $invoiceTotal - $totalPaymentValue - $discount , 2 ) ;
+
+		if ( $invoiceBalance == 0 )
+		{
+			return 0 ;
+		}
 
 		return $invoiceBalance ;
 	}
@@ -442,8 +447,8 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 				{
 					$requestObject = $requestObject -> where ( 'discount' , '>' , 0 ) ;
 				}
-				if ( !$isDiscount )
-				{ 
+				if ( ! $isDiscount )
+				{
 					$requestObject = $requestObject -> where ( 'discount' , '=' , null ) ;
 				}
 			}
