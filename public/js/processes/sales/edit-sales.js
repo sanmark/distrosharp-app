@@ -434,29 +434,7 @@ function validateaddSalesRow(validationVal) {
 	var status = true;
 
 	clearError();
-
-	if (parseFloat(0 + validationVal.txtPaidQty) + parseFloat(0 + validationVal.txtFreeQty) > validationVal.txtAvailable) {
-
-		$("#txtPaidQty").addClass('duplicate-error');
-		$("#txtFreeQty").addClass('duplicate-error');
-		$("#txtAvailable").addClass('duplicate-error');
-
-		var html_message = "";
-		html_message += "<div id='return-exit-message'>";
-		html_message += "Paid Qty + Free Qty must be less than or equal to Available";
-		html_message += "</div>";
-
-		$('#dublicate-error-message').append(html_message);
-
-		setTimeout(function () {
-			$("div").removeClass("duplicate-error");
-			$('#dublicate-error-message').empty();
-			clearError();
-		}, 4000);
-
-		status = false;
-	}
-
+  
 	if (!validationVal.txtItemCode.trim()) {
 		$("#txtItemCode").addClass('duplicate-error');
 		status = false;
