@@ -481,9 +481,9 @@ class SaleController extends \Controller
 		} else
 		{
 			$deletedItems = $originalSellingItems -> diff ( $filledItems ) ;
+			$this -> updateFilledItems ( $filledItems ) ;
 		}
-
-		$this -> updateFilledItems ( $filledItems ) ;
+		
 		$this -> updateDeletedItems ( $deletedItems ) ;
 	}
 
@@ -530,11 +530,6 @@ class SaleController extends \Controller
 
 	private function updateFilledItems ( $filledItems )
 	{
-		if ( ! is_array ( $filledItems ) )
-		{
-			return FALSE ;
-		}
-
 		foreach ( $filledItems as $filledItem )
 		{
 			$filledItem -> load ( 'sellingInvoice.rep.stock' , 'item' ) ;
