@@ -12,8 +12,8 @@ class StockConfirmationDetail extends BaseEntity implements \Interfaces\iEntity
 
 	public function getConfirmationDetails ( $id )
 	{
-		$confirmationDetails = $this -> where ( 'stock_confirmation_id' , '=' , $id ) -> get () ;
+		$confirmationDetails = $this -> where ( 'stock_confirmation_id' , '=' , $id ) -> with ( 'item' ) -> get () ;
 		return $confirmationDetails ;
 	}
-	
+
 }

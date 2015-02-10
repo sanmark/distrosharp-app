@@ -31,9 +31,12 @@
 					<th class="text-right">Good Qnt</th>
 					<th class="text-right">Return Qnt</th>
 					<th class='text-right'>Good Qnt. Weight(Kg)</th>
-					<th class="text-right">Good Qnt Value</th>
-					<th class="text-right">Return Qnt Value</th>
-					<th class="text-right">Total Value</th>
+					<th class="text-right">Buying Value of Good Qnt</th>
+					<th class="text-right">Selling Value of Good Qnt</th>
+					<th class="text-right">Buying Value of Return Qnt</th>
+					<th class="text-right">Selling Value of Return Qnt</th>
+					<th class="text-right">Total Buying Value (G+R)</th>
+					<th class="text-right">Total Selling Value (G+R)</th>
 				</tr>
 			</thead>
 			<tbody> 
@@ -44,23 +47,29 @@
 					<td class="text-right">{{number_format($stock['good_quantity'],2)}}</td>
 					<td class="text-right">{{number_format($stock['return_quantity'],2)}}</td> 
 					<td class="text-right">{{number_format($stock['total_weight'],2)}}</td>
-					<td class="text-right">{{number_format($stock['good_quantity_value'],2)}}</td>
-					<td class="text-right">{{number_format($stock['return_quantity_value'],2)}}</td>
-					<td class="text-right">{{number_format($stock['total_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['good_quantity_buying_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['good_quantity_selling_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['return_quantity_buying_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['return_quantity_selling_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['total_buying_value'],2)}}</td>
+					<td class="text-right">{{number_format($stock['total_selling_value'],2)}}</td>
 				</tr>
 				@endforeach 
 				<tr> 
 					<td colspan="4"><b>Total</b></td>
 					<td class="text-right"><b>{{number_format($totals[ 'totalWeight' ],2)}}</b></td>
-					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_value_total' ],2)}}</b></td>
-					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_value_total' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_buying_value_total' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'good_quantity_selling_value_total' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_buying_value_total' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'return_quantity_selling_value_total' ],2)}}</b></td>
 
-					<td class="text-right"><b>{{number_format($totals[ 'grandTotal' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'grandBuyingTotal' ],2)}}</b></td>
+					<td class="text-right"><b>{{number_format($totals[ 'grandSellingTotal' ],2)}}</b></td>
 
 				</tr>
 				@if($confirmStock)
 				<tr>
-					<td colspan="8" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-danger pull-right'])}}</td>
+					<td colspan="11" class="text-right">{{Form::submit('Confirm Stock',['class'=>'btn btn-danger pull-right'])}}</td>
 				</tr>
 				@endif
 			</tbody>

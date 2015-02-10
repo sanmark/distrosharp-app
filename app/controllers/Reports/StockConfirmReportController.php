@@ -48,11 +48,28 @@ class StockConfirmReportController extends \Controller
 		$stockDetails				 = \Models\StockConfirmation::findOrFail ( $id ) ;
 		$stockConfirmationDetails	 = new \Models\StockConfirmationDetail() ;
 		$stockConfirmationDetails	 = $stockConfirmationDetails -> getConfirmationDetails ( $id ) ;
-		$data						 = compact ( [
+
+		$totalBuyingValueOfGoodQnt		 = [ ] ;
+		$totalSellingValueOfGoodQnt		 = [ ] ;
+		$totalBuyingValueOfReturnQnt	 = [ ] ;
+		$totalSellingValueOfReturnQnt	 = [ ] ;
+
+		foreach ( $stockConfirmationDetails as $stockValue )
+		{
+			$totalBuyingValueOfGoodQnt[ $stockValue -> item_id ]	 = $stockValue -> good_item_quantity * $stockValue[ 'item' ] -> current_buying_price ;
+			$totalSellingValueOfGoodQnt[ $stockValue -> item_id ]	 = $stockValue -> good_item_quantity * $stockValue[ 'item' ] -> current_selling_price ;
+			$totalBuyingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_buying_price ;
+			$totalSellingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_selling_price ;
+		}
+		$data = compact ( [
 			'stockConfirmationDetails' ,
 			'dateTime' ,
-			'stock',
-			'stockDetails'
+			'stock' ,
+			'stockDetails' ,
+			'totalBuyingValueOfGoodQnt' ,
+			'totalSellingValueOfGoodQnt' ,
+			'totalBuyingValueOfReturnQnt' ,
+			'totalSellingValueOfReturnQnt'
 			] ) ;
 		return \View::make ( 'web.reports.stockConfirmReport.view' , $data ) ;
 	}
