@@ -9,11 +9,4 @@ class StockConfirmationDetail extends BaseEntity implements \Interfaces\iEntity
 	{
 		return $this -> belongsTo ( 'Models\Item' ) ;
 	}
-
-	public function getConfirmationDetails ( $id )
-	{
-		$confirmationDetails = $this -> where ( 'stock_confirmation_id' , '=' , $id ) -> with ( 'item' ) -> get () ;
-		return $confirmationDetails ;
-	}
-
 }

@@ -31,8 +31,7 @@ class StockConfirmReportController extends \Controller
 		$toDate				 = \Input::get ( 'to_date_time' ) ;
 		$fromDate			 = \Input::get ( 'from_date_time' ) ;
 		$filterValues		 = \Input::all () ;
-		$stockConfirmations	 = new \Models\StockConfirmation() ;
-		$stockConfirmations	 = $stockConfirmations -> stockConfirmationFilter ( $filterValues ) ;
+		$stockConfirmations	 = \StockConfirmationButler::stockConfirmationFilter ( $filterValues ) ;
 		$data				 = compact ( [
 			'stocksList' ,
 			'selectedStock' ,
@@ -46,8 +45,7 @@ class StockConfirmReportController extends \Controller
 	public function view ( $id )
 	{
 		$stockDetails				 = \Models\StockConfirmation::findOrFail ( $id ) ;
-		$stockConfirmationDetails	 = new \Models\StockConfirmationDetail() ;
-		$stockConfirmationDetails	 = $stockConfirmationDetails -> getConfirmationDetails ( $id ) ;
+		$stockConfirmationDetails	 = \Models\StockConfirmationDetail::where ( 'stock_confirmation_id' , '=' , $id ) -> with ( 'item' ) -> get () ;
 
 
 		$totalBuyingValueOfGoodQnt		 = [ ] ;
