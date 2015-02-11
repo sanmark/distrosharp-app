@@ -7,11 +7,11 @@ class TimelyStockReportController extends \Controller
 
 	public function home ()
 	{
-		$stock		 = \SystemSettingButler::getValue ( 'main_stock' ) ;
-		if($stock==''&&$stock==NULL)
+		$stock = \SystemSettingButler::getValue ( 'main_stock' ) ;
+		if ( $stock == '' && $stock == NULL )
 		{
-			\MessageButler::setError('Please set "Main Stock"');
-			return \Redirect::action('system.settings.mainStock');
+			\MessageButler::setError ( 'Please set "Main Stock"' ) ;
+			return \Redirect::action ( 'system.settings.mainStock' ) ;
 		}
 		$fromDate	 = date ( 'Y-m-d H:i:s' , strtotime ( '-7 day' , strtotime ( 'today 00:00:00' ) ) ) ;
 		$fromDate	 = \DateTimeHelper::dateTimeRefill ( $fromDate ) ;
@@ -36,12 +36,9 @@ class TimelyStockReportController extends \Controller
 		$items				 = \Models\StockDetail::where ( 'stock_id' , '=' , $stock ) -> get () ;
 		$item				 = new \Models\Item() ;
 		$stockConfirmation	 = new \Models\StockConfirmation() ;
-		$sellingInvoice		 = new \Models\SellingItem() ;
-		$buyingInvoice		 = new \Models\BuyingItem() ;
 
 		$stocksList = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 
-		//add before from date max
 		$lastConfirmDate = $stockConfirmation -> where ( 'stock_id' , '=' , $stock )
 			-> where ( 'date_time' , '<' , $toDate )
 			-> max ( 'date_time' ) ;
@@ -53,11 +50,11 @@ class TimelyStockReportController extends \Controller
 					-> withInput () ;
 		}
 
-		$soldQuantities = $sellingInvoice -> getSoldQuantities ( $fromDate , $toDate ) ;
+		$soldQuantities = \SellingItemButler::getSoldQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$purchasedQuantities = $buyingInvoice -> getPurchasedQuantities ( $fromDate , $toDate ) ;
+		$purchasedQuantities = \BuyingItemButler::getPurchasedQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$goodReturnQuantities = $sellingInvoice -> getGoodReturnQuantities ( $fromDate , $toDate ) ;
+		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
 		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
@@ -116,15 +113,13 @@ class TimelyStockReportController extends \Controller
 	public function getOpeningQuantities ( $fromDate , $lastConfirmDate , $items )
 	{
 
-		$sellingInvoice		 = new \Models\SellingItem() ;
-		$buyingInvoice		 = new \Models\BuyingItem() ;
 		$stockConfirmation	 = new \Models\StockConfirmation() ;
 
-		$soldQuantities = $sellingInvoice -> getSoldQuantities ( $lastConfirmDate , $fromDate ) ;
+		$soldQuantities = \SellingItemButler::getSoldQuantitiesOfAllItemsInGivenPeriod ( $lastConfirmDate , $fromDate ) ;
 
-		$purchasedQuantities = $buyingInvoice -> getPurchasedQuantities ( $lastConfirmDate , $fromDate ) ;
+		$purchasedQuantities = \BuyingItemButler::getPurchasedQuantitiesOfAllItemsInGivenPeriod ( $lastConfirmDate , $fromDate ) ;
 
-		$goodReturnQuantities = $sellingInvoice -> getGoodReturnQuantities ( $lastConfirmDate , $fromDate ) ;
+		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $lastConfirmDate , $fromDate ) ;
 
 		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
@@ -135,15 +130,13 @@ class TimelyStockReportController extends \Controller
 
 	public function getEndingQuantities ( $fromDate , $toDate , $lastConfirmDate , $items )
 	{
-		$sellingInvoice		 = new \Models\SellingItem() ;
-		$buyingInvoice		 = new \Models\BuyingItem() ;
 		$stockConfirmation	 = new \Models\StockConfirmation() ;
 
-		$soldQuantities = $sellingInvoice -> getSoldQuantities ( $fromDate , $toDate ) ;
+		$soldQuantities = \SellingItemButler::getSoldQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$purchasedQuantities = $buyingInvoice -> getPurchasedQuantities ( $fromDate , $toDate ) ;
+		$purchasedQuantities = \BuyingItemButler::getPurchasedQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$goodReturnQuantities = $sellingInvoice -> getGoodReturnQuantities ( $fromDate , $toDate ) ;
+		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
 		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
