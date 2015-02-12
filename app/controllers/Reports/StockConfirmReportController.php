@@ -49,6 +49,7 @@ class StockConfirmReportController extends \Controller
 		$stockConfirmationDetails	 = new \Models\StockConfirmationDetail() ;
 		$stockConfirmationDetails	 = $stockConfirmationDetails -> getConfirmationDetails ( $id ) ;
 
+
 		$totalBuyingValueOfGoodQnt		 = [ ] ;
 		$totalSellingValueOfGoodQnt		 = [ ] ;
 		$totalBuyingValueOfReturnQnt	 = [ ] ;
@@ -61,6 +62,24 @@ class StockConfirmReportController extends \Controller
 			$totalBuyingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_buying_price ;
 			$totalSellingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_selling_price ;
 		}
+
+		$goodItemQuantityTotal				 = 0 ;
+		$goodItemQuantityBuyingValueTotal	 = 0 ;
+		$goodItemQuantitySellingValueTotal	 = 0 ;
+		$returnItemQuantityTotal			 = 0 ;
+		$returnItemQuantityBuyingValueTotal	 = 0 ;
+		$returnItemQuantitySellingValueTotal = 0 ;
+
+		foreach ( $stockConfirmationDetails as $value )
+		{
+			$goodItemQuantityTotal+=$value -> good_item_quantity ;
+			$returnItemQuantityTotal+=$value -> return_item_quantity ;
+			$goodItemQuantityBuyingValueTotal+=$totalBuyingValueOfGoodQnt[ $value -> item_id ] ;
+			$goodItemQuantitySellingValueTotal+=$totalSellingValueOfGoodQnt[ $value -> item_id ] ;
+			$returnItemQuantityBuyingValueTotal+=$totalBuyingValueOfReturnQnt[ $value -> item_id ] ;
+			$returnItemQuantitySellingValueTotal+=$totalSellingValueOfReturnQnt[ $value -> item_id ] ;
+		}
+
 		$data = compact ( [
 			'stockConfirmationDetails' ,
 			'dateTime' ,
@@ -69,7 +88,13 @@ class StockConfirmReportController extends \Controller
 			'totalBuyingValueOfGoodQnt' ,
 			'totalSellingValueOfGoodQnt' ,
 			'totalBuyingValueOfReturnQnt' ,
-			'totalSellingValueOfReturnQnt'
+			'totalSellingValueOfReturnQnt' ,
+			'goodItemQuantityTotal' ,
+			'goodItemQuantityBuyingValueTotal' ,
+			'goodItemQuantitySellingValueTotal' ,
+			'returnItemQuantityTotal' ,
+			'returnItemQuantityBuyingValueTotal' ,
+			'returnItemQuantitySellingValueTotal'
 			] ) ;
 		return \View::make ( 'web.reports.stockConfirmReport.view' , $data ) ;
 	}
