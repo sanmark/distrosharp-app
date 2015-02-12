@@ -33,6 +33,16 @@
 					<td class="text-right">{{number_format($totalSellingValueOfReturnQnt[$stockConfirmationDetail->item->id],2)}}</td>
 				</tr>
 				@endforeach
+				<tr>
+					<th style="width: 230px;">Totals</th>
+					<th class="text-right" colspan="2"></th>
+					<th class="text-right">{{$goodItemQuantityTotal}}</th>
+					<th class="text-right">{{$goodItemQuantityBuyingValueTotal}}</th>
+					<th class="text-right">{{$goodItemQuantitySellingValueTotal}}</th>
+					<th class="text-right">{{$returnItemQuantityTotal}}</th>
+					<th class="text-right">{{$returnItemQuantityBuyingValueTotal}}</th>
+					<th class="text-right">{{$returnItemQuantitySellingValueTotal}}</th>
+				</tr>
 			</tbody>
 		</table>
 	</div>
