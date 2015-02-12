@@ -28,20 +28,16 @@ class TimelyStockReportController extends \Controller
 
 	public function filter ()
 	{
-		$stock				 = \SystemSettingButler::getValue ( 'main_stock' ) ;
-		$fromDate			 = \InputButler::get ( 'fromDate' ) ;
-		$toDate				 = \InputButler::get ( 'toDate' ) ;
-		$minFromDate		 = \Models\StockConfirmation::min ( 'date_time' ) ;
-		$minFromDate		 = \DateTimeHelper::dateTimeRefill ( $minFromDate ) ;
-		$items				 = \Models\StockDetail::where ( 'stock_id' , '=' , $stock ) -> get () ;
-		$item				 = new \Models\Item() ;
-		$stockConfirmation	 = new \Models\StockConfirmation() ;
+		$stock		 = \SystemSettingButler::getValue ( 'main_stock' ) ;
+		$fromDate	 = \InputButler::get ( 'fromDate' ) ;
+		$toDate		 = \InputButler::get ( 'toDate' ) ;
+		$minFromDate = \Models\StockConfirmation::min ( 'date_time' ) ;
+		$minFromDate = \DateTimeHelper::dateTimeRefill ( $minFromDate ) ;
+		$items		 = \Models\StockDetail::where ( 'stock_id' , '=' , $stock ) -> get () ;
 
 		$stocksList = \Models\Stock::getArrayForHtmlSelect ( 'id' , 'name' , ['' => 'Select Stock' ] ) ;
 
-		$lastConfirmDate = $stockConfirmation -> where ( 'stock_id' , '=' , $stock )
-			-> where ( 'date_time' , '<' , $toDate )
-			-> max ( 'date_time' ) ;
+		$lastConfirmDate = \StockConfirmationButler::getLastConfirmDateBeforeToDate ($stock,$toDate);
 
 		if ( $lastConfirmDate == NULL )
 		{
@@ -56,31 +52,31 @@ class TimelyStockReportController extends \Controller
 
 		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
+		$whenConfirmQuanities = \StockConfirmationButler::getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
-		$whenConfirmCost = $item -> getCost ( $items , $whenConfirmQuanities , 'current_buying_price' ) ;
+		$whenConfirmCost = \ItemButler::getCostForItems ( $items , $whenConfirmQuanities , 'current_buying_price' ) ;
 
 		$openingQuantities = $this -> getOpeningQuantities ( $fromDate , $lastConfirmDate , $items ) ;
 
 		$endingQuantities = $this -> getEndingQuantities ( $fromDate , $toDate , $lastConfirmDate , $items ) ;
 
-		$endingCost = $item -> getCost ( $items , $endingQuantities , 'current_buying_price' ) ;
+		$endingCost = \ItemButler::getCostForItems ( $items , $endingQuantities , 'current_buying_price' ) ;
 
 		$endingTotal = $this -> getTotal ( $endingCost ) ;
 
-		$openingCost = $item -> getCost ( $items , $openingQuantities , 'current_buying_price' ) ;
+		$openingCost = \ItemButler::getCostForItems ( $items , $openingQuantities , 'current_buying_price' ) ;
 
 		$openingTotal = $this -> getTotal ( $openingCost ) ;
 
-		$soldCost = $item -> getCost ( $items , $soldQuantities , 'current_selling_price' ) ;
+		$soldCost = \ItemButler::getCostForItems ( $items , $soldQuantities , 'current_selling_price' ) ;
 
 		$soldTotal = $this -> getTotal ( $soldCost ) ;
 
-		$purchasedCost = $item -> getCost ( $items , $purchasedQuantities , 'current_buying_price' ) ;
+		$purchasedCost = \ItemButler::getCostForItems ( $items , $purchasedQuantities , 'current_buying_price' ) ;
 
 		$purchasedTotal = $this -> getTotal ( $purchasedCost ) ;
 
-		$goodReturnCost = $item -> getCost ( $items , $goodReturnQuantities , 'current_buying_price' ) ;
+		$goodReturnCost = \ItemButler::getCostForItems ( $items , $goodReturnQuantities , 'current_buying_price' ) ;
 
 		$goodReturnTotal = $this -> getTotal ( $goodReturnCost ) ;
 
@@ -113,7 +109,6 @@ class TimelyStockReportController extends \Controller
 	public function getOpeningQuantities ( $fromDate , $lastConfirmDate , $items )
 	{
 
-		$stockConfirmation	 = new \Models\StockConfirmation() ;
 
 		$soldQuantities = \SellingItemButler::getSoldQuantitiesOfAllItemsInGivenPeriod ( $lastConfirmDate , $fromDate ) ;
 
@@ -121,7 +116,7 @@ class TimelyStockReportController extends \Controller
 
 		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $lastConfirmDate , $fromDate ) ;
 
-		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
+		$whenConfirmQuanities = \StockConfirmationButler::getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
 		$openingQuantity = $this -> getQuantityArray ( $soldQuantities , $purchasedQuantities , $goodReturnQuantities , $whenConfirmQuanities , $items ) ;
 
@@ -130,7 +125,6 @@ class TimelyStockReportController extends \Controller
 
 	public function getEndingQuantities ( $fromDate , $toDate , $lastConfirmDate , $items )
 	{
-		$stockConfirmation	 = new \Models\StockConfirmation() ;
 
 		$soldQuantities = \SellingItemButler::getSoldQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
@@ -138,7 +132,7 @@ class TimelyStockReportController extends \Controller
 
 		$goodReturnQuantities = \ReturnItemButler::getGoodReturnQuantitiesOfAllItemsInGivenPeriod ( $fromDate , $toDate ) ;
 
-		$whenConfirmQuanities = $stockConfirmation -> getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
+		$whenConfirmQuanities = \StockConfirmationButler::getQuantitiesWhenConfirm ( $lastConfirmDate ) ;
 
 		$endingQuantity = $this -> getQuantityArray ( $soldQuantities , $purchasedQuantities , $goodReturnQuantities , $whenConfirmQuanities , $items ) ;
 
