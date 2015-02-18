@@ -18,6 +18,8 @@
 				<th class="text-right">Return Item Quantity</th>
 				<th class="text-right">Total Buying Value of Return Qnt</th>
 				<th class="text-right">Total Selling Value of Return Qnt</th>
+				<th class="text-right">Weight (g)</th>
+				<th class="text-right">Total Weight (kg)</th>
 			</tr>
 			<tbody>
 				@foreach($stockConfirmationDetails as $stockConfirmationDetail)
@@ -31,6 +33,8 @@
 					<td class="text-right">{{$stockConfirmationDetail->return_item_quantity}}</td>
 					<td class="text-right">{{number_format($totalBuyingValueOfReturnQnt[$stockConfirmationDetail->item->id],2)}}</td>
 					<td class="text-right">{{number_format($totalSellingValueOfReturnQnt[$stockConfirmationDetail->item->id],2)}}</td>
+					<td class="text-right">{{$stockConfirmationDetail->item->weight}}</td>
+					<td class="text-right">{{number_format($totalWeightOfQnt[$stockConfirmationDetail->item->id],2)}}</td>
 				</tr>
 				@endforeach
 				<tr>
@@ -42,6 +46,8 @@
 					<th class="text-right">{{$returnItemQuantityTotal}}</th>
 					<th class="text-right">{{$returnItemQuantityBuyingValueTotal}}</th>
 					<th class="text-right">{{$returnItemQuantitySellingValueTotal}}</th>
+					<th class="text-right"></th>
+					<th class="text-right">{{number_format($qntWeightFullTotal,2)}}</th>
 				</tr>
 			</tbody>
 		</table>
