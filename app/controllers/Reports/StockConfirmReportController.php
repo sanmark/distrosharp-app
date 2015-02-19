@@ -54,6 +54,7 @@ class StockConfirmReportController extends \Controller
 		$totalSellingValueOfGoodQnt		 = [ ] ;
 		$totalBuyingValueOfReturnQnt	 = [ ] ;
 		$totalSellingValueOfReturnQnt	 = [ ] ;
+		$totalWeightOfQnt				 = [ ] ;
 
 		foreach ( $stockConfirmationDetails as $stockValue )
 		{
@@ -61,14 +62,15 @@ class StockConfirmReportController extends \Controller
 			$totalSellingValueOfGoodQnt[ $stockValue -> item_id ]	 = $stockValue -> good_item_quantity * $stockValue[ 'item' ] -> current_selling_price ;
 			$totalBuyingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_buying_price ;
 			$totalSellingValueOfReturnQnt[ $stockValue -> item_id ]	 = $stockValue -> return_item_quantity * $stockValue[ 'item' ] -> current_selling_price ;
+			$totalWeightOfQnt[ $stockValue -> item_id ]				 = $stockValue->  item ->weight * ($stockValue -> good_item_quantity + $stockValue -> return_item_quantity)/1000 ;
 		}
-
 		$goodItemQuantityTotal				 = 0 ;
 		$goodItemQuantityBuyingValueTotal	 = 0 ;
 		$goodItemQuantitySellingValueTotal	 = 0 ;
 		$returnItemQuantityTotal			 = 0 ;
 		$returnItemQuantityBuyingValueTotal	 = 0 ;
 		$returnItemQuantitySellingValueTotal = 0 ;
+		$qntWeightFullTotal					 = 0 ;
 
 		foreach ( $stockConfirmationDetails as $value )
 		{
@@ -78,6 +80,7 @@ class StockConfirmReportController extends \Controller
 			$goodItemQuantitySellingValueTotal+=$totalSellingValueOfGoodQnt[ $value -> item_id ] ;
 			$returnItemQuantityBuyingValueTotal+=$totalBuyingValueOfReturnQnt[ $value -> item_id ] ;
 			$returnItemQuantitySellingValueTotal+=$totalSellingValueOfReturnQnt[ $value -> item_id ] ;
+			$qntWeightFullTotal+=$totalWeightOfQnt[ $value -> item_id ] ;
 		}
 
 		$data = compact ( [
@@ -94,7 +97,9 @@ class StockConfirmReportController extends \Controller
 			'goodItemQuantitySellingValueTotal' ,
 			'returnItemQuantityTotal' ,
 			'returnItemQuantityBuyingValueTotal' ,
-			'returnItemQuantitySellingValueTotal'
+			'returnItemQuantitySellingValueTotal',
+			'qntWeightFullTotal',
+			'totalWeightOfQnt'
 			] ) ;
 		return \View::make ( 'web.reports.stockConfirmReport.view' , $data ) ;
 	}
