@@ -68,8 +68,6 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 	public function getInvoiceTotal ()
 	{
-		$this -> load ( 'sellingItems' ) ;
-
 		$sellingItems = $this -> sellingItems ;
 
 		$invoiceTotal = 0 ;
@@ -379,8 +377,6 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 
 		$requestObject	 = $requestObject -> with ( 'customer' ) ;
 		$requestObject	 = $requestObject -> with ( 'rep' ) ;
-
-		$requestObject -> get () ;
 
 		return $requestObject -> get () ;
 	}
