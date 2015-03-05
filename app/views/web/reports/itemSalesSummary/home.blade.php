@@ -2,6 +2,11 @@
 
 @section('body')
 
+<div id="error-mess"> 
+</div>
+
+
+
 <div class="panel panel-default well">
 	<div class="panel-heading">
 		<h3 class="panel-title">Item Sales Summary</h3>
@@ -10,18 +15,18 @@
 
 		<div class="panel panel-default">
 			<div class="panel-body">
-				{{Form::open(['class'=>'form-inline', 'role'=>'form'])}}
+				{{Form::open(['class'=>'form-inline', 'role'=>'form', 'id'=>'targrt'])}}
 				<div class="form-group inline-form">
 					{{Form::label('rep', null, array('class' => 'control-label'))}}
 					{{Form::select('rep_id', $repSelectBox, $repId, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('from', null, array('class' => 'control-label'))}}
-					{{Form::input('date', 'from_date', $fromDate, array('class' => ''))}}
+					{{Form::input('date', 'from_date', $fromDate, array('id'=>'from_date', 'class' => 'date-select' , 'required'=>'TRUE'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::label('to', null, array('class' => 'control-label'))}}
-					{{Form::input('date', 'to_date', $toDate, array('class' => ''))}}
+					{{Form::input('date', 'to_date', $toDate, array('id'=>'to_date', 'class' => 'date-select', 'required'=>'TRUE'))}}
 				</div>
 				<div class="form-group inline-form">
 					{{Form::submit('Submit', array('class' => 'btn btn-primary pull-right'))}}
@@ -71,6 +76,7 @@
 		<h4 class="text-center">Please define a criteria and press "Submit".</h4>
 		@endif
 	</div>
-</div>
+</div> 
+<script src="/js/reports/itemSalesSummary/home.js"></script>
 
 @stop
