@@ -34,9 +34,10 @@ App::missing ( function($exception)
 
 Route::get ( '/test' , function()
 {
-	$se = SellingInvoiceButler::getLateCreditInvoices(5);
-	dd ( $se) ;
+	$se = SellingInvoiceButler::getLateCreditInvoices ( 5 ) ;
+	dd ( $se ) ;
 } ) ;
+ 
 
 
 Route::group ( [
