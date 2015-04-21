@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'db_user'			 => 'user' ,
-	'db_password'		 => 'user' ,
+	'db_user'			 => 'root' ,
+	'db_password'		 => 'root' ,
 	'db_host'			 => 'localhost' ,
-	'central_db'		 => 'd-071-1-v2' ,
-	'tenant_db_prefix'	 => 'd-071-1-v2_' ,
+	'central_db'		 => 'loc_distrosharp_central' ,
+	'tenant_db_prefix'	 => 'loc_distrosharp_' ,
 	] ;
