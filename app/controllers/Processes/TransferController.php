@@ -240,8 +240,7 @@ class TransferController extends \Controller
 		{
 			return \Redirect::back ()
 					-> withErrors ( $ex -> validator )
-					->
-					withInput () ;
+					-> withInput () ;
 		}
 	}
 
