@@ -37,6 +37,26 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		return $this -> hasMany ( 'Models\Transfer' , 'from_stock_id' ) -> whereIn ( 'to_stock_id' , $normalStocks -> stockIdsExceptImbalance () ) ;
 	}
 
+	public function transferOut ()
+	{
+		return $this -> hasMany ( 'Models\Transfer' , 'from_stock_id' ) ;
+	}
+
+	public function lastLoading ()
+	{
+		return $this -> loadings () -> orderBy ( 'date_time' , 'desc' ) -> first () ;
+	}
+
+	public function lastTransferOut ()
+	{
+		return $this -> transferOut () -> orderBy ( 'date_time' , 'desc' ) -> first () ;
+	}
+
+	public function lastStockConfirmation ()
+	{
+		return $this -> stockConfirmations () -> orderBy ( 'date_time' , 'desc' ) -> first () ;
+	}
+
 	public function totalItemQuantities ()
 	{
 		$goodQuantity	 = $this -> goodQuantities () ;
@@ -66,7 +86,7 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 		return $returnQuantity ;
 	}
-	
+
 	public function isUnloaded ()
 	{
 		$lastLoadTime	 = $this -> loadings -> last ()[ 'date_time' ] ;
@@ -259,6 +279,8 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	public function saveBasicTransferDetails ( $fromStockId , $toStockId , $dateTime , $description )
 	{
+		$this -> validateForsaveBasicTransferDetails ( $dateTime ) ;
+
 		$transfer = new \Models\Transfer() ;
 
 		$transfer -> from_stock_id	 = $fromStockId ;
@@ -343,6 +365,21 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 		{
 			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = $validator ;
+
+			throw $iie ;
+		}
+	}
+
+	private function validateForsaveBasicTransferDetails ( $dateTime )
+	{
+		$dateTime				 = strtotime ( $dateTime ) ;
+		$lastLoading			 = strtotime ( $this -> lastLoading () -> date_time ) ;
+		$lastTransferOut		 = strtotime ( $this -> lastTransferOut () -> date_time ) ;
+		$lastStockConfirmation	 = strtotime ( $this -> lastStockConfirmation () -> date_time ) ;
+		if ( $dateTime < $lastLoading || $dateTime < $lastTransferOut || $dateTime < $lastStockConfirmation )
+		{
+			$iie				 = new \Exceptions\InvalidInputException() ;
+			$iie -> validator	 = new \Illuminate\Support\MessageBag ( ['Date and Time should be later than Last Loading Time (' . $this -> lastLoading () -> date_time . '), Last Transfer Out Time (' . $this -> lastTransferOut () -> date_time . '), and Last Stock Confirmation Time (' . $this -> lastStockConfirmation () -> date_time . ').' ] ) ;
 
 			throw $iie ;
 		}
