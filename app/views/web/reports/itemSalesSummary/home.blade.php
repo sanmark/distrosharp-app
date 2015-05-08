@@ -37,14 +37,16 @@
 
 
 		@if(isset($items))
-		<table class="table table-striped" style="width: 70%;">
+		<table class="table table-striped" style="width:100%;">
 			<thead>
 				<tr>
 					<th>Name</th>
 					<th class="text-right">Total Free Amount</th>
 					<th class="text-right">Total Free Amount Value</th>
+					<th class="text-right">Total Free Amount Weight</th>
 					<th class="text-right">Total Paid Amount</th>
 					<th class="text-right">Total Paid Amount Value</th>
+					<th class="text-right">Total Paid Amount Weight</th> 
 				</tr>
 			</thead>
 			<tbody>
@@ -55,10 +57,12 @@
 					<td class="text-right">
 						{{number_format($item->totalFreeAmount * $item->selling_price,2)}}
 					</td>
+					<td class="text-right">{{$item->totalFreeAmount * $item->weight}}g</td>
 					<td class="text-right">{{$item->totalPaidAmount}}</td>
 					<td class="text-right">
 						{{number_format($item->totalPaidAmount * $item->selling_price,2)}}
 					</td>
+					<td class="text-right">{{$item->totalPaidAmount * $item->weight}}g</td>
 				</tr>
 				@endforeach
 			</tbody>
