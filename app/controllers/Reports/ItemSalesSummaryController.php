@@ -32,7 +32,7 @@ class ItemSalesSummaryController extends \Controller
 		$repSelectBox = \SellingInvoiceButler::getAllRepsForHtmlSelect () ;
 
 		$items = \Models\Item::all () ;
- 
+
 		$firstDate	 = \SellingInvoiceButler::getFirstSellingInvoiceDate () ;
 		$today		 = date ( 'Y-m-d' ) ;
 
@@ -53,9 +53,11 @@ class ItemSalesSummaryController extends \Controller
 			-> whereBetween ( 'date_time' , [$fromDateTime , $toDateTime ] )
 			-> get () ;
 
-		
+
 		$freeAmountValueSum	 = 0 ;
+		$freeAmountWeightSum = 0 ;
 		$paidAmountValueSum	 = 0 ;
+		$paidAmountWeightSum = 0 ;
 
 		foreach ( $items as $index => $item )
 		{
@@ -68,7 +70,9 @@ class ItemSalesSummaryController extends \Controller
 			$item -> selling_price = $item -> current_selling_price ;
 
 			$freeAmountValueSum	 = $freeAmountValueSum + $item -> totalFreeAmount * $item -> selling_price ;
+			$freeAmountWeightSum = $freeAmountWeightSum + $item -> totalFreeAmount * $item -> weight ;
 			$paidAmountValueSum	 = $paidAmountValueSum + $item -> totalPaidAmount * $item -> selling_price ;
+			$paidAmountWeightSum = $paidAmountWeightSum + $item -> totalPaidAmount * $item -> weight ;
 
 			$items[ $index ] = $item ;
 		}
@@ -80,7 +84,9 @@ class ItemSalesSummaryController extends \Controller
 			'repSelectBox' ,
 			'items' ,
 			'freeAmountValueSum' ,
-			'paidAmountValueSum'
+			'paidAmountValueSum' ,
+			'freeAmountWeightSum' ,
+			'paidAmountWeightSum'
 			] ) ;
 
 		return \View::make ( 'web.reports.itemSalesSummary.home' , $data ) ;

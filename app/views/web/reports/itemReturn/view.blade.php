@@ -61,6 +61,12 @@
 				<th class="text-right">Company Return</th> 
 				<th class="text-right">Company Return Value</th> 
 			</tr>
+			<?php
+			$goodReturn			 = 0 ;
+			$goodReturnValue	 = 0 ;
+			$companyReturn		 = 0 ;
+			$CompanyReturnValue	 = 0 ;
+			?>
 			@foreach($itemDetails as $itemDetail)
 			<tr>
 				<td>{{$itemDetail->sellingInvoice->date_time}}</th>
@@ -81,7 +87,24 @@
 				</td> 
 
 			</tr>
-			@endforeach  
+			<?php
+			$goodReturn			 = $goodReturn + floatval ( $itemDetail -> good_return_quantity ) ;
+			$goodReturnValue	 = $goodReturnValue + floatval ( $itemDetail -> item -> current_selling_price * $itemDetail -> good_return_quantity ) ;
+			$companyReturn		 = $companyReturn + floatval ( $itemDetail -> company_return_quantity ) ;
+			$CompanyReturnValue	 = $CompanyReturnValue + floatval ( $itemDetail -> item -> current_selling_price * $itemDetail -> company_return_quantity ) ;
+			?>
+			@endforeach
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th class="text-right">{{$goodReturn}}</th> 
+				<th class="text-right">{{number_format($goodReturnValue,2)}}</th> 
+				<th class="text-right">{{$companyReturn}}</th> 
+				<th class="text-right">{{number_format($CompanyReturnValue,2)}}</th> 
+			</tr>
 		</table>
 		@endif
 
