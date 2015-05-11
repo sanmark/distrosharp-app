@@ -71,8 +71,10 @@
 					<td class="text-right"></td>
 					<td class="text-right"><b>Total</b></td>
 					<td class="text-right"><b class="total-line-bottom">{{number_format($freeAmountValueSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{$freeAmountWeightSum/1000}}kg</b></td>
 					<td class="text-right"></td>
 					<td class="text-right"><b class="total-line-bottom">{{number_format($paidAmountValueSum,2)}}</b></td>
+					<td class="text-right"><b class="total-line-bottom">{{$paidAmountWeightSum/1000}}kg</b></td>
 				</tr>
 			</tfoot>
 		</table>
