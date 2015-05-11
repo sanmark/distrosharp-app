@@ -57,7 +57,9 @@
 				<th>Customer</th>
 				<th>Items</th>
 				<th class="text-right">Good Return</th> 
+				<th class="text-right">Good Return Value</th> 
 				<th class="text-right">Company Return</th> 
+				<th class="text-right">Company Return Value</th> 
 			</tr>
 			@foreach($itemDetails as $itemDetail)
 			<tr>
@@ -67,7 +69,17 @@
 				<td>{{$itemDetail->sellingInvoice->customer->name}}</td>
 				<td>{{$itemDetail->item->name}}</td>
 				<td class="text-right">{{$itemDetail->good_return_quantity}}</td>
+
+				<td class="text-right">
+					{{number_format($itemDetail->item->current_selling_price * $itemDetail->good_return_quantity,2)}}
+				</td>
+
 				<td class="text-right">{{$itemDetail->company_return_quantity}}</td> 
+
+				<td class="text-right">
+					{{number_format($itemDetail->item->current_selling_price * $itemDetail->company_return_quantity,2)}}
+				</td> 
+
 			</tr>
 			@endforeach  
 		</table>
