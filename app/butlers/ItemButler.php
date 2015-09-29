@@ -181,4 +181,25 @@ class ItemButler
 		return $itemDetails ;
 	}
 
+	public static function getCostForItems ( $items , $quantity , $column )
+	{
+		$itemCost = [ ] ;
+		if ( count ( $quantity ) == 0 )
+		{
+			return $itemCost ;
+		}
+		foreach ( $items as $item )
+		{
+			$itemPrice = \Models\Item::find ( $item -> item_id ) ;
+			if ( ! isset ( $quantity[ $item -> item_id ] ) )
+			{
+				$itemCost[ $item -> item_id ] = 'None' ;
+			} else
+			{
+				$itemCost[ $item -> item_id ] = number_format ( ( float ) $quantity[ $item -> item_id ] * $itemPrice -> $column , 2 ) ;
+			}
+		}
+		return $itemCost ;
+	}
+
 }

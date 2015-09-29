@@ -9,6 +9,11 @@ class Route extends BaseEntity implements \Interfaces\iEntity
 	{
 		return $this -> belongsTo ( '\User' ) ;
 	}
+	
+	public function customers ()
+	{
+		return $this -> hasMany (Customer::class) ;
+	}
 
 	public function save ( array $options = array () )
 	{

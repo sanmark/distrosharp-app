@@ -496,3 +496,8 @@ a{
 {
 	margin-top: 20px;
 }
+#age_by_days
+{
+	min-width: 90px;
+	max-width: 90px;
+}

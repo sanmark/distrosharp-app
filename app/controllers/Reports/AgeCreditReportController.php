@@ -12,7 +12,7 @@ class AgeCreditReportController extends \Controller
 		$repId		 = \InputButler::get ( 'rep' ) ;
 		$customerId	 = \InputButler::get ( 'customer' ) ;
 		$routeId	 = \InputButler::get ( 'route_id' ) ;
-		$ageDays	 = \InputButler::get ( 'age_by_days' ) ;
+		$ageDays	 = \NullHelper::ifNullEmptyOrWhitespace ( \InputButler::get ( 'age_by_days' ) , 45 ) ;
 		$sellingData = \Models\SellingInvoice::ageCreditFilter ( $filterValues ) ;
 		$repsList	 = \Models\SellingInvoice::distinct ( 'rep_id' )
 			-> where ( 'is_completely_paid' , '=' , FALSE )
@@ -25,15 +25,16 @@ class AgeCreditReportController extends \Controller
 		$customerSelectBox = ['' => 'Select Route First' ] ;
 
 		$invoiceBalanceTotal = [ ] ;
-		
-		$total = 0;
+
+		$total = 0 ;
 
 		for ( $i = 0 ; $i < count ( $sellingData ) ; $i ++ )
 		{
 			$invoiceBalanceTotal[ $sellingData[ $i ][ 'id' ] ] = \Models\SellingInvoice::find ( $sellingData[ $i ][ 'id' ] ) -> getInvoiceBalance () ;
-			
-			$total = $total + $invoiceBalanceTotal[ $sellingData[ $i ][ 'id' ] ];
+
+			$total = $total + $invoiceBalanceTotal[ $sellingData[ $i ][ 'id' ] ] ;
 		}
+		
 		$data = compact ( [
 			'sellingData' ,
 			'repSelectBox' ,
@@ -44,7 +45,7 @@ class AgeCreditReportController extends \Controller
 			'now' ,
 			'invoiceBalanceTotal' ,
 			'routeSelectBox' ,
-			'routeId',
+			'routeId' ,
 			'total'
 			] ) ;
 		return \View::make ( 'web.reports.ageCreditReport.view' , $data ) ;
