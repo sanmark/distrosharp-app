@@ -25,7 +25,7 @@
 					{{Form::select('customer',$customerSelectBox,null, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
-					{{Form::label('age_by_days','Older than (Days)', array('class' => 'control-label'))}}
+					{{Form::label('age_by_days','Days Limit', array('class' => 'control-label'))}}
 					{{Form::text('age_by_days',$ageDays, array('class' => ''))}}
 				</div>
 				<div class="form-group inline-form">
@@ -41,13 +41,14 @@
 		<h4 class="text-center">There are no records to display...</h4>
 		<br>
 		@else
-		<table class="table table-striped" style="width:80%;">
+		<table class="table table-striped">
 			<tr>
 				<th>Date</th>
 				<th>Rep</th>
 				<th>Customer</th>
+				<th>Route</th>
 				<th>Printed Invoice Number</th>
-				<th>Age(Days)</th>
+				<th>Older than (Days)</th>
 				<th class="text-right">Amount</th>
 			</tr>
 			@foreach($sellingData as $sellingRow)
@@ -55,6 +56,7 @@
 				<td>{{$sellingRow->date_time}}</td>
 				<td>{{$sellingRow->rep['username']}}</td>
 				<td>{{$sellingRow->customer['name']}}</td>
+				<td>{{$sellingRow->customer->route["name"]}}</td>
 				<td>{{HTML::link (URL::action ( 'processes.sales.edit',[$sellingRow->id] ), $sellingRow->printed_invoice_number )}}</td>
 				<td>{{number_format((strtotime(date('Y-m-d H:i:s'))-strtotime($sellingRow->date_time))/86400,0)}}</td>
 				<td class="text-right">{{number_format($invoiceBalanceTotal[$sellingRow->id],2)}}</td>
@@ -62,11 +64,10 @@
 			@endforeach
 			@if(count($sellingData)==0)
 			<?php $customerId	 = 0 ; ?>
-			@else
-			<?php $customerId	 = $sellingRow -> customer_id ; ?>
 			@endif
 
 			<tr>
+				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>

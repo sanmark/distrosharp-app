@@ -23,7 +23,9 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 		{
 			$repId		 = $filterValues[ 'rep' ] ;
 			$customerId	 = $filterValues[ 'customer' ] ;
-			$ageDays	 = $filterValues[ 'age_by_days' ] ;
+			$routeId	 = $filterValues[ 'route_id' ] ;
+
+			$ageDays = $filterValues[ 'age_by_days' ] ;
 			if ( strlen ( $repId ) > 0 )
 			{
 				$requestObject = $requestObject -> where ( 'rep_id' , '=' , $repId ) ;
@@ -32,13 +34,23 @@ class SellingInvoice extends BaseEntity implements \Interfaces\iEntity
 			{
 				$requestObject = $requestObject -> where ( 'customer_id' , '=' , $customerId ) ;
 			}
+			if ( strlen ( $routeId ) > 0 )
+			{
+				$route			 = Route::with ( ['customers' ] ) -> find ( $routeId ) ;
+				$requestObject	 = $requestObject -> whereIn ( 'customer_id' , $route -> customers -> lists ( 'id' ) ) ;
+			}
 			if ( strlen ( $ageDays ) > 0 )
 			{
-				$DateTime		 = date ( 'Y-m-d H:i:s' , strtotime ( "now -$ageDays days" ) ) ;
+				$DateTime		 = date ( 'Y-m-d H:i:s' , strtotime ( "-$ageDays days" ) ) ;
 				$requestObject	 = $requestObject -> where ( 'date_time' , '<' , $DateTime ) ;
 			}
+		} else
+		{
+			$DateTime		 = date ( 'Y-m-d H:i:s' , strtotime ( "-45 days" ) ) ;
+			$requestObject	 = $requestObject -> where ( 'date_time' , '<' , $DateTime ) ;
 		}
-		return $requestObject -> where ( 'is_completely_paid' , '=' , FALSE ) -> get () ;
+
+		return $requestObject -> where ( 'is_completely_paid' , '=' , FALSE ) -> get () -> sortByDesc ( 'date_time' ) ;
 	}
 
 	public function sellingItems ()
