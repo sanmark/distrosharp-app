@@ -372,6 +372,11 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	private function validateForsaveBasicTransferDetails ( $dateTime )
 	{
+		if ( is_null ( $this -> lastLoading () ) )
+		{
+			return ;
+		}
+
 		$dateTime				 = strtotime ( $dateTime ) ;
 		$lastLoading			 = strtotime ( $this -> lastLoading () -> date_time ) ;
 		$lastTransferOut		 = strtotime ( $this -> lastTransferOut () -> date_time ) ;
