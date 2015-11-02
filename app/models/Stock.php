@@ -372,16 +372,28 @@ class Stock extends BaseEntity implements \Interfaces\iEntity
 
 	private function validateForsaveBasicTransferDetails ( $dateTime )
 	{
-		if ( is_null ( $this -> lastLoading () ) )
+		$dateTime					 = strtotime ( $dateTime ) ;
+		$lastLoading				 = $this -> lastLoading () ;
+		$lastTransferOut			 = $this -> lastTransferOut () ;
+		$lastStockConfirmation		 = $this -> lastStockConfirmation () ;
+		$lastLoadingTime			 = NULL ;
+		$lastTransferOutTime		 = NULL ;
+		$lastStockConfirmationTime	 = NULL ;
+
+		if ( ! is_null ( $lastLoading ) )
 		{
-			return ;
+			$lastLoadingTime = strtotime ( $lastLoading -> date_time ) ;
+		}
+		if ( ! is_null ( $lastTransferOut ) )
+		{
+			$lastTransferOutTime = strtotime ( $lastTransferOut -> date_time ) ;
+		}
+		if ( ! is_null ( $lastStockConfirmation ) )
+		{
+			$lastStockConfirmationTime = strtotime ( $lastStockConfirmation -> date_time ) ;
 		}
 
-		$dateTime				 = strtotime ( $dateTime ) ;
-		$lastLoading			 = strtotime ( $this -> lastLoading () -> date_time ) ;
-		$lastTransferOut		 = strtotime ( $this -> lastTransferOut () -> date_time ) ;
-		$lastStockConfirmation	 = strtotime ( $this -> lastStockConfirmation () -> date_time ) ;
-		if ( $dateTime < $lastLoading || $dateTime < $lastTransferOut || $dateTime < $lastStockConfirmation )
+		if ( $dateTime < $lastLoadingTime || $dateTime < $lastTransferOutTime || $dateTime < $lastStockConfirmationTime )
 		{
 			$iie				 = new \Exceptions\InvalidInputException() ;
 			$iie -> validator	 = new \Illuminate\Support\MessageBag ( ['Date and Time should be later than Last Loading Time (' . $this -> lastLoading () -> date_time . '), Last Transfer Out Time (' . $this -> lastTransferOut () -> date_time . '), and Last Stock Confirmation Time (' . $this -> lastStockConfirmation () -> date_time . ').' ] ) ;
