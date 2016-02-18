@@ -501,3 +501,33 @@ a{
 	min-width: 90px;
 	max-width: 90px;
 }
+a.panel-title-btn.btn.btn-success.btn-sm.pull-right.withripple.di-editsale {
+    top: -35px !important;
+}
+.sales-box-bg {
+    background-color: #fff;
+    height: 30px;
+    padding-top: 5px;
+	padding-left: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.sales-box {
+    height: 30px;
+    padding-top: 5px;
+	padding-left: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.sales-box.control-label {
+    font-weight: bold;
+	color:#3E0367;
+}
+div#table-sales-list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.sale-sub-total{
+	margin-bottom: 20px;
+	margin-top: 20px;
+}

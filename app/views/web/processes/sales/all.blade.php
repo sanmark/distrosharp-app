@@ -74,7 +74,7 @@
 				@foreach($sellingInvoices as $sellingInvoice)
 				<tr>
 					<td>{{$sellingInvoice->date_time}}</td>
-					<td>{{HTML::link(URL::action('processes.sales.edit', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
+					<td>{{HTML::link(URL::action('processes.sales.view', [$sellingInvoice->id]),$sellingInvoice->id)}}</td>
 					<td>{{$sellingInvoice->printed_invoice_number}}</td>
 					<td>{{$sellingInvoice->customer->name}}</td>
 					<td>{{$sellingInvoice->rep->username}}</td>
