@@ -173,6 +173,26 @@ class SaleController extends \Controller
 		return \View::make ( 'web.processes.sales.edit' , $data ) ;
 	}
 
+	public function view ( $id )
+	{
+		$sellingInvoice		 = \Models\SellingInvoice::with ( 'rep' , 'sellingItems' ) -> findOrFail ( $id ) ;
+		$customerRO			 = \Models\Customer::where ( 'is_active' , '=' , TRUE ) ;
+		$customerDropDown	 = \Models\Customer::getArrayForHtmlSelectByRequestObject ( 'id' , 'name' , $customerRO , [ NULL => 'Select' ] ) ;
+		$items				 = \Models\Item::all () ;
+		$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+		$routes				 = \Models\Route::where ( 'rep_id' , '=' , $sellingInvoice -> rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+
+		$data = compact ( [
+			'sellingInvoice' ,
+			'customerDropDown' ,
+			'items' ,
+			'banksList' ,
+			'routes'
+			] ) ;
+
+		return \View::make ( 'web.processes.sales.view' , $data ) ;
+	}
+
 	public function update ( $id )
 	{
 		try

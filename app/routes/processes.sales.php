@@ -29,6 +29,12 @@ Route::group ( [
 		'uses'	 => 'Controllers\Processes\SaleController@save'
 	] ) ;
 
+	Route::get ( '{id}' , [
+		'as'	 => 'processes.sales.view' ,
+		'before' => ['hasAbilities:view_sales' ] ,
+		'uses'	 => 'Controllers\Processes\SaleController@view'
+	] ) ;
+
 	Route::get ( '{id}/edit' , [
 		'as'	 => 'processes.sales.edit' ,
 		'before' => ['hasAbilities:edit_sale' ] ,

@@ -20,22 +20,22 @@ class MenuButler
 					]
 				] ,
 				[ 'Vendors' , [
-						[ 'Add Vendor' , 'entities.vendors.add' , [ 'add_vendor' ] ],
+						[ 'Add Vendor' , 'entities.vendors.add' , [ 'add_vendor' ] ] ,
 						[ 'View Vendors' , 'entities.vendors.view' , [ 'view_vendors' ] ] ,
 					]
 				] ,
 				[ 'Routes' , [
-						[ 'Add Route' , 'entities.routes.add' , [ 'add_route' ] ],
+						[ 'Add Route' , 'entities.routes.add' , [ 'add_route' ] ] ,
 						[ 'View Routes' , 'entities.routes.view' , [ 'view_routes' ] ] ,
 					]
 				] ,
 				[ 'Customers' , [
-						[ 'Add Customer' , 'entities.customers.add' , [ 'add_customer' ] ],
+						[ 'Add Customer' , 'entities.customers.add' , [ 'add_customer' ] ] ,
 						[ 'View Customers' , 'entities.customers.view' , [ 'view_customers' ] ] ,
 					]
 				] ,
 				[ 'Banks' , [
-						[ 'Add Bank' , 'entities.banks.add' , [ 'add_bank' ] ],
+						[ 'Add Bank' , 'entities.banks.add' , [ 'add_bank' ] ] ,
 						[ 'View Banks' , 'entities.banks.view' , [ 'view_banks' ] ] ,
 					]
 				]
@@ -43,18 +43,18 @@ class MenuButler
 		] ,
 		[ 'Processes' , [
 				[ 'Purchases' , [
-						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ],
+						[ 'Add Purchase' , 'processes.purchases.add' , [ 'add_purchase' ] ] ,
 						[ 'Edit Purchases' , 'processes.purchases.view' , [ 'view_purchases' ] ] ,
 					]
 				] ,
 				['Transfers' , [
 						['Add Transfer' , 'processes.transfers.selectStocksInvolved' , ['add_transfer' ] ] ,
-						[ 'Edit Transfers' , 'processes.transfers.all' , ['view_transfers' ] ],
+						[ 'Edit Transfers' , 'processes.transfers.all' , ['view_transfers' ] ] ,
 					]
 				] ,
 				['Sales' , [
 						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ] ,
-						['Edit Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
+						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
 					]
 				] ,
 				['Company Returns' , [
