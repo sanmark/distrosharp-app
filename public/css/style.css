@@ -531,3 +531,24 @@ div#table-sales-list {
 	margin-bottom: 20px;
 	margin-top: 20px;
 }
+#invoice-wrapper{
+	background-color: #ededed;
+	padding: 10px 10px;
+}
+.old-invoice-cheque{
+	padding: 10px 10px;
+}
+tr.newcredittr  {
+    background-color: #d1c4e9;
+}
+tr.newchequetr {
+	background-color: #d1c4e9;
+}
+tr#newchequetr td {
+    background-color: #d1c4e9;
+}
+tr.newcredittr:nth-child(even) {
+    background-color: #d1c4e9;
+}
+
+
