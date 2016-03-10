@@ -53,6 +53,131 @@ class SaleController extends \Controller
 		}
 	}
 
+	public function oldCreditInvoices ()
+	{
+
+		$customerId = \InputButler::get ( 'customerId' ) ;
+
+		$customer = \Models\Customer::findOrFail ( $customerId ) ;
+
+		$creditInvoices = $customer -> creditInvoices ;
+
+		$oldCreditInvoicesWithBalance = [ ] ;
+
+		foreach ( $creditInvoices as $creditInvoice )
+		{
+			$creditInvoice -> balance		 = $creditInvoice -> getInvoiceBalance () ;
+			$creditInvoice -> totalamount	 = $creditInvoice -> getInvoiceTotal () ;
+
+			$oldCreditInvoicesWithBalance[] = $creditInvoice ;
+		}
+
+
+		if ( isset ( $customerId ) )
+		{
+
+			return \Response::json ( $oldCreditInvoicesWithBalance ) ;
+		} else
+		{
+			\MessageButler::setError ( 'No Old Sale Invoices' ) ;
+		}
+	}
+
+	public function addOldInvoice ()
+	{
+
+		if ( \NullHelper::isNullEmptyOrWhitespace ( \SessionButler::getRepId () ) )
+		{
+			\MessageButler::setInfo ( 'Please select a rep before adding Selling Invoices.' ) ;
+
+			return \Redirect::action ( 'processes.sales.setRep' ) ;
+		}
+
+
+		$rep = \User::with ( 'stock' )
+			-> findOrFail ( \SessionButler::getRepId () ) ;
+		if ( \NullHelper::isNullEmptyOrWhitespace ( $rep -> stock ) )
+		{
+			\MessageButler::setError ( 'User "' . $rep -> username . '" is no longer a Rep (They don\'t have a stock assigned.). Please select another Rep.' ) ;
+
+			return \Redirect::action ( 'processes.sales.setRep' ) ;
+		}
+
+		if ( $rep -> stock -> isLoaded () )
+		{
+
+			$customers	 = [ NULL => 'Select Route First' ] ;
+			$routes		 = \Models\Route::where ( 'rep_id' , '=' , $rep -> id ) -> getArrayForHtmlSelect ( 'id' , 'name' , [ NULL => 'Select' ] ) ;
+
+			$rep				 = $rep -> load ( 'abilities' , 'stock.stockDetails' ) ;
+			$stockDetails		 = \CollectionHelper::toArrayAndSetSpecificIndex ( $rep -> stock -> stockDetails , 'item_id' ) ;
+			$guessedInvoiceId	 = \SellingInvoiceButler::getNextId () ;
+			$currentDateTime	 = \DateTimeHelper::dateTimeRefill ( date ( 'Y-m-d H:i:s' ) ) ;
+			$banksList			 = \Models\Bank::where ( 'is_active' , '=' , TRUE ) -> getArrayForHtmlSelect ( 'id' , 'name' , [NULL => 'Select' ] ) ;
+
+
+
+			$data = compact ( [
+				'customers' ,
+				'routes' ,
+				'stockDetails' ,
+				'guessedInvoiceId' ,
+				'currentDateTime' ,
+				'banksList' ,
+				'rep' ,
+				] ) ;
+			return \View::make ( 'web.processes.sales.addOldInvoice' , $data ) ;
+		} else
+		{
+			\MessageButler::setError ( 'Please load your stock before sale.' ) ;
+			return \View::make ( 'web.processes.sales.not-loaded' ) ;
+		}
+	}
+
+	public function oldCreditSave ()
+	{
+
+		try
+		{
+
+			$dateTime				 = \InputButler::get ( 'date_time' ) ;
+			$customerId				 = \InputButler::get ( 'customer_id' ) ;
+			$isCompletelyPaid		 = \InputButler::get ( 'is_completely_paid' ) ;
+			$printedInvoiceNumber	 = \InputButler::get ( 'printed_invoice_number' ) ;
+			$oldRouteId				 = \InputButler::get ( 'route_id' ) ;
+			$creditPayments			 = \InputButler::get ( 'credit_payments' ) ;
+			$rep					 = \User::with ( 'stock' ) -> findOrFail ( \SessionButler::getRepId () ) ;
+			$stockId				 = $rep -> stock -> id ;
+			$this -> validateCreditPayments ( $creditPayments ) ;
+
+			$sellingInvoice = new \Models\SellingInvoice() ;
+
+			$sellingInvoice -> date_time				 = $dateTime ;
+			$sellingInvoice -> customer_id				 = $customerId ;
+			$sellingInvoice -> rep_id					 = $rep -> id ;
+			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
+			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
+			$sellingInvoice -> stock_id					 = $stockId[ 0 ] ;
+
+			$sellingInvoice -> save () ;
+
+
+			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
+
+			\MessageButler::setSuccess ( 'Credit Invoice was saved successfully.' ) ;
+
+			\ActivityLogButler::add ( "Add Selling Invoice " . $sellingInvoice -> id ) ;
+
+			return \Redirect::action ( 'processes.sales.addOldInvoice' )
+					-> with ( 'oldRouteId' , $oldRouteId ) ;
+		} catch ( \Exceptions\InvalidInputException $ex )
+		{
+			return \Redirect::back ()
+					-> withErrors ( $ex -> validator )
+					-> withInput () ;
+		}
+	}
+
 	public function save ()
 	{
 		try

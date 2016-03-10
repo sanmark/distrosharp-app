@@ -55,6 +55,7 @@ class MenuButler
 				['Sales' , [
 						['Add Sale' , 'processes.sales.add' , ['add_sale' ] ] ,
 						['View Sales' , 'processes.sales.all' , ['view_sales' ] ] ,
+						['Credit Invoice','processes.sales.addOldInvoice',['add_credit']],
 					]
 				] ,
 				['Company Returns' , [

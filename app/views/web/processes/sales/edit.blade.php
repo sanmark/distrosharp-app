@@ -671,20 +671,13 @@
 <script src="/js/processes/sales/edit-return.js"></script> 
 <script type="text/javascript">
 populateCustomersForRoute("{{csrf_token()}}");
-
-
 addSalesRow();
 autoloadItemForSales("{{csrf_token()}}");
 selectSalesItem("{{csrf_token()}}");
 editSales();
 deleteSales();
-
 setMethodToEnter();
-
 setAvailableQuantity("{{csrf_token()}}");
-
-
-loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
 addReturnRow();
 selectReturnItem("{{csrf_token()}}");
 autoloadItemForReturn("{{csrf_token()}}");
