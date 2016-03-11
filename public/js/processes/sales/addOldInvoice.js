@@ -47,6 +47,8 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 			customerId: customerId
 		}, function (data) {
 			for (var key in data) {
+				var date_time = data[key].date_time;
+				$('#printed_invoice_number').val('Credit' + ' - ' + customerId + ' - ' + date_time);
 				if (data.length > 0 && data[key].balance > 0) {
 					var formGroupTitle = $('<div></div>');
 					formGroupTitle
