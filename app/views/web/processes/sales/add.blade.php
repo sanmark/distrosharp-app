@@ -413,6 +413,7 @@
 <script>
 loadPreviousValuesOnUnsuccessfulRedirectBack("{{Input::old('customer_id')}}");
 populateCustomersForRoute("{{csrf_token()}}");
+loadCreditInvoicesForCustomer("{{csrf_token()}}", jQuery.parseJSON('{{json_encode(Input::old("credit_payments"))}}'), "{{date('Y-m-d')}}", '{{Form::select(null, $banksList, null, array("class" => ""))}}');
 displayIsCompletelyPaid();
 validateChequeDetails();
 addReturnRow();
