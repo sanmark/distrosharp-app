@@ -42,10 +42,10 @@
 				{{Form::select('customer_id',$customers, null,array('tabindex'=>'2', 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group hidden-print-invoice-number">
 			{{Form::label('printed_invoice_number', null, array('class' => 'col-sm-2 control-label'))}}
 			<div class="col-sm-3">
-				{{Form::text('printed_invoice_number', null, array('tabindex'=>'3', 'class' => 'form-control','required'=>true))}}
+				{{Form::text('printed_invoice_number', null, array('tabindex'=>'3', 'id' => 'printed_invoice_number','readonly'=>TRUE, 'class' => 'form-control','required'=>true))}}
 			</div>
 		</div>
 

@@ -550,5 +550,7 @@ tr#newchequetr td {
 tr.newcredittr:nth-child(even) {
     background-color: #d1c4e9;
 }
-
+.hidden-print-invoice-number{
+	display: none;
+}
 
