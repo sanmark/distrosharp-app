@@ -46,28 +46,24 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 			_token: csrfToken,
 			customerId: customerId
 		}, function (data) {
-			for (var key in data) {
-				var date_time = data[key].date_time;
-				$('#printed_invoice_number').val('Credit' + ' - ' + customerId + ' - ' + date_time);
-				if (data.length > 0 && data[key].balance > 0) {
-					var formGroupTitle = $('<div></div>');
-					formGroupTitle
-						.attr('class', 'row');
-					formGroupTitle.append(
-						$('<div></div>')
-						.attr('class', 'col -sm-10 col-sm-offset-2')
-						.attr('style', 'padding-left: 0; border-top: 1px solid #000; margin-bottom: 20px;')
-						.append($('<h4></h4>')
-							.attr('class', 'mainTitle')
-							.attr('style', 'font-weight: bold;')
-							.append('Late Credit Invoices')
-							)
-						.append($('<table></table>').attr('id', 'oldCreditsInvoice').attr('class', 'table table-striped').append($('<th>Invoice No</th>')).append($('<th>Date</th>')).append($('<th>Total Bill</th>')).append($('<th>Total Paid</th>')).append($('<th>Credit</th>')).append($('<th>Action</th>'))
-							)
-						);
+			if (data.length > 0) {
+				var formGroupTitle = $('<div></div>');
+				formGroupTitle
+					.attr('class', 'row');
+				formGroupTitle.append(
+					$('<div></div>')
+					.attr('class', 'col -sm-10 col-sm-offset-2')
+					.attr('style', 'padding-left: 0; border-top: 1px solid #000; margin-bottom: 20px;')
+					.append($('<h4></h4>')
+						.attr('class', 'mainTitle')
+						.attr('style', 'font-weight: bold;')
+						.append('Late Credit Invoices')
+						)
+					.append($('<table></table>').attr('id', 'oldCreditsInvoice').attr('class', 'table table-striped').append($('<th>Invoice No</th>')).append($('<th>Date</th>')).append($('<th>Total Bill</th>')).append($('<th>Total Paid</th>')).append($('<th>Credit</th>')).append($('<th>Action</th>'))
+						)
+					);
 
-					$('#oldCreditPayments').append(formGroupTitle);
-				}
+				$('#oldCreditPayments').append(formGroupTitle);
 			}
 
 			for (var key in data) {
@@ -77,7 +73,7 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 					var discount = data[key].discount;
 					var balance = data[key].balance;
 					var amount = totalamount - balance;
-					if (balance > 0) {
+					if (key.length > 0) {
 						$('#oldCreditsInvoice').append(
 							'<tr class="abcd" id="' + data[key].id + '"><td>' + data[key].id + '</td><td>' + data[key].date_time + '</td><td>' + data[key].totalamount + '</td><td>' + amount + '</td><td id="balance">' + data[key].balance + '</td><td>' + '<a id="' + cusid + '" href="javascript:void(\'' + data[key].id + '\')" data="\'' + data[key].id + '\'"  class = "btn btn-sm btn-success pay-btn" >' + 'Pay Credit' + '</a>' + '</td></tr>'
 
