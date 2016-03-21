@@ -73,6 +73,8 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 					var discount = data[key].discount;
 					var balance = data[key].balance;
 					var amount = totalamount - balance;
+					var date_time = data[key].date_time; 
+        $('#printed_invoice_number').val('Credit' + ' - ' + customerId + ' - ' + date_time);       
 					if (key.length > 0) {
 						$('#oldCreditsInvoice').append(
 							'<tr class="abcd" id="' + data[key].id + '"><td>' + data[key].id + '</td><td>' + data[key].date_time + '</td><td>' + data[key].totalamount + '</td><td>' + amount + '</td><td id="balance">' + data[key].balance + '</td><td>' + '<a id="' + cusid + '" href="javascript:void(\'' + data[key].id + '\')" data="\'' + data[key].id + '\'"  class = "btn btn-sm btn-success pay-btn" >' + 'Pay Credit' + '</a>' + '</td></tr>'
@@ -110,7 +112,7 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 								.append($('<label></label>').attr('for', 'is_completely_paid').attr('class', 'control-label').attr('style', 'padding-left:10px').text('Is Completely Paid'));
 							var newCreditTd_Two = $('<td colspan="1"></td>')
 								.append($('<label></label>').attr('class', 'control-label').attr('for', 'cashamount').text('Cash Amount : '))
-								.append($('<input/>').attr('class', 'form-control saleDetail').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]'));
+								.append($('<input/>').attr('class', 'form-control saleDetail').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]').attr('step','any'));
 							var newChequeTr = $('<tr></tr>').attr('id', 'newchequetr').css("background-color", "#000000");
 							var newChequeTd_One = $('<td></td>').attr('colspan', '1');
 							var newChequeTd_Two = $('<td></td>').attr('colspan', '1')
