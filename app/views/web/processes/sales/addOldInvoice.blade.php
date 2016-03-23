@@ -3,7 +3,7 @@
 @section('body')
 <div class="panel panel-default well">
 	<div class="panel-heading">
-		<h3 class="panel-title">Add Credit Invoices</h3>
+		<h3 class="panel-title">Credit Invoices</h3>
 	</div>
 	<div class="panel-body">
 		{{Form::open(['class'=>'form-horizontal', 'role'=>'form' ])}}
@@ -63,7 +63,7 @@
 
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<?php // $tab ++ ?>
+				<?php  $tab ++ ?>
 				{{Form::submit('Submit', array('tabindex'=> $tab, 'class' => 'btn btn-primary pull-right'))}}
 			</div>
 		</div> 

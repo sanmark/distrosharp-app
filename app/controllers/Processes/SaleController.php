@@ -140,36 +140,62 @@ class SaleController extends \Controller
 		try
 		{
 
-			$dateTime				 = \InputButler::get ( 'date_time' ) ;
-			$customerId				 = \InputButler::get ( 'customer_id' ) ;
-			$isCompletelyPaid		 = \InputButler::get ( 'is_completely_paid' ) ;
-			$printedInvoiceNumber	 = \InputButler::get ( 'printed_invoice_number' ) ;
-			$oldRouteId				 = \InputButler::get ( 'route_id' ) ;
-			$creditPayments			 = \InputButler::get ( 'credit_payments' ) ;
-			$rep					 = \User::with ( 'stock' ) -> findOrFail ( \SessionButler::getRepId () ) ;
-			$stockId				 = $rep -> stock -> id ;
+			$creditPayments = \InputButler::get ( 'credit_payments' ) ;
 			$this -> validateCreditPayments ( $creditPayments ) ;
 
-			$sellingInvoice = new \Models\SellingInvoice() ;
 
-			$sellingInvoice -> date_time				 = $dateTime ;
-			$sellingInvoice -> customer_id				 = $customerId ;
-			$sellingInvoice -> rep_id					 = $rep -> id ;
-			$sellingInvoice -> printed_invoice_number	 = $printedInvoiceNumber ;
-			$sellingInvoice -> is_completely_paid		 = $isCompletelyPaid ;
-			$sellingInvoice -> stock_id					 = $stockId[ 0 ] ;
+			if ( is_array ( $creditPayments ) || is_object ( $creditPayments ) && count ( $creditPayments ) > 0 )
+			{
+				foreach ( $creditPayments as $sellingInvoiceId => $creditPayment )
+				{
 
-			$sellingInvoice -> save () ;
+					$sellingInvoiceCreditPaid = \Models\SellingInvoice::with ( 'customer' ) -> findOrFail ( $sellingInvoiceId ) ;
+					if(isset($creditPayment['is_completely_paid']) && \NullHelper::zeroIfNull ($creditPayment['is_completely_paid']) ){
 
+							 $sellingInvoiceCreditPaid -> is_completely_paid = 1;
+							 $sellingInvoiceCreditPaid ->  save();
+						}
+						
+					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cash_amount' ] ) )
+					{
+						$cashTargetAccount = \FinanceAccountButler::getCashTargetAccount () ;
 
-			$this -> saveCreditPayments ( $sellingInvoice , $creditPayments ) ;
+						$financeTransfer				 = new \Models\FinanceTransfer() ;
+						$financeTransfer -> from_id		 = $sellingInvoiceCreditPaid -> customer -> finance_account_id ;
+						$financeTransfer -> date_time	 = $sellingInvoiceCreditPaid -> date_time ;
+						$financeTransfer -> to_id		 = $cashTargetAccount -> id ;
+						$financeTransfer -> amount		 = $creditPayment[ 'cash_amount' ] ;
+						$financeTransfer -> save () ;
 
-			\MessageButler::setSuccess ( 'Credit Invoice was saved successfully.' ) ;
+						$sellingInvoiceCreditPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+					}
+					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cheque_amount' ] ) )
+					{
+						$chequeAmount		 = $creditPayment[ 'cheque_amount' ] ;
+						$chequeBankId		 = $creditPayment[ 'cheque_bank_id' ] ;
+						$chequeNumber		 = $creditPayment[ 'cheque_number' ] ;
+						$chequeIssuedDate	 = $creditPayment[ 'cheque_issued_date' ] ;
+						$chequePayableDate	 = $creditPayment[ 'cheque_payable_date' ] ;
 
-			\ActivityLogButler::add ( "Add Selling Invoice " . $sellingInvoice -> id ) ;
+						$chequeTargetAccount = \FinanceAccountButler::getChequeTargetAccount () ;
 
-			return \Redirect::action ( 'processes.sales.addOldInvoice' )
-					-> with ( 'oldRouteId' , $oldRouteId ) ;
+						$financeTransfer				 = new \Models\FinanceTransfer() ;
+						$financeTransfer -> from_id		 = $sellingInvoiceCreditPaid -> customer -> finance_account_id ;
+						$financeTransfer -> to_id		 = $chequeTargetAccount -> id ;
+						$financeTransfer -> date_time	 = $sellingInvoiceCreditPaid -> date_time ;
+						$financeTransfer -> amount		 = $creditPayment[ 'cheque_amount' ] ;
+
+						$financeTransfer -> save () ;
+
+						$this -> saveChequeDetail ( $financeTransfer , $chequeBankId , $chequeNumber , $chequeIssuedDate , $chequePayableDate ) ;
+
+						$sellingInvoiceCreditPaid -> financeTransfers () -> attach ( $financeTransfer -> id ) ;
+					}
+				}
+				\MessageButler::setSuccess ( 'Credit Invoice was saved successfully.' ) ;
+			}
+
+			return \Redirect::action ( 'processes.sales.addOldInvoice' ) ;
 		} catch ( \Exceptions\InvalidInputException $ex )
 		{
 			return \Redirect::back ()
@@ -895,6 +921,11 @@ class SaleController extends \Controller
 				{
 					$sellingInvoiceBeingPaid = \Models\SellingInvoice::with ( 'customer' )
 						-> findOrFail ( $sellingInvoiceId ) ;
+					if(isset($creditPayment['is_completely_paid']) && \NullHelper::zeroIfNull($creditPayment['is_completely_paid'])){
+						
+					 $sellingInvoiceBeingPaid -> is_completely_paid = 1;
+							 $sellingInvoiceBeingPaid ->  save();
+						}
 
 					if ( ! \NullHelper::isNullEmptyOrWhitespace ( $creditPayment[ 'cash_amount' ] ) )
 					{
