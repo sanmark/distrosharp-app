@@ -112,7 +112,7 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 								.append($('<label></label>').attr('for', 'is_completely_paid').attr('class', 'control-label').attr('style', 'padding-left:10px').text('Is Completely Paid'));
 							var newCreditTd_Two = $('<td colspan="1"></td>')
 								.append($('<label></label>').attr('class', 'control-label').attr('for', 'cashamount').text('Cash Amount : '))
-								.append($('<input/>').attr('class', 'form-control saleDetail').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]').attr('step','any'));
+								.append($('<input/>').attr('class', 'form-control').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]').attr('step','any'));
 							var newChequeTr = $('<tr></tr>').attr('id', 'newchequetr').css("background-color", "#000000");
 							var newChequeTd_One = $('<td></td>').attr('colspan', '1');
 							var newChequeTd_Two = $('<td></td>').attr('colspan', '1')
@@ -126,7 +126,7 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 							var newChequeTd_Five = $('<td></td>').attr('colspan', '1').append($('<label></label>').attr('class', 'control-label').attr('for', 'payabledate').text('Payable Date'))
 								.append($('<input/>').attr('type', 'date').attr('class', 'form-control').attr('id', 'payabledate').attr('name', 'credit_payments[' + data[key].id + '][cheque_payable_date]').attr('value', getOldCreditInvoiceDetails(data[key].id, 'cheque_payable_date')));
 							var newChequeTd_Six = $('<td></td>').attr('colspan', '1').append($('<label></label>').attr('class', 'control-label').attr('for', 'chequeamount').text('Cheque Amount'))
-								.append($('<input/>').attr('type', 'number').attr('class', 'form-control saleDetail').attr('id', 'chequeamount').attr('name', 'credit_payments[' + data[key].id + '][cheque_amount]').attr('value', getOldCreditInvoiceDetails(data[key].id, 'cheque_amount')));
+								.append($('<input/>').attr('type', 'number').attr('class', 'form-control').attr('step','any').attr('id', 'chequeamount').attr('name', 'credit_payments[' + data[key].id + '][cheque_amount]').attr('value', getOldCreditInvoiceDetails(data[key].id, 'cheque_amount')));
 
 							newCreditTr.append(newCreditTd_One, newCreditTd_Two);
 							newChequeTr.append(newChequeTd_One, newChequeTd_Two, newChequeTd_Three, newChequeTd_Four, newChequeTd_Five, newChequeTd_Six);
