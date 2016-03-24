@@ -118,9 +118,11 @@
 					return TRUE ;
 				}
 			} ) -> first () ;
-		?>
 
-		<?php $returnTotal += $sellingItem -> getReturnLineTotal () ; ?>
+		if(!is_null ( $sellingItem )){
+		$returnTotal += $sellingItem -> getReturnLineTotal () ;
+		}
+		?>
 
 
 		<!-- total ---------------------------------->

@@ -169,6 +169,13 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 
 				var formGroupTwo_Three = $('<div></div>')
 					.attr('class', 'col-sm-3')
+					.append($('<div></div>')
+						.attr('class','row')
+						.attr('style','padding-top:2px')
+						.append($('<input/>')
+						.attr('class', 'myCheckbox')
+						.attr('type', 'checkbox')
+						.attr('name', 'credit_payments[' + sellingInvoice.id + '][is_completely_paid]').attr('value','1')).append($('<label></label>').attr('class', 'control-label').attr('style', 'padding-left:10px').text('Is Completely Paid')))
 					.append(
 						$('<div></div>')
 						.attr('class', 'row bgcolor')
@@ -187,7 +194,7 @@ function loadCreditInvoicesForCustomer(csrfToken, oldCreditPayments, date, bankS
 							.attr('class', 'col-sm-6')
 							.append($('<input/>')
 								.attr('type', 'number')
-								.attr('class', 'form-control text-right')
+								.attr('class', 'form-control text-right ')
 								.attr('id', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('name', 'credit_payments[' + sellingInvoice.id + '][cash_amount]')
 								.attr('value', getOldCreditPaymentDetails(sellingInvoice.id, 'cash_amount'))

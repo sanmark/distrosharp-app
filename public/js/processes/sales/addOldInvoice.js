@@ -1,3 +1,4 @@
+var checkIdBox;
 function populateCustomersForRoute(csrfToken)
 {
 	$(document).on('change', '#route_id', function () {
@@ -95,24 +96,16 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 				for (var key in data) {
 
 					if (typeof data[key] === "object") {
-
-						$("saleDetail").keyup(function () {
-							var balance = this.balance;
-							balance = $('#balance').val();
-							if (balance === data[key].balance && data[key].balance > 0) {
-								$('.myCheckbox').attr('checked', 'checked');
-							} else {
-								$('.myCheckbox').prop('checked', false);
-							}
-						});
-
+						 checkIdBox = data[key].id;
+												
 						if (typeof data[key] === "object" && cusid === data[key].id) {
+							
 							var newCreditTr = $('<tr></tr>').attr('class', 'newcredittr');
-							var newCreditTd_One = $('<td colspan="5"></td>').append($('<input/>').attr('class', 'myCheckbox').attr('type', 'checkbox').attr('name', 'credit_payments[' + data[key].id + '][is_completely_paid]').val(getOldCreditInvoiceDetails(data[key].id, 'is_completely_paid')))
+							var newCreditTd_One = $('<td colspan="5"></td>').append($('<input/>').attr('class', 'myCheckbox').attr('type', 'checkbox').attr('name', 'credit_payments[' + data[key].id + '][is_completely_paid]').attr('value','1'))
 								.append($('<label></label>').attr('for', 'is_completely_paid').attr('class', 'control-label').attr('style', 'padding-left:10px').text('Is Completely Paid'));
 							var newCreditTd_Two = $('<td colspan="1"></td>')
 								.append($('<label></label>').attr('class', 'control-label').attr('for', 'cashamount').text('Cash Amount : '))
-								.append($('<input/>').attr('class', 'form-control').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]').attr('step','any'));
+								.append($('<input/>').attr('class', 'form-control ').attr('type', 'number').attr('id', 'cashamount').attr('name', 'credit_payments[' + data[key].id + '][cash_amount]').attr('step','any'));
 							var newChequeTr = $('<tr></tr>').attr('id', 'newchequetr').css("background-color", "#000000");
 							var newChequeTd_One = $('<td></td>').attr('colspan', '1');
 							var newChequeTd_Two = $('<td></td>').attr('colspan', '1')
@@ -133,6 +126,7 @@ function loadOldCreditInvoicesForCustomer(csrfToken, oldCreditInvoices, date, ba
 							$('#' + cusid).after(newCreditTr, newChequeTr);
 
 						}
+						
 
 					} else if (typeof data[key] === "string") {
 
@@ -435,22 +429,13 @@ function loadPreviousValuesOnUnsuccessfulRedirectBack(oldCustomerId)
 
 function displayIsCompletelyPaid(csrfToken)
 {
-	$(document).on('change keyup', '.saleDetail', function () {
-		var customerId = SanmarkJsHelper.Input.get(this);
-		$.post("/entities/customers/ajax/creditInvoices", {
-			_token: csrfToken,
-			customerId: customerId
-		}, function (data) {
-			$.each(data, function (index, creditInvoice) {
-				console.log(creditInvoice.balance);
-			});
-			var balance = $('#balance').val();
-			if (balance <= 0) {
-				$('.myCheckbox').attr('checked', 'checked');
-			} else {
-				$('.myCheckbox').removeAttr('checked');
-			}
-		});
+	$(document).on('change keyup', '#bbb', function () {
+		var balance = $('td#balance').text();
+		if (balance <= 0) {
+			$('.myCheckbox').attr('checked', 'checked');
+		} else {
+			$('.myCheckbox').removeAttr('checked');
+		}
 	});
 }
 
